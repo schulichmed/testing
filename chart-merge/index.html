@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Chart and flowchart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f5fa;--card:#ffffff;--ink:#201436;--muted:#5f5670;--line:#ddd5ea;--accent:#7a3fb0;--accent-soft:#efe8f6;--warn:#8a5a00;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--warn:#e9b45a;}}
+:root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--warn:#e9b45a;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,-apple-system,BlinkMacSystemFont,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 80px}
+h1,h2{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.1}
+h2{font-size:24px}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:600;color:var(--accent);margin:0 0 8px}
+.lead{color:var(--muted);max-width:68ch;margin:10px 0 0}
+.ask{margin:22px 0 8px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.ask b{color:var(--ink)}
+.ask ol{margin:6px 0 0;padding-left:20px;color:var(--muted)}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.toc a{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;font-size:14px}
+.toc a b{color:var(--accent)}
+.v{margin-top:56px;scroll-margin-top:16px}
+.vhead{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:start;margin-bottom:14px}
+.letter{grid-row:span 3;width:44px;height:44px;border-radius:12px;background:var(--accent);color:var(--card);display:grid;place-items:center;font:600 22px Fraunces,Georgia,serif}
+.vhead p{margin:0;color:var(--muted);max-width:75ch}
+.tradeoff{font-size:14px}
+.tradeoff span{color:var(--ink);font-weight:600}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;color:#201436}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scroll>svg{display:block;min-width:820px;width:100%;height:auto}
+.fit>svg{display:block;width:100%;height:auto;max-height:78vh}
+.fit>svg.colcrop{width:min(100%,300px);max-height:none;margin:0 auto;overflow:hidden}
+.label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.chip{font:500 14px Inter,sans-serif;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"],.chip[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.hint{font-size:14px;color:var(--muted);margin:8px 0 0}
+/* linking: flowchart side */
+.fc-node.link{cursor:pointer}
+.fc-node.link .fc-shape{stroke-dasharray:5 3}
+.fc-node.link:hover .fc-shape{stroke:#7a3fb0;stroke-width:3;stroke-dasharray:none}
+.lit .fc-node,.lit .fc-edge,.lit .fc-lab{opacity:.28;transition:opacity .2s}
+.lit .fc-node.on,.lit .fc-edge.on,.lit .fc-lab.on{opacity:1}
+.lit .fc-node.on .fc-shape{stroke:#7a3fb0;stroke-width:3}
+.lit .fc-edge.on{stroke:#4f2683;stroke-width:2.5}
+/* linking: chart side */
+.col-ov{fill:transparent;cursor:pointer;transition:fill .2s}
+.col-ov.dim{fill:rgba(255,255,255,.78)}
+.col-ov.on{fill:transparent;stroke:#7a3fb0;stroke-width:7}
+.col-ov:hover:not(.dim){fill:rgba(122,63,176,.06)}
+.back{display:inline-block;margin:10px 0 0;font:500 14px Inter,sans-serif;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+/* D: side by side */
+.duo{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px;align-items:start}
+.colcard{position:sticky;top:12px}
+.colcard .empty{padding:40px 16px;text-align:center;color:#5f5670;font-size:15px}
+.colcard h3{font:600 17px Fraunces,Georgia,serif;margin:2px 4px 8px}
+@media (max-width:860px){.duo{grid-template-columns:1fr}.colcard{position:static}}
+/* E: walk */
+.walk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:860px){.walk{grid-template-columns:1fr}}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0;list-style:none;font-size:13px;color:var(--muted)}
+.crumbs li{background:var(--accent-soft);border-radius:8px;padding:3px 8px}
+.qkind{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
+.qkind.alarm{color:#b42318}
+.qt{font:600 21px/1.25 Fraunces,Georgia,serif;margin:0 0 6px}
+.qa{color:var(--muted);margin:0 0 14px}
+.answers{display:flex;flex-wrap:wrap;gap:8px}
+.answers button{font:500 15px Inter,sans-serif;padding:10px 16px;border-radius:10px;border:1px solid var(--accent);background:var(--card);color:var(--ink);cursor:pointer}
+.answers button:hover{background:var(--accent-soft)}
+.answers button.ghost{border-color:var(--line);color:var(--muted)}
+.endcol{margin-top:14px}
+footer{margin-top:64px;color:var(--muted);font-size:14px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<p class="eyebrow">Team only · not linked from the site · for feedback</p>
+<h1>Merging the note charts with the flowcharts</h1>
+<p class="lead">Every lecture note opens with an overview chart: one column per diagnosis, covering how it presents, its causes, the tests and the treatment. Ashish's flowcharts cover the other half, the route to a diagnosis: what to ask first and which test splits the possibilities. Below are five ways to put the two together, all using the same thyroid example (the chart from <em>Approach to Hypothyroidism and Thyrotoxicosis</em> and the flowcharts <em>Abnormal TSH</em> and <em>Cause of thyrotoxicosis</em>).</p>
+<div class="ask">
+<b>What we'd like from you</b>, in the team chat:
+<ol>
+<li>Which letter you would ship, and which you'd never use.</li>
+<li>Try it on your phone too. Does your pick still work there?</li>
+<li>Anything that confused you, or that you clicked expecting something to happen.</li>
+</ol>
+</div>
+<nav class="toc" aria-label="Versions">
+<a href="#A"><b>A</b> Stacked</a>
+<a href="#B"><b>B</b> Tabs</a>
+<a href="#C"><b>C</b> Linked</a>
+<a href="#D"><b>D</b> Side by side</a>
+<a href="#E"><b>E</b> Walk-through</a>
+</nav>
+</header>
+
+<section class="v" id="A">
+<div class="vhead"><div class="letter">A</div><h2>Stacked</h2>
+<p>The chart first, then the flowcharts underneath, as separate pictures. This is what we get by simply adding the flowcharts to the note.</p>
+<p class="tradeoff"><span>Good:</span> no new ideas to learn, works everywhere. <span>Weak:</span> nothing connects them, and the note gets long.</p></div>
+<div class="label">Overview chart</div>
+<div class="panel scroll" data-mount="chart"></div>
+<div class="label">Flowchart · Abnormal TSH</div>
+<div class="panel scroll" data-mount="fc:abnormal-tsh"></div>
+<div class="label">Flowchart · Cause of thyrotoxicosis</div>
+<div class="panel scroll" data-mount="fc:thyrotoxicosis-cause"></div>
+</section>
+
+<section class="v" id="B">
+<div class="vhead"><div class="letter">B</div><h2>Tabs</h2>
+<p>One frame at the top of the note. The chart shows by default; the flowcharts are a tap away.</p>
+<p class="tradeoff"><span>Good:</span> the note stays short. <span>Weak:</span> you can't see both at once, and some people never open a tab.</p></div>
+<div class="chips" role="tablist" aria-label="Show">
+<button class="chip" role="tab" aria-selected="true" data-tab="chart">Overview chart</button>
+<button class="chip" role="tab" aria-selected="false" data-tab="fc:abnormal-tsh">Flowchart: Abnormal TSH</button>
+<button class="chip" role="tab" aria-selected="false" data-tab="fc:thyrotoxicosis-cause">Flowchart: Cause of thyrotoxicosis</button>
+</div>
+<div class="panel scroll" id="B-panel"></div>
+</section>
+
+<section class="v" id="C">
+<div class="vhead"><div class="letter">C</div><h2>Linked</h2>
+<p>Both stay on the page, but they point at each other. <b>Click a dashed diagnosis box</b> in the flowchart and the page jumps to that disease's column in the chart. <b>Click a column</b> in the chart and it jumps back with the route to that diagnosis lit up.</p>
+<p class="tradeoff"><span>Good:</span> the flowchart becomes a way into the chart. <span>Weak:</span> lots of jumping up and down on a phone.</p></div>
+<div class="chips" data-fcpick="C"></div>
+<div class="panel scroll" id="C-fc"></div>
+<p class="hint" id="C-fchint">Dashed boxes link to the chart.</p>
+<div class="label" id="C-chartlabel">Overview chart</div>
+<div class="panel scroll" id="C-chart"></div>
+<button class="back" id="C-back" hidden>&uarr; Back to the flowchart</button>
+</section>
+
+<section class="v" id="D">
+<div class="vhead"><div class="letter">D</div><h2>Side by side</h2>
+<p>The flowchart on the left. <b>Click a dashed diagnosis</b> and just that disease's column from the chart opens beside it. The full chart is still in the note, further down.</p>
+<p class="tradeoff"><span>Good:</span> the route and the disease side by side, without scrolling. <span>Weak:</span> needs a wide screen; on a phone the card drops below.</p></div>
+<div class="chips" data-fcpick="D"></div>
+<div class="duo">
+<div class="panel scroll" id="D-fc"></div>
+<aside class="panel colcard" id="D-card" aria-live="polite"><div class="empty">Click a dashed diagnosis box to see its column from the chart.</div></aside>
+</div>
+</section>
+
+<section class="v" id="E">
+<div class="vhead"><div class="letter">E</div><h2>Walk-through</h2>
+<p>One question at a time, using Ashish's questions and answers. When you reach a diagnosis you get its column from the chart, and the flowchart beside it shows the route you took.</p>
+<p class="tradeoff"><span>Good:</span> active practice, closest to how a case is asked. <span>Weak:</span> slower if you only want to look something up.</p></div>
+<div class="walk">
+<div class="step" id="E-step" aria-live="polite"></div>
+<div class="panel fit" id="E-fc"></div>
+</div>
+</section>
+
+<footer>Mockup for the team. The chart and flowcharts are the real ones; only the linking between them is new. Not linked from the site.</footer>
+</div>
+
+<template id="tpl-chart"><svg xmlns="http://www.w3.org/2000/svg" width="1924" height="1908" viewBox="0 0 1924 1908" role="img" aria-labelledby="t"><title id="t">Thyroid function pathway: TSH case-finds and free T4 confirms; hypothyroidism splits into primary (Hashimoto's), subclinical and central by TSH and free T4; thyrotoxicosis splits on radioactive iodine uptake into Graves, toxic nodules and thyroiditis or exogenous hormone, plus subclinical hyperthyroidism; each column gives causes and clues, tests and treatment</title><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5a6577"/></marker></defs><rect width="100%" height="100%" rx="14" fill="#f6f7f9"/>
+<rect x="40" y="560" width="262" height="1144" rx="16" fill="#eef7fa" stroke="#1f6f8b" stroke-opacity="0.25"/>
+<rect x="304" y="560" width="262" height="1144" rx="16" fill="#f4f7ee" stroke="#4f6d1f" stroke-opacity="0.25"/>
+<rect x="568" y="560" width="262" height="1144" rx="16" fill="#f5f1fb" stroke="#6a4aa8" stroke-opacity="0.25"/>
+<rect x="860" y="560" width="262" height="1144" rx="16" fill="#fdf4ea" stroke="#b5600f" stroke-opacity="0.25"/>
+<rect x="1124" y="560" width="262" height="1144" rx="16" fill="#faf4ee" stroke="#8a5a2b" stroke-opacity="0.25"/>
+<rect x="1388" y="560" width="262" height="1144" rx="16" fill="#fcf0f6" stroke="#a3336b" stroke-opacity="0.25"/>
+<rect x="1652" y="560" width="262" height="1144" rx="16" fill="#eff5fc" stroke="#1f5f9e" stroke-opacity="0.25"/>
+<path d="M33 238H29V370H33" fill="none" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="0" y="0" transform="translate(23 304.0) rotate(-90)" text-anchor="middle" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#5a6577">PRESENTS AS</text>
+<path d="M33 706H29V1024H33" fill="none" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="0" y="0" transform="translate(23 865.0) rotate(-90)" text-anchor="middle" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#5a6577">CAUSES &amp; CLUES</text>
+<path d="M33 1064H29V1242H33" fill="none" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="0" y="0" transform="translate(23 1153.0) rotate(-90)" text-anchor="middle" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#5a6577">INVESTIGATIONS</text>
+<path d="M33 1282H29V1696H33" fill="none" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="0" y="0" transform="translate(23 1489.0) rotate(-90)" text-anchor="middle" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#5a6577">TREATMENT</text>
+<path d="M1783.0 370.0L1783.0 566.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1519.0 488.0L1519.0 566.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1255.0 488.0L1255.0 566.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M991.0 488.0L991.0 566.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M699.0 370.0L699.0 566.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M435.0 370.0L435.0 566.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 370.0L171.0 566.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1783.0 1242.0L1783.0 1280.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1783.0 1024.0L1783.0 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1783.0 666.0L1783.0 704.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1519.0 1242.0L1519.0 1280.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1519.0 1024.0L1519.0 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1519.0 666.0L1519.0 704.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1255.0 1242.0L1255.0 1280.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1320.5 1024.0L1320.5 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1189.5 1024.0L1189.5 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1255.0 666.0L1255.0 704.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M991.0 1242.0L991.0 1280.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M991.0 1024.0L991.0 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M991.0 666.0L991.0 704.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M699.0 1242.0L699.0 1280.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M699.0 1024.0L699.0 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M699.0 666.0L699.0 704.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M435.0 1242.0L435.0 1280.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M435.0 1024.0L435.0 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M435.0 666.0L435.0 704.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 1242.0L171.0 1280.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 1025.0L171.0 1062.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 666.0L171.0 704.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1783.0 1478.0L1783.0 1498.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1519.0 1564.0L1519.0 1584.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1519.0 1411.0L1519.0 1431.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1255.0 1552.0L1255.0 1572.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1255.0 1405.0L1255.0 1425.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1056.5 1538.0L1056.5 1558.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M925.5 1538.0L925.5 1558.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M991.0 1399.0L991.0 1419.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M435.0 1469.0L435.0 1489.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 1596.0L171.0 1616.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 1478.0L171.0 1498.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 1378.0L171.0 1398.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M991.0 1151.0L991.0 1171.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M435.0 1142.0L435.0 1162.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M171.0 1124.0L171.0 1144.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1783.0 845.0L1783.0 865.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1584.5 936.0L1584.5 956.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1453.5 936.0L1453.5 956.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1584.5 790.0L1584.5 810.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1453.5 790.0L1453.5 810.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1320.5 835.0L1320.5 855.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1189.5 835.0L1189.5 855.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1056.5 886.0L1056.5 906.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M925.5 886.0L925.5 906.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1056.5 784.0L1056.5 804.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M925.5 784.0L925.5 804.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M699.0 854.0L699.0 874.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M171.0 904.0L171.0 924.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M171.0 803.0L171.0 823.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="6 5"/>
+<path d="M1255.0 370.0L1255.0 408.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M1387.0 198.0L1387.0 236.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M435.0 198.0L435.0 236.0" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M977.0 88V113H1387.0V138" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M977.0 88V113H435.0V138" fill="none" stroke="#5a6577" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="617.0" y="10.0" width="720.0" height="78.0" rx="10" fill="#18212e" stroke="#18212e" stroke-width="1.5"/>
+<text x="977.0" y="35.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#f6f7f9" text-anchor="middle">Thyroid function: TSH case-finds, free T4 (± T3) confirms</text>
+<text x="977.0" y="55.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#f6f7f9" text-anchor="middle">primary disease is commonest: TSH moves OPPOSITE the hormone</text>
+<text x="977.0" y="73.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#f6f7f9" text-anchor="middle">central disease is the trap: TSH moves WITH it, or not at all</text>
+<rect x="45.0" y="138.0" width="780.0" height="60.0" rx="10" fill="#ffffff" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="435.0" y="163.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#18212e" text-anchor="middle">HYPOTHYROID: too little thyroid hormone</text>
+<text x="435.0" y="183.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">TSH ↑ (primary) · up to 2% · female 5–8 : 1</text>
+<rect x="865.0" y="138.0" width="1044.0" height="60.0" rx="10" fill="#ffffff" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="1387.0" y="163.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#18212e" text-anchor="middle">THYROTOXIC: too much thyroid hormone, from any cause</text>
+<text x="1387.0" y="183.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">TSH ↓ · up to 1.5% · female 5 : 1 · hyperthyroidism = from PRODUCTION</text>
+<rect x="45.0" y="238.0" width="780.0" height="132.0" rx="10" fill="#e3edf8" stroke="#1f5f9e" stroke-width="1.5"/>
+<text x="435.0" y="272.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f5f9e" text-anchor="middle">Presents as</text>
+<text x="435.0" y="292.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">COLD intolerance · weight GAIN despite ↓ appetite</text>
+<text x="435.0" y="310.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">fatigue, slow mentation, apathy, depression · constipation · cool, pale skin</text>
+<text x="435.0" y="328.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">bradycardia · diastolic hypertension, NARROW pulse pressure · ↓ cardiac output</text>
+<text x="435.0" y="346.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">slow RELAXATION of the reflexes · short of breath, heart failure</text>
+<rect x="865.0" y="238.0" width="1044.0" height="132.0" rx="10" fill="#e3edf8" stroke="#1f5f9e" stroke-width="1.5"/>
+<text x="1387.0" y="263.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f5f9e" text-anchor="middle">Presents as</text>
+<text x="1387.0" y="283.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">HEAT intolerance, sweating · weight LOSS despite ↑ appetite</text>
+<text x="1387.0" y="301.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">hyperactivity, insomnia, anxiety, emotional lability · hyperdefecation · soft, warm skin · TREMOR</text>
+<text x="1387.0" y="319.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">tachycardia · WIDE pulse pressure · ↑ cardiac output · palpitations · heart failure</text>
+<text x="1387.0" y="337.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">eyes in ANY thyrotoxicosis: stare, lid retraction, lid lag</text>
+<text x="1387.0" y="355.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">urgent: storm / instability (Graves) · high-output failure · visual loss · mental health crisis</text>
+<rect x="865.0" y="410.0" width="780.0" height="78.0" rx="10" fill="#ffffff" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="1255.0" y="435.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#18212e" text-anchor="middle">Confirm (repeat ↓TSH + ↑FT4 + ↑FT3), then: is the gland MAKING it or LEAKING it?</text>
+<text x="1255.0" y="455.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">RAI uptake + scan: the best single test for the cause · 2-day test · expensive · NOT in pregnancy</text>
+<text x="1255.0" y="473.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#5a6577" text-anchor="middle" font-style="italic">TRAb blood test is sensitive and specific for Graves</text>
+<rect x="45.0" y="568.0" width="252.0" height="98.0" rx="10" fill="#1f6f8b" stroke="#1f6f8b" stroke-width="1.5"/>
+<text x="171.0" y="603.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">Primary hypothyroidism</text>
+<text x="171.0" y="623.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">TSH ↑ · FT4 ↓</text>
+<text x="171.0" y="641.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">commonest: HASHIMOTO's</text>
+<rect x="309.0" y="568.0" width="252.0" height="98.0" rx="10" fill="#4f6d1f" stroke="#4f6d1f" stroke-width="1.5"/>
+<text x="435.0" y="603.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">Subclinical hypothyroidism</text>
+<text x="435.0" y="623.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">TSH ↑ · FT4 + FT3 normal</text>
+<text x="435.0" y="641.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">up to 10% · TSH usually &lt; 10–20</text>
+<rect x="573.0" y="568.0" width="252.0" height="98.0" rx="10" fill="#6a4aa8" stroke="#6a4aa8" stroke-width="1.5"/>
+<text x="699.0" y="603.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">Central hypothyroidism</text>
+<text x="699.0" y="623.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">TSH ↔ or ↓ · FT4 ↓</text>
+<text x="699.0" y="641.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">PITUITARY or hypothalamus</text>
+<rect x="865.0" y="568.0" width="252.0" height="98.0" rx="10" fill="#b5600f" stroke="#b5600f" stroke-width="1.5"/>
+<text x="991.0" y="603.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">Graves disease</text>
+<text x="991.0" y="623.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">the COMMONEST cause</text>
+<text x="991.0" y="641.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">TSH-receptor antibodies drive it</text>
+<rect x="1129.0" y="568.0" width="252.0" height="98.0" rx="10" fill="#8a5a2b" stroke="#8a5a2b" stroke-width="1.5"/>
+<text x="1255.0" y="593.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">Toxic adenoma / multinodular</text>
+<text x="1255.0" y="613.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">goiter</text>
+<text x="1255.0" y="633.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">autonomous nodule(s)</text>
+<text x="1255.0" y="651.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">TMNG = toxic multinodular goiter</text>
+<rect x="1393.0" y="568.0" width="252.0" height="98.0" rx="10" fill="#a3336b" stroke="#a3336b" stroke-width="1.5"/>
+<text x="1519.0" y="594.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">Thyroiditis or exogenous</text>
+<text x="1519.0" y="614.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">LOW uptake: hormone LEAKING</text>
+<text x="1519.0" y="632.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">out of a damaged gland, or from a</text>
+<text x="1519.0" y="650.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">bottle</text>
+<rect x="1657.0" y="568.0" width="252.0" height="98.0" rx="10" fill="#1f5f9e" stroke="#1f5f9e" stroke-width="1.5"/>
+<text x="1783.0" y="603.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#ffffff" text-anchor="middle">Subclinical hyperthyroidism</text>
+<text x="1783.0" y="623.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">TSH ↓ · FT4 + FT3 normal</text>
+<text x="1783.0" y="641.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#ffffff" text-anchor="middle">same causes as overt</text>
+<rect x="45.0" y="706.0" width="252.0" height="97.0" rx="10" fill="#dceef4" stroke="#1f6f8b" stroke-width="1.5"/>
+<text x="171.0" y="731.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f6f8b" text-anchor="middle">Hashimoto's thyroiditis</text>
+<text x="171.0" y="751.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">female · family history of autoimmune</text>
+<text x="171.0" y="769.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">disease · iodine load</text>
+<text x="171.0" y="787.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#5a6577" text-anchor="middle" font-style="italic">symptoms variable, signs not sensitive</text>
+<rect x="45.0" y="825.0" width="252.0" height="79.0" rx="10" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
+<text x="171.0" y="850.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f6f8b" text-anchor="middle">Other causes</text>
+<text x="171.0" y="870.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">drugs: lithium, amiodarone · surgery or</text>
+<text x="171.0" y="888.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">radioactive iodine</text>
+<rect x="45.0" y="926.0" width="252.0" height="99.0" rx="10" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
+<text x="171.0" y="951.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f6f8b" text-anchor="middle">No treatment history, no</text>
+<text x="171.0" y="971.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f6f8b" text-anchor="middle">pituitary risk</text>
+<text x="171.0" y="991.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">→ you may simply ASSUME</text>
+<text x="171.0" y="1009.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">Hashimoto's</text>
+<rect x="309.0" y="706.0" width="252.0" height="318.0" rx="10" fill="#e7eed9" stroke="#4f6d1f" stroke-width="1.5"/>
+<text x="435.0" y="860.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#4f6d1f" text-anchor="middle">Often resolves on its own</text>
+<text x="435.0" y="880.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">especially TSH &lt; 10 in the elderly</text>
+<rect x="573.0" y="706.0" width="252.0" height="148.0" rx="10" fill="#ebe4f7" stroke="#6a4aa8" stroke-width="1.5"/>
+<text x="699.0" y="766.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#6a4aa8" text-anchor="middle">Suspect it with</text>
+<text x="699.0" y="786.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">other pituitary deficiencies or a known</text>
+<text x="699.0" y="804.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">pituitary mass</text>
+<rect x="573.0" y="876.0" width="252.0" height="148.0" rx="10" fill="#ffffff" stroke="#6a4aa8" stroke-width="1.5"/>
+<text x="699.0" y="936.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#6a4aa8" text-anchor="middle">Causes</text>
+<text x="699.0" y="956.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">↓ stimulation: trauma, surgery, tumour,</text>
+<text x="699.0" y="974.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">infiltrative disease</text>
+<rect x="865.0" y="706.0" width="252.0" height="78.0" rx="10" fill="#fbe8d3" stroke="#b5600f" stroke-width="1.5"/>
+<text x="991.0" y="731.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">Risk factors</text>
+<text x="991.0" y="751.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">female · age ~30–50 · family history of</text>
+<text x="991.0" y="769.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">autoimmune (esp. thyroid) · iodine load</text>
+<rect x="865.0" y="806.0" width="121.0" height="80.0" rx="10" fill="#ffffff" stroke="#b5600f" stroke-width="1.5"/>
+<text x="925.5" y="831.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">Acute or</text>
+<text x="925.5" y="851.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">subacute</text>
+<text x="925.5" y="871.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">new neck mass</text>
+<rect x="996.0" y="806.0" width="121.0" height="80.0" rx="10" fill="#ffffff" stroke="#b5600f" stroke-width="1.5"/>
+<text x="1056.5" y="840.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">SYMMETRIC</text>
+<text x="1056.5" y="860.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">goiter</text>
+<rect x="865.0" y="908.0" width="252.0" height="116.0" rx="10" fill="#ffffff" stroke="#b5600f" stroke-width="1.5"/>
+<text x="991.0" y="933.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">Graves only: orbitopathy,</text>
+<text x="991.0" y="953.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">dermopathy</text>
+<text x="991.0" y="973.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">proptosis, periorbital edema, diplopia ·</text>
+<text x="991.0" y="991.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">VISUAL LOSS = ocular emergency ·</text>
+<text x="991.0" y="1009.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">SMOKING the major risk</text>
+<rect x="1129.0" y="706.0" width="252.0" height="129.0" rx="10" fill="#f3e6d8" stroke="#8a5a2b" stroke-width="1.5"/>
+<text x="1255.0" y="756.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#8a5a2b" text-anchor="middle">Risk factors</text>
+<text x="1255.0" y="776.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">iodine deficiency moving to sufficiency,</text>
+<text x="1255.0" y="794.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">or an iodine load</text>
+<rect x="1129.0" y="857.0" width="121.0" height="167.0" rx="10" fill="#ffffff" stroke="#8a5a2b" stroke-width="1.5"/>
+<text x="1189.5" y="907.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#8a5a2b" text-anchor="middle">Gradually</text>
+<text x="1189.5" y="927.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#8a5a2b" text-anchor="middle">progressive</text>
+<text x="1189.5" y="947.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">MILDLY</text>
+<text x="1189.5" y="965.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">thyrotoxic · neck</text>
+<text x="1189.5" y="983.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">mass(es)</text>
+<rect x="1260.0" y="857.0" width="121.0" height="167.0" rx="10" fill="#ffffff" stroke="#8a5a2b" stroke-width="1.5"/>
+<text x="1320.5" y="934.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#8a5a2b" text-anchor="middle">ASYMMETRIC</text>
+<text x="1320.5" y="954.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#8a5a2b" text-anchor="middle">goiter</text>
+<rect x="1393.0" y="706.0" width="252.0" height="84.0" rx="10" fill="#f8e0ec" stroke="#a3336b" stroke-width="1.5"/>
+<text x="1519.0" y="734.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">Subacute (post-viral)</text>
+<text x="1519.0" y="754.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">recent upper respiratory infection ·</text>
+<text x="1519.0" y="772.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">tender, PAIN, odynophagia</text>
+<rect x="1393.0" y="812.0" width="121.0" height="124.0" rx="10" fill="#ffffff" stroke="#a3336b" stroke-width="1.5"/>
+<text x="1453.5" y="840.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">Post-partum</text>
+<text x="1453.5" y="860.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">or</text>
+<text x="1453.5" y="880.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">autoimmune</text>
+<text x="1453.5" y="900.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">also radiation,</text>
+<text x="1453.5" y="918.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">trauma</text>
+<rect x="1524.0" y="812.0" width="121.0" height="124.0" rx="10" fill="#ffffff" stroke="#a3336b" stroke-width="1.5"/>
+<text x="1584.5" y="860.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">Exogenous</text>
+<text x="1584.5" y="880.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">over-treatment,</text>
+<text x="1584.5" y="898.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">factitious</text>
+<rect x="1393.0" y="958.0" width="252.0" height="66.0" rx="10" fill="#ffffff" stroke="#a3336b" stroke-width="1.5"/>
+<text x="1519.0" y="986.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">Goiter</text>
+<text x="1519.0" y="1006.4" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">asymmetric, symmetric or NONE</text>
+<rect x="1657.0" y="706.0" width="252.0" height="139.0" rx="10" fill="#dde9f7" stroke="#1f5f9e" stroke-width="1.5"/>
+<text x="1783.0" y="770.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f5f9e" text-anchor="middle">Linked to</text>
+<text x="1783.0" y="790.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">bone loss · atrial fibrillation</text>
+<rect x="1657.0" y="867.0" width="252.0" height="157.0" rx="10" fill="#ffffff" stroke="#1f5f9e" stroke-width="1.5"/>
+<text x="1783.0" y="931.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f5f9e" text-anchor="middle">Rarely assay interference</text>
+<text x="1783.0" y="951.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">look up interfering substances, repeat</text>
+<text x="1783.0" y="969.9" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">TSH + FT4/FT3</text>
+<rect x="45.0" y="1064.0" width="252.0" height="60.0" rx="10" fill="#dceef4" stroke="#1f6f8b" stroke-width="1.5"/>
+<text x="171.0" y="1089.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f6f8b" text-anchor="middle">CONFIRM: repeat ↑TSH + ↓FT4</text>
+<text x="171.0" y="1109.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">free T3 not needed</text>
+<rect x="45.0" y="1146.0" width="252.0" height="96.0" rx="10" fill="#fbeedd" stroke="#a45a12" stroke-width="1.5"/>
+<text x="171.0" y="1171.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a45a12" text-anchor="middle">Leave these alone</text>
+<text x="171.0" y="1191.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">anti-TPO, anti-thyroglobulin: rarely</text>
+<text x="171.0" y="1209.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">change decisions · ultrasound: only for</text>
+<text x="171.0" y="1227.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">a nodule felt on exam</text>
+<rect x="309.0" y="1064.0" width="252.0" height="78.0" rx="10" fill="#e7eed9" stroke="#4f6d1f" stroke-width="1.5"/>
+<text x="435.0" y="1098.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#4f6d1f" text-anchor="middle">Repeat TSH + FT4</text>
+<text x="435.0" y="1118.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">TSH ↑ with normal free hormone</text>
+<rect x="309.0" y="1164.0" width="252.0" height="78.0" rx="10" fill="#ffffff" stroke="#4f6d1f" stroke-width="1.5"/>
+<text x="435.0" y="1198.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#4f6d1f" text-anchor="middle">Higher risk of progression</text>
+<text x="435.0" y="1218.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">TSH &gt; 10 · anti-TPO positive</text>
+<rect x="573.0" y="1064.0" width="252.0" height="178.0" rx="10" fill="#fbe5e3" stroke="#b3261e" stroke-width="1.5"/>
+<text x="699.0" y="1130.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b3261e" text-anchor="middle">Order TSH + FT4 TOGETHER</text>
+<text x="699.0" y="1150.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">here TSH moves WITH the hormone,</text>
+<text x="699.0" y="1168.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">or not at all: a normal TSH does NOT</text>
+<text x="699.0" y="1186.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">reassure</text>
+<rect x="865.0" y="1064.0" width="252.0" height="87.0" rx="10" fill="#fbe8d3" stroke="#b5600f" stroke-width="1.5"/>
+<text x="991.0" y="1093.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">TSH receptor antibody (TRAb)</text>
+<text x="991.0" y="1113.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">sensitive AND specific · a blood test ·</text>
+<text x="991.0" y="1131.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">not covered by OHIP</text>
+<rect x="865.0" y="1173.0" width="252.0" height="69.0" rx="10" fill="#ffffff" stroke="#b5600f" stroke-width="1.5"/>
+<text x="991.0" y="1202.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">RAI uptake + scan</text>
+<text x="991.0" y="1222.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">DIFFUSE high uptake</text>
+<rect x="1129.0" y="1064.0" width="252.0" height="178.0" rx="10" fill="#f3e6d8" stroke="#8a5a2b" stroke-width="1.5"/>
+<text x="1255.0" y="1139.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#8a5a2b" text-anchor="middle">RAI uptake + scan</text>
+<text x="1255.0" y="1159.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">ONE hot nodule (adenoma) ·</text>
+<text x="1255.0" y="1177.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">SEVERAL (TMNG)</text>
+<rect x="1393.0" y="1064.0" width="252.0" height="178.0" rx="10" fill="#f8e0ec" stroke="#a3336b" stroke-width="1.5"/>
+<text x="1519.0" y="1148.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">RAI uptake LOW</text>
+<text x="1519.0" y="1168.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">almost none on the scan</text>
+<rect x="1657.0" y="1064.0" width="252.0" height="178.0" rx="10" fill="#dde9f7" stroke="#1f5f9e" stroke-width="1.5"/>
+<text x="1783.0" y="1157.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f5f9e" text-anchor="middle">Repeat TSH + FT4/FT3</text>
+<rect x="45.0" y="1282.0" width="252.0" height="96.0" rx="10" fill="#e2f2ea" stroke="#2f7d5b" stroke-width="1.5"/>
+<text x="171.0" y="1307.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">Levothyroxine once daily</text>
+<text x="171.0" y="1327.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">about 1.5 mcg/kg/day, titrated to a</text>
+<text x="171.0" y="1345.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">normal TSH</text>
+<text x="171.0" y="1363.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">start LOW if elderly or heart disease</text>
+<rect x="45.0" y="1400.0" width="252.0" height="78.0" rx="10" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
+<text x="171.0" y="1425.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f6f8b" text-anchor="middle">Half-life 1 WEEK</text>
+<text x="171.0" y="1445.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">TSH every 4–6 weeks until normal ·</text>
+<text x="171.0" y="1463.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">don't follow FT4/FT3 on replacement</text>
+<rect x="45.0" y="1500.0" width="252.0" height="96.0" rx="10" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
+<text x="171.0" y="1525.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f6f8b" text-anchor="middle">How to take it</text>
+<text x="171.0" y="1545.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">≥ 1 h before, ≥ 2 h after food · 4 h from</text>
+<text x="171.0" y="1563.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">calcium, iron, magnesium, multivitamin</text>
+<text x="171.0" y="1581.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">· e.g. at bedtime</text>
+<rect x="45.0" y="1618.0" width="252.0" height="78.0" rx="10" fill="#fbe5e3" stroke="#b3261e" stroke-width="1.5"/>
+<text x="171.0" y="1643.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b3261e" text-anchor="middle">Myxedema coma: very rare</text>
+<text x="171.0" y="1663.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">obtundation, hypothermia · low BP, HR,</text>
+<text x="171.0" y="1681.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">Na, glucose · hypoventilation</text>
+<rect x="309.0" y="1282.0" width="252.0" height="187.0" rx="10" fill="#fbeedd" stroke="#a45a12" stroke-width="1.5"/>
+<text x="435.0" y="1370.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a45a12" text-anchor="middle">No evidence treatment helps</text>
+<text x="435.0" y="1390.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">EXCEPT in pregnancy</text>
+<rect x="309.0" y="1491.0" width="252.0" height="205.0" rx="10" fill="#e2f2ea" stroke="#2f7d5b" stroke-width="1.5"/>
+<text x="435.0" y="1579.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">Consider treating if</text>
+<text x="435.0" y="1599.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">TSH &gt; 10 · anti-TPO positive · a</text>
+<text x="435.0" y="1617.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">therapeutic trial for possible symptoms</text>
+<rect x="573.0" y="1282.0" width="252.0" height="414.0" rx="10" fill="#e2f2ea" stroke="#2f7d5b" stroke-width="1.5"/>
+<text x="699.0" y="1465.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">Levothyroxine, dosed on FREE</text>
+<text x="699.0" y="1485.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">T4</text>
+<text x="699.0" y="1505.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#5a6577" text-anchor="middle" font-style="italic">pituitary lecture: replace the adrenal</text>
+<text x="699.0" y="1523.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#5a6577" text-anchor="middle" font-style="italic">axis first</text>
+<rect x="865.0" y="1282.0" width="252.0" height="117.0" rx="10" fill="#e2f2ea" stroke="#2f7d5b" stroke-width="1.5"/>
+<text x="991.0" y="1326.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">Methimazole FIRST line</text>
+<text x="991.0" y="1346.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">Graves can REMIT · ~4–6 weeks to</text>
+<text x="991.0" y="1364.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">euthyroid · favoured over PTU</text>
+<rect x="865.0" y="1421.0" width="252.0" height="117.0" rx="10" fill="#fbeedd" stroke="#a45a12" stroke-width="1.5"/>
+<text x="991.0" y="1465.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a45a12" text-anchor="middle">Methimazole risks (rare)</text>
+<text x="991.0" y="1485.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">agranulocytosis · liver dysfunction ·</text>
+<text x="991.0" y="1503.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">drug-induced lupus · birth defects</text>
+<rect x="865.0" y="1560.0" width="121.0" height="137.0" rx="10" fill="#ffffff" stroke="#b5600f" stroke-width="1.5"/>
+<text x="925.5" y="1604.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">No remission</text>
+<text x="925.5" y="1624.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">→ RAI</text>
+<text x="925.5" y="1644.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">may worsen eye</text>
+<text x="925.5" y="1662.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">disease</text>
+<rect x="996.0" y="1560.0" width="121.0" height="137.0" rx="10" fill="#ffffff" stroke="#b5600f" stroke-width="1.5"/>
+<text x="1056.5" y="1605.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#b5600f" text-anchor="middle">Surgery</text>
+<text x="1056.5" y="1625.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">total</text>
+<text x="1056.5" y="1643.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">thyroid-ectomy,</text>
+<text x="1056.5" y="1661.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">rarely</text>
+<rect x="1129.0" y="1282.0" width="252.0" height="123.0" rx="10" fill="#e2f2ea" stroke="#2f7d5b" stroke-width="1.5"/>
+<text x="1255.0" y="1329.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">RAI FIRST line</text>
+<text x="1255.0" y="1349.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">permanent cure · ~6–12 weeks · ~10%</text>
+<text x="1255.0" y="1367.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">need a 2nd dose</text>
+<rect x="1129.0" y="1427.0" width="252.0" height="125.0" rx="10" fill="#fbeedd" stroke="#a45a12" stroke-width="1.5"/>
+<text x="1255.0" y="1474.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a45a12" text-anchor="middle">High risk of permanent</text>
+<text x="1255.0" y="1494.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a45a12" text-anchor="middle">hypothyroidism</text>
+<text x="1255.0" y="1514.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">RAI NEVER in pregnancy</text>
+<rect x="1129.0" y="1574.0" width="252.0" height="123.0" rx="10" fill="#ffffff" stroke="#8a5a2b" stroke-width="1.5"/>
+<text x="1255.0" y="1621.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#8a5a2b" text-anchor="middle">Surgery</text>
+<text x="1255.0" y="1641.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">hemithyroidectomy (adenoma) · total</text>
+<text x="1255.0" y="1659.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">(TMNG)</text>
+<rect x="1393.0" y="1282.0" width="252.0" height="129.0" rx="10" fill="#e2f2ea" stroke="#2f7d5b" stroke-width="1.5"/>
+<text x="1519.0" y="1332.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">SUPPORTIVE only</text>
+<text x="1519.0" y="1352.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">beta-blocker · NSAIDs, then</text>
+<text x="1519.0" y="1370.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">glucocorticoids for the pain</text>
+<rect x="1393.0" y="1433.0" width="252.0" height="131.0" rx="10" fill="#fbeedd" stroke="#a45a12" stroke-width="1.5"/>
+<text x="1519.0" y="1483.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a45a12" text-anchor="middle">Watch for the HYPOthyroid</text>
+<text x="1519.0" y="1503.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a45a12" text-anchor="middle">phase</text>
+<text x="1519.0" y="1523.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">thyroiditis burns out</text>
+<rect x="1393.0" y="1586.0" width="252.0" height="111.0" rx="10" fill="#ffffff" stroke="#a3336b" stroke-width="1.5"/>
+<text x="1519.0" y="1636.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#a3336b" text-anchor="middle">Exogenous</text>
+<text x="1519.0" y="1656.8" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="middle">remove the excess</text>
+<rect x="1657.0" y="1282.0" width="252.0" height="196.0" rx="10" fill="#e2f2ea" stroke="#2f7d5b" stroke-width="1.5"/>
+<text x="1783.0" y="1374.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">TREAT if older and/or TSH</text>
+<text x="1783.0" y="1394.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#2f7d5b" text-anchor="middle">lower</text>
+<rect x="1657.0" y="1500.0" width="252.0" height="196.0" rx="10" fill="#ffffff" stroke="#1f5f9e" stroke-width="1.5"/>
+<text x="1783.0" y="1592.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f5f9e" text-anchor="middle">MONITOR if younger and/or</text>
+<text x="1783.0" y="1612.3" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1f5f9e" text-anchor="middle">borderline low</text>
+<rect x="45.0" y="1730.0" width="612.0" height="156.0" rx="10" fill="#ffffff" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="61.0" y="1756.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#18212e" text-anchor="start">Screen with a TSH when</text>
+<text x="61.0" y="1780.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• compatible symptoms · dyslipidemia · anemia · hyponatremia</text>
+<text x="61.0" y="1800.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• personal or family autoimmune disease · Down or Turner syndrome</text>
+<text x="61.0" y="1820.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• previous thyroid disease or therapy · drugs · pregnancy</text>
+<text x="61.0" y="1840.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• suspected pituitary or hypothalamic disease: add FT4</text>
+<text x="61.0" y="1860.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• rare: central HYPERthyroidism, TSH ↔/↑ with FT4 ↑</text>
+<rect x="671.0" y="1730.0" width="612.0" height="156.0" rx="10" fill="#ffffff" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="687.0" y="1756.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#18212e" text-anchor="start">Lowering production: which first?</text>
+<text x="687.0" y="1780.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• methimazole first for GRAVES: it can remit</text>
+<text x="687.0" y="1800.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• RAI first for toxic ADENOMA or TMNG, and Graves without remission</text>
+<text x="687.0" y="1820.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• surgery rarely: large symptomatic goiter · suspected cancer · can't take drugs in pregnancy ·</text>
+<text x="694.8" y="1840.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">storm refractory to treatment</text>
+<text x="687.0" y="1860.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• supportive care for everyone: beta-blocker for palpitations, tachycardia, tremor</text>
+<rect x="1297.0" y="1730.0" width="612.0" height="116.0" rx="10" fill="#ffffff" stroke="#c9d0db" stroke-width="1.5"/>
+<text x="1313.0" y="1756.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#18212e" text-anchor="start">Iodine cuts both ways</text>
+<text x="1313.0" y="1780.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• Wolff-Chaikoff: a normal gland CUTS production under an iodine load, then escapes</text>
+<text x="1313.0" y="1800.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• subclinical Hashimoto's may not escape → HYPOthyroid</text>
+<text x="1313.0" y="1820.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#18212e" text-anchor="start">• Jod-Basedow: autonomous nodules or mild Graves use the iodine → HYPERthyroid</text>
+<text x="171.0" y="528.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="13" font-weight="700" fill="#5a6577" text-anchor="middle" stroke="#f6f7f9" stroke-width="5" stroke-linejoin="round" paint-order="stroke">TSH ↑ · FT4 ↓</text>
+<text x="435.0" y="528.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="13" font-weight="700" fill="#5a6577" text-anchor="middle" stroke="#f6f7f9" stroke-width="5" stroke-linejoin="round" paint-order="stroke">TSH ↑ · FT4 normal</text>
+<text x="699.0" y="528.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="13" font-weight="700" fill="#5a6577" text-anchor="middle" stroke="#f6f7f9" stroke-width="5" stroke-linejoin="round" paint-order="stroke">TSH ↔/↓ · FT4 ↓</text>
+<text x="991.0" y="528.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="13" font-weight="700" fill="#5a6577" text-anchor="middle" stroke="#f6f7f9" stroke-width="5" stroke-linejoin="round" paint-order="stroke">HIGH, diffuse</text>
+<text x="1255.0" y="528.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="13" font-weight="700" fill="#5a6577" text-anchor="middle" stroke="#f6f7f9" stroke-width="5" stroke-linejoin="round" paint-order="stroke">HIGH, hot nodule(s)</text>
+<text x="1519.0" y="528.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="13" font-weight="700" fill="#5a6577" text-anchor="middle" stroke="#f6f7f9" stroke-width="5" stroke-linejoin="round" paint-order="stroke">LOW</text>
+<text x="1783.0" y="528.0" font-family="Arial, 'Segoe UI Symbol', 'Liberation Sans', Helvetica, sans-serif" font-size="13" font-weight="700" fill="#5a6577" text-anchor="middle" stroke="#f6f7f9" stroke-width="5" stroke-linejoin="round" paint-order="stroke">TSH ↓ · FT4/FT3 normal</text>
+</svg>
+</template>
+<template id="tpl-abnormal-tsh"><svg xmlns="http://www.w3.org/2000/svg" class="fc-svg" viewBox="0 0 1446 1064" width="1446" height="1064" role="img" aria-labelledby="fc-abnormal-tsh-title fc-abnormal-tsh-desc" data-chart="abnormal-tsh"><title id="fc-abnormal-tsh-title">Abnormal TSH</title><desc id="fc-abnormal-tsh-desc">A flowchart starting from a high or low TSH, or thyroid symptoms in a patient with pituitary disease, with 7 decisions and 9 end points.</desc><style>.fc-svg{background:#ffffff;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif}.fc-svg .fc-edge{fill:none;stroke:#8a7ca3;stroke-width:1.5;marker-end:url(#fc-ah)}.fc-svg .fc-ah{fill:#8a7ca3}.fc-svg .fc-ah-on{fill:#4f2683}.fc-svg .fc-lab rect{fill:#ffffff}.fc-svg .fc-lab text{font-size:10.5px;font-weight:600;letter-spacing:.2px;fill:#5b4a78}.fc-svg .fc-shape{fill:#ffffff;stroke:#8a7ca3;stroke-width:1.5}.fc-svg .k-start .fc-shape{fill:#201436;stroke:#201436}.fc-svg .k-start text{fill:#ffffff}.fc-svg .k-q .fc-shape{stroke:#4f2683}.fc-svg .k-dx .fc-shape{fill:#f5f0fc;stroke:#4f2683}.fc-svg .k-act .fc-shape{fill:#eef6f1;stroke:#2f6b4f}.fc-svg .k-alarm .fc-shape{fill:#fdeeec;stroke:#b42318}.fc-svg .is-focal .fc-shape{stroke:#8f55e0;stroke-width:2.75}.fc-svg text{text-anchor:middle}.fc-svg .fc-lab text{text-anchor:start}.fc-svg .fc-tag{font-size:9px;font-weight:600;letter-spacing:.8px;fill:#6a5e7e}.fc-svg .k-alarm .fc-tag{fill:#b42318}.fc-svg .k-act .fc-tag{fill:#2f6b4f}.fc-svg .fc-t{font-size:13px;font-weight:600;fill:#201436}.fc-svg .fc-l{font-size:11.5px;fill:#4a3f5c}</style><defs><marker id="fc-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-ah" d="M1 1L9 5L1 9z"/></marker><marker id="fc-ah-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-ah-on" d="M1 1L9 5L1 9z"/></marker></defs><g class="fc-edges"><path class="fc-edge" data-from="n0" data-to="n1" d="M420.5 112V147"/><path class="fc-edge" data-from="n1" data-to="n2" d="M402.5 220V228Q402.5 236 394.5 236H318.5Q310.5 236 310.5 244V271"/><path class="fc-edge" data-from="n1" data-to="n3" d="M438.5 220V228Q438.5 236 446.5 236H522.5Q530.5 236 530.5 244V271"/><path class="fc-edge" data-from="n3" data-to="n4" d="M512.5 344V372Q512.5 380 504.5 380H236Q228 380 228 388V415"/><path class="fc-edge" data-from="n3" data-to="n8" d="M548.5 344V372Q548.5 380 556.5 380H825Q833 380 833 388V415"/><path class="fc-edge" data-from="n4" data-to="n5" d="M228 488V539"/><path class="fc-edge" data-from="n5" data-to="n6" d="M210 596V604Q210 612 202 612H126Q118 612 118 620V647"/><path class="fc-edge" data-from="n5" data-to="n7" d="M246 596V604Q246 612 254 612H330Q338 612 338 620V647"/><path class="fc-edge" data-from="n8" data-to="n9" d="M815 488V496Q815 504 807 504H566Q558 504 558 512V539"/><path class="fc-edge" data-from="n8" data-to="n15" d="M851 488V496Q851 504 859 504H1100Q1108 504 1108 512V539"/><path class="fc-edge" data-from="n9" data-to="n10" d="M558 596V647"/><path class="fc-edge" data-from="n10" data-to="n11" d="M540 704V764Q540 772 532 772H456Q448 772 448 780V807"/><path class="fc-edge" data-from="n10" data-to="n12" d="M576 704V764Q576 772 584 772H660Q668 772 668 780V807"/><path class="fc-edge" data-from="n12" data-to="n13" d="M650 880V908Q650 916 642 916H566Q558 916 558 924V951"/><path class="fc-edge" data-from="n12" data-to="n14" d="M686 880V908Q686 916 694 916H770Q778 916 778 924V951"/><path class="fc-edge" data-from="n15" data-to="n16" d="M1108 596V647"/><path class="fc-edge" data-from="n16" data-to="n17" d="M1073 720V764Q1073 772 1065 772H896Q888 772 888 780V807"/><path class="fc-edge" data-from="n16" data-to="n18" d="M1108 720V807"/><path class="fc-edge" data-from="n16" data-to="n19" d="M1143 720V764Q1143 772 1151 772H1320Q1328 772 1328 780V807"/></g><g class="fc-labels"><g class="fc-lab" data-to="n2"><rect x="318.5" y="244" width="33.6" height="18" rx="3"/><text x="324.5" y="256.5">Yes</text></g><g class="fc-lab" data-to="n3"><rect x="538.5" y="244" width="27.9" height="18" rx="3"/><text x="544.5" y="256.5">No</text></g><g class="fc-lab" data-to="n4"><rect x="236" y="388" width="33.6" height="18" rx="3"/><text x="242" y="400.5">Yes</text></g><g class="fc-lab" data-to="n8"><rect x="841" y="388" width="27.9" height="18" rx="3"/><text x="847" y="400.5">No</text></g><g class="fc-lab" data-to="n6"><rect x="126" y="620" width="115.4" height="18" rx="3"/><text x="132" y="632.5">Low, TSH not high</text></g><g class="fc-lab" data-to="n7"><rect x="346" y="620" width="113.5" height="18" rx="3"/><text x="352" y="632.5">High, TSH not low</text></g><g class="fc-lab" data-to="n9"><rect x="566" y="512" width="38.2" height="18" rx="3"/><text x="572" y="524.5">High</text></g><g class="fc-lab" data-to="n15"><rect x="1116" y="512" width="35.4" height="18" rx="3"/><text x="1122" y="524.5">Low</text></g><g class="fc-lab" data-to="n11"><rect x="456" y="780" width="35.4" height="18" rx="3"/><text x="462" y="792.5">Low</text></g><g class="fc-lab" data-to="n12"><rect x="676" y="780" width="52.9" height="18" rx="3"/><text x="682" y="792.5">Normal</text></g><g class="fc-lab" data-to="n13"><rect x="566" y="924" width="33.6" height="18" rx="3"/><text x="572" y="936.5">Yes</text></g><g class="fc-lab" data-to="n14"><rect x="786" y="924" width="27.9" height="18" rx="3"/><text x="792" y="936.5">No</text></g><g class="fc-lab" data-to="n17"><rect x="896" y="780" width="38.2" height="18" rx="3"/><text x="902" y="792.5">High</text></g><g class="fc-lab" data-to="n18"><rect x="1116" y="780" width="52.9" height="18" rx="3"/><text x="1122" y="792.5">Normal</text></g><g class="fc-lab" data-to="n19"><rect x="1336" y="780" width="35.4" height="18" rx="3"/><text x="1342" y="792.5">Low</text></g></g><g class="fc-nodes"><g class="fc-node k-start" data-id="n0" tabindex="-1"><rect class="fc-shape" x="322.5" y="20" width="196" height="92" rx="18"/><text class="fc-tag" x="420.5" y="39">START</text><text class="fc-t" x="420.5" y="59">Abnormal TSH</text><text class="fc-l" x="420.5" y="78.5">TSH case-finds; free T4</text><text class="fc-l" x="420.5" y="93.5">confirms</text></g><g class="fc-node k-q" data-id="n1" tabindex="-1"><polygon class="fc-shape" points="336.5,148 504.5,148 518.5,184 504.5,220 336.5,220 322.5,184"/><text class="fc-tag" x="420.5" y="167">DECIDE</text><text class="fc-t" x="420.5" y="187">Thyroid storm or</text><text class="fc-t" x="420.5" y="204">myxedema coma?</text></g><g class="fc-node k-alarm" data-id="n2" tabindex="-1"><rect class="fc-shape" x="212.5" y="272" width="196" height="92" rx="6"/><text class="fc-tag" x="310.5" y="291">EMERGENCY</text><text class="fc-t" x="310.5" y="311">Thyroid emergency: ICU</text><text class="fc-t" x="310.5" y="328">care</text><text class="fc-l" x="310.5" y="347.5">Treat before results return</text></g><g class="fc-node k-q" data-id="n3" tabindex="-1"><polygon class="fc-shape" points="446.5,272 614.5,272 628.5,308 614.5,344 446.5,344 432.5,308"/><text class="fc-tag" x="530.5" y="291">DECIDE</text><text class="fc-t" x="530.5" y="311">Known or suspected</text><text class="fc-t" x="530.5" y="328">pituitary disease?</text></g><g class="fc-node k-step" data-id="n4" tabindex="-1"><rect class="fc-shape" x="130" y="416" width="196" height="72" rx="6"/><text class="fc-tag" x="228" y="435">NEXT STEP</text><text class="fc-t" x="228" y="455">Measure TSH and free T4</text><text class="fc-t" x="228" y="472">together</text></g><g class="fc-node k-q" data-id="n5" tabindex="-1"><polygon class="fc-shape" points="144,540 312,540 326,568 312,596 144,596 130,568"/><text class="fc-tag" x="228" y="559">DECIDE</text><text class="fc-t" x="228" y="579">What is the free T4?</text></g><g class="fc-node k-dx is-focal" data-id="n6" tabindex="-1"><rect class="fc-shape" x="20" y="648" width="196" height="92" rx="14"/><text class="fc-tag" x="118" y="667">★ DIAGNOSIS</text><text class="fc-t" x="118" y="687">Central hypothyroidism</text><text class="fc-l" x="118" y="706.5">TSH low or inappropriately</text><text class="fc-l" x="118" y="721.5">normal</text></g><g class="fc-node k-dx" data-id="n7" tabindex="-1"><rect class="fc-shape" x="240" y="648" width="196" height="108" rx="14"/><text class="fc-tag" x="338" y="667">DIAGNOSIS</text><text class="fc-t" x="338" y="687">TSH-secreting adenoma</text><text class="fc-t" x="338" y="704">(rare)</text><text class="fc-l" x="338" y="723.5">Or thyroid hormone</text><text class="fc-l" x="338" y="738.5">resistance</text></g><g class="fc-node k-q" data-id="n8" tabindex="-1"><polygon class="fc-shape" points="749,416 917,416 931,452 917,488 749,488 735,452"/><text class="fc-tag" x="833" y="435">DECIDE</text><text class="fc-t" x="833" y="455">Which way is the</text><text class="fc-t" x="833" y="472">TSH?</text></g><g class="fc-node k-step" data-id="n9" tabindex="-1"><rect class="fc-shape" x="460" y="540" width="196" height="56" rx="6"/><text class="fc-tag" x="558" y="559">NEXT STEP</text><text class="fc-t" x="558" y="579">Repeat TSH with free T4</text></g><g class="fc-node k-q" data-id="n10" tabindex="-1"><polygon class="fc-shape" points="474,648 642,648 656,676 642,704 474,704 460,676"/><text class="fc-tag" x="558" y="667">DECIDE</text><text class="fc-t" x="558" y="687">What is the free T4?</text></g><g class="fc-node k-dx" data-id="n11" tabindex="-1"><rect class="fc-shape" x="350" y="808" width="196" height="76" rx="14"/><text class="fc-tag" x="448" y="827">DIAGNOSIS</text><text class="fc-t" x="448" y="847">Primary hypothyroidism</text><text class="fc-l" x="448" y="866.5">Usually Hashimoto thyroiditis</text></g><g class="fc-node k-q" data-id="n12" tabindex="-1"><polygon class="fc-shape" points="584,808 752,808 766,844 752,880 584,880 570,844"/><text class="fc-tag" x="668" y="827">DECIDE</text><text class="fc-t" x="668" y="847">TSH &gt; 10, pregnancy,</text><text class="fc-t" x="668" y="864">or anti-TPO?</text></g><g class="fc-node k-act" data-id="n13" tabindex="-1"><rect class="fc-shape" x="460" y="952" width="196" height="76" rx="14"/><text class="fc-tag" x="558" y="971">MANAGE</text><text class="fc-t" x="558" y="991">Consider levothyroxine</text><text class="fc-l" x="558" y="1010.5">Subclinical, higher risk</text></g><g class="fc-node k-act" data-id="n14" tabindex="-1"><rect class="fc-shape" x="680" y="952" width="196" height="92" rx="14"/><text class="fc-tag" x="778" y="971">MANAGE</text><text class="fc-t" x="778" y="991">Recheck TSH in a few</text><text class="fc-t" x="778" y="1008">months</text><text class="fc-l" x="778" y="1027.5">Often settles on its own</text></g><g class="fc-node k-step" data-id="n15" tabindex="-1"><rect class="fc-shape" x="1010" y="540" width="196" height="56" rx="6"/><text class="fc-tag" x="1108" y="559">NEXT STEP</text><text class="fc-t" x="1108" y="579">Free T4 and free T3</text></g><g class="fc-node k-q" data-id="n16" tabindex="-1"><polygon class="fc-shape" points="1024,648 1192,648 1206,684 1192,720 1024,720 1010,684"/><text class="fc-tag" x="1108" y="667">DECIDE</text><text class="fc-t" x="1108" y="687">What are the free</text><text class="fc-t" x="1108" y="704">hormones?</text></g><g class="fc-node k-dx" data-id="n17" tabindex="-1"><rect class="fc-shape" x="790" y="808" width="196" height="92" rx="14"/><text class="fc-tag" x="888" y="827">DIAGNOSIS</text><text class="fc-t" x="888" y="847">Overt thyrotoxicosis</text><text class="fc-l" x="888" y="866.5">Next: find the cause (RAI</text><text class="fc-l" x="888" y="881.5">uptake)</text></g><g class="fc-node k-dx" data-id="n18" tabindex="-1"><rect class="fc-shape" x="1010" y="808" width="196" height="92" rx="14"/><text class="fc-tag" x="1108" y="827">DIAGNOSIS</text><text class="fc-t" x="1108" y="847">Subclinical</text><text class="fc-t" x="1108" y="864">hyperthyroidism</text><text class="fc-l" x="1108" y="883.5">Risk of AF and bone loss</text></g><g class="fc-node k-dx is-focal" data-id="n19" tabindex="-1"><rect class="fc-shape" x="1230" y="808" width="196" height="92" rx="14"/><text class="fc-tag" x="1328" y="827">★ DIAGNOSIS</text><text class="fc-t" x="1328" y="847">Central disease or</text><text class="fc-t" x="1328" y="864">nonthyroidal illness</text><text class="fc-l" x="1328" y="883.5">Both TSH and free T4 low</text></g></g></svg>
+</template>
+<template id="tpl-thyrotoxicosis-cause"><svg xmlns="http://www.w3.org/2000/svg" class="fc-svg" viewBox="0 0 1006 1000" width="1006" height="1000" role="img" aria-labelledby="fc-thyrotoxicosis-cause-title fc-thyrotoxicosis-cause-desc" data-chart="thyrotoxicosis-cause"><title id="fc-thyrotoxicosis-cause-title">Cause of thyrotoxicosis</title><desc id="fc-thyrotoxicosis-cause-desc">A flowchart starting from confirmed thyrotoxicosis: low TSH with a high free T4 or T3, with 4 decisions and 7 end points.</desc><style>.fc-svg{background:#ffffff;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif}.fc-svg .fc-edge{fill:none;stroke:#8a7ca3;stroke-width:1.5;marker-end:url(#fc-ah)}.fc-svg .fc-ah{fill:#8a7ca3}.fc-svg .fc-ah-on{fill:#4f2683}.fc-svg .fc-lab rect{fill:#ffffff}.fc-svg .fc-lab text{font-size:10.5px;font-weight:600;letter-spacing:.2px;fill:#5b4a78}.fc-svg .fc-shape{fill:#ffffff;stroke:#8a7ca3;stroke-width:1.5}.fc-svg .k-start .fc-shape{fill:#201436;stroke:#201436}.fc-svg .k-start text{fill:#ffffff}.fc-svg .k-q .fc-shape{stroke:#4f2683}.fc-svg .k-dx .fc-shape{fill:#f5f0fc;stroke:#4f2683}.fc-svg .k-act .fc-shape{fill:#eef6f1;stroke:#2f6b4f}.fc-svg .k-alarm .fc-shape{fill:#fdeeec;stroke:#b42318}.fc-svg .is-focal .fc-shape{stroke:#8f55e0;stroke-width:2.75}.fc-svg text{text-anchor:middle}.fc-svg .fc-lab text{text-anchor:start}.fc-svg .fc-tag{font-size:9px;font-weight:600;letter-spacing:.8px;fill:#6a5e7e}.fc-svg .k-alarm .fc-tag{fill:#b42318}.fc-svg .k-act .fc-tag{fill:#2f6b4f}.fc-svg .fc-t{font-size:13px;font-weight:600;fill:#201436}.fc-svg .fc-l{font-size:11.5px;fill:#4a3f5c}</style><defs><marker id="fc-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-ah" d="M1 1L9 5L1 9z"/></marker><marker id="fc-ah-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-ah-on" d="M1 1L9 5L1 9z"/></marker></defs><g class="fc-edges"><path class="fc-edge" data-from="n0" data-to="n1" d="M228 96V131"/><path class="fc-edge" data-from="n1" data-to="n2" d="M210 204V212Q210 220 202 220H126Q118 220 118 228V255"/><path class="fc-edge" data-from="n1" data-to="n3" d="M246 204V212Q246 220 254 220H330Q338 220 338 228V255"/><path class="fc-edge" data-from="n3" data-to="n4" d="M303 328V400Q303 408 295 408H126Q118 408 118 416V443"/><path class="fc-edge" data-from="n3" data-to="n5" d="M338 328V443"/><path class="fc-edge" data-from="n3" data-to="n6" d="M373 328V400Q373 408 381 408H550Q558 408 558 416V443"/><path class="fc-edge" data-from="n6" data-to="n7" d="M558 568V603"/><path class="fc-edge" data-from="n7" data-to="n8" d="M523 676V684Q523 692 515 692H346Q338 692 338 700V727"/><path class="fc-edge" data-from="n7" data-to="n9" d="M558 676V727"/><path class="fc-edge" data-from="n7" data-to="n10" d="M593 676V684Q593 692 601 692H770Q778 692 778 700V727"/><path class="fc-edge" data-from="n10" data-to="n11" d="M760 800V828Q760 836 752 836H676Q668 836 668 844V871"/><path class="fc-edge" data-from="n10" data-to="n12" d="M796 800V828Q796 836 804 836H880Q888 836 888 844V871"/></g><g class="fc-labels"><g class="fc-lab" data-to="n2"><rect x="126" y="228" width="33.6" height="18" rx="3"/><text x="132" y="240.5">Yes</text></g><g class="fc-lab" data-to="n3"><rect x="346" y="228" width="27.9" height="18" rx="3"/><text x="352" y="240.5">No</text></g><g class="fc-lab" data-to="n4"><rect x="126" y="416" width="79.5" height="18" rx="3"/><text x="132" y="428.5">Orbitopathy</text></g><g class="fc-lab" data-to="n5"><rect x="346" y="416" width="87.2" height="18" rx="3"/><text x="352" y="428.5">Tender gland</text></g><g class="fc-lab" data-to="n6"><rect x="566" y="416" width="55.9" height="18" rx="3"/><text x="572" y="428.5">Unclear</text></g><g class="fc-lab" data-to="n8"><rect x="346" y="700" width="85.2" height="18" rx="3"/><text x="352" y="712.5">High, diffuse</text></g><g class="fc-lab" data-to="n9"><rect x="566" y="700" width="130.4" height="18" rx="3"/><text x="572" y="712.5">High, focal or patchy</text></g><g class="fc-lab" data-to="n10"><rect x="786" y="700" width="35.4" height="18" rx="3"/><text x="792" y="712.5">Low</text></g><g class="fc-lab" data-to="n11"><rect x="676" y="844" width="95.3" height="18" rx="3"/><text x="682" y="856.5">High or normal</text></g><g class="fc-lab" data-to="n12"><rect x="896" y="844" width="35.4" height="18" rx="3"/><text x="902" y="856.5">Low</text></g></g><g class="fc-nodes"><g class="fc-node k-start" data-id="n0" tabindex="-1"><rect class="fc-shape" x="130" y="20" width="196" height="76" rx="18"/><text class="fc-tag" x="228" y="39">START</text><text class="fc-t" x="228" y="59">Thyrotoxicosis confirmed</text><text class="fc-l" x="228" y="78.5">Low TSH, high free T4 or T3</text></g><g class="fc-node k-q" data-id="n1" tabindex="-1"><polygon class="fc-shape" points="144,132 312,132 326,168 312,204 144,204 130,168"/><text class="fc-tag" x="228" y="151">DECIDE</text><text class="fc-t" x="228" y="171">Storm, heart failure</text><text class="fc-t" x="228" y="188">or losing vision?</text></g><g class="fc-node k-alarm" data-id="n2" tabindex="-1"><rect class="fc-shape" x="20" y="256" width="196" height="136" rx="6"/><text class="fc-tag" x="118" y="275">EMERGENCY</text><text class="fc-t" x="118" y="295">Thyroid storm or</text><text class="fc-t" x="118" y="312">sight-threatening eye</text><text class="fc-l" x="118" y="331.5">Beta-blocker, thionamide,</text><text class="fc-l" x="118" y="346.5">steroids</text><text class="fc-l" x="118" y="361.5">Urgent ophthalmology for</text><text class="fc-l" x="118" y="376.5">vision loss</text></g><g class="fc-node k-q" data-id="n3" tabindex="-1"><polygon class="fc-shape" points="254,256 422,256 436,292 422,328 254,328 240,292"/><text class="fc-tag" x="338" y="275">DECIDE</text><text class="fc-t" x="338" y="295">Does the exam give</text><text class="fc-t" x="338" y="312">the answer?</text></g><g class="fc-node k-dx" data-id="n4" tabindex="-1"><rect class="fc-shape" x="20" y="444" width="196" height="76" rx="14"/><text class="fc-tag" x="118" y="463">DIAGNOSIS</text><text class="fc-t" x="118" y="483">Graves disease (clinical)</text><text class="fc-l" x="118" y="502.5">Diffuse goitre, often a bruit</text></g><g class="fc-node k-dx" data-id="n5" tabindex="-1"><rect class="fc-shape" x="240" y="444" width="196" height="92" rx="14"/><text class="fc-tag" x="338" y="463">DIAGNOSIS</text><text class="fc-t" x="338" y="483">Subacute (de Quervain)</text><text class="fc-t" x="338" y="500">thyroiditis</text><text class="fc-l" x="338" y="519.5">Leak, not production</text></g><g class="fc-node k-step" data-id="n6" tabindex="-1"><rect class="fc-shape" x="460" y="444" width="196" height="124" rx="6"/><text class="fc-tag" x="558" y="463">NEXT STEP</text><text class="fc-t" x="558" y="483">TRAb, or radioiodine</text><text class="fc-t" x="558" y="500">uptake and scan</text><text class="fc-l" x="558" y="519.5">No RAI in pregnancy</text><text class="fc-l" x="558" y="534.5">Contrast in recent weeks</text><text class="fc-l" x="558" y="549.5">falsifies it</text></g><g class="fc-node k-q is-focal" data-id="n7" tabindex="-1"><polygon class="fc-shape" points="474,604 642,604 656,640 642,676 474,676 460,640"/><text class="fc-tag" x="558" y="623">★ DECIDE</text><text class="fc-t" x="558" y="643">What is the</text><text class="fc-t" x="558" y="660">radioiodine uptake?</text></g><g class="fc-node k-dx" data-id="n8" tabindex="-1"><rect class="fc-shape" x="240" y="728" width="196" height="76" rx="14"/><text class="fc-tag" x="338" y="747">DIAGNOSIS</text><text class="fc-t" x="338" y="767">Graves disease</text><text class="fc-l" x="338" y="786.5">TRAb positive</text></g><g class="fc-node k-dx" data-id="n9" tabindex="-1"><rect class="fc-shape" x="460" y="728" width="196" height="92" rx="14"/><text class="fc-tag" x="558" y="747">DIAGNOSIS</text><text class="fc-t" x="558" y="767">Toxic adenoma or</text><text class="fc-t" x="558" y="784">multinodular goitre</text><text class="fc-l" x="558" y="803.5">Autonomous nodules</text></g><g class="fc-node k-q" data-id="n10" tabindex="-1"><polygon class="fc-shape" points="694,728 862,728 876,764 862,800 694,800 680,764"/><text class="fc-tag" x="778" y="747">DECIDE</text><text class="fc-t" x="778" y="767">What is the</text><text class="fc-t" x="778" y="784">thyroglobulin?</text></g><g class="fc-node k-dx" data-id="n11" tabindex="-1"><rect class="fc-shape" x="570" y="872" width="196" height="108" rx="14"/><text class="fc-tag" x="668" y="891">DIAGNOSIS</text><text class="fc-t" x="668" y="911">Painless or postpartum</text><text class="fc-t" x="668" y="928">thyroiditis</text><text class="fc-l" x="668" y="947.5">Also amiodarone, lithium,</text><text class="fc-l" x="668" y="962.5">iodine</text></g><g class="fc-node k-dx" data-id="n12" tabindex="-1"><rect class="fc-shape" x="790" y="872" width="196" height="92" rx="14"/><text class="fc-tag" x="888" y="891">DIAGNOSIS</text><text class="fc-t" x="888" y="911">Exogenous thyroid</text><text class="fc-t" x="888" y="928">hormone</text><text class="fc-l" x="888" y="947.5">Overdose or factitious</text></g></g></svg>
+</template>
+
+<script>
+var CFG = {"cols": [["Primary hypothyroidism", 171], ["Subclinical hypothyroidism", 435], ["Central hypothyroidism", 699], ["Graves disease", 991], ["Toxic adenoma / multinodular goiter", 1255], ["Thyroiditis or exogenous", 1519], ["Subclinical hyperthyroidism", 1783]], "links": {"abnormal-tsh": {"n11": 0, "n13": 1, "n14": 1, "n6": 2, "n19": 2, "n18": 6, "n17": "thyrotoxicosis-cause"}, "thyrotoxicosis-cause": {"n4": 3, "n8": 3, "n9": 4, "n5": 5, "n11": 5, "n12": 5}}, "back": [["abnormal-tsh", "n11"], ["abnormal-tsh", "n13"], ["abnormal-tsh", "n6"], ["thyrotoxicosis-cause", "n8"], ["thyrotoxicosis-cause", "n9"], ["thyrotoxicosis-cause", "n11"], ["abnormal-tsh", "n18"]], "fc": {"abnormal-tsh": {"title": "Abnormal TSH", "presentation": "A high or low TSH, or thyroid symptoms in a patient with pituitary disease", "nodes": {"n0": {"k": "start", "t": "Abnormal TSH", "l": ["TSH case-finds; free T4 confirms"], "c": [["n1", "", ""]]}, "n1": {"k": "q", "t": "Thyroid storm or myxedema coma?", "a": "Fever, delirium, tachyarrhythmia or heart failure? Or hypothermia, obtundation, bradycardia and hyponatremia?", "c": [["n2", "Yes", ""], ["n3", "No", ""]]}, "n2": {"k": "alarm", "t": "Thyroid emergency: ICU care", "l": ["Treat before results return"], "d": "Thyroid storm needs a beta-blocker, a thionamide, then iodine, plus steroids. Myxedema coma needs IV levothyroxine with stress-dose hydrocortisone and warming. Both are precipitated by illness: look for it."}, "n3": {"k": "q", "t": "Known or suspected pituitary disease?", "a": "Is there a pituitary mass, past pituitary surgery or radiation, or other pituitary hormone loss?", "c": [["n4", "Yes", "TSH moves with the hormone in central disease, so TSH alone misleads"], ["n8", "No", ""]]}, "n4": {"k": "step", "t": "Measure TSH and free T4 together", "c": [["n5", "", ""]]}, "n5": {"k": "q", "t": "What is the free T4?", "c": [["n6", "Low, TSH not high", ""], ["n7", "High, TSH not low", ""]]}, "n6": {"k": "dx", "t": "Central hypothyroidism", "l": ["TSH low or inappropriately normal"], "d": "A low free T4 with a normal or low TSH means the pituitary or hypothalamus has failed. Check the cortisol axis and replace hydrocortisone before levothyroxine; titrate on free T4, not TSH.", "f": 1}, "n7": {"k": "dx", "t": "TSH-secreting adenoma (rare)", "l": ["Or thyroid hormone resistance"], "d": "A high free T4 with an unsuppressed TSH is central hyperthyroidism. Exclude assay interference first, then image the pituitary; thyroid hormone resistance is the main alternative."}, "n8": {"k": "q", "t": "Which way is the TSH?", "c": [["n9", "High", ""], ["n15", "Low", ""]]}, "n9": {"k": "step", "t": "Repeat TSH with free T4", "c": [["n10", "", ""]]}, "n10": {"k": "q", "t": "What is the free T4?", "c": [["n11", "Low", ""], ["n12", "Normal", ""]]}, "n11": {"k": "dx", "t": "Primary hypothyroidism", "l": ["Usually Hashimoto thyroiditis"], "d": "High TSH with low free T4. Without a history of surgery, radioiodine, lithium or amiodarone, assume Hashimoto; antibodies and ultrasound rarely change management. Start levothyroxine at about 1.6 mcg/kg/day, lower if old or cardiac."}, "n12": {"k": "q", "t": "TSH > 10, pregnancy, or anti-TPO?", "c": [["n13", "Yes", ""], ["n14", "No", ""]]}, "n13": {"k": "act", "t": "Consider levothyroxine", "l": ["Subclinical, higher risk"], "d": "Subclinical hypothyroidism with a TSH over 10 or positive anti-TPO is more likely to progress, and in pregnancy it is treated. Otherwise a time-limited trial for symptoms is reasonable."}, "n14": {"k": "act", "t": "Recheck TSH in a few months", "l": ["Often settles on its own"], "d": "A mildly raised TSH with normal free T4 often normalises, especially after illness. Treatment has no proven benefit here; repeat the TSH rather than prescribe."}, "n15": {"k": "step", "t": "Free T4 and free T3", "c": [["n16", "", ""]]}, "n16": {"k": "q", "t": "What are the free hormones?", "c": [["n17", "High", ""], ["n18", "Normal", ""], ["n19", "Low", ""]]}, "n17": {"k": "dx", "t": "Overt thyrotoxicosis", "l": ["Next: find the cause (RAI uptake)"], "d": "Low TSH with a high free T4 or T3 is thyrotoxicosis. Give a beta-blocker for symptoms, then decide whether the gland is making hormone or leaking it."}, "n18": {"k": "dx", "t": "Subclinical hyperthyroidism", "l": ["Risk of AF and bone loss"], "d": "Low TSH with normal free hormones. Repeat to confirm; treat if older or the TSH is fully suppressed, and monitor younger patients with a borderline TSH. Same causes as overt disease."}, "n19": {"k": "dx", "t": "Central disease or nonthyroidal illness", "l": ["Both TSH and free T4 low"], "d": "Low TSH with low free T4 is not hyperthyroidism. In a sick inpatient it is often nonthyroidal illness, so repeat after recovery; otherwise assess the pituitary.", "f": 1}}}, "thyrotoxicosis-cause": {"title": "Cause of thyrotoxicosis", "presentation": "Confirmed thyrotoxicosis: low TSH with a high free T4 or T3", "nodes": {"n0": {"k": "start", "t": "Thyrotoxicosis confirmed", "l": ["Low TSH, high free T4 or T3"], "c": [["n1", "", ""]]}, "n1": {"k": "q", "t": "Storm, heart failure or losing vision?", "a": "Is there fever with delirium, rapid AF or heart failure, or reduced vision or diplopia from orbitopathy?", "c": [["n2", "Yes", ""], ["n3", "No", ""]]}, "n2": {"k": "alarm", "t": "Thyroid storm or sight-threatening eye", "l": ["Beta-blocker, thionamide, steroids", "Urgent ophthalmology for vision loss"], "d": "Thyroid storm is treated in hospital with a beta-blocker, a thionamide, iodine after the thionamide, and steroids. Optic nerve compression from Graves orbitopathy is an ocular emergency needing IV steroids or decompression."}, "n3": {"k": "q", "t": "Does the exam give the answer?", "a": "Is there proptosis or other Graves eye disease, or a tender gland after a viral illness?", "c": [["n4", "Orbitopathy", "Proptosis, diplopia, periorbital edema; lid lag alone is adrenergic"], ["n5", "Tender gland", "Recent upper respiratory infection, neck pain, high ESR"], ["n6", "Unclear", ""]]}, "n4": {"k": "dx", "t": "Graves disease (clinical)", "l": ["Diffuse goitre, often a bruit"], "d": "True orbitopathy is specific to Graves, so no scan is needed. TRAb confirms if wanted. Methimazole is usually first, since Graves can remit; radioiodine can worsen the eyes, especially in smokers."}, "n5": {"k": "dx", "t": "Subacute (de Quervain) thyroiditis", "l": ["Leak, not production"], "d": "Inflammation releases stored hormone, so uptake is low. Treat pain with NSAIDs or prednisone and symptoms with a beta-blocker; thionamides do not help. Watch for a hypothyroid phase."}, "n6": {"k": "step", "t": "TRAb, or radioiodine uptake and scan", "l": ["No RAI in pregnancy", "Contrast in recent weeks falsifies it"], "c": [["n7", "", ""]]}, "n7": {"k": "q", "t": "What is the radioiodine uptake?", "f": 1, "c": [["n8", "High, diffuse", ""], ["n9", "High, focal or patchy", ""], ["n10", "Low", "Hormone is leaking from the gland or coming from a bottle"]]}, "n8": {"k": "dx", "t": "Graves disease", "l": ["TRAb positive"], "d": "Diffusely increased uptake means the whole gland is driven by TSH receptor antibodies. Options are methimazole, radioiodine or surgery, chosen with the patient."}, "n9": {"k": "dx", "t": "Toxic adenoma or multinodular goitre", "l": ["Autonomous nodules"], "d": "Hot nodules with a suppressed background are autonomous and do not remit. Radioiodine is usually first line; surgery for large or compressive goitres. Hot nodules are almost never malignant."}, "n10": {"k": "q", "t": "What is the thyroglobulin?", "c": [["n11", "High or normal", ""], ["n12", "Low", ""]]}, "n11": {"k": "dx", "t": "Painless or postpartum thyroiditis", "l": ["Also amiodarone, lithium, iodine"], "d": "Destruction releases stored hormone and thyroglobulin. Give a beta-blocker and monitor; it burns out over weeks and may be followed by hypothyroidism. An iodine load also gives low uptake."}, "n12": {"k": "dx", "t": "Exogenous thyroid hormone", "l": ["Overdose or factitious"], "d": "Taken hormone suppresses the gland, so uptake and thyroglobulin are both low. Review the dose, supplements and weight-loss products, and consider factitious use."}}}}};
+var Y0 = 552, COLH = 1152, COLW = 258;
+
+function clone(name) {
+  var t = document.getElementById("tpl-" + name);
+  return t.content.firstElementChild.cloneNode(true);
+}
+function mountChart(el, opts) {
+  opts = opts || {};
+  var svg = clone("chart");
+  svg.removeAttribute("width"); svg.removeAttribute("height");
+  if (opts.col != null) {
+    var cx = CFG.cols[opts.col][1];
+    svg.setAttribute("viewBox", (cx - COLW / 2 - 4) + " " + (Y0 - 4) + " " + (COLW + 8) + " " + (COLH + 8));
+    /* the box must have the crop's own proportions, or the neighbouring columns show */
+    svg.setAttribute("preserveAspectRatio", "xMidYMin meet");
+    svg.setAttribute("class", "colcrop");
+    svg.style.aspectRatio = (COLW + 8) + " / " + (COLH + 8);
+  } else if (opts.overlay) {
+    var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    CFG.cols.forEach(function (c, i) {
+      var r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      r.setAttribute("x", c[1] - COLW / 2); r.setAttribute("y", Y0);
+      r.setAttribute("width", COLW); r.setAttribute("height", COLH);
+      r.setAttribute("rx", 10); r.setAttribute("class", "col-ov");
+      r.setAttribute("data-col", i);
+      var tt = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      tt.textContent = c[0] + ": show the route in the flowchart";
+      r.appendChild(tt);
+      g.appendChild(r);
+    });
+    svg.appendChild(g);
+  }
+  el.innerHTML = ""; el.appendChild(svg);
+  return svg;
+}
+function mountFC(el, id) {
+  var svg = clone(id);
+  svg.removeAttribute("width"); svg.removeAttribute("height");
+  el.innerHTML = ""; el.appendChild(svg);
+  return svg;
+}
+function markLinks(svg, id, onPick) {
+  var links = CFG.links[id];
+  svg.querySelectorAll(".fc-node").forEach(function (g) {
+    var n = g.getAttribute("data-id");
+    if (!(n in links)) return;
+    g.classList.add("link");
+    g.setAttribute("tabindex", "0");
+    g.setAttribute("role", "button");
+    var go = function () { onPick(n, links[n]); };
+    g.addEventListener("click", go);
+    g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+}
+function pathTo(id, target) {
+  var nodes = CFG.fc[id].nodes, parent = {}, q = ["n0"], seen = { n0: 1 };
+  while (q.length) {
+    var n = q.shift();
+    (nodes[n].c || []).forEach(function (ch) {
+      if (!seen[ch[0]]) { seen[ch[0]] = 1; parent[ch[0]] = n; q.push(ch[0]); }
+    });
+  }
+  var p = [target];
+  while (p[0] !== "n0" && parent[p[0]]) p.unshift(parent[p[0]]);
+  return p;
+}
+function light(svg, path) {
+  svg.classList.add("lit");
+  svg.querySelectorAll(".on").forEach(function (e) { e.classList.remove("on"); });
+  path.forEach(function (n, i) {
+    var g = svg.querySelector('.fc-node[data-id="' + n + '"]');
+    if (g) g.classList.add("on");
+    if (i) {
+      var e = svg.querySelector('.fc-edge[data-from="' + path[i - 1] + '"][data-to="' + n + '"]');
+      if (e) e.classList.add("on");
+      var l = svg.querySelector('.fc-lab[data-to="' + n + '"]');
+      if (l) l.classList.add("on");
+    }
+  });
+}
+function focusCol(svg, k) {
+  svg.querySelectorAll(".col-ov").forEach(function (r) {
+    var i = +r.getAttribute("data-col");
+    r.classList.toggle("on", i === k);
+    r.classList.toggle("dim", k != null && i !== k);
+  });
+}
+function picker(host, current, onPick) {
+  host.innerHTML = "";
+  Object.keys(CFG.fc).forEach(function (id) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.textContent = CFG.fc[id].title;
+    b.setAttribute("aria-pressed", id === current ? "true" : "false");
+    b.addEventListener("click", function () { onPick(id); });
+    host.appendChild(b);
+  });
+}
+
+/* A */
+document.querySelectorAll("[data-mount]").forEach(function (el) {
+  var m = el.getAttribute("data-mount");
+  if (m === "chart") mountChart(el); else mountFC(el, m.slice(3));
+});
+
+/* B */
+(function () {
+  var panel = document.getElementById("B-panel");
+  function show(t) {
+    document.querySelectorAll("#B [data-tab]").forEach(function (b) {
+      b.setAttribute("aria-selected", b.getAttribute("data-tab") === t ? "true" : "false");
+    });
+    if (t === "chart") mountChart(panel); else mountFC(panel, t.slice(3));
+  }
+  document.querySelectorAll("#B [data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () { show(b.getAttribute("data-tab")); });
+  });
+  show("chart");
+})();
+
+/* C */
+(function () {
+  var fcEl = document.getElementById("C-fc"), chartEl = document.getElementById("C-chart");
+  var back = document.getElementById("C-back"), cur = "abnormal-tsh", fcSvg;
+  var chartSvg = mountChart(chartEl, { overlay: true });
+  function load(id, target) {
+    cur = id;
+    picker(document.querySelector('[data-fcpick="C"]'), id, function (x) { load(x); });
+    fcSvg = mountFC(fcEl, id);
+    markLinks(fcSvg, id, function (n, to) {
+      if (typeof to === "string") { load(to); fcEl.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+      light(fcSvg, pathTo(id, n));
+      focusCol(chartSvg, to);
+      back.hidden = false;
+      document.getElementById("C-chartlabel").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    if (target) light(fcSvg, pathTo(id, target));
+  }
+  chartSvg.querySelectorAll(".col-ov").forEach(function (r) {
+    r.addEventListener("click", function () {
+      var k = +r.getAttribute("data-col"), b = CFG.back[k];
+      focusCol(chartSvg, k);
+      load(b[0], b[1]);
+      fcEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+  back.addEventListener("click", function () { fcEl.scrollIntoView({ behavior: "smooth", block: "start" }); });
+  load(cur);
+})();
+
+/* D */
+(function () {
+  var fcEl = document.getElementById("D-fc"), card = document.getElementById("D-card");
+  function load(id) {
+    picker(document.querySelector('[data-fcpick="D"]'), id, load);
+    var svg = mountFC(fcEl, id);
+    markLinks(svg, id, function (n, to) {
+      if (typeof to === "string") { load(to); return; }
+      light(svg, pathTo(id, n));
+      card.innerHTML = '<h3></h3><div class="fit"></div>';
+      card.querySelector("h3").textContent = CFG.cols[to][0];
+      mountChart(card.querySelector(".fit"), { col: to });
+    });
+  }
+  load("abnormal-tsh");
+})();
+
+/* E */
+(function () {
+  var step = document.getElementById("E-step"), fcEl = document.getElementById("E-fc");
+  var id, path, crumbs, svg;
+  var KIND = { q: "Decide", step: "Next step", dx: "Diagnosis", act: "Manage", alarm: "Emergency", start: "Start" };
+  function start(fcId, keepCrumbs) {
+    id = fcId; path = ["n0"]; crumbs = keepCrumbs || [];
+    svg = mountFC(fcEl, id);
+    go("n0", null);
+  }
+  function go(n, answer) {
+    if (answer !== null) { path.push(n); crumbs.push(answer); }
+    light(svg, path);
+    var node = CFG.fc[id].nodes[n], kids = node.c || [];
+    if (node.k === "start" && kids.length === 1) { path.push(kids[0][0]); return go(kids[0][0], null); }
+    step.innerHTML = "";
+    if (crumbs.length) {
+      var ul = document.createElement("ul"); ul.className = "crumbs";
+      crumbs.forEach(function (c) { var li = document.createElement("li"); li.textContent = c; ul.appendChild(li); });
+      step.appendChild(ul);
+    }
+    var k = document.createElement("p"); k.className = "qkind" + (node.k === "alarm" ? " alarm" : "");
+    k.textContent = KIND[node.k] || ""; step.appendChild(k);
+    var t = document.createElement("p"); t.className = "qt"; t.textContent = node.t; step.appendChild(t);
+    var extra = node.a || (node.l || []).join(" · ");
+    if (extra) { var a = document.createElement("p"); a.className = "qa"; a.textContent = extra; step.appendChild(a); }
+    var ans = document.createElement("div"); ans.className = "answers"; step.appendChild(ans);
+    kids.forEach(function (ch) {
+      var b = document.createElement("button");
+      b.textContent = ch[1] || "Next";
+      b.addEventListener("click", function () { go(ch[0], ch[1] ? node.t.replace(/\?$/, "") + ": " + ch[1] : node.t); });
+      ans.appendChild(b);
+    });
+    if (!kids.length) {
+      var to = (CFG.links[id] || {})[n];
+      if (typeof to === "string") {
+        var nb = document.createElement("button");
+        nb.textContent = "Find the cause →";
+        nb.addEventListener("click", function () { var c = crumbs.concat([node.t]); start(to, c); });
+        ans.appendChild(nb);
+      } else if (to != null) {
+        var box = document.createElement("div"); box.className = "endcol panel fit";
+        step.appendChild(box);
+        var h = document.createElement("p"); h.className = "label"; h.textContent = "From the chart: " + CFG.cols[to][0];
+        step.insertBefore(h, box);
+        mountChart(box, { col: to });
+      }
+      var r = document.createElement("button"); r.className = "ghost"; r.textContent = "Start again";
+      r.addEventListener("click", function () { start("abnormal-tsh"); });
+      ans.appendChild(r);
+    }
+  }
+  start("abnormal-tsh");
+})();
+</script>
+</body>
+</html>
