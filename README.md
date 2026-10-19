@@ -7,6 +7,7 @@ Each prototype is a self-contained folder with an `index.html`. Open `index.html
 | Prototype | What it asks |
 |---|---|
 | [`fom-pom1/`](fom-pom1/) | 81 overview charts for the clinical lectures of FoM and PoM 1, drawn in the PoM 2 structure (content files in the preclerkship repo's `tools/pathways/src/`) and made interactive (Look, Walk, Test) by `fom-pom1/build.py` |
+| [`dermatomes/`](dermatomes/) | 3D dermatome map on a man and a woman: the C5 to C8/T1 and L2 to S1 table levels in colour, click a level to light it, test yourself by naming or finding an area |
 | [`pelvic-pain/`](pelvic-pain/) | The existing pelvic pain overview chart made interactive: focus a diagnosis, walk its questions, or hide a row to test yourself |
 | [`pom2-note-visuals/`](pom2-note-visuals/) | Four ways (A to D) to work mnemonic tiles, numbers to know, tricky points and pearls into three PoM 2 notes, below the existing interactive chart |
 | [`chart-merge/`](chart-merge/) | Five ways (A to E) to combine a lecture note's overview chart with the diagnostic flowcharts, on the thyroid example |
