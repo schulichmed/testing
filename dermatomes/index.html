@@ -87,10 +87,26 @@ h2{font-size:20px}
 .lbl.on{background:#ff7a1a;font-size:14px;padding:5px 10px;z-index:3}
 .lbl.probe{background:#ff7a1a;font-size:15px;padding:5px 10px}
 .pin{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);font-size:11px;font-weight:600;color:var(--muted)}
+.spine-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin:22px 0 8px}
+.stage.spine{background:radial-gradient(ellipse at 50% 30%,#2a2336,#141019) !important;height:min(80vh,820px)}
+.stage.spine canvas{display:block;width:100%;height:100%;cursor:grab}
+.slbl{position:absolute;left:0;top:0;font:600 11px/1 Inter,sans-serif;padding:3px 6px;border-radius:999px;white-space:nowrap;pointer-events:none;visibility:hidden;color:#fff}
+.slbl.root{background:rgba(20,16,28,.82);border-left:4px solid var(--c)}
+.slbl.vert{background:transparent;color:#cfc6dc;font-weight:500}
+.slbl.on{background:#ff7a1a;font-size:13px;padding:4px 9px;z-index:3}
+.rootcard{position:absolute;right:10px;bottom:10px;max-width:330px;background:var(--card);color:var(--ink);border-radius:12px;padding:10px 12px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.35);display:none;z-index:4}
+.rootcard h3{font-size:17px;margin:0 0 4px}
+.rootcard dl{margin:6px 0 0;display:grid;grid-template-columns:78px 1fr;gap:2px 8px}
+.rootcard dt{color:var(--muted)}
+.rootcard dd{margin:0}
+@media (max-width:600px){.rootcard{left:10px;right:10px;max-width:none}}
 .credit{font-size:12px;color:var(--muted);margin-top:6px}
 .credit a{color:var(--accent)}
 .mark{position:absolute;left:12px;bottom:12px;background:var(--card);color:var(--ink);border-radius:10px;padding:6px 10px;font-size:13px;display:none;z-index:2}
 </style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -116,6 +132,27 @@ h2{font-size:20px}
       <iframe id="viewer" title="Dermatomes 3D model" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
           </div>
     <p class="credit">3D model: <a href="https://sketchfab.com/3d-models/dermatomes-e5e8ac2e14e94efd9a55d342153f306a" target="_blank" rel="noopener">Dermatomes</a> by the John A. Burns School of Medicine (artist Cassie Young), shown through Sketchfab's viewer. Labels, table and test are ours.</p>
+    <div class="spine-head">
+      <h2>Spine and nerve roots</h2>
+      <div class="bar" style="margin:0">
+        <div class="grp" role="group" aria-label="Spine view">
+          <button data-sview="front" aria-pressed="false">Front</button>
+          <button data-sview="side" aria-pressed="true">Side</button>
+          <button data-sview="back" aria-pressed="false">Back</button>
+        </div>
+        <div class="grp" role="group" aria-label="Spine zoom">
+          <button data-szoom="all" aria-pressed="true">Whole</button>
+          <button data-szoom="neck" aria-pressed="false">Neck</button>
+          <button data-szoom="low" aria-pressed="false">Low back</button>
+        </div>
+      </div>
+    </div>
+    <div class="stage spine" id="spineStage">
+      <div class="loading" id="spineLoading">Loading the spine…</div>
+      <div class="labels" id="spineLabels"></div>
+      <div class="rootcard" id="rootcard"></div>
+    </div>
+    <p class="credit">Click a root to see where it leaves the spine and what it supplies; the skin model above turns to its dermatome. Bones: <a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/" target="_blank" rel="noopener">BodyParts3D</a>, © The Database Center for Life Science, licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> (simplified). The spinal cord and roots are drawn by us at their real exit levels; their paths are schematic.</p>
   </div>
 
   <aside class="panel">
@@ -159,8 +196,9 @@ const KEY = [
 /* Level names placed on the model's own colour bands: [name, point, outward direction the label faces] */
 const LABELS=[["V", [-0.002, -0.514, 3.02], [0.0, -1.0, 0.0]], ["C2", [0.002, 0.318, 3.439], [0.0, 1.0, 0.0]], ["C3", [0.002, 0.307, 3.164], [0.0, 1.0, 0.0]], ["C4", [0.002, 0.217, 2.945], [0.0, 1.0, 0.0]], ["C5", [0.002, 0.261, 2.737], [0.0, 1.0, 0.0]], ["C6", [0.002, 0.32, 2.568], [0.0, 1.0, 0.0]], ["C7", [0.002, 0.358, 2.418], [0.0, 1.0, 0.0]], ["C8", [0.002, 0.403, 2.275], [0.0, 1.0, 0.0]], ["C3", [-0.002, -0.22, 2.623], [0.0, -1.0, 0.0]], ["C4", [-0.002, -0.161, 2.498], [0.0, -1.0, 0.0]], ["C5", [0.323, -0.143, 2.412], [0.0, -1.0, 0.0]], ["C5", [0.952, 0.012, 1.807], [0.0, -1.0, 0.0]], ["T1", [0.82, -0.055, 1.518], [0.0, -1.0, 0.0]], ["T1", [-0.002, -0.288, 2.255], [0.0, -1.0, 0.0]], ["T2", [-0.002, -0.333, 2.133], [0.0, -1.0, 0.0]], ["T3", [-0.002, -0.393, 1.991], [0.0, -1.0, 0.0]], ["T4", [-0.118, -0.482, 1.831], [0.0, -1.0, 0.0]], ["T10", [-0.002, -0.579, 0.821], [0.0, -1.0, 0.0]], ["T1", [0.002, 0.425, 2.137], [0.0, 1.0, 0.0]], ["T12", [0.002, 0.224, 0.858], [0.0, 1.0, 0.0]], ["L1", [0.002, 0.232, 0.727], [0.0, 1.0, 0.0]], ["L2", [0.002, 0.235, 0.607], [0.0, 1.0, 0.0]], ["L3", [0.002, 0.239, 0.5], [0.0, 1.0, 0.0]], ["L4", [0.002, 0.252, 0.394], [0.0, 1.0, 0.0]], ["L5", [0.002, 0.293, 0.271], [0.0, 1.0, 0.0]], ["S3\u2013S5", [0.014, 0.354, 0.027], [0.0, 1.0, 0.0]], ["S1", [0.523, 0.223, -0.205], [0.0, 1.0, 0.0]], ["S2", [0.243, 0.215, -0.327], [0.0, 1.0, 0.0]], ["L1", [0.386, -0.436, 0.142], [0.0, -1.0, 0.0]], ["L2", [0.42, -0.525, -0.382], [0.0, -1.0, 0.0]], ["L3", [0.157, -0.264, -1.242], [0.0, -1.0, 0.0]], ["L4", [0.196, -0.023, -2.419], [0.0, -1.0, 0.0]], ["L5", [0.423, -0.158, -2.286], [0.0, -1.0, 0.0]], ["S1", [0.439, -0.524, -3.524], [0.0, -1.0, 0.0]], ["S1", [0.492, 0.1, -1.392], [0.0, 1.0, 0.0]], ["S2", [0.245, 0.168, -1.396], [0.0, 1.0, 0.0]], ["C6", [1.783, -0.378, -0.013], [0.07, -1.0, 0.0]], ["C7", [1.661, -0.47, -0.353], [0.07, -1.0, 0.0]], ["C8", [1.486, -0.356, -0.316], [0.07, -1.0, 0.0]], ["C7", [1.642, -0.146, -0.099], [0.06, 1.0, 0.0]], ["C8", [1.489, -0.153, -0.189], [0.06, 1.0, 0.0]], ["C6", [1.856, -0.307, 0.005], [0.06, 1.0, 0.0]], ["C6", [1.029, 0.331, 1.69], [0.3, 0.95, 0.0]], ["C7", [0.924, 0.352, 1.428], [0.3, 0.95, 0.0]], ["C8", [0.67, 0.301, 1.497], [0.3, 0.95, 0.0]]];
 
+window.DERM_KEY=KEY;
 const VIEWS={front:[[0,-13,0.2],[0,0,0.2]], back:[[0,13,0.2],[0,0,0.2]], left:[[13,0,0.2],[0,0,0.2]], right:[[-13,0,0.2],[0,0,0.2]]};
-let api=null, ready=false, labelsOn=true, mode='look', selected=null;
+let extraSel=null, api=null, ready=false, labelsOn=true, mode='look', selected=null;
 const stage=document.getElementById('stage'), frame=document.getElementById('viewer');
 const layer=document.createElement('div'); layer.className='labels'; stage.appendChild(layer);
 const KEYNAMES=new Set(['C5','C6','C7','C8','T1','L2','L3','L4','L5','S1']);
@@ -189,7 +227,7 @@ function put(el, c, opacity){
   el.style.visibility='visible'; el.style.opacity=opacity;
 }
 async function update(cam){
-  const sel = selected ? levelsOf(selected) : null;
+  const sel = selected ? levelsOf(selected) : (extraSel ? [extraSel] : null);
   const jobs = els.map(L=>{
     const d=sub(cam.position,L.p), facing=dot(d,L.nrm)/len(d);
     const on = !!(sel && sel.includes(L.n));
@@ -248,10 +286,22 @@ for (const k of KEY){
   b.onclick=()=>select(selected===k?null:k);
   k.btn=b; rows.appendChild(b);
 }
-function select(k){
-  selected=k; force=true; KEY.forEach(x=>x.btn.setAttribute('aria-pressed', x===k?'true':'false'));
+function select(k, fromSpine){
+  selected=k; extraSel=null; force=true;
+  if (!fromSpine && window.spineSelect) window.spineSelect(k ? levelsOf(k) : null); KEY.forEach(x=>x.btn.setAttribute('aria-pressed', x===k?'true':'false'));
   if (k) flyTo(k); else { pressed('[data-view]',x=>x.dataset.view==='front'); fly(...VIEWS.front); }
 }
+
+/* the spine view calls this when a root is clicked */
+window.modelShowLevel = function(name){
+  const k = KEY.find(x=>levelsOf(x).includes(name));
+  if (k){ select(k, true); return; }
+  select(null, true);
+  const want = /^S[345]$/.test(name) ? 'S3–S5' : name;
+  const L = els.find(e=>e.n===want);
+  extraSel = L ? want : null; force=true;
+  if (L) fly([L.p[0]+L.nrm[0]*3.2, L.p[1]+L.nrm[1]*3.2, L.p[2]+L.nrm[2]*3.2], L.p);
+};
 
 /* Test */
 const quiz={kind:'name', right:0, total:0, cur:null, done:false};
@@ -310,6 +360,198 @@ function onModelClick(info){
   feedback(ok,k, ok ? '' : `<br>${nearest && nd < NEAR ? `That is the ${nearest.id} point.` : 'That is not near any of the ten test points.'} The ${k.id} point is marked now.`);
 }
 function score(){ document.getElementById('score').textContent = quiz.total ? `${quiz.right} of ${quiz.total} right this session` : ''; }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* What each root supplies. The ten table levels use the table's own wording (from KEY); the rest are standard teaching. */
+const ROOT_INFO = {
+  C1:{derm:'Usually no skin area', myo:'Neck flexion (with C2)'},
+  C2:{derm:'Back of the head', myo:'Neck flexion and extension'},
+  C3:{derm:'Upper neck', myo:'Neck side-bending; diaphragm (C3, 4, 5 keep the diaphragm alive)'},
+  C4:{derm:'Lower neck, cape over the top of the shoulders', myo:'Shoulder shrug; diaphragm'},
+  T2:{derm:'Armpit, upper chest band', myo:'Intercostal muscles'}, T3:{derm:'Chest band', myo:'Intercostal muscles'},
+  T4:{derm:'Nipple line', myo:'Intercostal muscles'}, T5:{derm:'Chest band', myo:'Intercostal muscles'},
+  T6:{derm:'Xiphoid (bottom of the breastbone)', myo:'Intercostals, upper abdominal wall'},
+  T7:{derm:'Upper abdomen', myo:'Intercostals, abdominal wall'}, T8:{derm:'Upper abdomen', myo:'Intercostals, abdominal wall'},
+  T9:{derm:'Abdomen above the umbilicus', myo:'Abdominal wall'}, T10:{derm:'Umbilicus (belly button)', myo:'Abdominal wall (Beevor’s sign tests T10)'},
+  T11:{derm:'Lower abdomen', myo:'Abdominal wall'}, T12:{derm:'Just above the groin crease', myo:'Lower abdominal wall'},
+  L1:{derm:'Groin (inguinal region)', myo:'Hip flexion (with L2); cremaster reflex L1–L2'},
+  S2:{derm:'Strip down the back of the thigh and calf; genitals', myo:'Plantar flexion and toe flexion (with S1); bladder and bowel (S2–S4)'},
+  S3:{derm:'Ring round the anus; genitals', myo:'Bladder, bowel, sexual function (S2–S4)'},
+  S4:{derm:'Innermost ring round the anus', myo:'Bladder, bowel; anal wink reflex (S2–S4)'},
+  S5:{derm:'Around the anus', myo:'External anal sphincter'},
+  Co1:{derm:'Skin over the coccyx', myo:'None worth testing'},
+};
+const tableRow = name => (window.DERM_KEY||[]).find(k=>k.id.split('/').includes(name));
+function exitText(r){
+  if (r==='C1') return 'Leaves above the C1 vertebra (between the skull and the atlas)';
+  if (/^C[2-7]$/.test(r)){ const n=+r.slice(1); return `Leaves above the C${n} vertebra (between C${n-1} and C${n})`; }
+  if (r==='C8') return 'Leaves between C7 and T1: there is no C8 vertebra, so from here down each root leaves below its own vertebra';
+  if (/^[TL]\d+$/.test(r)){ const order=['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4','L5','S1']; return `Leaves below the ${r} vertebra (between ${r} and ${order[order.indexOf(r)+1]})`; }
+  if (r==='Co1') return 'Leaves at the bottom of the sacrum, beside the coccyx';
+  return `Leaves through the ${['first','second','third','fourth','fifth'][+r.slice(1)-1]} sacral foramen`;
+}
+function cordText(r){
+  if (r[0]==='C') return 'Its cord segment sits about one vertebra higher than its name';
+  if (r[0]==='T') return +r.slice(1)<=6 ? 'Its cord segment sits about two vertebrae higher' : 'Its cord segment sits about three vertebrae higher';
+  if (r[0]==='L') return 'Its cord segment sits at about T10 to T12; the root then runs down inside the canal (cauda equina)';
+  return 'Its cord segment is in the conus at about L1; the root runs down the cauda equina';
+}
+// root colours follow the skin model's families: purple-blue cervical, red to yellow thoracic, green lumbar, pink sacral
+const CERV={C1:'#8a6fd1',C2:'#7a3fe0',C3:'#a690e6',C4:'#d8c9b8',C5:'#a7a3f5',C6:'#e9e4ff',C7:'#5f74f0',C8:'#5fe0f0'};
+function rootColour(r){
+  if (CERV[r]) return CERV[r];
+  if (r[0]==='T'){ const n=+r.slice(1); return new THREE.Color().setHSL(0.0+ (n-1)/11*0.14, 0.85, 0.55+(n-1)/11*0.15).getStyle(); }
+  if (r[0]==='L'){ const n=+r.slice(1); return new THREE.Color().setHSL(0.22+(n-1)*0.03, 0.6, 0.55-(n-1)*0.04).getStyle(); }
+  if (r==='S1') return '#f0c8d8'; if (r==='S2') return '#e040c0';
+  if (r==='Co1') return '#9a90a8';
+  return '#f59ad0';
+}
+
+const stage=document.getElementById('spineStage'), labelLayer=document.getElementById('spineLabels'), card=document.getElementById('rootcard');
+const renderer=new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+stage.prepend(renderer.domElement);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(30,1,0.01,20);
+scene.add(new THREE.HemisphereLight(0xffffff,0x6a6080,1.3));
+const sun=new THREE.DirectionalLight(0xffffff,1.6); sun.position.set(1,2,2); scene.add(sun);
+const sun2=new THREE.DirectionalLight(0xffffff,0.6); sun2.position.set(-1,1,-2); scene.add(sun2);
+const controls=new OrbitControls(camera, renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=0.12; controls.minDistance=0.08; controls.maxDistance=2.5;
+
+const ZOOMS={all:{y:1.2,d:1.55}, neck:{y:1.43,d:0.42}, low:{y:0.95,d:0.5}};
+const VIEWS={front:[0,0,1], side:[1,0,0.15], back:[0,0,-1]};
+let view='side', zoom='all', anim=null;
+function aim(){
+  const z=ZOOMS[zoom], v=new THREE.Vector3(...VIEWS[view]).normalize();
+  const target=new THREE.Vector3(0,z.y,0.05), pos=target.clone().add(v.multiplyScalar(z.d));
+  anim={t:0, fp:camera.position.clone(), ft:controls.target.clone(), tp:pos, tt:target};
+}
+function aimAt(p, dist=0.38){
+  const target=new THREE.Vector3(...p), dir=camera.position.clone().sub(controls.target).normalize();
+  anim={t:0, fp:camera.position.clone(), ft:controls.target.clone(), tp:target.clone().add(dir.multiplyScalar(dist)), tt:target};
+}
+const pressedS=(sel,fn)=>document.querySelectorAll(sel).forEach(b=>b.setAttribute('aria-pressed',fn(b)?'true':'false'));
+document.querySelectorAll('[data-sview]').forEach(b=>b.onclick=()=>{ view=b.dataset.sview; pressedS('[data-sview]',x=>x===b); aim(); });
+document.querySelectorAll('[data-szoom]').forEach(b=>b.onclick=()=>{ zoom=b.dataset.szoom; pressedS('[data-szoom]',x=>x===b); aim(); });
+
+const BONE=new THREE.MeshStandardMaterial({color:0xeee3cf, roughness:0.75, side:THREE.DoubleSide});
+const HIP=new THREE.MeshStandardMaterial({color:0xeee3cf, roughness:0.8, transparent:true, opacity:0.25, depthWrite:false});
+const DISC=new THREE.MeshStandardMaterial({color:0x9fc6e8, roughness:0.6});
+const vertMeshes={};
+const rootMeshes=[]; let selected=null;
+const labels=[];
+
+function addLabel(text, cls, pos, colour){
+  const el=document.createElement('div'); el.className='slbl '+cls; el.textContent=text;
+  if (colour) el.style.setProperty('--c', colour);
+  labelLayer.appendChild(el); const L={el, pos:new THREE.Vector3(...pos), text, cls}; labels.push(L); return L;
+}
+
+Promise.all([
+  new GLTFLoader().loadAsync('spine.glb'),
+  fetch('roots.json').then(r=>r.json()),
+]).then(([gltf, data])=>{
+  gltf.scene.traverse(o=>{
+    if (!o.isMesh) return;
+    const n=o.name||o.parent?.name||'';
+    o.material = n.startsWith('disc') ? DISC : n.startsWith('hip') ? HIP : BONE;
+    o.geometry.deleteAttribute('color'); o.geometry.computeVertexNormals();
+    if (/^[CTL]\d+$/.test(n)) vertMeshes[n]=o;
+  });
+  scene.add(gltf.scene);
+  // cord: a tube along the canal, thicker at the neck
+  const cordCurve=new THREE.CatmullRomCurve3(data.cord.map(p=>new THREE.Vector3(...p)));
+  const cord=new THREE.Mesh(new THREE.TubeGeometry(cordCurve, 160, 0.0038, 12, false), new THREE.MeshStandardMaterial({color:0xf3e6a0, roughness:0.5}));
+  scene.add(cord);
+  addLabel('spinal cord','vert',data.cord[18].map((v,i)=>i===0?v+0.012:v));
+  addLabel('cord ends (conus) ~L1','vert',data.cord[data.cord.length-1].map((v,i)=>i===0?v+0.014:v));
+  for (const r of data.roots){
+    const col=rootColour(r.root);
+    const curve=new THREE.CatmullRomCurve3(r.path.map(p=>new THREE.Vector3(...p)));
+    const rad = r.root[0]==='T' ? 0.0013 : r.root==='Co1' ? 0.0009 : 0.0019;
+    const mat=new THREE.MeshStandardMaterial({color:col, roughness:0.45, emissive:0x000000});
+    const m=new THREE.Mesh(new THREE.TubeGeometry(curve, 40, rad, 8, false), mat);
+    m.userData={root:r.root, side:r.side, col}; scene.add(m); rootMeshes.push(m);
+    if (r.side===1){
+      const end=r.path[r.path.length-1];
+      r.label=addLabel(r.root,'root',[end[0]+0.012,end[1],end[2]],col);
+      r.label.root=r.root;
+    }
+  }
+  for (const [v,p] of Object.entries(data.vertebrae)) addLabel(v+' vertebra','vert',[-0.045,p[1],p[2]-0.07]);
+  document.getElementById('spineLoading').remove();
+  layout(); aim(); animate();
+});
+
+/* picking roots */
+const ray=new THREE.Raycaster(), ndc=new THREE.Vector2(); let down=null;
+renderer.domElement.addEventListener('pointerdown',e=>{ down=[e.clientX,e.clientY]; });
+renderer.domElement.addEventListener('pointerup',e=>{
+  if (!down || Math.hypot(e.clientX-down[0],e.clientY-down[1])>5) return;
+  const r=renderer.domElement.getBoundingClientRect();
+  ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+  ray.setFromCamera(ndc,camera);
+  const hit=ray.intersectObjects(rootMeshes,false)[0];
+  if (hit){ pick([hit.object.userData.root], true); }
+});
+
+function pick(names, fromSpine){
+  selected = names && names.length ? names : null;
+  for (const m of rootMeshes){
+    const on = selected && selected.includes(m.userData.root);
+    m.material.color.set(on ? '#ff7a1a' : m.userData.col);
+    m.material.emissive.set(on ? 0x552200 : 0x000000);
+    m.material.opacity = selected && !on ? 0.35 : 1; m.material.transparent = !!(selected && !on);
+  }
+  labels.forEach(L=>L.el.classList.toggle('on', !!(selected && L.root && selected.includes(L.root))));
+  if (!selected){ card.style.display='none'; return; }
+  const name=selected[0], row=tableRow(name), info=ROOT_INFO[name]||{};
+  const rows = row
+    ? `<dt>Skin</dt><dd>${row.sensory}</dd><dt>Muscles</dt><dd>${row.motor.join(', ')}</dd><dt>Reflex</dt><dd>${row.reflex}</dd>`
+    : `<dt>Skin</dt><dd>${info.derm||''}</dd><dt>Muscles</dt><dd>${info.myo||''}</dd>`;
+  card.innerHTML=`<h3>${selected.join(' and ')} root${selected.length>1?'s':''}</h3><div>${exitText(name)}. ${cordText(name)}.</div><dl>${rows}</dl>${row?'<div style="margin-top:6px;color:var(--muted)">From the table we memorise.</div>':''}`;
+  card.style.display='block';
+  const m=rootMeshes.find(x=>x.userData.root===name && x.userData.side===1);
+  if (m){ m.geometry.computeBoundingSphere(); aimAt(m.geometry.boundingSphere.center.toArray(), name[0]==='S'||name[0]==='L' ? 0.45 : 0.32); }
+  if (fromSpine && window.modelShowLevel) window.modelShowLevel(name);
+}
+window.spineSelect = names => pick(names, false);
+
+/* labels follow the 3D points; overlapping ones are left out, picked root first */
+const tmp=new THREE.Vector3();
+function updateLabels(){
+  const w=stage.clientWidth, h=stage.clientHeight, placed=[];
+  const order=[...labels].sort((a,b)=>(b.el.classList.contains('on')-a.el.classList.contains('on')) || ((a.cls==='root')?-1:1));
+  for (const L of order){
+    tmp.copy(L.pos).project(camera);
+    const x=(tmp.x*0.5+0.5)*w, y=(-tmp.y*0.5+0.5)*h;
+    let ok = tmp.z<1 && x>-20 && x<w+20 && y>-10 && y<h+10;
+    const bw=L.el.offsetWidth||28, bh=L.el.offsetHeight||14;
+    if (ok && placed.some(q=>Math.abs(q.x-x)<(q.w+bw)/2+2 && Math.abs(q.y-y)<(q.h+bh)/2)) ok=false;
+    if (ok){ placed.push({x,y,w:bw,h:bh}); L.el.style.transform=`translate(-50%,-50%) translate(${x}px,${y}px)`; }
+    L.el.style.visibility = ok ? 'visible' : 'hidden';
+  }
+}
+
+function layout(){ const w=stage.clientWidth, h=stage.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+addEventListener('resize',layout);
+let frameN=0;
+function animate(){
+  if (anim){
+    anim.t=Math.min(1,anim.t+0.06); const e=1-Math.pow(1-anim.t,3);
+    camera.position.lerpVectors(anim.fp,anim.tp,e); controls.target.lerpVectors(anim.ft,anim.tt,e);
+    if (anim.t>=1) anim=null;
+  }
+  controls.update(); renderer.render(scene,camera);
+  if ((frameN++ & 1)===0) updateLabels();
+  requestAnimationFrame(animate);
+}
+window.__spineReady=true;
 </script>
 </body>
 </html>
