@@ -63,7 +63,7 @@ button{font-family:inherit}
 .colhead{background:var(--c);color:#fff;border-radius:9px;padding:8px 10px;text-align:center}
 .colhead .nt{font-weight:600}
 .colhead .nl{font-size:12px;opacity:.9;margin:1px 0 0}
-.drop{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--muted);text-align:center;text-transform:uppercase}
+.drop{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--muted);text-align:center;text-transform:uppercase;align-self:center;padding:0 4px;line-height:1.3}
 .stage{display:flex;gap:6px}
 .stage>.cell{flex:1}
 .cell{border:1.5px solid color-mix(in srgb,var(--c) 55%,var(--line));border-radius:9px;padding:6px 8px;background:var(--card);font-size:12.5px}
@@ -89,9 +89,15 @@ button{font-family:inherit}
 .arr::before{content:"";position:absolute;left:50%;margin-left:-1px;top:0;bottom:5px;border-left:2px solid var(--arrow)}
 .arr::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--arrow)}
 .arr.dash::before{border-left-style:dashed}
-.grid>.arr{align-self:end}
-.walking .grid>.arr{opacity:var(--dim)}
-.walking .grid>.arr.on{opacity:1!important;box-shadow:none}
+.grid{position:relative}
+.grid>.gap{height:22px}
+.col>.sp{height:10px;flex:none}
+.links{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;color:var(--arrow)}
+.links path{fill:none;stroke:currentColor;stroke-width:2;transition:opacity .25s}
+.links marker path{fill:currentColor;stroke:none}
+.col>.drop{margin-bottom:12px}
+.walking .links path{opacity:var(--dim)}
+.walking .links path.on{opacity:1}
 .col .stagewrap{display:flex;flex-direction:column;gap:6px;transition:filter .2s,opacity .2s}
 .map .sec.hidden{position:relative}
 .map.is-test .col{cursor:pointer}
@@ -648,13 +654,13 @@ function buildMap(host) {
   host.innerHTML = "";
   var g = el("div", "grid");
   var r = node(S.root, "root"); r.style.gridColumn = "1 / -1"; r.style.gridRow = "1"; r.dataset.k = "root"; g.appendChild(r);
-  function arrowTo(o, row) { var a = el("div", "arr"); a.style.gridColumn = span(o.cols); a.style.gridRow = String(row); a.dataset.k = "a:" + o.id; g.appendChild(a); }
+  function arrowTo(o, row) { var a = el("div", "gap"); a.style.gridColumn = span(o.cols); a.style.gridRow = String(row); g.appendChild(a); }
   S.groups.forEach(function (gr) { arrowTo(gr, 2); var n = node(gr); n.style.gridColumn = span(gr.cols); n.style.gridRow = "3"; n.dataset.k = gr.id; g.appendChild(n); });
   S.tiers.forEach(function (t) { arrowTo(t, 4); var n = node(t); n.style.gridColumn = span(t.cols); n.style.gridRow = "5"; n.dataset.k = t.id; g.appendChild(n); });
   S.columns.forEach(function (c) {
     var col = el("div", "col"); col.style.setProperty("--c", COL[c.colour]); col.dataset.k = "c:" + c.id;
     col.style.gridColumn = (c.i + 1) + " / " + (c.i + 2); col.style.gridRow = "6";
-    col.appendChild(el("div", "arr"));
+    col.appendChild(el("div", "sp"));
     col.appendChild(el("div", "drop", c.drop_label || " "));
     col.appendChild(head(c));
     ROWS.forEach(function (rw) {
@@ -677,6 +683,45 @@ function buildMap(host) {
 }
 
 var map = buildMap(document.getElementById("map")), bar = document.getElementById("bar");
+
+/* connectors drawn like the chart in the notes: elbows that branch from a box, straight drops into each diagnosis through its label */
+var NS = "http://www.w3.org/2000/svg";
+function drawLinks() {
+  var g = map.querySelector(".grid"), old = g.querySelector(".links"); if (old) old.remove();
+  var gr = g.getBoundingClientRect(), svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("class", "links"); svg.setAttribute("width", g.scrollWidth); svg.setAttribute("height", g.scrollHeight);
+  svg.innerHTML = '<defs><marker id="lk-ah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor" stroke="none"/></marker></defs>';
+  function box(e) { var r = e.getBoundingClientRect(); return { l: r.left - gr.left, r: r.right - gr.left, t: r.top - gr.top, b: r.bottom - gr.top, x: (r.left + r.right) / 2 - gr.left }; }
+  function path(d, key, arrow) {
+    var p = document.createElementNS(NS, "path"); p.setAttribute("d", d); p.setAttribute("data-a", key);
+    if (arrow) p.setAttribute("marker-end", "url(#lk-ah)"); svg.appendChild(p);
+  }
+  function elbow(from, to, key) {
+    var a = box(from), b = box(to), mid = (a.b + b.t) / 2;
+    path("M" + a.x + " " + a.b + "V" + mid + "H" + b.x + "V" + (b.t - 1), key, true);
+  }
+  var q = function (k) { return g.querySelector('[data-k="' + k + '"]'); };
+  S.groups.forEach(function (gp) { elbow(q("root"), q(gp.id), gp.id); });
+  S.tiers.forEach(function (t) {
+    var parent = S.groups.filter(function (gp) { return gp.cols[0] <= t.cols[0] && t.cols[1] <= gp.cols[1]; })[0];
+    if (parent) elbow(q(parent.id), q(t.id), t.id);
+  });
+  S.columns.forEach(function (c) {
+    var col = q("c:" + c.id), tier = q(c.drop_from); if (!col || !tier) return;
+    var t = box(tier), h = box(col.querySelector(".colhead")), x = h.x, key = "c:" + c.id;
+    var lab = col.querySelector(".drop");
+    if (c.drop_label && lab) {
+      var lb = box(lab);
+      path("M" + x + " " + t.b + "V" + (lb.t - 2), key, false);
+      path("M" + x + " " + (lb.b + 2) + "V" + (h.t - 1), key, true);
+    } else path("M" + x + " " + t.b + "V" + (h.t - 1), key, true);
+  });
+  g.appendChild(svg);
+  if (map.classList.contains("walking")) light();
+}
+drawLinks();
+if (window.ResizeObserver) new ResizeObserver(function () { drawLinks(); }).observe(map.querySelector(".grid"));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLinks);
 var mode = "look", trail, lit, focus = null;
 
 function clearMarks() {
@@ -689,7 +734,7 @@ function light() {
   map.querySelectorAll(".on").forEach(function (e) { e.classList.remove("on"); });
   lit.forEach(function (k) {
     var e = map.querySelector('[data-k="' + k + '"]'); if (e) e.classList.add("on");
-    var a = map.querySelector('[data-k="a:' + k + '"]'); if (a) a.classList.add("on");
+    map.querySelectorAll('[data-a="' + k + '"]').forEach(function (a) { a.classList.add("on"); });
   });
 }
 function trailEl() { var ul = el("ul", "trail"); trail.forEach(function (t) { ul.appendChild(el("li", null, t)); }); return ul; }
