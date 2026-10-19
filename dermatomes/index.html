@@ -27,14 +27,14 @@ h2{font-size:20px}
 .lead{color:var(--muted);max-width:80ch;margin:8px 0 0}
 .app{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;margin-top:18px;align-items:start}
 @media (max-width:980px){.app{grid-template-columns:1fr}}
-.stage{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,var(--stage2),var(--stage));height:min(78vh,820px);min-height:460px;touch-action:none}
+.stage{position:relative;background:#111 !important;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,var(--stage2),var(--stage));height:min(78vh,820px);min-height:460px;touch-action:none}
 .stage canvas{display:block;width:100%;height:100%;cursor:grab}
 .stage canvas:active{cursor:grabbing}
 .labels{position:absolute;inset:0;pointer-events:none}
 .lbl{font:600 12px/1 Inter,sans-serif;padding:4px 7px;border-radius:999px;color:#fff;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:opacity .15s}
 .lbl.minor{background:rgba(32,20,54,.72);font-weight:500;font-size:11px}
 .lbl small{font-weight:500;opacity:.9;margin-left:4px}
-.bar{position:absolute;left:10px;right:10px;top:10px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.bar{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
 .bar .grp{display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;pointer-events:auto}
 .bar button{font:500 13px Inter,sans-serif;border:0;background:transparent;color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer}
 .bar button[aria-pressed="true"]{background:var(--accent);color:#fff}
@@ -80,46 +80,38 @@ h2{font-size:20px}
 .next{margin-top:10px;background:var(--accent);border-color:var(--accent);color:#fff}
 .score{font-size:13px;color:var(--muted);margin-top:10px}
 .note{font-size:12px;color:var(--muted);margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pin{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);font-size:11px;font-weight:600;color:var(--muted)}
+.credit{font-size:12px;color:var(--muted);margin-top:6px}
+.credit a{color:var(--accent)}
+.mark{position:absolute;left:12px;bottom:12px;background:var(--card);color:var(--ink);border-radius:10px;padding:6px 10px;font-size:13px;display:none;z-index:2}
 </style>
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
-</script>
 </head>
 <body>
 <div class="wrap">
 <p class="eyebrow">Prototype · MSK</p>
 <h1>Dermatome map, in 3D</h1>
-<p class="lead">A dermatome is the strip of skin supplied by one spinal nerve root. The ten levels on the table we have to memorise are in colour; every other level is grey (hover or tap it to see which it is). Drag sideways to turn both figures, scroll or pinch to zoom.</p>
+<p class="lead">A dermatome is the strip of skin supplied by one spinal nerve root. Turn the model with your finger or mouse, and click a level on the right to fly to its test point. The colour families follow the usual atlas layout: purple and blue for cervical, red to yellow for thoracic, green for lumbar, pink for sacral.</p>
 
 <div class="app">
-  <div class="stage" id="stage">
-    <div class="loading" id="loading">Building the two figures…</div>
-    <div class="labels" id="labels"></div>
+  <div>
     <div class="bar">
       <div class="grp" role="group" aria-label="View">
-        <button data-view="0" aria-pressed="true">Front</button>
-        <button data-view="90" aria-pressed="false">Side</button>
-        <button data-view="180" aria-pressed="false">Back</button>
-        <button data-spin aria-pressed="false">Spin</button>
-      </div>
-      <div class="grp" role="group" aria-label="Figures">
-        <button data-fig="both" aria-pressed="true">Both</button>
-        <button data-fig="man" aria-pressed="false">Man</button>
-        <button data-fig="woman" aria-pressed="false">Woman</button>
-      </div>
-      <div class="grp" role="group" aria-label="Zoom to">
-        <button data-zoom="all" aria-pressed="true">Whole</button>
-        <button data-zoom="arm" aria-pressed="false">Arm</button>
-        <button data-zoom="leg" aria-pressed="false">Leg</button>
+        <button data-view="front" aria-pressed="true">Front</button>
+        <button data-view="back" aria-pressed="false">Back</button>
+        <button data-view="left" aria-pressed="false">Left side</button>
+        <button data-view="right" aria-pressed="false">Right side</button>
       </div>
       <div class="grp">
-        <button data-labels aria-pressed="true">Labels</button>
-        <button data-allcol aria-pressed="false">All levels in colour</button>
+        <button data-labels aria-pressed="true">Test-point labels</button>
       </div>
     </div>
-    <div class="hint" id="hint">Drag to turn · scroll or pinch to zoom</div>
-    <div class="who" id="who"><span>Man</span><span>Woman</span></div>
-    <div class="tip" id="tip"></div>
+    <div class="stage" id="stage">
+      <div class="loading" id="loading">Loading the model…</div>
+      <iframe id="viewer" title="Dermatomes 3D model" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+      <div class="mark" id="mark"></div>
+    </div>
+    <p class="credit">3D model: <a href="https://sketchfab.com/3d-models/dermatomes-e5e8ac2e14e94efd9a55d342153f306a" target="_blank" rel="noopener">Dermatomes</a> by the John A. Burns School of Medicine (artist Cassie Young), shown through Sketchfab's viewer. Labels, table and test are ours.</p>
   </div>
 
   <aside class="panel">
@@ -128,622 +120,132 @@ h2{font-size:20px}
       <button role="tab" aria-selected="false" data-tab="test">Test</button>
     </div>
     <section id="look">
-      <p class="help">Click a level to light it up on both figures. Click it again to see everything.</p>
+      <p class="help">The numbered markers on the model are the test points in this list. Click a level to fly to it; click it again to go back to the whole body.</p>
       <div id="rows"></div>
     </section>
     <section id="test" hidden>
       <div class="kinds" role="group" aria-label="Question type">
-        <button data-kind="name" aria-pressed="true">Name the lit area</button>
+        <button data-kind="name" aria-pressed="true">Name the marked point</button>
         <button data-kind="find" aria-pressed="false">Find it on the body</button>
         <button data-kind="table" aria-pressed="false">From the table</button>
       </div>
       <div id="qbox"></div>
       <div class="score" id="score"></div>
     </section>
-    <p class="note">The map is a teaching simplification: real dermatomes overlap and vary between people, and charts disagree at the edges. This one follows Keegan and Garrett's map, the one Netter's atlas draws; the table is the version we are examined on. The face is supplied by the trigeminal nerve (cranial nerve V), not a spinal root.</p>
+    <p class="note">Each level is marked at its classic test point (the spot a sensory exam checks), on the model's left side; the right side is the mirror image. Real dermatomes overlap and vary between people. The table is the version we are examined on.</p>
   </aside>
 </div>
 </div>
 
-<script type="module">
-import * as THREE from 'three';
-
-/* ---------- The table we memorise ---------- */
+<script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
+<script>
+const MODEL='e5e8ac2e14e94efd9a55d342153f306a';
+/* The table we memorise. p = test point on the model's left side (model units: Z up, the model faces -Y, +X is its left); e = where the camera sits to look at it */
 const KEY = [
-  {id:'C5', ids:[5], col:'#e5533b', limb:'Upper limb', sensory:'Lateral upper arm/elbow', motor:['Shoulder abduction','Shoulder adduction','Shoulder retraction','Shoulder IR/ER','Elbow flexion'], reflex:'Biceps (C5/6), Brachioradialis (C5/6)', view:20, zoom:'arm'},
-  {id:'C6', ids:[6], col:'#f0a92a', limb:'Upper limb', sensory:'Lateral forearm, thumb', motor:['Shoulder IR/ER','Elbow flexion','Forearm pronation','Wrist extension'], reflex:'Biceps (C5/6), Brachioradialis (C5/6)', view:20, zoom:'arm'},
-  {id:'C7', ids:[7], col:'#35a853', limb:'Upper limb', sensory:'Middle finger, strip up middle dorsum of hand', motor:['Elbow extension','Forearm pronation','Finger extension','Shoulder adduction'], reflex:'Triceps', view:160, zoom:'arm'},
-  {id:'C8/T1', ids:[8,9], col:'#2a7bd4', col2:'#7c5cd6', limb:'Upper limb', sensory:'Medial hand, medial forearm', motor:['Finger flexion','Finger abduction','Finger adduction','Thumb movements'], reflex:'(finger flexion)', view:0, zoom:'arm'},
-  {id:'L2', ids:[22], col:'#e0529a', limb:'Lower limb', sensory:'Medial thigh', motor:['Hip flexion','Knee extension','Hip adduction'], reflex:'N/A', view:0, zoom:'leg'},
-  {id:'L3', ids:[23], col:'#ef7f22', limb:'Lower limb', sensory:'Medial knee', motor:['Hip flexion','Knee extension','Hip adduction'], reflex:'Patella', view:0, zoom:'leg'},
-  {id:'L4', ids:[24], col:'#1fae9f', limb:'Lower limb', sensory:'Medial malleolus', motor:['Knee extension','Hip adduction','Dorsiflexion','Knee flexion'], reflex:'Patella', view:0, zoom:'leg'},
-  {id:'L5', ids:[25], col:'#3b63de', limb:'Lower limb', sensory:'Dorsum of foot', motor:['Dorsiflexion','Toe extension','Inversion','Eversion','Knee flexion','Hip abduction'], reflex:'(hamstrings)', view:30, zoom:'leg'},
-  {id:'S1', ids:[26], col:'#9a46cf', limb:'Lower limb', sensory:'Lateral heel', motor:['Knee flexion','Plantar flexion','Toe flexion','Inversion','Eversion','Hip extension'], reflex:'Ankle', view:110, zoom:'leg'},
+  {id:'C5', limb:'Upper limb', sensory:'Lateral upper arm/elbow', motor:['Shoulder abduction','Shoulder adduction','Shoulder retraction','Shoulder IR/ER','Elbow flexion'], reflex:'Biceps (C5/6), Brachioradialis (C5/6)', p:[0.905,-0.04,1.901], e:[3.2,-2.2,2.3]},
+  {id:'C6', limb:'Upper limb', sensory:'Lateral forearm, thumb', motor:['Shoulder IR/ER','Elbow flexion','Forearm pronation','Wrist extension'], reflex:'Biceps (C5/6), Brachioradialis (C5/6)', p:[1.858,-0.447,-0.087], e:[3.2,-2.8,0.3]},
+  {id:'C7', limb:'Upper limb', sensory:'Middle finger, strip up middle dorsum of hand', motor:['Elbow extension','Forearm pronation','Finger extension','Shoulder adduction'], reflex:'Triceps', p:[1.651,-0.454,-0.349], e:[2.1,-3.4,-0.1]},
+  {id:'C8/T1', limb:'Upper limb', sensory:'Medial hand, medial forearm', motor:['Finger flexion','Finger abduction','Finger adduction','Thumb movements'], reflex:'(finger flexion)', p:[1.557,-0.367,-0.303], e:[1.6,-3.4,0], p2:[0.861,0.062,1.066]},
+  {id:'L2', limb:'Lower limb', sensory:'Medial thigh', motor:['Hip flexion','Knee extension','Hip adduction'], reflex:'N/A', p:[0.154,-0.356,-0.795], e:[-1.6,-3.6,-0.4]},
+  {id:'L3', limb:'Lower limb', sensory:'Medial knee', motor:['Hip flexion','Knee extension','Hip adduction'], reflex:'Patella', p:[0.177,-0.14,-1.521], e:[-2.0,-3.0,-1.1]},
+  {id:'L4', limb:'Lower limb', sensory:'Medial malleolus', motor:['Knee extension','Hip adduction','Dorsiflexion','Knee flexion'], reflex:'Patella', p:[0.136,-0.277,-3.34], e:[-1.8,-2.6,-2.6]},
+  {id:'L5', limb:'Lower limb', sensory:'Dorsum of foot', motor:['Dorsiflexion','Toe extension','Inversion','Eversion','Knee flexion','Hip abduction'], reflex:'(hamstrings)', p:[0.293,-0.58,-3.476], e:[0.9,-3.2,-2.1]},
+  {id:'S1', limb:'Lower limb', sensory:'Lateral heel', motor:['Knee flexion','Plantar flexion','Toe flexion','Inversion','Eversion','Hip extension'], reflex:'Ankle', p:[0.316,0.149,-3.501], e:[2.6,2.4,-3.0]},
 ];
-// one colour per numeric level id (C2=2 … C8=8, T1=9 … T12=20, L1=21 … L5=25, S1=26, S2=27, S3=28, S4–5=29; trigeminal 100–102)
-const KEY_OF = {}; KEY.forEach(k => k.ids.forEach((id, i) => KEY_OF[id] = {k, col: i ? k.col2 : k.col}));
-function levelName(id){
-  if (id >= 100) return ['V1','V2','V3'][id-100];
-  if (id <= 8) return 'C' + id;
-  if (id <= 20) return 'T' + (id-8);
-  if (id <= 25) return 'L' + (id-20);
-  if (id <= 28) return 'S' + (id-25);
-  return 'S4–S5';
-}
-const WHERE = {2:'back of the head, behind the ear',3:'upper neck',4:'lower neck',6:'over the back of the shoulder',10:'the armpit and top of the inner arm',12:'nipple line',14:'xiphoid (bottom of the breastbone)',18:'umbilicus (belly button)',20:'just above the groin crease',21:'the groin (inguinal ligament) and top of the thigh',21:'the groin (inguinal region)',26:'outer strip down the back of the leg, outer buttock ring',27:'inner strip down the back of the leg; genitals',28:'ring round the anus; genitals',29:'innermost rings round the anus (S4, S5)',100:'trigeminal nerve, ophthalmic branch: forehead, upper eyelid, nose',101:'trigeminal nerve, maxillary branch: cheek and upper lip',102:'trigeminal nerve, mandibular branch: jaw, lower lip, temple'};
+const VIEWS={front:[[0,-13,0.2],[0,0,0.2]], back:[[0,13,0.2],[0,0,0.2]], left:[[13,0,0.2],[0,0,0.2]], right:[[-13,0,0.2],[0,0,0.2]]};
+let api=null, ready=false, labelsOn=true, mode='look', selected=null;
+const annIndex={};   // key id -> annotation index
 
-/* ---------- Signed-distance body ---------- */
-// Each body is built from smooth-blended ellipsoids, tapered capsules and rounded boxes,
-// then meshed. Every primitive carries a tag so each skin point knows which limb, finger or region it is on.
-const V = {
-  add:(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]], sub:(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],
-  mul:(a,s)=>[a[0]*s,a[1]*s,a[2]*s], dot:(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],
-  len:a=>Math.hypot(a[0],a[1],a[2]), norm:a=>{const l=Math.hypot(a[0],a[1],a[2])||1;return [a[0]/l,a[1]/l,a[2]/l]},
-  cross:(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],
-};
-function ell(c, r, tag, k=0.03){
-  const [cx,cy,cz]=c,[rx,ry,rz]=r, irx=1/rx, iry=1/ry, irz=1/rz;
-  return {tag, k, d(x,y,z){
-    const px=(x-cx)*irx, py=(y-cy)*iry, pz=(z-cz)*irz;
-    const k0=Math.sqrt(px*px+py*py+pz*pz), k1=Math.sqrt(px*px*irx*irx+py*py*iry*iry+pz*pz*irz*irz);
-    return k1 < 1e-9 ? -Math.min(rx,ry,rz) : k0*(k0-1)/k1;
-  }};
-}
-function cone(a, b, r1, r2, tag, k=0.02){
-  const ba=V.sub(b,a), l2=V.dot(ba,ba), rr=r1-r2, a2=l2-rr*rr, il2=1/l2, srr=Math.sign(rr);
-  return {tag, k, d(x,y,z){
-    const pax=x-a[0], pay=y-a[1], paz=z-a[2];
-    const yy=pax*ba[0]+pay*ba[1]+paz*ba[2], zz=yy-l2;
-    const xx=pax*l2-ba[0]*yy, xy=pay*l2-ba[1]*yy, xz=paz*l2-ba[2]*yy;
-    const x2=xx*xx+xy*xy+xz*xz, y2=yy*yy*l2, z2=zz*zz*l2, kk=srr*rr*rr*x2;
-    if (Math.sign(zz)*a2*z2 > kk) return Math.sqrt(x2+z2)*il2 - r2;
-    if (Math.sign(yy)*a2*y2 < kk) return Math.sqrt(x2+y2)*il2 - r1;
-    return (Math.sqrt(x2*a2*il2)+yy*rr)*il2 - r1;
-  }};
-}
-function rbox(c, u, v, w, h, r, tag, k=0.015){
-  return {tag, k, d(x,y,z){
-    const px=x-c[0], py=y-c[1], pz=z-c[2];
-    const qx=Math.abs(px*u[0]+py*u[1]+pz*u[2])-(h[0]-r), qy=Math.abs(px*v[0]+py*v[1]+pz*v[2])-(h[1]-r), qz=Math.abs(px*w[0]+py*w[1]+pz*w[2])-(h[2]-r);
-    const mx=Math.max(qx,0), my=Math.max(qy,0), mz=Math.max(qz,0);
-    return Math.sqrt(mx*mx+my*my+mz*mz)+Math.min(Math.max(qx,qy,qz),0)-r;
-  }};
-}
-function smin(a, b, k){ const h=Math.max(k-Math.abs(a-b),0)/k; return Math.min(a,b)-h*h*k*0.25; }
-const rad = d => d*Math.PI/180;
-
-function buildBody(sex){
-  const F = sex === 'woman';
-  const P = [];   // primitives
-  const L = {arm:{}, leg:{}, hand:{}, foot:{}};
-  // head and neck
-  P.push(ell([0,1.645,0.005],[F?.074:.077,F?.102:.105,F?.09:.093],{part:'head'},0.03));
-  P.push(ell([0,1.665,-0.022],[F?.078:.08,F?.092:.095,F?.083:.085],{part:'head'},0.03));
-  P.push(ell([0,1.58,0.03],[F?.052:.058,.048,F?.06:.065],{part:'head'},0.03));
-  P.push(ell([0,1.556,0.064],[F?.026:.03,.024,.024],{part:'head'},0.02));
-  P.push(cone([0,1.656,0.088],[0,1.617,0.104],0.008,0.013,{part:'nose'},0.012));
-  for (const s of [1,-1]) P.push(ell([s*(F?.075:.078),1.635,-0.006],[.012,.03,.02],{part:'ear'},0.008));
-  P.push(cone([0,1.44,-0.015],[0,1.60,-0.008],F?.052:.06,F?.044:.05,{part:'neck'},0.035));
-  // trunk
-  const shX = F ? 0.168 : 0.19;
-  for (const s of [1,-1]) P.push(cone([s*0.05,1.475,-0.03],[s*(shX-0.02),1.425,-0.02],F?.04:.046,F?.036:.042,{part:'trunk'},0.04));
-  P.push(cone([-(shX-0.03),1.39,-0.01],[shX-0.03,1.39,-0.01],F?.058:.066,F?.058:.066,{part:'trunk'},0.04));
-  P.push(ell([0,1.30,0],[F?.145:.162,.17,F?.098:.105],{part:'trunk'},0.05));
-  if (F) for (const s of [1,-1]) P.push(ell([s*0.07,1.258,0.066],[.062,.058,.052],{part:'trunk'},0.035));
-  else for (const s of [1,-1]) P.push(ell([s*0.075,1.32,0.055],[.075,.055,.045],{part:'trunk'},0.04));
-  P.push(ell([0,1.115,0.005],[F?.118:.135,.16,F?.09:.097],{part:'trunk'},0.06));
-  P.push(ell([0,0.95,-0.005],[F?.165:.15,F?.115:.11,F?.105:.1],{part:'trunk'},0.06));
-  for (const s of [1,-1]) P.push(ell([s*(F?.072:.065),0.885,F?-.06:-.055],[F?.088:.08,F?.1:.095,F?.082:.075],{part:'trunk'},0.04));
-  P.push(ell([0,0.865,0.0],[.07,.05,.07],{part:'trunk'},0.03));
-  // arms in anatomical position: hanging, slightly away from the body, palms forward
-  const af = F ? 0.88 : 1;
-  for (const s of [1,-1]){
-    const S=[s*shX,F?1.40:1.395,-0.01], t1=rad(F?13:12), t2=rad(F?20:17);
-    const d1=[s*Math.sin(t1),-Math.cos(t1),0], d2=[s*Math.sin(t2),-Math.cos(t2),0];
-    const E=V.add(S,V.mul(d1,F?.275:.29)), W=V.add(E,V.mul(d2,F?.235:.25));
-    const lat=[s*Math.cos(t2),Math.sin(t2),0], fwd=[0,0,1];
-    L.arm[s]={S,E,W,lat};
-    P.push(ell(V.add(S,[s*0.018,-0.035,0]),[.058*af,.09,.058*af],{part:'arm',s},0.035));
-    P.push(cone(S,E,.047*af,.036*af,{part:'arm',s},0.03));
-    P.push(ell(V.add(V.add(S,V.mul(V.sub(E,S),.55)),[0,0,.012]),[.04*af,.08,.042*af],{part:'arm',s},0.03));
-    P.push(cone(E,W,.039*af,.025*af,{part:'arm',s},0.025));
-    P.push(ell(V.add(E,V.mul(V.sub(W,E),.25)),[.043*af,.075,.04*af],{part:'arm',s},0.03));
-    // hand: palm box plus fingers fanned slightly apart
-    const hs = F ? 0.92 : 1;
-    const pc=V.add(W,V.mul(d2,.05*hs));
-    L.hand[s]={pc,d2,lat,hw:.042*hs};
-    P.push(rbox(pc,d2,lat,fwd,[.05*hs,.043*hs,.0175*hs],.013,{part:'palm',s},0.02));
-    const fingers=[['little',-.75,.058,.0093],['ring',-.25,.072,.0103],['middle',.25,.08,.0106],['index',.75,.073,.0103]];
-    for (const [name,w,len,r] of fingers){
-      const a=rad(w*7), dir=V.norm(V.add(V.mul(d2,Math.cos(a)),V.mul(lat,Math.sin(a))));
-      const base=V.add(V.add(pc,V.mul(d2,.034*hs)),V.mul(lat,w*.042*hs));
-      const tip=V.add(base,V.mul(dir,(len+.012)*hs));
-      L.hand[s][name]=tip;
-      P.push(cone(base,tip,r*hs,r*.82*hs,{part:'finger',s,f:name,axis:dir,base},0.006));
-    }
-    const tdir=V.norm(V.add(V.add(V.mul(d2,.55),V.mul(lat,.75)),V.mul(fwd,.35)));
-    const tb=V.add(V.add(V.add(W,V.mul(d2,.02*hs)),V.mul(lat,.03*hs)),V.mul(fwd,.006));
-    P.push(ell(V.add(V.add(V.add(W,V.mul(d2,.035*hs)),V.mul(lat,.024*hs)),V.mul(fwd,.009)),[.022*hs,.03*hs,.016*hs],{part:'finger',s,f:'thumb',axis:tdir,base:tb},0.012));
-    const ttip=V.add(tb,V.mul(tdir,.08*hs));
-    L.hand[s].thumb=ttip;
-    P.push(cone(V.add(tb,V.mul(tdir,.02*hs)),ttip,.012*hs,.0095*hs,{part:'finger',s,f:'thumb',axis:tdir,base:tb},0.01));
-  }
-  // legs and feet
-  const lf = F ? 1.04 : 1;
-  for (const s of [1,-1]){
-    const H=[s*(F?.095:.09),0.90,0], K=[s*(F?.092:.095),0.49,0.005], A=[s*.095,0.085,-0.015];
-    L.leg[s]={H,K,A};
-    P.push(cone(H,K,.088*lf,.053,{part:'leg',s},0.04));
-    P.push(ell([s*(F?.1:.1),0.74,0.01],[.078*lf,.17,.08*lf],{part:'leg',s},0.04));
-    P.push(ell(K,[.05,.05,.05],{part:'leg',s},0.03));
-    P.push(cone(K,A,.05,.031,{part:'leg',s},0.03));
-    P.push(ell([s*.098,0.36,-0.025],[.047,.11,.048],{part:'leg',s},0.03));
-    const fs = F ? 0.93 : 1, fx=s*.10;
-    L.foot[s]={c:[fx,.03,.06*fs], hw:.035*fs};
-    P.push(ell([s*.095,0.035,-0.035*fs],[.032,.035,.04*fs],{part:'foot',s},0.02));
-    P.push(rbox([fx,0.03,0.06*fs],[1,0,0],[0,1,0],[0,0,1],[.033*fs,.024,.085*fs],.014,{part:'foot',s},0.025));
-    P.push(ell([s*.095,0.06,0.02],[.033,.033,.06*fs],{part:'foot',s},0.03));
-    P.push(cone([s*.077,0.019,0.16*fs],[s*.127,0.016,0.135*fs],.017*fs,.013*fs,{part:'foot',s},0.012));
-  }
-  const lm = {anus:[0,0.838,F?-0.05:-0.045]};
-  return {P, L, lm, scale: F ? 0.94 : 1};
-}
-
-function sdf(P, x, y, z){
-  let d = 1e9;
-  for (let i=0;i<P.length;i++){ const p=P[i]; d = smin(d, p.d(x,y,z), p.k); }
-  return d;
-}
-function nearestPrim(P, x, y, z){
-  let best=1e9, bp=null;
-  for (let i=0;i<P.length;i++){ const d=P[i].d(x,y,z); if (d<best){best=d;bp=P[i];} }
-  return bp;
-}
-
-/* Surface nets over a sparse-evaluated grid: only cells near the skin are evaluated exactly */
-function meshBody(body, h){
-  const {P} = body;
-  const x0=-0.52, y0=-0.02, z0=-0.2, X1=0.52, Y1=1.79, Z1=0.24;
-  const nx=Math.ceil((X1-x0)/h)+1, ny=Math.ceil((Y1-y0)/h)+1, nz=Math.ceil((Z1-z0)/h)+1;
-  const f=new Float32Array(nx*ny*nz);
-  const C=4, cx=Math.ceil(nx/C)+1, cy=Math.ceil(ny/C)+1, cz=Math.ceil(nz/C)+1;
-  const cv=new Float32Array(cx*cy*cz);
-  for (let k=0;k<cz;k++) for (let j=0;j<cy;j++) for (let i=0;i<cx;i++)
-    cv[i+cx*(j+cy*k)] = sdf(P, x0+i*C*h, y0+j*C*h, z0+k*C*h);
-  const far = C*h*2.2;
-  for (let k=0;k<nz;k++){ const z=z0+k*h, ck=Math.round(k/C);
-    for (let j=0;j<ny;j++){ const y=y0+j*h, cj=Math.round(j/C);
-      for (let i=0;i<nx;i++){
-        const c = cv[Math.round(i/C)+cx*(cj+cy*ck)];
-        f[i+nx*(j+ny*k)] = Math.abs(c) > far ? c : sdf(P, x0+i*h, y, z);
-      }}}
-  const idx=(i,j,k)=>i+nx*(j+ny*k);
-  const cellV=new Int32Array(nx*ny*nz).fill(-1);
-  const pos=[]; const corners=new Float32Array(8);
-  const E=[[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]];
-  for (let k=0;k<nz-1;k++) for (let j=0;j<ny-1;j++) for (let i=0;i<nx-1;i++){
-    let mask=0;
-    for (let c=0;c<8;c++){ const v=f[idx(i+(c&1),j+((c>>1)&1),k+((c>>2)&1))]; corners[c]=v; if (v<0) mask|=1<<c; }
-    if (mask===0||mask===255) continue;
-    let sx=0,sy=0,sz=0,n=0;
-    for (const [a,b] of E){
-      const va=corners[a], vb=corners[b];
-      if ((va<0)===(vb<0)) continue;
-      const t=va/(va-vb);
-      sx+=(a&1)+t*((b&1)-(a&1)); sy+=((a>>1)&1)+t*(((b>>1)&1)-((a>>1)&1)); sz+=((a>>2)&1)+t*(((b>>2)&1)-((a>>2)&1)); n++;
-    }
-    cellV[idx(i,j,k)]=pos.length/3;
-    pos.push(x0+(i+sx/n)*h, y0+(j+sy/n)*h, z0+(k+sz/n)*h);
-  }
-  const tri=[];
-  const quad=(a,b,c,d,flip)=>{ if (a<0||b<0||c<0||d<0) return; if (flip) tri.push(a,d,c,a,c,b); else tri.push(a,b,c,a,c,d); };
-  for (let k=1;k<nz-1;k++) for (let j=1;j<ny-1;j++) for (let i=1;i<nx-1;i++){
-    const v=f[idx(i,j,k)], inside=v<0;
-    if (inside!==(f[idx(i+1,j,k)]<0)) quad(cellV[idx(i,j-1,k-1)],cellV[idx(i,j,k-1)],cellV[idx(i,j,k)],cellV[idx(i,j-1,k)],!inside);
-    if (inside!==(f[idx(i,j+1,k)]<0)) quad(cellV[idx(i-1,j,k-1)],cellV[idx(i-1,j,k)],cellV[idx(i,j,k)],cellV[idx(i,j,k-1)],!inside);
-    if (inside!==(f[idx(i,j,k+1)]<0)) quad(cellV[idx(i-1,j-1,k)],cellV[idx(i,j-1,k)],cellV[idx(i,j,k)],cellV[idx(i-1,j,k)],!inside);
-  }
-  // snap each vertex onto the surface and take the normal from the distance field
-  const nv=pos.length/3, P3=new Float32Array(pos.length), N3=new Float32Array(pos.length), e=0.0015;
-  for (let v=0;v<nv;v++){
-    let x=pos[3*v], y=pos[3*v+1], z=pos[3*v+2];
-    for (let it=0;it<2;it++){
-      const d=sdf(P,x,y,z);
-      let gx=sdf(P,x+e,y,z)-sdf(P,x-e,y,z), gy=sdf(P,x,y+e,z)-sdf(P,x,y-e,z), gz=sdf(P,x,y,z+e)-sdf(P,x,y,z-e);
-      const gl=Math.hypot(gx,gy,gz)||1; gx/=gl; gy/=gl; gz/=gl;
-      if (it===0){ x-=d*gx; y-=d*gy; z-=d*gz; } else { N3[3*v]=gx; N3[3*v+1]=gy; N3[3*v+2]=gz; }
-    }
-    P3[3*v]=x; P3[3*v+1]=y; P3[3*v+2]=z;
-  }
-  return {pos:P3, nrm:N3, tri:new Uint32Array(tri)};
-}
-
-/* ---------- Which dermatome is this skin point on? ---------- */
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function onLimb(p, pts, latBase){
-  let best=1e9, out=null, cum=0, total=0;
-  const lens=[]; for (let i=0;i<pts.length-1;i++){ const l=V.len(V.sub(pts[i+1],pts[i])); lens.push(l); total+=l; }
-  for (let i=0;i<pts.length-1;i++){
-    const a=pts[i], ab=V.sub(pts[i+1],a), t=clamp(V.dot(V.sub(p,a),ab)/V.dot(ab,ab),0,1);
-    const c=V.add(a,V.mul(ab,t)), d=V.len(V.sub(p,c));
-    if (d<best){ best=d; out={t:(cum+t*lens[i])/total, seg:i, c, axis:V.norm(ab)}; }
-    cum+=lens[i];
-  }
-  const ax=out.axis, f0=[0,0,1];
-  const fw=V.norm(V.sub(f0,V.mul(ax,V.dot(f0,ax)))), lt=V.norm(V.sub(latBase,V.mul(ax,V.dot(latBase,ax))));
-  const v=V.sub(p,out.c);
-  out.phi = Math.atan2(V.dot(v,lt), V.dot(v,fw))*180/Math.PI;   // 0 front, +90 lateral, -90 medial, ±180 back
-  return out;
-}
-// Keegan and Garrett scheme (the one Netter's atlas plate draws).
-// Trunk levels in order, front and back on one scale; the front skips C6, the back has C5 and C6 over the shoulders.
-const ORD=[4,5,6,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25];
-const FRONT=[[1.462,0.5],[1.428,2.5],[1.295,6],[1.20,8],[1.06,12],[0.965,14],[0.915,15]];
-const BACK=[[1.475,0.5],[1.445,1.5],[1.42,2.5],[1.0,14.5],[0.91,19.5]];
-function interp(A, y){
-  if (y>=A[0][0]) return A[0][1]-(y-A[0][0])/(A[0][0]-A[1][0])*(A[1][1]-A[0][1]);
-  for (let i=0;i<A.length-1;i++){ const [ya,oa]=A[i],[yb,ob]=A[i+1]; if (y>=yb) return oa+(ya-y)/(ya-yb)*(ob-oa); }
-  const [ya,oa]=A[A.length-2],[yb,ob]=A[A.length-1];
-  return ob+(yb-y)/(ya-yb)*(ob-oa);
-}
-function classify(body, p, n){
-  const {P, L, lm} = body;
-  const pr = nearestPrim(P, p[0], p[1], p[2]), tg = pr.tag, s = tg.s;
-  const [x,y,z]=p;
-  if (tg.part==='head'||tg.part==='nose'||tg.part==='ear'){
-    const rx=x, ry=y-1.645, rz=z-0.005;
-    if (tg.part==='ear') return 2;
-    if (rz < -0.012) return 2;
-    if (ry < -0.052 && rz < 0.025 && Math.abs(rx) > 0.03) return 2;
-    if (n[1] < -0.45 && rz > -0.01 && ry < -0.05) return 3;
-    if (tg.part==='nose') return ry > -0.012 ? 100 : 101;
-    if (ry > 0.018) return 100;
-    if (ry > -0.042 && rz > 0.03) return 101;
-    return 102;
-  }
-  if (tg.part==='neck'){
-    if (y > 1.555 && z < -0.03) return 2;
-    return y < 1.49 ? 4 : 3;
-  }
-  if (tg.part==='trunk'){
-    const a = clamp(z/0.08,-1,1);
-    // sacral rings round the anus: S5 innermost, S1 outermost, on the back of the pelvis
-    if (y < 0.98 && z < 0.02){
-      const r = V.len(V.sub(p, lm.anus));
-      if (r < 0.022) return 29; if (r < 0.045) return 29;
-      if (r < 0.072) return 28;
-      if (z < 0 && r < 0.105) return 27;
-      if (z < -0.01 && r < 0.14 && y < 0.93) return 26;
-    }
-    // genital area in front of the perineum: S2, S3
-    if (y < 0.875 && Math.abs(x) < 0.05 && z > 0.0) return 27;
-    if (a < -0.2 && Math.abs(x) > 0.125 && y > 1.355 && y < 1.425) return y > 1.39 ? 7 : 8;
-    const of = interp(FRONT, y + 0.03*Math.min(1,(x/0.15)**2)), ob = interp(BACK, y);
-    const t = clamp((a+0.6)/1.2, 0, 1);
-    let o = Math.round(ob + (of-ob)*t);
-    o = clamp(o, 0, a > 0.2 ? 15 : 19);
-    let id = ORD[o];
-    if (id===6 && a > 0) id = 5;
-    if (y < 0.93 && a < 0 && id < 21) id = 25;
-    return id;
-  }
-  if (tg.part==='arm'){
-    const A=L.arm[s], o=onLimb(p,[A.S,A.E,A.W],[s,0,0]), ph=o.phi;
-    if (o.seg===0){
-      const u=o.t/0.537;
-      if (u < 0.14 && n[1] > 0.5) return 5;
-      if (ph >= -20 && ph <= 110) return 5;
-      if (ph > 110 && ph <= 155) return 6;
-      if (Math.abs(ph) > 155) return 7;
-      if (ph <= -120) return 8;
-      return u < 0.2 ? 10 : 9;
-    }
-    const u=(o.t-0.537)/0.463;
-    if (ph >= -15 && ph <= 140) return 6;
-    if (Math.abs(ph) > 140) return 7;
-    if (ph <= -60) return 8;
-    return u < 0.5 ? 9 : 8;
-  }
-  if (tg.part==='palm'){
-    const H=L.hand[s], w=V.dot(V.sub(p,H.pc),H.lat)/H.hw;
-    return w > 0.55 ? 6 : w > -0.05 ? 7 : 8;
-  }
-  if (tg.part==='finger'){
-    if (tg.f==='thumb') return 6;
-    if (tg.f==='index' || tg.f==='middle') return 7;
-    return 8;
-  }
-  if (tg.part==='leg'){
-    const G=L.leg[s], o=onLimb(p,[G.H,G.K,G.A],[s,0,0]), ph=o.phi, tK=0.5;
-    if (o.t < tK){
-      const u=o.t/tK;
-      // S1 (outer) and S2 (inner) run down the middle of the back of the thigh
-      if (Math.abs(ph) > 150) return ph > 0 ? 26 : 27;
-      // back of the outer thigh: L1, L2, L3 from top to bottom
-      if (ph > 90){ const q2 = u + 0.3*(150-ph)/60; return q2 < 0.1 ? 25 : q2 < 0.35 ? 21 : q2 < 0.6 ? 22 : q2 < 0.85 ? 23 : 24; }
-      // front, outer and inner thigh: bands spiral down from outer-upper to inner-lower
-      const q = u + 0.22*(Math.max(ph,-120)/90);
-      return q < 0.18 ? 21 : q < 0.45 ? 22 : q < 0.8 ? 23 : 24;
-    }
-    const u=(o.t-tK)/(1-tK);
-    if (Math.abs(ph) > 145) return u > 0.82 ? 26 : ph > 0 ? 26 : 27;
-    if (ph < -10) return 24;
-    if (ph <= 95) return 25;
-    return u > 0.45 ? 26 : 25;
-  }
-  if (tg.part==='foot'){
-    const Fo=L.foot[s], ux=s*(x-Fo.c[0])/Fo.hw;
-    if (n[1] < -0.55) return ux > 0.25 ? 26 : ux < -0.35 ? 24 : 25;
-    if (z < -0.005) return ux > -0.3 ? 26 : 24;
-    if (ux > 0.45) return 26;
-    if (ux < -0.55) return 24;
-    return 25;
-  }
-  return 4;
-}
-
-/* ---------- Three.js scene ---------- */
-const stage=document.getElementById('stage');
-const renderer=new THREE.WebGLRenderer({antialias:true, alpha:true, preserveDrawingBuffer:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-stage.prepend(renderer.domElement);
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(32,1,0.05,50);
-scene.add(new THREE.HemisphereLight(0xffffff,0x8a7f99,1.25));
-const key=new THREE.DirectionalLight(0xffffff,1.6); key.position.set(1.5,3,4); scene.add(key);
-const rim=new THREE.DirectionalLight(0xffffff,0.7); rim.position.set(-2,2,-3); scene.add(rim);
-const floor=new THREE.Mesh(new THREE.CircleGeometry(0.42,48),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.07}));
-floor.rotation.x=-Math.PI/2;
-
-const GREY_A=new THREE.Color('#e4ded6'), GREY_B=new THREE.Color('#d2cbc1'), FACE=new THREE.Color('#d8d0c7'), FACE2=new THREE.Color('#d0c7bd'), DIM=new THREE.Color('#ebe7e2');
-function rampColor(id){
-  if (id>=100) return new THREE.Color().setHSL(0,0,0.62+0.06*(id-100));
-  return new THREE.Color().setHSL(((id-2)/28)*0.85,0.62,0.6);
-}
-const state={sel:null, allCol:false, labels:true, rot:0, spin:false, fig:'both', zoom:'all', testIds:null};
-function colorFor(id){
-  if (state.testIds){ return state.testIds.includes(id) ? new THREE.Color('#ff7a1a') : DIM; }
-  if (state.sel){ const on=state.sel.ids.includes(id); if (!on) return DIM; return new THREE.Color(KEY_OF[id].col); }
-  if (state.allCol) return rampColor(id);
-  if (KEY_OF[id]) return new THREE.Color(KEY_OF[id].col);
-  if (id>=100) return id===101 ? FACE2 : FACE;
-  return (id%2) ? GREY_A : GREY_B;
-}
-
-const figures=[];
-function makeFigure(sex, offsetX){
-  const body=buildBody(sex);
-  const h = innerWidth < 700 ? 0.0065 : 0.0055;
-  const m=meshBody(body,h);
-  const nv=m.pos.length/3, ids=new Uint16Array(nv);
-  for (let v=0;v<nv;v++) ids[v]=classify(body,[m.pos[3*v],m.pos[3*v+1],m.pos[3*v+2]],[m.nrm[3*v],m.nrm[3*v+1],m.nrm[3*v+2]]);
-  // vertices on a boundary between two levels are drawn a little darker, to outline each strip
-  const edge=new Uint8Array(nv);
-  for (let t=0;t<m.tri.length;t+=3){ const a=m.tri[t],b=m.tri[t+1],c=m.tri[t+2];
-    if (ids[a]!==ids[b]||ids[b]!==ids[c]){ edge[a]=edge[b]=edge[c]=1; } }
-  const g=new THREE.BufferGeometry();
-  g.setAttribute('position',new THREE.BufferAttribute(m.pos,3));
-  g.setAttribute('normal',new THREE.BufferAttribute(m.nrm,3));
-  g.setAttribute('color',new THREE.BufferAttribute(new Float32Array(nv*3),3));
-  g.setIndex(new THREE.BufferAttribute(m.tri,1));
-  g.computeBoundingSphere();
-  const mesh=new THREE.Mesh(g,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.62,metalness:0,side:THREE.DoubleSide}));
-  const grp=new THREE.Group(); grp.add(mesh); grp.add(floor.clone());
-  grp.scale.setScalar(body.scale); grp.position.x=offsetX; scene.add(grp);
-  const fig={sex,body,mesh,grp,ids,edge,nv,offsetX,labels:[]};
-  // labels go on the outer side of each figure: the man's right, the woman's left
-  const s = sex==='man' ? -1 : 1, Lb=body.L;
-  const A=Lb.arm[s], G=Lb.leg[s], Hn=Lb.hand[s];
-  const anchors=[
-    ['C5',[5],V.add(V.add(A.S,V.mul(V.sub(A.E,A.S),.55)),V.mul(A.lat,.05))],
-    ['C6',[6],Hn.thumb], ['C7',[7],Hn.middle], ['C8',[8],Hn.little],
-    ['T1',[9],V.add(V.add(A.E,V.mul(V.sub(A.W,A.E),.2)),V.add(V.mul(A.lat,-.04),[0,0,.01]))],
-    ['L2',[22],V.add(V.add(G.H,V.mul(V.sub(G.K,G.H),.5)),[-s*.06,0,.04])],
-    ['L3',[23],V.add(G.K,[-s*.05,0,0])], ['L4',[24],V.add(G.A,[-s*.035,0,0])],
-    ['L5',[25],[s*.10,.055,.09]], ['S1',[26],[s*.128,.03,-.045]],
-    ['T4',[12],[0,1.295,0.11],'nipple line'], ['T10',[18],[0,1.06,0.1],'umbilicus'], ['C5',[5],[s*.09,1.43,0.06],'clavicle'], ['L1',[21],[s*.07,0.9,0.1],'groin'],
-  ];
-  for (const [name,want,target,minor] of anchors){
-    let best=1e9, bv=-1;
-    for (let v=0;v<nv;v++){ if (!want.includes(ids[v])) continue;
-      const dx=m.pos[3*v]-target[0], dy=m.pos[3*v+1]-target[1], dz=m.pos[3*v+2]-target[2], d=dx*dx+dy*dy+dz*dz;
-      if (d<best){best=d;bv=v;} }
-    if (bv<0) continue;
-    const el=document.createElement('div');
-    const isMinor = minor !== undefined;
-    el.className='lbl'+(isMinor?' minor':'');
-    el.innerHTML = name + (isMinor && minor ? `<small>${minor}</small>` : '');
-    if (!isMinor) el.style.background = KEY_OF[want[0]].col;
-    document.getElementById('labels').appendChild(el);
-    fig.labels.push({el,v:bv,ids:want,minor:isMinor});
-  }
-  paint(fig);
-  return fig;
-}
-function paint(fig){
-  const col=fig.mesh.geometry.attributes.color, arr=col.array, cache={};
-  for (let v=0;v<fig.nv;v++){
-    const id=fig.ids[v]; let c=cache[id]; if (!c) c=cache[id]=colorFor(id);
-    const k=fig.edge[v] ? 0.9 : 1;
-    arr[3*v]=c.r*k; arr[3*v+1]=c.g*k; arr[3*v+2]=c.b*k;
-  }
-  col.needsUpdate=true;
-}
-const repaint=()=>figures.forEach(paint);
-
-/* camera and turning */
-const VIEWS={all:{y:0.88,dist:3.9},arm:{y:1.05,dist:2.0},leg:{y:0.42,dist:2.2}};
-let camY=0.9, camDist=4.4, camTargetY=0.9, camTargetDist=4.4, zoomMul=1, rotTarget=0;
-function layout(){
-  const w=stage.clientWidth, h=stage.clientHeight;
-  renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
-}
-function setFigures(){
-  const both=state.fig==='both';
-  figures.forEach(f=>{ f.grp.visible = both || f.sex===state.fig; f.grp.position.x = both ? f.offsetX : 0; });
-  document.getElementById('who').innerHTML = both ? '<span>Man</span><span>Woman</span>' : `<span>${state.fig==='man'?'Man':'Woman'}</span>`;
-}
-function fitDist(){
-  const v=VIEWS[state.zoom]; let d=v.dist;
-  if (state.fig!=='both') d*=0.72;
-  if (camera.aspect<1) d*= state.fig==='both' ? 1/Math.max(camera.aspect,0.45) : 1/Math.max(camera.aspect,0.6)*0.8;
-  return d;
-}
-function setZoom(z){ state.zoom=z; zoomMul=1; camTargetY=VIEWS[z].y; pressed('[data-zoom]',b=>b.dataset.zoom===z); }
-
-let drag=null, pinch=null;
-const el=renderer.domElement;
-el.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY,rot:rotTarget,camY:camTargetY,moved:false,id:e.pointerId}; el.setPointerCapture(e.pointerId); });
-el.addEventListener('pointermove',e=>{
-  if (drag && drag.id===e.pointerId && !pinch){
-    const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
-    if (Math.abs(dx)+Math.abs(dy)>4){ drag.moved=true; state.spin=false; pressed('[data-spin]',()=>false); }
-    rotTarget = drag.rot + dx*0.6;
-    camTargetY = clamp(drag.camY + dy*0.003*zoomMul*(camDist/4.4), 0.1, 1.6);
-    hideTip();
-  } else if (!drag) hover(e);
-});
-el.addEventListener('pointerup',e=>{ if (drag && !drag.moved) tap(e); drag=null; });
-el.addEventListener('pointercancel',()=>{drag=null;});
-el.addEventListener('wheel',e=>{ e.preventDefault(); zoomMul=clamp(zoomMul*Math.exp(e.deltaY*0.0012),0.25,1.6); },{passive:false});
-el.addEventListener('touchstart',e=>{ if (e.touches.length===2){ drag=null; pinch={d:Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY),z:zoomMul}; } },{passive:true});
-el.addEventListener('touchmove',e=>{ if (pinch && e.touches.length===2){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); zoomMul=clamp(pinch.z*pinch.d/d,0.25,1.6); } },{passive:true});
-el.addEventListener('touchend',e=>{ if (e.touches.length<2) pinch=null; });
-
-/* picking */
-const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
-function pick(e){
-  const r=el.getBoundingClientRect();
-  ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
-  ray.setFromCamera(ndc,camera);
-  const hits=ray.intersectObjects(figures.filter(f=>f.grp.visible).map(f=>f.mesh),false);
-  if (!hits.length) return null;
-  const hit=hits[0], fig=figures.find(f=>f.mesh===hit.object);
-  return {fig, id: fig.ids[hit.face.a]};
-}
-const tip=document.getElementById('tip');
-function hideTip(){ tip.style.display='none'; }
-function showTip(e, id){
-  const r=stage.getBoundingClientRect(), kk=KEY_OF[id];
-  let html;
-  if (kk){ const k=kk.k;
-    html=`<b><span class="sw" style="background:${kk.col}"></span>${levelName(id)}</b>${k.id.includes('/')?` <span style="opacity:.75">(the ${k.id} row)</span>`:''}<br>Sensory: ${k.sensory}<br>Reflex: ${k.reflex}`;
-  } else {
-    const w=WHERE[id];
-    html=`<b>${levelName(id)}</b>${w?`<br>${w}`:''}<br><span style="opacity:.75">${id>=100?'Cranial nerve, not on the table':'Not on the table'}</span>`;
-  }
-  tip.innerHTML=html; tip.style.display='block';
-  const x=e.clientX-r.left, y=e.clientY-r.top;
-  tip.style.left=Math.min(x+14, r.width-tip.offsetWidth-8)+'px';
-  tip.style.top=Math.max(8, y-tip.offsetHeight-12)+'px';
-}
-let lastHover=0;
-function hover(e){
-  if (mode!=='look' || e.pointerType==='touch') return;
-  const now=performance.now(); if (now-lastHover<40) return; lastHover=now;
-  const p=pick(e); if (!p){ hideTip(); return; } showTip(e,p.id);
-}
-function tap(e){
-  const p=pick(e);
-  if (mode==='test' && quiz.kind==='find'){ if (p) answerFind(p.id); return; }
-  if (!p){ hideTip(); return; }
-  showTip(e,p.id);
-}
-
-/* labels follow the mesh; hidden when the skin under them faces away */
-const tmp=new THREE.Vector3(), tmpN=new THREE.Vector3(), camDir=new THREE.Vector3(), nm=new THREE.Matrix3();
-function updateLabels(){
-  const w=stage.clientWidth, h=stage.clientHeight;
-  for (const f of figures){
-    f.grp.updateMatrixWorld(); nm.getNormalMatrix(f.grp.matrixWorld);
-    const pa=f.mesh.geometry.attributes.position.array, na=f.mesh.geometry.attributes.normal.array;
-    for (const L of f.labels){
-      let show = state.labels && f.grp.visible && !state.testIds && (!L.minor || !state.sel) && (!state.sel || L.ids.some(i=>state.sel.ids.includes(i)));
-      if (L.minor && (state.zoom!=='all' || w < 600)) show=false;
-      if (show){
-        tmp.set(pa[3*L.v],pa[3*L.v+1],pa[3*L.v+2]).applyMatrix4(f.grp.matrixWorld);
-        tmpN.set(na[3*L.v],na[3*L.v+1],na[3*L.v+2]).applyMatrix3(nm).normalize();
-        camDir.copy(camera.position).sub(tmp).normalize();
-        if (tmpN.dot(camDir) < 0.15) show=false;
-        tmp.project(camera);
-        if (show){ L.el.style.transform=`translate(-50%,-50%) translate(${(tmp.x*0.5+0.5)*w}px,${(-tmp.y*0.5+0.5)*h}px)`; L.el.style.position='absolute'; L.el.style.left='0'; L.el.style.top='0'; }
-      }
-      L.el.style.opacity = show ? 1 : 0;
-    }
-  }
-}
-
-let rot=0;
-function frame(){
-  if (state.spin) rotTarget += 0.35;
-  rot += (rotTarget-rot)*0.15;
-  for (const f of figures) f.grp.rotation.y = (f.sex==='man' ? 1 : -1) * rad(rot);
-  camDist += (fitDist()*zoomMul - camDist)*0.15;
-  camY += (camTargetY - camY)*0.15;
-  camera.position.set(0, camY+0.08, camDist); camera.lookAt(0, camY, 0);
-  renderer.render(scene,camera);
-  updateLabels();
-  requestAnimationFrame(frame);
-}
-
-/* ---------- Panel: Look ---------- */
-function pressed(sel, fn){ document.querySelectorAll(sel).forEach(b=>b.setAttribute('aria-pressed', fn(b)?'true':'false')); }
-function dotHtml(k){ return k.col2 ? `<span class="dot split" style="--a:${k.col};--b:${k.col2}"></span>` : `<span class="dot" style="background:${k.col}"></span>`; }
 function rowDetail(k){ return `<dt>Sensory</dt><dd>${k.sensory}</dd><dt>Motor</dt><dd>${k.motor.join('<br>')}</dd><dt>Reflexes</dt><dd>${k.reflex}</dd>`; }
+function annText(k){ return `Sensory: ${k.sensory}\n\nMotor: ${k.motor.join(', ')}\n\nReflex: ${k.reflex}`; }
+function pressed(sel, fn){ document.querySelectorAll(sel).forEach(b=>b.setAttribute('aria-pressed', fn(b)?'true':'false')); }
+const mark=document.getElementById('mark');
+function say(t){ mark.textContent=t; mark.style.display=t?'block':'none'; }
+
+function fly(eye, target){ if (ready) api.setCameraLookAt(eye, target, 1.2); }
+function flyTo(k){ fly(k.e, k.p); }
+
+/* annotations: one per level, built once; Test mode hides them */
+function buildAnnotations(done){
+  let i=0;
+  const next=()=>{
+    if (i>=KEY.length){ done(); return; }
+    const k=KEY[i++];
+    api.createAnnotationFromWorldPosition(k.p, k.e, k.p, k.id, annText(k), (err, idx)=>{ if (!err) annIndex[k.id]=idx; next(); });
+  };
+  next();
+}
+function setLabels(on){
+  labelsOn=on;
+  Object.values(annIndex).forEach(idx=> on ? api.showAnnotation(idx) : api.hideAnnotation(idx));
+}
+
+/* viewer */
+const client=new Sketchfab(document.getElementById('viewer'));
+client.init(MODEL,{
+  autostart:1, ui_infos:0, ui_watermark:0, ui_hint:0, ui_stop:0, ui_inspector:0, ui_settings:0, ui_vr:0, ui_ar:0, ui_annotations:0, annotation_tooltip_visible:0, scrollwheel:1, preload:1,
+  success(a){ api=a; api.start(); api.addEventListener('viewerready',()=>{
+    ready=true; document.getElementById('loading').remove();
+    api.setCameraLookAt(...VIEWS.front, 0);
+    buildAnnotations(()=>{ api.addEventListener('click', onModelClick, {pick:'slow'}); });
+  }); },
+  error(){ document.getElementById('loading').textContent='The 3D model could not load here. It needs WebGL; try another browser or open it on Sketchfab.'; }
+});
+
+/* toolbar */
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{ pressed('[data-view]',x=>x===b); fly(...VIEWS[b.dataset.view]); });
+document.querySelector('[data-labels]').onclick=e=>{ setLabels(!labelsOn); e.currentTarget.setAttribute('aria-pressed',labelsOn); };
+
+/* Look */
 const rows=document.getElementById('rows');
 let lastLimb='';
 for (const k of KEY){
   if (k.limb!==lastLimb){ rows.insertAdjacentHTML('beforeend',`<div class="limb">${k.limb}</div>`); lastLimb=k.limb; }
   const b=document.createElement('button'); b.className='row'; b.setAttribute('aria-pressed','false');
-  b.innerHTML=`<span class="lv">${dotHtml(k)}${k.id}</span><dl>${rowDetail(k)}</dl>`;
-  b.onclick=()=>select(state.sel===k?null:k);
+  b.innerHTML=`<span class="lv">${k.id}<span class="pin" title="Its marker on the model">${KEY.indexOf(k)+1}</span></span><dl>${rowDetail(k)}</dl>`;
+  b.onclick=()=>select(selected===k?null:k);
   k.btn=b; rows.appendChild(b);
 }
 function select(k){
-  state.sel=k; KEY.forEach(x=>x.btn.setAttribute('aria-pressed', x===k?'true':'false'));
-  if (k){ rotTarget=nearestRot(k.view); setZoom(k.zoom); }
-  repaint();
+  selected=k; KEY.forEach(x=>x.btn.setAttribute('aria-pressed', x===k?'true':'false'));
+  if (!ready) return;
+  if (k){ if (annIndex[k.id]!==undefined && labelsOn) api.gotoAnnotation(annIndex[k.id],{preventCameraAnimation:false}); else flyTo(k); }
+  else { pressed('[data-view]',x=>x.dataset.view==='front'); fly(...VIEWS.front); }
 }
-function nearestRot(deg){ const n=Math.round((rotTarget-deg)/360); return deg+n*360; }
 
-/* toolbar */
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{ state.spin=false; rotTarget=nearestRot(+b.dataset.view); pressed('[data-view]',x=>x===b); pressed('[data-spin]',()=>false); });
-document.querySelector('[data-spin]').onclick=e=>{ state.spin=!state.spin; e.currentTarget.setAttribute('aria-pressed',state.spin); };
-document.querySelectorAll('[data-fig]').forEach(b=>b.onclick=()=>{ state.fig=b.dataset.fig; pressed('[data-fig]',x=>x===b); setFigures(); });
-document.querySelectorAll('[data-zoom]').forEach(b=>b.onclick=()=>setZoom(b.dataset.zoom));
-document.querySelector('[data-labels]').onclick=e=>{ state.labels=!state.labels; e.currentTarget.setAttribute('aria-pressed',state.labels); };
-document.querySelector('[data-allcol]').onclick=e=>{ state.allCol=!state.allCol; e.currentTarget.setAttribute('aria-pressed',state.allCol); repaint(); };
-
-/* ---------- Panel: Test ---------- */
-let mode='look';
-const quiz={kind:'name', right:0, total:0, cur:null, done:false};
+/* Test */
+const quiz={kind:'name', right:0, total:0, cur:null, done:false, tmp:null};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
   mode=b.dataset.tab;
   document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected', x===b?'true':'false'));
   document.getElementById('look').hidden = mode!=='look';
   document.getElementById('test').hidden = mode!=='test';
-  hideTip();
-  if (mode==='test'){ select(null); newQuestion(); } else { state.testIds=null; repaint(); }
+  clearTmp(); say('');
+  if (mode==='test'){ select(null); if (ready) setLabels(false); newQuestion(); }
+  else if (ready) setLabels(document.querySelector('[data-labels]').getAttribute('aria-pressed')==='true');
 });
 document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{ quiz.kind=b.dataset.kind; pressed('[data-kind]',x=>x===b); newQuestion(); });
 const qbox=document.getElementById('qbox');
-const pickKey=()=>{ let k; do { k=KEY[Math.floor(Math.random()*KEY.length)]; } while (quiz.cur && k===quiz.cur && KEY.length>1); return k; };
+function clearTmp(){ if (quiz.tmp!==null && api){ api.removeAnnotation(quiz.tmp); quiz.tmp=null; } }
+function pickKey(){ let k; do { k=KEY[Math.floor(Math.random()*KEY.length)]; } while (k===quiz.cur); return k; }
+const choices=()=>`<div class="choices">${KEY.map(c=>`<button data-a="${c.id}">${c.id}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
 function newQuestion(){
+  clearTmp(); say('');
   quiz.cur=pickKey(); quiz.done=false; const k=quiz.cur;
   if (quiz.kind==='name'){
-    state.testIds=k.ids; rotTarget=nearestRot(k.view); setZoom(k.zoom);
-    qbox.innerHTML=`<p class="q">Which level is the <b>orange</b> area?</p><div class="choices">${KEY.map(c=>`<button data-a="${c.id}">${c.id}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+    qbox.innerHTML=`<p class="q">The camera is on a test point (the marker in the middle). <b>Which level is it?</b></p>`+choices();
+    if (ready){ flyTo(k); api.createAnnotationFromWorldPosition(k.p,k.e,k.p,'?','',(e,idx)=>{ if(!e) quiz.tmp=idx; }); }
   } else if (quiz.kind==='find'){
-    state.testIds=null; state.labels=false; pressed('[data-labels]',()=>false); setZoom(k.zoom);
-    qbox.innerHTML=`<p class="q">Tap the <b>${k.id}</b> area on either figure.</p><p class="help">Labels are off. Turn the figures if you need to.</p><div class="fb" id="fb"></div>`;
+    qbox.innerHTML=`<p class="q">Click the test point for <b>${k.id}</b> on the model.</p><p class="help">Either side counts. Turn and zoom first if you need to; a click without dragging is your answer.</p><div class="fb" id="fb"></div>`;
+    if (ready) fly(...VIEWS.front);
   } else {
-    state.testIds=null;
     const clues=[['Sensory',k.sensory],['Reflex',k.reflex],['Motor',k.motor.join(', ')]];
-    const [label,clue]= (k.reflex==='N/A' || /C5\/6/.test(k.reflex) || k.reflex==='Patella') ? clues[Math.random()<.7?0:2] : clues[Math.floor(Math.random()*3)];
-    qbox.innerHTML=`<p class="q">${label}: <b>${clue}</b>. Which level?</p><div class="choices">${KEY.map(c=>`<button data-a="${c.id}">${c.id}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+    const weak = k.reflex==='N/A' || /C5\/6/.test(k.reflex) || k.reflex==='Patella';
+    const [label,clue] = weak ? clues[Math.random()<.7?0:2] : clues[Math.floor(Math.random()*3)];
+    qbox.innerHTML=`<p class="q">${label}: <b>${clue}</b>. Which level?</p>`+choices();
   }
   qbox.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>answerChoice(b));
-  repaint(); score();
+  score();
 }
 function feedback(ok, k, extra=''){
   const fb=document.getElementById('fb');
@@ -751,7 +253,10 @@ function feedback(ok, k, extra=''){
   fb.innerHTML=`<b>${ok?'Right':'Not quite'}: ${k.id}</b>${extra}<dl>${rowDetail(k)}</dl>`;
   const nb=document.createElement('button'); nb.className='next'; nb.textContent='Next question'; nb.onclick=newQuestion; fb.appendChild(nb);
   quiz.done=true; quiz.total++; if (ok) quiz.right++; score();
-  state.testIds=null; state.sel=k; repaint(); state.sel=null;
+  if (ready){
+    clearTmp();
+    api.createAnnotationFromWorldPosition(k.p,k.e,k.p,k.id,annText(k),(e,idx)=>{ if(!e){ quiz.tmp=idx; api.gotoAnnotation(idx); } });
+  }
 }
 function answerChoice(b){
   if (quiz.done) return;
@@ -760,26 +265,20 @@ function answerChoice(b){
   if (!ok) qbox.querySelector(`[data-a="${k.id}"]`).classList.add('right');
   feedback(ok,k);
 }
-function answerFind(id){
-  if (quiz.done) return;
-  const k=quiz.cur, ok=k.ids.includes(id);
-  feedback(ok,k, ok ? '' : `<br>You tapped ${levelName(id)}. The ${k.id} area is lit now.`);
+// model units: the body is about 7.2 tall, so 0.45 is roughly 11 cm on a real person
+const NEAR=0.45;
+function dist(a,b){ return Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]); }
+function onModelClick(info){
+  if (mode!=='test' || quiz.kind!=='find' || quiz.done || !info || !info.position3D) return;
+  const p=info.position3D, m=[Math.abs(p[0]),p[1],p[2]];   // mirror the right side onto the left
+  const k=quiz.cur;
+  const pts = k.p2 ? [k.p,k.p2] : [k.p];
+  const d=Math.min(...pts.map(q=>dist(m,q)));
+  let nearest=null, nd=1e9; for (const c of KEY){ for (const q of (c.p2?[c.p,c.p2]:[c.p])){ const dd=dist(m,q); if (dd<nd){nd=dd;nearest=c;} } }
+  const ok = d < NEAR;
+  feedback(ok,k, ok ? '' : `<br>${nearest && nd < NEAR ? `That is the ${nearest.id} point.` : 'That is not near any of the ten test points.'} The ${k.id} point is marked now.`);
 }
 function score(){ document.getElementById('score').textContent = quiz.total ? `${quiz.right} of ${quiz.total} right this session` : ''; }
-
-/* ---------- Build ---------- */
-addEventListener('resize',layout);
-layout();
-setTimeout(()=>{
-  const t0=performance.now();
-  figures.push(makeFigure('man',-0.42));
-  figures.push(makeFigure('woman',0.42));
-  setFigures();
-  document.getElementById('loading').remove();
-  console.log('built in', Math.round(performance.now()-t0), 'ms', figures.map(f=>f.nv));
-  window.__ready=true;
-  frame();
-},30);
 </script>
 </body>
 </html>
