@@ -11,11 +11,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f7f5fa;--card:#ffffff;--ink:#201436;--muted:#5f5670;--line:#ddd5ea;--accent:#7a3fb0;--accent-soft:#efe8f6;
---ok:#2f6b4f;--ok-bg:#e9f4ee;--warn:#9a5b00;--warn-bg:#fdf3e2;--bad:#b42318;--bad-bg:#fdeeec;--tint:#f3eff8;--dim:.22}
+--ok:#2f6b4f;--ok-bg:#e9f4ee;--warn:#9a5b00;--warn-bg:#fdf3e2;--bad:#b42318;--bad-bg:#fdeeec;--tint:#f3eff8;--dim:.22;--arrow:#6b6380}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;
---ok:#7fd1a6;--ok-bg:#16291f;--warn:#f0b65c;--warn-bg:#2d2312;--bad:#ff8f80;--bad-bg:#331814;--tint:#262033}}
+--ok:#7fd1a6;--ok-bg:#16291f;--warn:#f0b65c;--warn-bg:#2d2312;--bad:#ff8f80;--bad-bg:#331814;--tint:#262033;--arrow:#a89fbb}}
 :root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;
---ok:#7fd1a6;--ok-bg:#16291f;--warn:#f0b65c;--warn-bg:#2d2312;--bad:#ff8f80;--bad-bg:#331814;--tint:#262033}
+--ok:#7fd1a6;--ok-bg:#16291f;--warn:#f0b65c;--warn-bg:#2d2312;--bad:#ff8f80;--bad-bg:#331814;--tint:#262033;--arrow:#a89fbb}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,-apple-system,BlinkMacSystemFont,sans-serif}
@@ -85,10 +85,18 @@ button{font-family:inherit}
 .walking .col.on{box-shadow:0 0 0 3px var(--c)}
 
 .col .sec{display:flex;flex-direction:column;gap:6px}
+.arr{position:relative;height:16px;flex:none}
+.arr::before{content:"";position:absolute;left:50%;margin-left:-1px;top:0;bottom:5px;border-left:2px solid var(--arrow)}
+.arr::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--arrow)}
+.arr.dash::before{border-left-style:dashed}
+.grid>.arr{align-self:end}
+.walking .grid>.arr{opacity:var(--dim)}
+.walking .grid>.arr.on{opacity:1!important;box-shadow:none}
 .col .stagewrap{display:flex;flex-direction:column;gap:6px;transition:filter .2s,opacity .2s}
-.map .sec.hidden{cursor:pointer;position:relative}
+.map .sec.hidden{position:relative}
+.map.is-test .col{cursor:pointer}
 .map .sec.hidden .stagewrap{filter:blur(7px);opacity:.4;user-select:none}
-.map .sec.hidden::after{content:"Tap to reveal";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:600 12px Inter,sans-serif;color:var(--accent);background:var(--card);border:1px solid var(--accent);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.map .sec.hidden.next::after{content:"Tap to reveal";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:600 12px Inter,sans-serif;color:var(--accent);background:var(--card);border:1px solid var(--accent);border-radius:999px;padding:4px 10px;white-space:nowrap}
 .map.is-look .col{cursor:pointer}
 .map.is-look .col:hover{box-shadow:0 0 0 2px var(--c)}
 /* walk bar */
@@ -586,7 +594,7 @@ footer{margin-top:64px;color:var(--muted);font-size:14px}
 <div class="chips modes" id="modes" role="tablist" aria-label="Mode">
 <button class="chip" data-mode="look" aria-pressed="true">Look: click a diagnosis to focus it</button>
 <button class="chip" data-mode="walk" aria-pressed="false">Walk: answer its questions</button>
-<button class="chip" data-mode="test" aria-pressed="false">Test: hide a row, tap to reveal</button>
+<button class="chip" data-mode="test" aria-pressed="false">Test: tap to reveal, one row at a time</button>
 </div>
 <div class="walkbar" id="bar"></div>
 <div class="map" id="map"></div>
@@ -617,8 +625,9 @@ function cell(b, c) {
   var d = el("div", "cell " + b[0]); d.style.setProperty("--c", COL[c.colour]);
   d.appendChild(el("div", "ct", b[1])); lines(d, b[2]); return d;
 }
-function stages(host, c, row) {
-  (c[row] || []).forEach(function (stage) {
+function stages(host, c, row, dashed) {
+  (c[row] || []).forEach(function (stage, i) {
+    if (i) host.appendChild(el("div", dashed ? "arr dash" : "arr"));
     var s = el("div", "stage"); stage.forEach(function (b) { s.appendChild(cell(b, c)); }); host.appendChild(s);
   });
 }
@@ -638,18 +647,21 @@ function span(cols) { return (cols[0] + 1) + " / " + (cols[1] + 2); }
 function buildMap(host) {
   host.innerHTML = "";
   var g = el("div", "grid");
-  var r = node(S.root, "root"); r.style.gridColumn = "1 / -1"; r.dataset.k = "root"; g.appendChild(r);
-  S.groups.forEach(function (gr) { var n = node(gr); n.style.gridColumn = span(gr.cols); n.dataset.k = gr.id; g.appendChild(n); });
-  S.tiers.forEach(function (t) { var n = node(t); n.style.gridColumn = span(t.cols); n.dataset.k = t.id; g.appendChild(n); });
+  var r = node(S.root, "root"); r.style.gridColumn = "1 / -1"; r.style.gridRow = "1"; r.dataset.k = "root"; g.appendChild(r);
+  function arrowTo(o, row) { var a = el("div", "arr"); a.style.gridColumn = span(o.cols); a.style.gridRow = String(row); a.dataset.k = "a:" + o.id; g.appendChild(a); }
+  S.groups.forEach(function (gr) { arrowTo(gr, 2); var n = node(gr); n.style.gridColumn = span(gr.cols); n.style.gridRow = "3"; n.dataset.k = gr.id; g.appendChild(n); });
+  S.tiers.forEach(function (t) { arrowTo(t, 4); var n = node(t); n.style.gridColumn = span(t.cols); n.style.gridRow = "5"; n.dataset.k = t.id; g.appendChild(n); });
   S.columns.forEach(function (c) {
     var col = el("div", "col"); col.style.setProperty("--c", COL[c.colour]); col.dataset.k = "c:" + c.id;
-    col.style.gridColumn = (c.i + 1) + " / " + (c.i + 2);
+    col.style.gridColumn = (c.i + 1) + " / " + (c.i + 2); col.style.gridRow = "6";
+    col.appendChild(el("div", "arr"));
     col.appendChild(el("div", "drop", c.drop_label || " "));
     col.appendChild(head(c));
     ROWS.forEach(function (rw) {
       var sec = el("div", "sec"); sec.dataset.row = rw[0];
+      sec.appendChild(el("div", "arr"));
       sec.appendChild(el("div", "rowlabel", rw[1]));
-      var wrap = el("div", "stagewrap"); stages(wrap, c, rw[0]); sec.appendChild(wrap);
+      var wrap = el("div", "stagewrap"); stages(wrap, c, rw[0], S.dashed_sections.indexOf(rw[0]) > -1); sec.appendChild(wrap);
       col.appendChild(sec);
     });
     g.appendChild(col);
@@ -670,12 +682,15 @@ var mode = "look", trail, lit, focus = null;
 function clearMarks() {
   map.classList.remove("walking");
   map.querySelectorAll(".on").forEach(function (e) { e.classList.remove("on"); });
-  map.querySelectorAll(".sec.hidden").forEach(function (e) { e.classList.remove("hidden"); });
+  map.querySelectorAll(".sec.hidden").forEach(function (e) { e.classList.remove("hidden", "next"); });
 }
 function light() {
   map.classList.add("walking");
   map.querySelectorAll(".on").forEach(function (e) { e.classList.remove("on"); });
-  lit.forEach(function (k) { var e = map.querySelector('[data-k="' + k + '"]'); if (e) e.classList.add("on"); });
+  lit.forEach(function (k) {
+    var e = map.querySelector('[data-k="' + k + '"]'); if (e) e.classList.add("on");
+    var a = map.querySelector('[data-k="a:' + k + '"]'); if (a) a.classList.add("on");
+  });
 }
 function trailEl() { var ul = el("ul", "trail"); trail.forEach(function (t) { ul.appendChild(el("li", null, t)); }); return ul; }
 function again(a) { var r = el("button", "ghost", "Start again"); r.addEventListener("click", walkStart); a.appendChild(r); }
@@ -729,19 +744,23 @@ function walkExit(x) {
 }
 function walkStart() { clearMarks(); trail = []; lit = ["root"]; light(); ask("start"); }
 
-/* Test */
-function testStart(row) {
+/* Test: each diagnosis starts as just its name; every tap reveals the next row, in order */
+function testStart() {
   clearMarks(); bar.innerHTML = "";
-  bar.appendChild(el("p", "qh", "Hide a row on every diagnosis, then tap a hidden box to check yourself."));
-  var chips = el("div", "chips"); bar.appendChild(chips);
-  ROWS.forEach(function (r) {
-    var b = el("button", "chip", "Hide " + r[1].toLowerCase()); b.setAttribute("aria-pressed", r[0] === row ? "true" : "false");
-    b.addEventListener("click", function () { testStart(r[0]); }); chips.appendChild(b);
+  bar.appendChild(el("p", "qh", "Each diagnosis shows only its name. Say what it presents as, then tap to check. Tap again for its investigations, then its treatment."));
+  var a = el("div", "ans"); bar.appendChild(a);
+  var r = el("button", "ghost", "Hide them all again"); r.addEventListener("click", testStart); a.appendChild(r);
+  map.querySelectorAll(".col").forEach(function (col) {
+    col.querySelectorAll(".sec").forEach(function (s, i) { s.classList.add("hidden"); if (i === 0) s.classList.add("next"); });
   });
-  map.querySelectorAll('.sec[data-row="' + row + '"]').forEach(function (s) { s.classList.add("hidden"); });
 }
-map.querySelectorAll(".sec").forEach(function (s) {
-  s.addEventListener("click", function (e) { if (mode === "test" && s.classList.contains("hidden")) { e.stopPropagation(); s.classList.remove("hidden"); } });
+map.querySelectorAll(".col").forEach(function (col) {
+  col.addEventListener("click", function () {
+    if (mode !== "test") return;
+    var s = col.querySelector(".sec.hidden"); if (!s) return;
+    s.classList.remove("hidden", "next");
+    var n = col.querySelector(".sec.hidden"); if (n) n.classList.add("next");
+  });
 });
 
 document.querySelectorAll("#modes .chip").forEach(function (b) {
@@ -749,7 +768,7 @@ document.querySelectorAll("#modes .chip").forEach(function (b) {
     mode = b.dataset.mode;
     document.querySelectorAll("#modes .chip").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
     map.classList.toggle("is-look", mode === "look"); map.classList.toggle("is-test", mode === "test");
-    if (mode === "look") lookStart(); else if (mode === "walk") walkStart(); else testStart("tx");
+    if (mode === "look") lookStart(); else if (mode === "walk") walkStart(); else testStart();
   });
 });
 map.classList.add("is-look"); lookStart();
