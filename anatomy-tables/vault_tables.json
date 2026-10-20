@@ -1,0 +1,995 @@
+[
+ {
+  "note": "04 - Neuro/Week 12/05 - Cranial Nerve Anatomy and Function.md",
+  "heading": "## Cranial nerve summary table",
+  "start": 61,
+  "header": [
+   "CN",
+   "Name",
+   "Origin",
+   "Exits via",
+   "Fibres and function",
+   "Test",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "I",
+    "Olfactory",
+    "Cerebrum - olfactory bulbs/tracts",
+    "Cribriform foramina → cribriform plate of ethmoid",
+    "Special sensory: smell",
+    "Smell",
+    ""
+   ],
+   [
+    "II",
+    "Optic",
+    "Cerebrum - anterior to infundibulum",
+    "Optic canal",
+    "Special sensory: vision",
+    "Visual acuity<br>Visual field<br>Pupillary light reflex<br>Ophthalmoscope<br>Swinging flashlight test: for relative afferent pupillary defect<br>- Light signal from one eye goes to both sides of brain → should stimulate bilateral pupillary constriction response<br>- Improper response → lesion posterior to optic chiasm (e.g. in optic tract)",
+    "Symptoms: reduced vision, difficulty focusing"
+   ],
+   [
+    "III",
+    "Oculomotor",
+    "Midbrain (between posterior cerebral artery and superior cerebellar artery) → diaphragm sellae → cavernous sinus",
+    "Superior orbital fissure",
+    "Motor: levator palpebrae superioris, superior/medial/inferior rectus, inferior oblique (NOT the superior oblique and lateral rectus)<br>Parasympathetic (PNS): constriction (sphincter pupillae) + accommodation of lens (ciliary muscle/body thickens lens for near vision)",
+    "EYE MOVEMENTS<br>Superior rectus: Look laterally and upward<br>Inferior rectus: Look laterally and downward<br>Superior oblique: Look medially and downward<br>Inferior oblique: Look medially and upward<br>Lateral rectus: Look laterally<br>Medial rectus: Look medially",
+    "Ptosis<br>- Usually palsy of CN III because it innervates levator palpebrae superioris<br>Diplopia<br>- Never a cortical problem → always suspect brainstem and lower: CN III/IV/VI, muscle, neuromuscular junction (NMJ)<br>Cavernous sinus: contains eye movement nerves (CN III/IV/VI), V1/V2, internal carotid artery<br>- Also communicates with plexuses (i.e. pterygoid) so can spread eye/facial infection to brain"
+   ],
+   [
+    "IV",
+    "Trochlear",
+    "Posterolateral midbrain → cavernous sinus",
+    "Superior orbital fissure",
+    "Motor: superior oblique",
+    "Eye movement inferomedially",
+    "As for CN III (above)"
+   ],
+   [
+    "V",
+    "Trigeminal",
+    "Pons<br>- Sensory root forms trigeminal ganglion<br>- Motor root bypasses ganglion and becomes part of V3",
+    "V1 (ophthalmic nerve) - superior orbital fissure<br>- Branch: frontal nerve exit supraorbital foramen<br>V2 (maxillary nerve) - foramen rotundum<br>- Branch: infraorbital nerve exit infraorbital foramen<br>V3 (mandibular nerve) - foramen ovale<br>- Branch: mental nerve exit mental foramen<br>- Branch: auriculotemporal nerve run with superficial temporal artery/vein, anterior to ear going up to temples",
+    "V1 (ophthalmic nerve)<br>- Sensory: upper face, orbit/eye (including scalp/eyelids/nose), cornea<br>V2 (maxillary nerve)<br>- Sensory: mid face, upper jaw (including palate)<br>V3 (mandibular nerve)<br>- Sensory: lower face/face (including temporomandibular joint (TMJ)), touch/temperature of anterior 2/3 of tongue<br>- Motor: muscles of mastication (masseter, temporalis)",
+    "V1/2/3 - touch in 3 sensory locations<br>V1 - corneal reflex (afferent)<br>V3 - mastication",
+    "Upper motor neuron (UMN) causes of pathology<br>- Cortical, subcortical, thalamus, brainstem pathology (e.g. stroke/multiple sclerosis (MS))<br>Lower motor neuron (LMN) causes of pathology<br>- Compression/inflammation around nerve (e.g. in cavernous sinus)<br>- Trigeminal neuralgia (from blood vessel pulsating adjacent to nerve)"
+   ],
+   [
+    "VI",
+    "Abducens",
+    "Medial brainstem between pons and medulla → runs over pons → cavernous sinus",
+    "Superior orbital fissure",
+    "Motor: lateral rectus",
+    "Eye movement laterally",
+    "In general (not just for this CN): dysfunction of multiple CNs → brainstem lesion<br>- e.g. tract of facial nerve wraps around abducens nerve so pontine lesion in that area causes facial weakness and ocular movement issues"
+   ],
+   [
+    "VII",
+    "Facial",
+    "Lateral brainstem between pons and medulla, runs together",
+    "Internal acoustic meatus → stylomastoid foramen → parotid gland (compressed by encapsulating fascia if parotitis, causing facial paralysis)",
+    "Motor: muscles of facial expression → 5 branches (The Zoo Buys MANy Cats)<br>- Temporal: frontalis (sole innervation), orbicularis oculi<br>- Zygomatic: zygomaticus major, orbicularis oculi, muscles that lift up lip<br>- Buccal: buccinator, orbicularis oris, zygomaticus major, muscles lateral to oral cavity<br>- Mandibular: orbicularis oris, mental/chin muscles<br>- Cervical: platysma (sole innervation)<br>Special sensory: taste to anterior 2/3 of tongue<br>PNS: lacrimal/nasal/palatine/salivary glands<br>Sympathetic (SNS): lacrimal/nasal/palatine glands",
+    "Facial expression<br>Taste<br>Corneal reflex (efferent)",
+    "UMN facial weakness: affects contralateral lower face but spares entire forehead<br>- Due to bilateral cortical innervation of forehead<br>- Entire forehead can still wrinkle<br>- Able to close ipsilateral eye weakly (although may not be able to bury lashes)<br>- Lesions above facial nerve nuclei: cortical/subcortical, corona radiata, internal capsule, descending corticobulbar fibers, brainstem<br>LMN facial weakness: affects entire ipsilateral face<br>- Ipsilateral forehead cannot wrinkle, stays smooth<br>- Ipsilateral eye open wide, cannot close eyelid (vs. optic nerve lesion that causes ptosis)<br>- Bell's palsy, parotid gland tumour<br>- Lesion at or below facial nerve nuclei: nuclei in pons, cranial cavity, middle cavity, peripheral nerve distribution"
+   ],
+   [
+    "VIII",
+    "Vestibulocochlear",
+    "Lateral brainstem between pons and medulla, runs together",
+    "\\*Internal acoustic meatus → does NOT exit cranium",
+    "Cochlear nerve - special sensory: hearing<br>Vestibular nerve - special sensory: balance/equilibrium/motion",
+    "Hearing<br>Nystagmus<br>Romberg (balance)",
+    ""
+   ],
+   [
+    "IX",
+    "Glossopharyngeal",
+    "Lateral medulla<br>- CN XI originates from superior 5-6 cervical segments → enter cranial cavity via foramen magnum",
+    "Jugular foramen",
+    "Motor: 1 pharyngeal muscle<br>General sensory: tongue/palate<br>Special sensory: taste to posterior 1/3 of tongue<br>PNS: parotid gland",
+    "Gag reflex (afferent)",
+    "Symptoms: dysarthria, hoarseness, dysphagia, PNS dysfunction"
+   ],
+   [
+    "X",
+    "Vagus",
+    "Lateral medulla<br>- CN XI originates from superior 5-6 cervical segments → enter cranial cavity via foramen magnum",
+    "Jugular foramen",
+    "Motor: palate + laryngeal muscles<br>General sensory: pharynx/larynx<br>PNS: thoracic/abdominal viscera",
+    "Gag reflex (efferent)<br>Say \"ahhh\"<br>Phonation",
+    "Symptoms: dysarthria, hoarseness, dysphagia, PNS dysfunction"
+   ],
+   [
+    "XI",
+    "Spinal Accessory",
+    "Lateral medulla<br>- CN XI originates from superior 5-6 cervical segments → enter cranial cavity via foramen magnum",
+    "Jugular foramen",
+    "Motor: trapezius, sternocleidomastoid (SCM)",
+    "Elevate shoulders<br>Turn head to each side",
+    ""
+   ],
+   [
+    "XII",
+    "Hypoglossal",
+    "Medial medulla",
+    "Hypoglossal canal",
+    "Motor: tongue",
+    "Tongue<br>- Deviation with protrusion → towards weak side (ipsilateral)<br>- Fasciculations",
+    ""
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> 1.  Describe cranial nerve anatomy and function.",
+   "> 2.  Predict symptoms of cranial nerve pathology.",
+   "The [[cranial nerves]] are paired bundles of nerve fibres that exit the cranial cavity. ",
+   "These nerves are either <mark class=\"hltr-blue\">sensory afferents</mark>, <mark class=\"hltr-green\">motor efferents</mark>, <mark class=\"hltr-pink\">parasympathetic autonomic efferents</mark>, or a mixture. Note that the cranial nerves can only CARRY <mark class=\"hltr-orange\">sympathetic signals</mark> → the sympathetic signals CANNOT originate here because the sympathetic autonomic efferents because those originate at the ***thoracolumbar regions*** instead of the craniosacral regions. ",
+   "> [!orange] Sympathetic Innervation of the Head",
+   "> If sympathetic neurons don't originate until the thoracic spinal cord, how does the head and neck receive sympathetic innervation? ",
+   "> -  pre-synaptic sympathetic neuron in the thoracolumbar region",
+   "> - travels up the [[sympathetic trunk]] ",
+   "> - exits the spinal cord and synapses in the [[cervical ganglia]]",
+   "> - travels alongside other nerves (including [[cranial nerves]]) to reach its target ",
+   "![[cranial nerves.png]]"
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 7/02.1 - Anatomy of the Back & Neck.md",
+  "heading": "## Muscle summary table",
+  "start": 104,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Superficial",
+    "Trapezius",
+    "Elevate/depress/retract scapula, rotate glenoid cavity superiorly",
+    "Accessory spinal nerve",
+    ""
+   ],
+   [
+    "",
+    "Levator scapulae",
+    "Elevate scapula, rotate to depress glenoid cavity",
+    "Dorsal scapular nerve + C3-4 spinal nerves",
+    ""
+   ],
+   [
+    "",
+    "Rhomboids (major and minor)",
+    "Retract scapula, rotate to depress glenoid cavity; fix scapula to thoracic wall",
+    "Dorsal scapular nerve",
+    ""
+   ],
+   [
+    "",
+    "Latissimus dorsi",
+    "Adduct/extend/medially rotate humerus",
+    "Thoracodorsal nerve",
+    ""
+   ],
+   [
+    "Intermediate",
+    "Serratus posterior superior",
+    "Elevates ribs, proprioception",
+    "2-5th Intercostal nerves",
+    ""
+   ],
+   [
+    "",
+    "Serratus posterior inferior",
+    "Depresses ribs, proprioception",
+    "9-12th Intercostal nerves",
+    ""
+   ],
+   [
+    "Deep",
+    "Erector spinae (Spinalis (medial), longissimus (intermediate), iliocostalis (lateral))",
+    "Acting bilaterally: extend vertebral column/head, eccentrically control trunk flexion<br>Acting unilaterally: laterally flex vertebral column",
+    "Dorsal rami",
+    ""
+   ],
+   [
+    "",
+    "Splenius",
+    "Acting bilaterally: extend head/neck<br>Acting unilaterally: laterally flex/rotate head/neck",
+    "Dorsal rami",
+    ""
+   ],
+   [
+    "",
+    "Transversospinalis",
+    "Contralateral rotation, stabilize vertebrae, proprioception",
+    "Dorsal rami",
+    ""
+   ]
+  ],
+  "after": [
+   ">[!check] Objectives",
+   "> **Identify the important functional anatomy of the neck and back, as it pertains to clinical presentations of spine pathology:**",
+   "> -  Identify the distinguishing features of vertebrae at different levels and explain the functional role of these differences",
+   "> - Describe the innervation and function of the muscles of the neck and back and their role in contributing to or preventing back pain",
+   "> - Describe the role of ligaments and intervertebral discs in maintaining spinal stability and protecting the spine.",
+   "> - Define dermatome and myotome and outline the basic sensory and motor abnormalities expected with root pathology at levels C5-C8 and L3-S1.",
+   "> [!abstract] Note",
+   "> I've separated the anatomy and clinical components of the module \"Clinical Approach to Mechanical Back & Neck Pain\" into separate notes - see [[02.2 - Clinical Approach to Mechanical Back & Neck Pain]] for the clinical content. ",
+   "> "
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 8/02.1 - Anatomy of the Muscles of the Shoulder.md",
+  "heading": "## Muscle summary table",
+  "start": 53,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Pectoral",
+    "Pectoralis major",
+    "Adduct/flex/medially rotate humerus",
+    "Medial/lateral pectoral nerves",
+    ""
+   ],
+   [
+    "",
+    "Pectoralis minor",
+    "Stabilize scapula by drawing it anteriorly/inferiorly against thoracic wall",
+    "Medial/lateral pectoral nerves",
+    ""
+   ],
+   [
+    "",
+    "Serratus anterior",
+    "Protract scapula (boxer's muscle)",
+    "Long thoracic nerve",
+    "Lesion → winged scapula"
+   ],
+   [
+    "Shoulder",
+    "Deltoid",
+    "Anterior head: flex/medially rotate arm<br>Middle head: abduct arm<br>Posterior head: extend/laterally rotate arm",
+    "Axillary nerve (C5-6)",
+    ""
+   ],
+   [
+    "",
+    "Supraspinatus",
+    "Abduct arm (first 15°), stabilize glenohumeral joint",
+    "Suprascapular nerve (C5-6)",
+    "Impingement: most likely to become impinged within subacromial space with repeated overhead movements"
+   ],
+   [
+    "",
+    "Infraspinatus",
+    "Laterally rotate arm, stabilize glenohumeral joint",
+    "Suprascapular nerve (C5-6)",
+    ""
+   ],
+   [
+    "",
+    "Teres minor",
+    "Laterally rotate arm, stabilize glenohumeral joint",
+    "Axillary nerve (C5-6)",
+    ""
+   ],
+   [
+    "",
+    "Teres major",
+    "Adduct/medially rotate arm (mini latissimus dorsi)",
+    "Lower subscapular nerve (C5-6)",
+    ""
+   ],
+   [
+    "",
+    "Subscapularis",
+    "Medially rotate arm",
+    "Upper/lower subscapular nerves (C5-7)",
+    ""
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> **Identify the important functional anatomy of the upper extremity, as it pertains to clinical presentations of arm pathology.**",
+   "> - Identify the major muscles of the upper extremity (ie. shoulder girdle, brachium, forearm muscles originating from the medial and lateral epicondyles, hand muscles)"
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 8/03.1 - Anatomy of the Muscles of the Arm.md",
+  "heading": "## Muscle summary table",
+  "start": 52,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Anterior",
+    "Biceps brachii",
+    "Supinate/flex forearm, flex shoulder, resist dislocation",
+    "Musculocutaneous nerve (C5-7)",
+    "Tendinopathy: especially of long head because of location (tight intertubercular groove, close to and affected by rotator cuff pathology) · Long head: more lateral, supraglenoid tubercle origin, courses under glenoid cavity through intertubercular groove<br>Short head: more medial, coracoid process origin"
+   ],
+   [
+    "",
+    "Coracobrachialis",
+    "Flex/adduct shoulder, resist dislocation",
+    "Musculocutaneous nerve (C5-7)",
+    ""
+   ],
+   [
+    "",
+    "Brachialis",
+    "Flex forearm (primary forearm flexor - fully supinated curls)",
+    "Musculocutaneous nerve (C5-7)",
+    ""
+   ],
+   [
+    "Posterior",
+    "Triceps",
+    "Extend elbow (primary elbow extensor)<br>Long head: extend shoulder joint, resist dislocation",
+    "Radial nerve (C5-T1)",
+    "Long head: between other heads on posterior view (but most medial on anterior view), infraglenoid tubercle origin, crosses shoulder joint<br>Lateral head: posterior/lateral<br>Medial head: posterior/medial"
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> **Identify the important functional anatomy of the upper extremity, as it pertains to clinical presentations of arm pathology.**",
+   "> - Identify the major muscles of the upper extremity (ie. shoulder girdle, brachium, forearm muscles originating from the medial and lateral epicondyles, hand muscles)",
+   "The **arm** extends from the shoulder to the elbow. There are fascial layers within the arm that divide it into compartments, which have distinct functions and innervation patterns. ",
+   "- deep to the skin and subcutaneous tissue is the deep fascia of the arm, the **brachial fascia**",
+   "- two **intermuscular septa** (medial and lateral) run from the brachial fascia to the humerus and divide the arm into an anterior and a posterior compartment, each its own functional and innervation unit",
+   "> [!multi-column]",
+   ">> [!blank] ",
+   "> >> [!light-blue] Anterior Compartment of the Arm",
+   "> >> - **functions**: shoulder flexion, elbow flexion, supination",
+   "> >> - **innervation**: [[musculocutaneous nerve]]",
+   "> >> - **contents**: [[biceps brachii muscle]], [[coracobrachialis muscle]], [[brachialis muscle]]",
+   "> >",
+   "> >>[!blank]",
+   "> >",
+   "> >> [!pink] Posterior Compartment of the Arm",
+   "> >> - **functions**: shoulder extension, elbow extension",
+   "> >> - **innervation**: [[radial nerve]]",
+   "> >> - **contents**: [[triceps brachii muscle]]",
+   ">",
+   ">> [!blank]",
+   ">> ![[compartments of the arm.png]]"
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 8/06.1 - Anatomy of the Muscles of the Distal Upper Extremity.md",
+  "heading": "## Muscle summary table",
+  "start": 96,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Anterior - Superficial",
+    "Palmaris longus",
+    "Flex wrist, tense palmar aponeurosis",
+    "Median nerve (C5-T1)",
+    "Medial epicondylitis (golfer's elbow): tendinopathy of common flexor origin"
+   ],
+   [
+    "",
+    "Pronator teres",
+    "Pronate forearm, flex elbow",
+    "Median nerve (C5-T1)",
+    "As for palmaris longus (above)"
+   ],
+   [
+    "",
+    "Flexor carpi radialis",
+    "Flex/abduct wrist",
+    "Median nerve (C5-T1)",
+    "As for palmaris longus (above)"
+   ],
+   [
+    "",
+    "Flexor carpi ulnaris",
+    "Flex/adduct wrist",
+    "Ulnar nerve (C8-T1)",
+    "As for palmaris longus (above)"
+   ],
+   [
+    "Anterior - Intermediate",
+    "Flexor digitorum superficialis",
+    "Flex wrist & metacarpophalangeal joints (MCPs) of digits 2-5",
+    "Median nerve (C5-T1)",
+    "As for palmaris longus (above)"
+   ],
+   [
+    "Anterior - Deep",
+    "Flexor digitorum profundus",
+    "Flex wrist & interphalangeal joints (IPs) of digits 2-5",
+    "Lateral digits 2-3: median nerve - anterior interosseous nerve<br>Medial digits 4-5: ulnar nerve",
+    "As for palmaris longus (above) · Continues as lumbricals"
+   ],
+   [
+    "",
+    "Flexor pollicis longus",
+    "Flex wrist & MCP/IP of thumb",
+    "Median nerve - anterior interosseous nerve",
+    "As for palmaris longus (above)"
+   ],
+   [
+    "",
+    "Pronator quadratus",
+    "Pronate forearm",
+    "Median nerve - anterior interosseous nerve",
+    "As for palmaris longus (above)"
+   ],
+   [
+    "Posterior - Random",
+    "Anconeus",
+    "Weakly extend forearm, stabilize elbow",
+    "Radial nerve (C5-T1)",
+    "Lateral epicondylitis (tennis elbow): tendinopathy of common extensor origin (especially of extensor carpi radialis brevis)<br>Synovial cyst of wrist (ganglion cyst): often on dorsum of wrist, connected with synovial sheaths of extensor tendons<br>de Quervain's tenosynovitis: inflammation of abductor pollicis longus & extensor pollicis brevis tendons at radial styloid process → test with Finkelstein's test (make fist with thumb inside and ulnarly deviate)<br>Snuff box: scaphoid fracture pain, radial nerve"
+   ],
+   [
+    "Posterior - Superficial",
+    "Brachioradialis",
+    "Weakly flex forearm (maximum flexion in mid-pronation - drinking)",
+    "Radial nerve (C5-T1)",
+    "As for anconeus (above)"
+   ],
+   [
+    "",
+    "Extensor carpi radialis longus",
+    "Extend/abduct wrist, active during fist clenching",
+    "Radial nerve (C5-T1)",
+    "As for anconeus (above)"
+   ],
+   [
+    "",
+    "Extensor carpi radialis brevis",
+    "Extend/abduct wrist",
+    "Radial nerve (C5-T1)",
+    "As for anconeus (above)"
+   ],
+   [
+    "",
+    "Extensor digitorum",
+    "Extend MCP/proximal interphalangeal joints (PIPs) of digits 2-5",
+    "Deep branch of radial nerve",
+    "As for anconeus (above) · Mallet finger (baseball finger): sudden hyperflexion of finger (jamming) causes avulsion/partial tearing of extensor digitorum tendon from insertion on base of distal phalanx → unable to extend distal interphalangeal joint (DIP)"
+   ],
+   [
+    "",
+    "Extensor digiti minimi",
+    "Extend MCP/IPs of digit 5",
+    "Deep branch of radial nerve",
+    "As for anconeus (above)"
+   ],
+   [
+    "",
+    "Extensor carpi ulnaris",
+    "Extend/adduct wrist, active during fist clenching",
+    "Deep branch of radial nerve",
+    "As for anconeus (above)"
+   ],
+   [
+    "Posterior - Deep",
+    "Supinator",
+    "Supinate forearm",
+    "Deep branch of radial nerve",
+    "As for anconeus (above)"
+   ],
+   [
+    "",
+    "Extensor indicis",
+    "Extend digit 2",
+    "Radial nerve - posterior interosseous nerve",
+    "As for anconeus (above)"
+   ],
+   [
+    "Posterior - Deep (Outcropping)",
+    "Abductor pollicis longus",
+    "Abduct & extend carpometacarpal joint (CMC) of digit 1",
+    "Radial nerve - posterior interosseous nerve",
+    "As for anconeus (above)"
+   ],
+   [
+    "",
+    "Extensor pollicis brevis",
+    "Extend CMC/MCP of digit 1",
+    "Radial nerve - posterior interosseous nerve",
+    "As for anconeus (above)"
+   ],
+   [
+    "",
+    "Extensor pollicis longus",
+    "Extend CMC/MCP/IP of digit 1",
+    "Radial nerve - posterior interosseous nerve",
+    "As for anconeus (above)"
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> **Identify the important functional anatomy of the upper extremity, as it pertains to clinical presentations of arm pathology**",
+   "> - Identify the major muscles of the upper extremity (ie. shoulder girdle, brachium, forearm muscles originating from the medial and lateral epicondyles, hand muscles)",
+   "The **forearm** extends from the cubital fossa to the wrist. are split into distinct compartments. Just like in the arm, fascial layers of the forearm divide it into compartments, with distinct functions and innervation patterns. ",
+   "- NOTE - these compartments are named \"<font color=\"#00b0f0\">anterior</font>\" and \"<font color=\"#e424b7\">posterior</font>\" ***because of where their muscles are attaching*** - despite being situated medially and laterally. ",
+   "> [!multi-column]",
+   "> >[!pink] Posterior Compartment of the Forearm",
+   "> >- **functions**: extension of the wrist and hand, supination of the forearm",
+   "> >- **innervation**: [[radial nerve]]",
+   "> >- **contents**: 11 extensor-supinators in 2 layers (superficial 6, deep 5), plus anconeus",
+   "> ",
+   "> > [!light-blue] Anterior Compartment of the Forearm",
+   "> >- **functions**: flexion of the wrist and hand, pronation of the forearm",
+   "> >- **innervation**: [[median nerve]] (except for 1½ muscles: the [[flexor carpi ulnaris muscle]] and the medial half of the [[flexor digitorum profundus muscle]], to digits 4 and 5, which are innervated by the [[ulnar nerve]])",
+   "> >- **contents**: 8 flexor-pronators in 3 layers (superficial 4, intermediate 1, deep 3)",
+   "![[compartments of the forearm.png]]"
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 8/08.1 - Anatomy of the Wrist and Hand - PART 1.md",
+  "heading": "## Muscle summary table",
+  "start": 69,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Thenar",
+    "Abductor pollicis brevis",
+    "Abduct carpometacarpal joint (CMC)",
+    "Recurrent branch of median nerve",
+    "Proximal median nerve lesions<br>- Hand of benediction when trying to make fist: median nerve compression in cubital fossa or between 2 heads of pronator teres → loss of flexion of proximal interphalangeal joints (PIPs)/distal interphalangeal joints (DIPs)/metacarpophalangeal joints (MPs) of digits 2-3<br>Distal median nerve lesion<br>- Carpal tunnel syndrome (flexor retinaculum over flexor pollicis longus (FPL)/flexor digitorum superficialis (FDS)/flexor digitorum profundus (FDP)/median nerve): median nerve compression in carpal tunnel → paresthesia of lateral 3.5 digits, paralysis/wasting of thenar muscles and lateral 2 lumbricals; test via Tinel's sign of wrist<br>Proximal ulnar nerve lesions<br>- Claw hand: compression posterior to medial epicondyle or between 2 heads of flexor carpi ulnaris; lower brachial plexus injuries Klumpke paralysis C8-T1 → clawing of digits 4-5 (hyperextended MPs, cannot flex DIPs/extend interphalangeal joints (IPs) of digits 4-5)<br>- Waiter's tip arm position: upper brachial plexus injuries Erb-Duchenne palsy C5-6 → adduct shoulder, medially rotate arm, extend elbow; paresthesia lateral upper limb<br>Distal ulnar nerve lesion<br>Ulnar canal syndrome: ulnar nerve compression in Guyon's canal → decreased sensation of medial 1.5 digits, weak intrinsic hand muscles; clawing of digits 4-5 possible but flexion unaffected and no radial deviation"
+   ],
+   [
+    "",
+    "Opponens pollicis",
+    "Oppose CMC",
+    "Recurrent branch of median nerve",
+    "As for abductor pollicis brevis (above) · Good test of recurrent branch of median nerve"
+   ],
+   [
+    "",
+    "Flexor pollicis brevis",
+    "Superficial head: flex CMC<br>Deep head: adduct CMC",
+    "Superficial head: recurrent branch of median nerve<br>Deep head: deep branch of ulnar nerve",
+    "As for abductor pollicis brevis (above)"
+   ],
+   [
+    "Hypothenar",
+    "Abductor digiti minimi",
+    "Abduct digit 5",
+    "Deep branch of ulnar nerve",
+    "As for abductor pollicis brevis (above)"
+   ],
+   [
+    "",
+    "Flexor digiti minimi brevis",
+    "Flex digit 5",
+    "Deep branch of ulnar nerve",
+    "As for abductor pollicis brevis (above)"
+   ],
+   [
+    "",
+    "Opponens digiti minimi",
+    "Oppose digit 5",
+    "Deep branch of ulnar nerve",
+    "As for abductor pollicis brevis (above)"
+   ],
+   [
+    "Central",
+    "Lumbricals",
+    "Flex metacarpophalangeal joints (MCPs) & extend IPs of digits 2-5",
+    "Lateral digits 2-3: median nerve<br>Medial digits 4-5: deep branch of ulnar nerve",
+    "As for abductor pollicis brevis (above) · Extends off flexor digitorum profundus tendons (split innervation follows as well)"
+   ],
+   [
+    "Between thumb and digit 2/3",
+    "Adductor pollicis",
+    "Adduct CMC, flex MCP of thumb",
+    "Deep branch of ulnar nerve",
+    "As for abductor pollicis brevis (above) · Test by tugging at paper squeezed between digits 1/2"
+   ],
+   [
+    "Interosseous",
+    "Interossei",
+    "Palmar interossei (3): adduct digits 2/4/5 to midline (palmar adduct (PAD))<br>Dorsal interossei (4): abduct digits 2-4 from midline (dorsal abduct (DAB))<br>Assist lumbricals",
+    "Deep branch of ulnar nerve",
+    "As for abductor pollicis brevis (above) · Palmar interossei: test by tugging at paper squeezed between adjacent digits 2-5<br>Dorsal interossei: test spreading digits 2-3 apart against resistance"
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> **Identify the important functional anatomy of the upper extremity, as it pertains to clinical presentations of arm pathology**",
+   "> - Identify the distinguishing features of the bones and joints of the upper extremity and relate these to their appearance on plain radiographs ",
+   "> - Identify the major arteries and veins of the upper extremity and their relationships to surrounding structures",
+   "> - Identify the major muscles of the upper extremity (ie. shoulder girdle, brachium, forearm muscles originating from the medial and lateral epicondyles, hand muscles)",
+   "> - Identify the carpal tunnel and the structures passing through it"
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 9/04 - Anatomy of the Gluteal Region & Thigh.md",
+  "heading": "## Muscle summary table",
+  "start": 112,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Main",
+    "Gluteus maximus",
+    "Extend hip, assist in standing from seated position",
+    "Inferior gluteal nerve",
+    "Hip extension: myotome L5<br>Hip fracture: leg appears shortened, abducted, laterally rotated"
+   ],
+   [
+    "",
+    "Gluteus medius/minimus",
+    "Abduct/medially rotate hip (primary hip abductor), stabilize gait",
+    "Superior gluteal nerve",
+    "Lesion → Trendelenburg gait: contralateral hip drops down"
+   ],
+   [
+    "",
+    "Tensor fascia latae",
+    "Flex hip, tense iliotibial (IT) band during hip flexion to keep it tight/together",
+    "Superior gluteal nerve",
+    ""
+   ],
+   [
+    "Lateral Rotators",
+    "Piriformis",
+    "Laterally rotate/abduct hip (primary hip lateral rotator), stabilize hip",
+    "Nerve to piriformis",
+    "Forms posterior wall of pelvic floor (posterior to coccygeus/levator ani)<br>Piriformis syndrome: piriformis muscles compress sciatic nerve as it exits pelvis (nerve usually exits below but may pass through piriformis in athletes that excessively use gluteal muscles)<br>Intragluteal injections: superolateral quadrant<br>Important landmark<br>- Superior to piriformis: superior gluteal nerve<br>- Inferior to piriformis: inferior gluteal nerve, pudendal nerve (S2-4), sciatic nerve (L4-S3), posterior cutaneous nerve of thigh · Exit pelvis via greater sciatic foramen"
+   ],
+   [
+    "",
+    "Superior gemellus",
+    "Laterally rotate/abduct hip (primary hip lateral rotator), stabilize hip",
+    "Nerve to obturator internus",
+    "Exit pelvis via lesser sciatic foramen"
+   ],
+   [
+    "",
+    "Obturator internus",
+    "Laterally rotate/abduct hip (primary hip lateral rotator), stabilize hip",
+    "Nerve to obturator internus",
+    "Exit pelvis via lesser sciatic foramen"
+   ],
+   [
+    "",
+    "Inferior gemellus",
+    "Laterally rotate/abduct hip (primary hip lateral rotator), stabilize hip",
+    "Nerve to quadratus femoris",
+    "Exit pelvis via lesser sciatic foramen"
+   ],
+   [
+    "",
+    "Quadratus femoris",
+    "Laterally rotate/abduct hip (primary hip lateral rotator), stabilize hip",
+    "Nerve to quadratus femoris",
+    "Exit pelvis via lesser sciatic foramen"
+   ],
+   [
+    "Anterior",
+    "Iliopsoas",
+    "Flex hip (primary hip flexor)",
+    "Femoral nerve (L2-4)",
+    "Femoral triangle NAVEL (lateral → medial): femoral nerve, femoral artery, femoral vein, empty space (femoral canal), lymphatics (within femoral canal)<br>- Subject to femoral hernia through femoral ring of femoral canal<br>- Boundaries: inguinal ligament, sartorius, adductor longus<br>- Femoral sheath encloses femoral artery, vein, canal, but not nerve · Hip flexion: myotome L2"
+   ],
+   [
+    "",
+    "Pectineus",
+    "Adduct/flex hip",
+    "Femoral nerve (L2-4)",
+    "As for iliopsoas (above)"
+   ],
+   [
+    "",
+    "Sartorius",
+    "Abduct/laterally rotate/flex hip, flex knee (tailor's/cross-legged)",
+    "Femoral nerve (L2-4)",
+    "As for iliopsoas (above) · Pes anserinus: sartorius, gracilis, semitendinosus (SGT) insertion superficial to medial collateral ligament (MCL)"
+   ],
+   [
+    "Anterior - Quadriceps femoris",
+    "Rectus femoris",
+    "Extend knee, flex hip (helps iliopsoas), stabilize hip",
+    "Femoral nerve (L2-4)",
+    "As for iliopsoas (above) · Knee extension: myotome L3-4 (patellar tendon reflex)"
+   ],
+   [
+    "",
+    "Vastus lateralis",
+    "Extend knee",
+    "Femoral nerve (L2-4)",
+    "As for iliopsoas (above) · Knee extension: myotome L3-4 (patellar tendon reflex)"
+   ],
+   [
+    "",
+    "Vastus medialis",
+    "Extend knee",
+    "Femoral nerve (L2-4)",
+    "As for iliopsoas (above) · Knee extension: myotome L3-4 (patellar tendon reflex)"
+   ],
+   [
+    "",
+    "Vastus intermedius",
+    "Extend knee",
+    "Femoral nerve (L2-4)",
+    "As for iliopsoas (above) · Knee extension: myotome L3-4 (patellar tendon reflex)"
+   ],
+   [
+    "Posterior - Hamstrings",
+    "Biceps femoris",
+    "Extend hip (although primarily gluteus maximus), flex knee (primary knee flexors)",
+    "Long head: tibial nerve<br>Short head: common peroneal nerve",
+    "Hamstring strains: result of active contraction + passive stretch<br>Avulsion fracture of common hamstring origin (ischial tuberosity): forcible hip flexion<br>Popliteal fossa, deep → superficial (artery, vein, nerve): popliteal artery, popliteal vein, tibial nerve, common peroneal nerve; boundaries: biceps femoris superolaterally, semitendinosus (ST)/semimembranosus (SM) superomedially, lateral/medial heads of gastrocnemius inferiorly<br>- Popliteal aneurysm affects popliteal artery<br>- Genicular anastomosis: descending branch of lateral circumflex femoral artery + descending genicular artery (branch of femoral artery)<br>Hip extension/knee flexion: myotome L5-S1 · All originate from ischial tuberosity, except short head (SH) of biceps femoris which originates from linea aspera<br>Semitendinosus inserts into pes anserinus while semimembranosus inserts into tibial medial condyle"
+   ],
+   [
+    "",
+    "Semitendinosus",
+    "Extend hip (although primarily gluteus maximus), flex knee (primary knee flexors)",
+    "Tibial nerve",
+    "As for biceps femoris (above) · All originate from ischial tuberosity, except SH of biceps femoris which originates from linea aspera<br>Semitendinosus inserts into pes anserinus while semimembranosus inserts into tibial medial condyle"
+   ],
+   [
+    "",
+    "Semimembranosus",
+    "Extend hip (although primarily gluteus maximus), flex knee (primary knee flexors)",
+    "Tibial nerve",
+    "As for biceps femoris (above) · All originate from ischial tuberosity, except SH of biceps femoris which originates from linea aspera<br>Semitendinosus inserts into pes anserinus while semimembranosus inserts into tibial medial condyle"
+   ],
+   [
+    "Medial",
+    "Adductor longus",
+    "Adduct hip",
+    "Obturator nerve (L2-4)",
+    "Groin pull: tearing as result of active contraction/passive stretch of medial muscles close to origin, common in sports requiring quick starts/extreme stretching (soccer, sprints, gymnastics)<br>Anterior superior iliac spine (ASIS) avulsion: strong powerful hip flexion can avulse ASIS, which is origin of sartorius and tensor fascia latae, common in teens with weak cartilaginous growth plates relative to muscles/tendons<br>Adductor canal: transmits femoral artery and vein to adductor hiatus; formed by sartorius, vastus medialis, adductor longus<br>Adductor hiatus: opening between adductor magnus adductor part distal attachment and hamstring part tendon; transmits femoral artery and vein from anterior thigh to popliteal fossa, becoming popliteal artery and vein"
+   ],
+   [
+    "",
+    "Adductor brevis",
+    "Adduct hip",
+    "Obturator nerve (L2-4)",
+    "As for adductor longus (above) · Straddled by anterior + posterior divisions of obturator nerve"
+   ],
+   [
+    "",
+    "Adductor magnus",
+    "Adductor part: adduct/flex hip<br>Hamstring part: adduct/extend hip",
+    "Adductor part: obturator nerve (L2-4)<br>Hamstring part: tibial nerve",
+    "As for adductor longus (above)"
+   ],
+   [
+    "",
+    "Gracilis",
+    "Adduct hip weakly, flex knee, assist with medial rotation of leg",
+    "Obturator nerve (L2-4)",
+    "As for adductor longus (above) · Disposable (weak adductor) → used for transplants (e.g. anterior cruciate ligament (ACL)/anal sphincter/facial reconstruction)"
+   ],
+   [
+    "",
+    "Obturator externus",
+    "Laterally rotate hip",
+    "Obturator nerve (L2-4)",
+    "As for adductor longus (above)"
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> **Identify the important functional anatomy of the lower extremity, as it pertains to clinical presentations of leg pathology.**",
+   "> - Compare and contrast the stability and mobility of the glenohumeral and hip joints, as determined by static (bony and ligamentous) and dynamic (muscular) stabilizers.",
+   "> - Identify the bony landmarks of the lower extremity and relate these to their appearances on plain radiographs.",
+   "> - Identify the lumbosacral plexus and its branches and describe what functional consequences would occur with lesions at different levels",
+   "> - Trace the arterial blood supply and venous drainage of the lower extremity, and identify critical areas of collateral circulation.",
+   "> - Identify the femoral triangle, its anatomic borders and its contents",
+   "> - Identify the major muscles of the buttock and their functions, and explain the anatomic basis of Trendelenburg sign/lurch/gait",
+   "> - Identify the compartments of the thigh and leg and describe the function and innervation of the muscles in each compartment."
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 9/08 - Anatomy of the Leg.md",
+  "heading": "## Muscle summary table",
+  "start": 110,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Anterior",
+    "Tibialis anterior",
+    "Dorsiflexion, inversion, supports transverse arch",
+    "Deep peroneal nerve",
+    "Shin splint: microtrauma to tibial periosteum where anterior leg muscles attach (especially tibialis anterior), usually result of overexertion/improper warm up or cool down, mild form of anterior compartment syndrome<br>Common peroneal nerve injury and footdrop: commonly injured where it wraps around head of fibula → weak dorsiflexion/eccentric plantarflexion + eversion, paresthesia to all territories of deep/superficial peroneal nerve<br>Deep peroneal nerve sensory test: between digits 1-2<br>- Deep peroneal nerve entrapment: compression by overused/inflamed anterior muscles or by tight boots under inferior extensor retinaculum → pain between digits 1-2<br>Dorsalis pedis pulse: dorsalis pedis artery is terminal branch of anterior tibial artery"
+   ],
+   [
+    "",
+    "Extensor digitorum longus",
+    "Dorsiflexion, extend digits 2-5",
+    "Deep peroneal nerve",
+    "As for tibialis anterior (above)"
+   ],
+   [
+    "",
+    "Extensor hallucis longus",
+    "Dorsiflexion, extends digit 1",
+    "Deep peroneal nerve",
+    "As for tibialis anterior (above)"
+   ],
+   [
+    "",
+    "Fibularis tertius",
+    "Weak dorsiflexion/eversion, proprioception",
+    "Deep peroneal nerve",
+    "As for tibialis anterior (above) · Not always present"
+   ],
+   [
+    "Lateral",
+    "Fibularis longus",
+    "Eversion, weak plantarflexion, supports transverse arch",
+    "Superficial peroneal nerve",
+    "Superficial peroneal nerve sensory test: dorsum of foot<br>- Superficial peroneal nerve entrapment: overstretch by numerous ankle sprains → pain/paresthesia along anterolateral leg/dorsum of foot"
+   ],
+   [
+    "",
+    "Fibularis brevis",
+    "Eversion, weak plantarflexion, supports transverse arch",
+    "Superficial peroneal nerve",
+    "As for fibularis longus (above)"
+   ],
+   [
+    "Posterior - Superficial",
+    "Gastrocnemius",
+    "Plantarflexion upon knee extension, raise heel when walking, flex knee",
+    "Tibial nerve",
+    "Insertion into posterior calcaneus via calcaneal (Achilles) tendon<br>- Calcaneal (Achilles) tendon rupture: results from forceful plantarflexion, usually in poorly conditioned people → audible snap, sudden calf pain, dorsiflexion, palpable gap, cannot plantarflex against resistance · non-surgical repair may be adequate in non-athletic/older patients, surgery usually advised in the younger, more active<br>- Calcaneal tendinitis: inflammation of calcaneal tendon, common in runners, can progress to rupture · Standing calf raise"
+   ],
+   [
+    "",
+    "Soleus",
+    "Plantarflexion (primarily upon knee flexion, but helps gastrocnemius during knee extension)",
+    "Tibial nerve",
+    "As for gastrocnemius (above) · Seated calf raise (primarily)"
+   ],
+   [
+    "",
+    "Plantaris",
+    "Weak plantarflexion",
+    "Tibial nerve",
+    "As for gastrocnemius (above)"
+   ],
+   [
+    "Posterior - Deep",
+    "Tibialis posterior",
+    "Plantarflexion, inversion, support transverse arch",
+    "Tibial nerve",
+    "Tarsal tunnel: Tom (tibialis posterior), Dick (flexor digitorum longus), And (posterior tibial artery), Not (tibial nerve), Harry (flexor hallucis longus), anterior → posterior<br>- But in leg: Dick Tom Harry (medial → lateral)<br>- Tarsal tunnel syndrome: compression of tibial nerve by flexor retinaculum due to swelling of synovial sheaths of muscle tendons in tunnel → heel pain<br>- Posterior tibial pulse: between medial malleolus & calcaneal tendon at/near tarsal tunnel (study plantar arteries of plantar foot)<br>Pes planus: flattening of medial longitudinal arch, often after injury/degeneration of tibialis posterior"
+   ],
+   [
+    "",
+    "Flexor digitorum longus",
+    "Flex digits 2-5, plantarflexion, support longitudinal arch",
+    "Tibial nerve",
+    "As for tibialis posterior (above)"
+   ],
+   [
+    "",
+    "Flexor hallucis longus",
+    "Flex digit 1, weak plantarflexion, support medial longitudinal arch",
+    "Tibial nerve",
+    "As for tibialis posterior (above)"
+   ],
+   [
+    "",
+    "Popliteus",
+    "Unlock knee, weakly flex knee",
+    "Tibial nerve",
+    ""
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> **Identify the important functional anatomy of the lower extremity, as it pertains to clinical presentations of leg pathology.** ",
+   "> - Identify the bony landmarks of the lower extremity and relate these to their appearances on plain radiographs. ",
+   "> - Identify the lumbosacral plexus and its branches and describe what functional consequences would occur with lesions at different levels ",
+   "> - Identify the compartments of the thigh and leg and describe the function and innervation of the muscles in each compartment."
+  ]
+ },
+ {
+  "note": "03 - MSK/Week 10/01.1 - Anatomy of the Ankle and Foot.md",
+  "heading": "## Muscle summary table",
+  "start": 100,
+  "header": [
+   "Group",
+   "Muscle",
+   "Action",
+   "Innervation",
+   "Clinical notes"
+  ],
+  "rows": [
+   [
+    "Anterior - Dorsum of foot",
+    "Extensor digitorum brevis",
+    "Extend digits 2-5 with longus",
+    "Deep peroneal nerve",
+    "As for the anterior leg muscles (see the muscle summary table in [[08 - Anatomy of the Leg]])"
+   ],
+   [
+    "",
+    "Extensor hallucis brevis",
+    "Extend digit 1 with longus",
+    "Deep peroneal nerve",
+    "As for extensor digitorum brevis (above)"
+   ],
+   [
+    "Sole - Tendons",
+    "Quadratus plantae",
+    "Assists flexor digitorum longus by changing line of pull → shorten flexor digitorum longus tendon when foot is in plantarflexion to assist walking",
+    "(Lateral plantar nerve)",
+    ""
+   ],
+   [
+    "",
+    "Flexor digitorum longus",
+    "Flex digits 2-5, plantarflexion, support longitudinal arch",
+    "Tibial nerve",
+    ""
+   ],
+   [
+    "",
+    "Flexor hallucis longus",
+    "Flex digit 1, weak plantarflexion, support medial longitudinal arch",
+    "Tibial nerve",
+    "Tendon passes under sustentaculum tali → fracture can injure muscle"
+   ],
+   [
+    "Sole - Soft tissue",
+    "Plantar fascia",
+    "Thick central part: plantar aponeurosis - protect sole, support longitudinal arches, hold everything together",
+    "",
+    "Plantar fasciitis: inflammation by overuse, often improper footwear → pain on plantar heel/foot (especially medial plantar aponeurosis), exacerbated by dorsiflexion and hallux extension"
+   ]
+  ],
+  "after": [
+   "> [!check] Objectives",
+   "> **Identify the important functional anatomy of the lower extremity, as it pertains to clinical presentations of leg pathology.** ",
+   "> - Identify the bony landmarks of the lower extremity and relate these to their appearances on plain radiographs. ",
+   "> - Identify the lumbosacral plexus and its branches and describe what functional consequences would occur with lesions at different levels ",
+   "> - Trace the arterial blood supply and venous drainage of the lower extremity and identify critical areas of collateral circulation. ",
+   "> - Describe the important functional anatomy of the foot"
+  ]
+ }
+]

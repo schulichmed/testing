@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Anatomy Tables</title>
+<style>
+:root{--bg:#f7f5fa;--card:#ffffff;--ink:#201436;--muted:#5f5670;--line:#ddd5ea;--accent:#7a3fb0;--accent-soft:#efe8f6;--hide:#ece6f4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--hide:#2a2336}}
+:root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--hide:#2a2336}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,sans-serif}
+.wrap{max-width:1320px;margin:0 auto;padding:24px 16px 60px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(26px,4.5vw,36px);line-height:1.1}
+h2{font-size:21px;margin:4px 0 12px;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:600;color:var(--accent);margin:0 0 6px}
+.lead{color:var(--muted);max-width:80ch;margin:8px 0 0}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;background:var(--accent-soft);border-radius:14px;padding:4px;margin:18px 0 10px}
+.tabs button{font:600 14px Inter,sans-serif;border:0;border-radius:10px;padding:7px 12px;background:transparent;color:var(--ink);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px}
+.grp{display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.grp button{font:500 13px Inter,sans-serif;border:0;background:transparent;color:var(--ink);padding:5px 11px;border-radius:999px;cursor:pointer}
+.grp button[aria-pressed="true"]{background:var(--accent);color:#fff}
+:root[data-theme="dark"] .grp button[aria-pressed="true"]{color:#15111c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .grp button[aria-pressed="true"]{color:#15111c}}
+.bar .lbl{font-size:13px;color:var(--muted)}
+.plain{font:500 13px Inter,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:5px 11px;border-radius:999px;cursor:pointer}
+.test-only{display:none}
+body.testing .test-only{display:flex}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.grid{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.45}
+.grid th,.grid td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}
+.grid thead th{background:var(--accent-soft);font-weight:600;position:sticky;top:0}
+.grid tbody th{font-weight:600;min-width:120px}
+.cn-grid{min-width:1100px}
+.cn-grid td{min-width:150px}
+.cn-grid td:last-child{min-width:280px}
+.mu-grid{min-width:640px}
+.mu-grid td[data-col="act"]{width:42%}
+.cn{display:block;font:700 17px Fraunces,Georgia,serif;color:var(--accent)}
+td.gcol{color:var(--muted);font-size:12.5px;width:120px}
+.ln{display:block}
+.sub{display:block;padding-left:12px;position:relative;color:var(--ink)}
+.sub::before{content:"•";position:absolute;left:2px;color:var(--muted)}
+.na{color:var(--muted)}
+b{font-weight:700}
+td.hid{background:var(--hide);cursor:pointer;color:transparent;position:relative}
+td.hid *{visibility:hidden}
+td.hid::after{content:"Tap to reveal";position:absolute;left:8px;top:6px;font-size:12px;font-weight:600;color:var(--accent);visibility:visible}
+h3.clin{font-size:16px;margin:18px 0 8px}
+.boxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.box{border:1.5px dashed var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.box-h{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.foot{color:var(--muted);font-size:13px;margin-top:16px;max-width:90ch}
+@media (max-width:600px){.boxes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">PoM 2 · MSK and neuro anatomy</p>
+<h1>Anatomy tables</h1>
+<p class="lead">The cranial nerves and every muscle from the back to the foot, in lecture order: what each one does and what supplies it. A <b>bold nerve</b> is the one that breaks its group's rule. From Andy's anatomy tables, as tidied in the medwiki notes.</p>
+
+<div class="tabs" role="tablist">{{TABS}}</div>
+
+<div class="bar">
+  <div class="grp" role="group" aria-label="Mode">
+    <button data-mode="look" aria-pressed="true">Look</button>
+    <button data-mode="test" aria-pressed="false">Test</button>
+  </div>
+  <div class="grp test-only" role="group" aria-label="Hide" id="hide-mu">
+    <span class="lbl" style="padding:5px 6px 5px 9px">Hide</span>
+    <button data-hide="act" aria-pressed="false">Action</button>
+    <button data-hide="nerve" aria-pressed="true">Nerve</button>
+  </div>
+  <div class="grp test-only" role="group" aria-label="Hide" id="hide-cn">
+    <span class="lbl" style="padding:5px 6px 5px 9px">Hide</span>
+    <button data-hide="exit" aria-pressed="true">Exits via</button>
+    <button data-hide="fn" aria-pressed="false">Function</button>
+    <button data-hide="test" aria-pressed="false">Test</button>
+  </div>
+  <button class="plain test-only" id="reset">Hide again</button>
+</div>
+
+{{SECTIONS}}
+
+<p class="foot">Test mode: pick the columns to hide, then tap a cell to check yourself. "Hide again" starts the table over. Rows that disagreed with the lecture content were corrected (the facial nerve carries no sympathetic supply of its own; ptosis is a CN III sign, not optic nerve; a relative afferent pupillary defect is an optic nerve lesion, in front of the chiasm).</p>
+</div>
+<script>
+(function(){
+  var body=document.body, mode="look";
+  var hidden={act:false,nerve:true,exit:true,fn:false,test:false};
+  function current(){return document.querySelector("section:not([hidden])");}
+  function apply(){
+    var sec=current(), isCn=sec.dataset.kind==="cn";
+    document.getElementById("hide-mu").style.display=(mode==="test"&&!isCn)?"flex":"none";
+    document.getElementById("hide-cn").style.display=(mode==="test"&&isCn)?"flex":"none";
+    document.querySelectorAll("td[data-col]").forEach(function(td){
+      td.classList.toggle("hid",mode==="test"&&hidden[td.dataset.col]&&!td.dataset.shown);
+    });
+  }
+  document.querySelectorAll(".tabs button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".tabs button").forEach(function(x){x.setAttribute("aria-selected",x===b);});
+      document.querySelectorAll("section").forEach(function(s){s.hidden=s.id!==b.dataset.sec;});
+      try{localStorage.setItem("anatomy-tab",b.dataset.sec);}catch(e){}
+      apply();
+    });
+  });
+  document.querySelectorAll("[data-mode]").forEach(function(b){
+    b.addEventListener("click",function(){
+      mode=b.dataset.mode; body.classList.toggle("testing",mode==="test");
+      document.querySelectorAll("[data-mode]").forEach(function(x){x.setAttribute("aria-pressed",x===b);});
+      apply();
+    });
+  });
+  document.querySelectorAll("[data-hide]").forEach(function(b){
+    b.addEventListener("click",function(){
+      hidden[b.dataset.hide]=!hidden[b.dataset.hide]; b.setAttribute("aria-pressed",hidden[b.dataset.hide]); apply();
+    });
+  });
+  document.getElementById("reset").addEventListener("click",function(){
+    current().querySelectorAll("td[data-shown]").forEach(function(td){delete td.dataset.shown;}); apply();
+  });
+  document.addEventListener("click",function(e){
+    var td=e.target.closest&&e.target.closest("td.hid"); if(!td)return;
+    td.dataset.shown="1"; td.classList.remove("hid");
+  });
+  try{var t=localStorage.getItem("anatomy-tab"); var b=t&&document.querySelector('.tabs button[data-sec="'+t+'"]'); if(b)b.click();}catch(e){}
+  apply();
+})();
+</script>
+</body>
+</html>
