@@ -65,6 +65,7 @@ h3.clin{font-size:16px;margin:18px 0 8px}
 .box-h{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
 .foot{color:var(--muted);font-size:13px;margin-top:16px;max-width:90ch}
 @media (max-width:600px){.boxes{grid-template-columns:1fr}}
+.derm-frame{display:block;width:100%;height:1400px;border:0;background:transparent}
 .bp{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
 @media (max-width:980px){.bp{grid-template-columns:minmax(0,1fr)}.bp-panel{position:static}}
 .bp-fig svg{display:block;width:100%;min-width:760px;height:auto}
@@ -116,7 +117,7 @@ button.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(
 <div class="wrap">
 <p class="eyebrow">PoM 2 · MSK and neuro anatomy</p>
 <h1>Anatomy tables</h1>
-<p class="lead">The cranial nerves, the brachial plexus and every muscle from the back to the foot, in lecture order: what each one does and what supplies it. A <b>bold nerve</b> is the one that breaks its group's rule. The tables are Andy's anatomy tables, as tidied in the medwiki notes; the brachial plexus is drawn from this year's lecture, and you can click through it or test yourself on it.</p>
+<p class="lead">The cranial nerves, dermatomes, the brachial plexus and every muscle from the back to the foot, in lecture order: what each one does and what supplies it. A <b>bold nerve</b> is the one that breaks its group's rule. The tables are Andy's anatomy tables, as tidied in the medwiki notes; the brachial plexus is drawn from this year's lecture, and you can click through it or test yourself on it.</p>
 
 <div class="tabs" role="tablist">{{TABS}}</div>
 
@@ -152,6 +153,10 @@ button.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(
     var sec=current(), isCn=sec.dataset.kind==="cn";
     document.getElementById("hide-mu").style.display=(mode==="test"&&!isCn)?"flex":"none";
     document.getElementById("hide-cn").style.display=(mode==="test"&&isCn)?"flex":"none";
+    var isDerm=sec.dataset.kind==="derm";
+    document.querySelector('.bar [aria-label="Mode"]').style.display=isDerm?"none":"";
+    var frame=sec.querySelector("iframe[data-src]");
+    if(frame){ var th=document.documentElement.getAttribute("data-theme"); frame.src=frame.dataset.src+(th?"&theme="+th:""); frame.removeAttribute("data-src"); }
     var isBp=sec.dataset.kind==="bp";
     if(isBp) document.getElementById("hide-mu").style.display="none";
     document.getElementById("reset").style.display=(mode==="test"&&!isBp)?"":"none";
@@ -165,6 +170,7 @@ button.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(
       document.querySelectorAll(".tabs button").forEach(function(x){x.setAttribute("aria-selected",x===b);});
       document.querySelectorAll("section").forEach(function(s){s.hidden=s.id!==b.dataset.sec;});
       try{localStorage.setItem("anatomy-tab",b.dataset.sec);}catch(e){}
+      try{history.replaceState(null,"","#"+b.dataset.sec);}catch(e){}
       apply();
     });
   });
@@ -187,7 +193,17 @@ button.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(
     var td=e.target.closest&&e.target.closest("td.hid"); if(!td)return;
     td.dataset.shown="1"; td.classList.remove("hid");
   });
-  try{var t=localStorage.getItem("anatomy-tab"); var b=t&&document.querySelector('.tabs button[data-sec="'+t+'"]'); if(b)b.click();}catch(e){}
+  var want=location.hash.slice(1);
+  try{ want=want||localStorage.getItem("anatomy-tab"); }catch(e){}
+  var first=want&&document.querySelector('.tabs button[data-sec="'+want+'"]'); if(first)first.click();
+  addEventListener("hashchange",function(){
+    var b=document.querySelector('.tabs button[data-sec="'+location.hash.slice(1)+'"]');
+    if(b&&b.getAttribute("aria-selected")!=="true") b.click();
+  });
+  addEventListener("message",function(e){
+    var h=e.data&&e.data.dermatomesHeight, f=document.querySelector(".derm-frame");
+    if(h&&f) f.style.height=Math.ceil(h)+"px";
+  });
   apply();
 })();
 </script>

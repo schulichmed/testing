@@ -360,7 +360,10 @@ def build_region(table: dict, region: str, seen_notes: set[str]) -> str:
                    if boxes else "")
 
 
-KINDS = {"cn": "cn", "plexus": "bp"}
+KINDS = {"cn": "cn", "plexus": "bp", "dermatomes": "derm"}
+DERMATOMES = ('<iframe class="derm-frame" data-src="../dermatomes/?embed=1" title="Dermatome map in 3D" '
+              'loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>'
+              '<p class="help">Also on its own page: <a href="../dermatomes/">dermatome map in 3D</a>.</p>')
 
 
 def main() -> None:
@@ -375,6 +378,9 @@ def main() -> None:
         sections.append((re.sub(r"\W+", "-", tab.lower()), tab, heading, build_region(table, tab, seen)))
         log.info("%s: %d rows", tab, len(table["rows"]))
         if tab == "Back":
+            # Dermatomes are taught in the back and neck lecture; the 3D page is framed, not merged,
+            # since it brings its own three.js scene and styles. It loads when the tab opens.
+            sections.append(("dermatomes", "Dermatomes", "Dermatomes", DERMATOMES))
             # The brachial plexus lecture opens Week 8, between the back and the shoulder.
             plexus = (HERE / "plexus.html").read_text(encoding="utf-8")
             sections.append(("plexus", "Brachial plexus", "Brachial plexus", plexus))
