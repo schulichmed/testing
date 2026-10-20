@@ -169,22 +169,129 @@ def split_notes(cell: str) -> list[str]:
     return notes
 
 
-def box_parts(muscle: str, note: str) -> tuple[str, str]:
-    """Title a clinical note by its own subject ("Snuff box: ...") rather than the row it sat on."""
+# Where each clinical note belongs. The spreadsheet's merged cells left a note on whichever row
+# the merge began at (tennis elbow and de Quervain's on anconeus), so every note is placed by
+# hand: (region, start of the note, target). A target is a muscle row, "@<group>" for a note about
+# the whole group (shown in the merged group cell), REGION for a space, landmark or nerve injury
+# (a box under the table), JOIN_NEXT for a bare heading that titles the next note, or PREV for a
+# fragment the vault split off the note before it.
+PLACES = [
+    ("Shoulder", "Lesion → winged scapula", "Serratus anterior"),
+    ("Shoulder", "Impingement", "Supraspinatus"),
+    ("Arm", "Tendinopathy", "Biceps brachii"),
+    ("Arm", "Long head: more lateral", "Biceps brachii"),
+    ("Arm", "Short head", "Biceps brachii"),
+    ("Arm", "Long head: between", "Triceps"),
+    ("Arm", "Lateral head", "Triceps"),
+    ("Arm", "Medial head", "Triceps"),
+    ("Forearm", "Medial epicondylitis", "@Anterior - Superficial"),
+    ("Forearm", "Continues as lumbricals", "Flexor digitorum profundus"),
+    ("Forearm", "Lateral epicondylitis", "@Posterior - Superficial"),
+    ("Forearm", "Synovial cyst", "REGION"),
+    ("Forearm", "de Quervain", "Abductor pollicis longus"),
+    ("Forearm", "Snuff box", "REGION"),
+    ("Forearm", "Mallet finger", "Extensor digitorum"),
+    ("Hand", "Proximal median nerve", "REGION"),
+    ("Hand", "Distal median nerve", "REGION"),
+    ("Hand", "Proximal ulnar nerve", "REGION"),
+    ("Hand", "Distal ulnar nerve lesion", "JOIN_NEXT"),
+    ("Hand", "Ulnar canal syndrome", "REGION"),
+    ("Hand", "Good test of recurrent", "Opponens pollicis"),
+    ("Hand", "Extends off flexor", "Lumbricals"),
+    ("Hand", "Test by tugging at paper squeezed between digits 1/2", "Adductor pollicis"),
+    ("Hand", "Palmar interossei", "Interossei"),
+    ("Hand", "Dorsal interossei", "Interossei"),
+    ("Hip & thigh", "Hip extension: myotome L5", "Gluteus maximus"),
+    ("Hip & thigh", "Hip fracture", "REGION"),
+    ("Hip & thigh", "Lesion → trendelenburg", "Gluteus medius/minimus"),
+    ("Hip & thigh", "Forms posterior wall", "Piriformis"),
+    ("Hip & thigh", "Piriformis syndrome", "Piriformis"),
+    ("Hip & thigh", "Intragluteal injections", "REGION"),
+    ("Hip & thigh", "Important landmark", "Piriformis"),
+    ("Hip & thigh", "Exit pelvis via greater", "Piriformis"),
+    # Obturator internus is the muscle that leaves through the lesser sciatic foramen.
+    ("Hip & thigh", "Exit pelvis via lesser", "Obturator internus"),
+    ("Hip & thigh", "Femoral triangle", "REGION"),
+    ("Hip & thigh", "Hip flexion: myotome L2", "Iliopsoas"),
+    ("Hip & thigh", "Pes anserinus", "Sartorius"),
+    ("Hip & thigh", "Knee extension: myotome", "@Anterior - Quadriceps femoris"),
+    ("Hip & thigh", "Hamstring strains", "@Posterior - Hamstrings"),
+    ("Hip & thigh", "Avulsion fracture of common hamstring", "@Posterior - Hamstrings"),
+    ("Hip & thigh", "Popliteal fossa", "REGION"),
+    ("Hip & thigh", "Hip extension/knee flexion", "@Posterior - Hamstrings"),
+    ("Hip & thigh", "All originate from ischial", "@Posterior - Hamstrings"),
+    ("Hip & thigh", "Semitendinosus inserts", "@Posterior - Hamstrings"),
+    ("Hip & thigh", "Groin pull", "@Medial"),
+    ("Hip & thigh", "Anterior superior iliac spine", "Sartorius"),
+    ("Hip & thigh", "Adductor canal", "REGION"),
+    ("Hip & thigh", "Adductor hiatus", "Adductor magnus"),
+    ("Hip & thigh", "Straddled by", "Adductor brevis"),
+    ("Hip & thigh", "Disposable", "Gracilis"),
+    ("Leg", "Shin splint", "Tibialis anterior"),
+    ("Leg", "Common peroneal nerve injury", "REGION"),
+    ("Leg", "Deep peroneal nerve sensory", "@Anterior"),
+    ("Leg", "Dorsalis pedis", "REGION"),
+    ("Leg", "Not always present", "Fibularis tertius"),
+    ("Leg", "Superficial peroneal nerve sensory", "@Lateral"),
+    ("Leg", "Insertion into posterior calcaneus", "@Posterior - Superficial"),
+    ("Leg", "non-surgical repair", "PREV"),
+    ("Leg", "Standing calf raise", "Gastrocnemius"),
+    ("Leg", "Seated calf raise", "Soleus"),
+    ("Leg", "Tarsal tunnel", "REGION"),
+    ("Leg", "Pes planus", "Tibialis posterior"),
+    ("Foot", "Tendon passes under sustentaculum", "Flexor hallucis longus tendon"),
+    ("Foot", "Plantar fasciitis", "Plantar fascia"),
+]
+
+
+def note_html(note: str, title: str = "") -> str:
+    """Render one note: its own subject ("Snuff box: ...") in bold, then the rest."""
     first, _, rest = note.partition("<br>")
     head, sep, tail = first.partition(": ")
-    if sep and len(head) <= 60:
-        if head.lower().startswith("lesion"):
-            head = f"{muscle} lesion{head[6:]}"
-        return head, tail + (f"<br>{rest}" if rest else "")
-    return muscle, note
+    is_bare_heading = not sep and rest and all(ln.startswith("- ") for ln in rest.split("<br>"))
+    if title:
+        head, tail, rest = title, first, rest
+    elif is_bare_heading:
+        # "Proximal median nerve lesions" over its "- " sub-points is a heading by itself.
+        return f'<div class="note"><b class="nh">{html.escape(first)}</b>{cell_html(rest)}</div>'
+    elif not (sep and len(head) <= 60):
+        return f'<div class="note">{cell_html(note)}</div>'
+    body = cell_html(tail + (f"<br>{rest}" if rest else ""))
+    return f'<div class="note"><b class="nh">{html.escape(head)}</b>{body}</div>'
+
+
+def place_notes(region: str, notes: list[str]) -> list[tuple[str, str]]:
+    """Pair each note with its PLACES target, failing on a note with no place or a stale place."""
+    places = [(start, target) for reg, start, target in PLACES if reg == region]
+    used, placed, title = set(), [], ""
+    for n in notes:
+        hit = next(((s, tg) for s, tg in places if n.lower().startswith(s.lower())), None)
+        if hit is None:
+            raise ValueError(f"{region}: no place for note {n[:60]!r}")
+        used.add(hit[0])
+        target = hit[1]
+        if target == "JOIN_NEXT":
+            title = n
+            continue
+        if target == "PREV":
+            prev_target, prev_html = placed[-1]
+            placed[-1] = (prev_target, prev_html.removesuffix("</div>") + f"{cell_html(n)}</div>")
+            continue
+        placed.append((target, note_html(n, title) if title else note_html(n)))
+        title = ""
+    stale = {s for s, _ in places} - used
+    if stale:
+        raise ValueError(f"{region}: places matched no note: {sorted(stale)}")
+    return placed
 
 
 def build_region(table: dict, region: str, seen_notes: set[str]) -> str:
-    """Render one region's muscle grid, then its clinical notes as boxes below it.
+    """Render one region's muscle grid with each clinical note on the row it is about.
 
     A nerve is bolded where it breaks its group's majority nerve (flexor carpi ulnaris among
-    the median-supplied flexors): that is what the grid exists to tell apart.
+    the median-supplied flexors): that is what the grid exists to tell apart. Each group opens
+    with a band row carrying the notes about the whole group; spaces, landmarks and nerve
+    injuries go in boxes under the table.
     """
     rows = [list(r) for r in table["rows"]]
     apply_fixes(rows, 1)
@@ -207,11 +314,30 @@ def build_region(table: dict, region: str, seen_notes: set[str]) -> str:
         # A group needs three supplied muscles before one can "break its rule".
         if top and sum(nerves.values()) >= 3 and (len(top) == 1 or top[0][1] > top[1][1]):
             majority[g] = top[0][0]
-    body, notes = [], []
+    raw_notes = []
+    for r in rows:
+        for n in split_notes(clean(r[4])):
+            key = re.sub(r"\W+", "", re.sub(r"\(\w+\)", "", n.lower()))[:40]
+            if key not in seen_notes:
+                seen_notes.add(key)
+                raw_notes.append(n)
+    placed = place_notes(region, raw_notes)
+    muscles = {clean(r[1]) for r in rows}
+    for target, _ in placed:
+        if target not in muscles and target != "REGION" and target[1:] not in groups:
+            raise ValueError(f"{region}: note target {target!r} is not a row or group here")
+    by_target: dict[str, list[str]] = {}
+    for target, h in placed:
+        by_target.setdefault(target, []).append(h)
+    body = []
     bolded: set[str] = set()
-    for r, g in zip(rows, groups):
-        muscle, action, nerve, clinical = (clean(c) for c in r[1:5])
-        group_cell = f'<td class="gcol">{html.escape(clean(r[0]))}</td>'
+    for i, (r, g) in enumerate(zip(rows, groups)):
+        muscle, action, nerve = (clean(c) for c in r[1:4])
+        if i == 0 or groups[i - 1] != g:
+            group_notes = "".join(by_target.get(f"@{g}", []))
+            notes_div = f'<div class="gnotes">{group_notes}</div>' if group_notes else ""
+            body.append(f'<tr class="band"><td colspan="4"><span class="gname">{html.escape(g)}</span>'
+                        f"{notes_div}</td></tr>")
         bold_nerve = nerve and g in majority and nerve != majority[g]
         nerve_html = cell_html(nerve) if nerve else '<span class="na">—</span>'
         if bold_nerve:
@@ -219,22 +345,17 @@ def build_region(table: dict, region: str, seen_notes: set[str]) -> str:
         primary = [ph for ph in PRIMARY if ph.lower() in action.lower() and ph not in bolded]
         bolded.update(primary)
         action_html = cell_html(action, primary)
+        notes_html = "".join(by_target.get(muscle, []))
         body.append(
-            f"<tr>{group_cell}<th scope=\"row\">{html.escape(muscle)}</th>"
-            f'<td data-col="act">{action_html}</td><td data-col="nerve">{nerve_html}</td></tr>')
-        for n in split_notes(clinical):
-            key = re.sub(r"\W+", "", re.sub(r"\(\w+\)", "", n.lower()))[:40]
-            if key in seen_notes:
-                continue
-            seen_notes.add(key)
-            notes.append((muscle, n))
-    th = "<th>Group</th><th>Muscle</th><th>Action</th><th>Nerve</th>"
+            f"<tr><th scope=\"row\">{html.escape(muscle)}</th>"
+            f'<td data-col="act">{action_html}</td><td data-col="nerve">{nerve_html}</td>'
+            f'<td class="ncol">{notes_html}</td></tr>')
+    th = "<th>Muscle</th><th>Action</th><th>Nerve</th><th>Clinical notes</th>"
     grid = (f'<div class="scroll"><table class="grid mu-grid"><thead><tr>{th}</tr></thead>'
             f'<tbody>{"".join(body)}</tbody></table></div>')
-    boxes = "".join(
-        f'<div class="box"><p class="box-h">{html.escape(h)}</p>{cell_html(b)}</div>'
-        for h, b in (box_parts(m, n) for m, n in notes))
-    return grid + (f'<h3 class="clin">Clinical notes</h3><div class="boxes">{boxes}</div>' if boxes else "")
+    boxes = "".join(f'<div class="box">{h}</div>' for h in by_target.get("REGION", []))
+    return grid + (f'<h3 class="clin">Spaces, landmarks and nerve injuries</h3><div class="boxes">{boxes}</div>'
+                   if boxes else "")
 
 
 def main() -> None:
