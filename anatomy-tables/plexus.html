@@ -1,0 +1,210 @@
+<div class="bp">
+  <div class="bp-fig">
+    <div class="scroll"><svg id="bp-svg" viewBox="0 0 1020 525" role="img" aria-label="The brachial plexus: roots C5 to T1, trunks, divisions, cords and branches"></svg></div>
+    <p class="help" id="bp-hint">Click any root, trunk, division, cord or nerve: its path lights up back to the roots it carries.</p>
+  </div>
+  <aside class="bp-panel" id="bp-panel"></aside>
+</div>
+<script>
+(function(){
+  // Laid out like the "3 Wise (Y) Men (M) go bowling" drawing: roots on the right, branches on
+  // the left. Root values and what each nerve supplies follow this year's lecture.
+  var R = ["C5","C6","C7","C8","T1"];
+  var S = {
+    C5:{t:"root",p:[],pts:[[940,60],[800,130]],lbl:[948,64,"start","C5"]},
+    C6:{t:"root",p:[],pts:[[940,150],[800,130]],lbl:[948,154,"start","C6"]},
+    C7:{t:"root",p:[],pts:[[940,260],[800,260]],lbl:[948,264,"start","C7"]},
+    C8:{t:"root",p:[],pts:[[940,370],[800,390]],lbl:[948,374,"start","C8"]},
+    T1:{t:"root",p:[],pts:[[940,460],[800,390]],lbl:[948,464,"start","T1"]},
+    sup:{t:"trunk",name:"Superior trunk",p:["C5","C6"],pts:[[800,130],[660,130]],lbl:[730,122,"middle","Superior"]},
+    mid:{t:"trunk",name:"Middle trunk",p:["C7"],pts:[[800,260],[660,260]],lbl:[730,252,"middle","Middle"]},
+    inf:{t:"trunk",name:"Inferior trunk",p:["C8","T1"],pts:[[800,390],[660,390]],lbl:[730,382,"middle","Inferior"]},
+    supA:{t:"division",name:"Anterior division of the superior trunk",p:["sup"],pts:[[660,130],[540,130]],lbl:[600,122,"middle","A"]},
+    supP:{t:"division",name:"Posterior division of the superior trunk",p:["sup"],pts:[[660,130],[540,260]],lbl:[553,232,"end","P"]},
+    midA:{t:"division",name:"Anterior division of the middle trunk",p:["mid"],pts:[[660,260],[540,130]],lbl:[652,236,"start","A"]},
+    midP:{t:"division",name:"Posterior division of the middle trunk",p:["mid"],pts:[[660,260],[540,260]],lbl:[630,252,"middle","P"]},
+    infA:{t:"division",name:"Anterior division of the inferior trunk",p:["inf"],pts:[[660,390],[540,390]],lbl:[600,382,"middle","A"]},
+    infP:{t:"division",name:"Posterior division of the inferior trunk",p:["inf"],pts:[[660,390],[540,260]],lbl:[620,320,"start","P"]},
+    lat:{t:"cord",name:"Lateral cord",p:["supA","midA"],pts:[[540,130],[300,130]],lbl:[400,122,"middle","Lateral"]},
+    post:{t:"cord",name:"Posterior cord",p:["supP","midP","infP"],pts:[[540,260],[380,260]],lbl:[460,276,"middle","Posterior"]},
+    med:{t:"cord",name:"Medial cord",p:["infA"],pts:[[540,390],[300,390]],lbl:[350,382,"middle","Medial"]},
+    mc:{t:"nerve",name:"Musculocutaneous nerve",p:["lat"],roots:["C5","C6","C7"],pts:[[300,130],[40,130]],lbl:[44,122,"start","Musculocutaneous"]},
+    medn:{t:"nerve",name:"Median nerve",p:["lat","med"],roots:R,pts:[[300,130],[230,260],[300,390],[230,260],[40,260]],lbl:[44,252,"start","Median"]},
+    uln:{t:"nerve",name:"Ulnar nerve",p:["med"],roots:["C8","T1"],pts:[[300,390],[40,390]],lbl:[44,382,"start","Ulnar"]},
+    ax:{t:"nerve",name:"Axillary nerve",p:["post"],roots:["C5","C6"],pts:[[380,260],[320,205]],lbl:[326,200,"start","Axillary"]},
+    rad:{t:"nerve",name:"Radial nerve",p:["post"],roots:R,pts:[[380,260],[320,315]],lbl:[326,333,"start","Radial"]},
+    ds:{t:"nerve",minor:1,name:"Dorsal scapular nerve",p:["C5"],roots:["C5"],pts:[[915,72],[915,24]],lbl:[920,18,"start","Dorsal scapular"]},
+    lt:{t:"nerve",minor:1,name:"Long thoracic nerve",p:["C5","C6","C7"],roots:["C5","C6","C7"],pts:[[860,260],[860,139],[860,100],[860,50]],lbl:[860,42,"middle","Long thoracic"]},
+    ss:{t:"nerve",minor:1,name:"Suprascapular nerve",p:["sup"],roots:["C5","C6"],pts:[[730,130],[730,74]],lbl:[730,66,"middle","Suprascapular"]},
+    lp:{t:"nerve",minor:1,name:"Lateral pectoral nerve",p:["lat"],roots:["C5","C6","C7"],pts:[[480,130],[480,92]],lbl:[480,84,"middle","Lateral pectoral"]},
+    us:{t:"nerve",minor:1,name:"Upper subscapular nerve",p:["post"],roots:["C5","C6"],pts:[[535,260],[535,186],[504,186]],lbl:[500,190,"end","Upper subscapular"]},
+    td:{t:"nerve",minor:1,name:"Thoracodorsal nerve",p:["post"],roots:["C6","C7","C8"],pts:[[520,260],[520,208],[504,208]],lbl:[500,212,"end","Thoracodorsal"]},
+    ls:{t:"nerve",minor:1,name:"Lower subscapular nerve",p:["post"],roots:["C5","C6"],pts:[[505,260],[505,230]],lbl:[500,234,"end","Lower subscapular"]},
+    mp:{t:"nerve",minor:1,name:"Medial pectoral nerve",p:["med"],roots:["C8","T1"],pts:[[520,390],[520,425]],lbl:[525,429,"start","Medial pectoral"]},
+    mca:{t:"nerve",minor:1,name:"Medial cutaneous nerve of the arm",p:["med"],roots:["T1"],pts:[[470,390],[470,450]],lbl:[475,454,"start","Medial cutaneous nerve of the arm"]},
+    mcf:{t:"nerve",minor:1,name:"Medial cutaneous nerve of the forearm",p:["med"],roots:["C8","T1"],pts:[[420,390],[420,475]],lbl:[425,479,"start","Medial cutaneous nerve of the forearm"]}
+  };
+  // From the medwiki note "Anatomy of the Brachial Plexus".
+  var INFO = {
+    C5:{d:"Ventral ramus of C5. Joins C6 to form the superior trunk.", c:"Gives off the dorsal scapular nerve and part of the long thoracic nerve."},
+    C6:{d:"Ventral ramus of C6. Joins C5 to form the superior trunk.", c:"Gives part of the long thoracic nerve."},
+    C7:{d:"Ventral ramus of C7. Carries on alone as the middle trunk.", c:"Gives part of the long thoracic nerve."},
+    C8:{d:"Ventral ramus of C8. Joins T1 to form the inferior trunk."},
+    T1:{d:"Ventral ramus of T1. Joins C8 to form the inferior trunk."},
+    sup:{d:"C5 + C6.", c:"The only trunk that gives off a nerve: the suprascapular nerve."},
+    mid:{d:"C7 alone.", c:"Gives off no nerves."},
+    inf:{d:"C8 + T1.", c:"Gives off no nerves."},
+    supA:{d:"Joins the anterior division of the middle trunk to form the lateral cord.", c:"No nerves branch off the divisions. Anterior divisions → the flexor (front) compartments."},
+    midA:{d:"Joins the anterior division of the superior trunk to form the lateral cord.", c:"No nerves branch off the divisions. Anterior divisions → the flexor (front) compartments."},
+    infA:{d:"Carries on alone as the medial cord.", c:"No nerves branch off the divisions. Anterior divisions → the flexor (front) compartments."},
+    supP:{d:"One of the three posterior divisions that form the posterior cord.", c:"No nerves branch off the divisions. Posterior divisions → the extensor (back) compartments."},
+    midP:{d:"One of the three posterior divisions that form the posterior cord.", c:"No nerves branch off the divisions. Posterior divisions → the extensor (back) compartments."},
+    infP:{d:"One of the three posterior divisions that form the posterior cord (the \\ of the drawing).", c:"No nerves branch off the divisions. Posterior divisions → the extensor (back) compartments."},
+    lat:{d:"Anterior divisions of the superior + middle trunks. Named for where it sits around the axillary artery.", c:"Ends as the musculocutaneous nerve and the lateral root of the median nerve. Gives off the lateral pectoral nerve."},
+    post:{d:"All three posterior divisions. Named for where it sits around the axillary artery.", c:"Ends as the axillary and radial nerves. Gives off the upper subscapular, thoracodorsal and lower subscapular nerves."},
+    med:{d:"Anterior division of the inferior trunk, carrying on alone. Named for where it sits around the axillary artery.", c:"Ends as the ulnar nerve and the medial root of the median nerve. Gives off the medial pectoral and the medial cutaneous nerves of the arm and forearm."},
+    mc:{m:"All of the anterior arm: pierces coracobrachialis, then runs between biceps and brachialis", s:"Lateral forearm (ends as the lateral cutaneous nerve of the forearm)"},
+    medn:{m:"Most forearm flexors + five hand muscles. Nothing in the arm", s:"Part of the hand", c:"A lateral root from the lateral cord and a medial root from the medial cord join to form it: the middle of the \"M\"."},
+    uln:{m:"1.5 anterior forearm muscles + most hand muscles. Nothing in the arm", s:"Medial hand"},
+    ax:{m:"Deltoid + teres minor", s:"Skin over the shoulder", c:"A surgical neck fracture of the humerus threatens it."},
+    rad:{m:"Extensors of the back of the arm and forearm", s:"Back of the upper limb", c:"A humeral shaft fracture threatens it. Like the median nerve, it carries every root (C5-T1)."},
+    ds:{m:"Rhomboids + levator scapulae", c:"Pierces the middle scalene, then runs back to the rhomboids."},
+    lt:{m:"Serratus anterior (runs along its superficial surface)", c:"Damage → winged scapula."},
+    ss:{m:"Supraspinatus + infraspinatus"},
+    lp:{m:"Pectoralis major and minor", c:"Runs above and medial to pectoralis minor."},
+    mp:{m:"Pectoralis major and minor", c:"Pierces pectoralis minor on its way to pectoralis major."},
+    mca:{s:"Skin of the medial arm and axilla, upper forearm", c:"Runs beside the ulnar nerve."},
+    mcf:{s:"Skin of the medial and anterior forearm", c:"Runs beside the ulnar nerve."},
+    us:{m:"Upper subscapularis"},
+    td:{m:"Latissimus dorsi", c:"Also called the middle subscapular nerve."},
+    ls:{m:"Lower subscapularis + teres major"}
+  };
+  var FROM = {root:"Roots",sup:"Superior trunk",mid:"Middle trunk",inf:"Inferior trunk",lat:"Lateral cord",post:"Posterior cord",med:"Medial cord"};
+  function rootsOf(id){
+    var s=S[id]; if(s.roots) return s.roots; if(s.t==="root") return [id];
+    var out=[]; s.p.forEach(function(q){rootsOf(q).forEach(function(r){if(out.indexOf(r)<0)out.push(r);});});
+    return R.filter(function(r){return out.indexOf(r)>=0;});
+  }
+  function arisesFrom(id){
+    var s=S[id];
+    if(id==="medn") return "Lateral + medial cords";
+    return S[s.p[0]].t==="root" ? "Roots" : FROM[s.p[0]];
+  }
+  function nameOf(id){return S[id].name || ("Root " + id);}
+  // A structure's path: the parents that carry at least one of its roots, back to the roots.
+  function pathUp(id, want, acc){
+    acc[id]=1;
+    S[id].p.forEach(function(q){
+      if(rootsOf(q).some(function(r){return want.indexOf(r)>=0;})) pathUp(q, want, acc);
+    });
+    return acc;
+  }
+  function pathDown(root){
+    var acc={}; acc[root]=1;
+    Object.keys(S).forEach(function(id){ if(rootsOf(id).indexOf(root)>=0) Object.assign(acc, pathUp(id,[root],{})); });
+    return acc;
+  }
+  function pathFor(id){ return S[id].t==="root" ? pathDown(id) : pathUp(id, rootsOf(id), {}); }
+
+  var NS="http://www.w3.org/2000/svg", svg=document.getElementById("bp-svg");
+  function el(tag, attrs, parent){var e=document.createElementNS(NS,tag); for(var k in attrs)e.setAttribute(k,attrs[k]); (parent||svg).appendChild(e); return e;}
+  [["Branches",150],["Cords",430],["Divisions",600],["Trunks",730],["Roots",955]].forEach(function(h){
+    el("text",{x:h[1],y:515,"text-anchor":"middle","class":"bp-head"}).textContent=h[0];
+  });
+  var nodes={};
+  Object.keys(S).forEach(function(id){
+    var s=S[id], d=s.pts.map(function(p,i){return (i?"L":"M")+p[0]+" "+p[1];}).join(" ");
+    var g=el("g",{"class":"bp-seg t-"+s.t+(s.minor?" minor":""),"data-id":id,tabindex:0,role:"button","aria-label":nameOf(id)});
+    el("path",{d:d,"class":"vis"},g); el("path",{d:d,"class":"hit"},g);
+    var tx=el("text",{x:s.lbl[0],y:s.lbl[1],"text-anchor":s.lbl[2],"class":"lbl"},g); tx.textContent=s.lbl[3];
+    nodes[id]=g;
+  });
+
+  var panel=document.getElementById("bp-panel"), mode="look", picked=null;
+  var hint=document.getElementById("bp-hint"), LOOK_HINT=hint.textContent;
+  function light(set, focus){
+    Object.keys(nodes).forEach(function(id){
+      nodes[id].classList.toggle("on", !!(set&&set[id]));
+      nodes[id].classList.toggle("focus", id===focus);
+    });
+    svg.classList.toggle("dim", !!set);
+  }
+  function chips(roots){return '<div class="chips">'+R.map(function(r){return '<span class="chip'+(roots.indexOf(r)>=0?' in':'')+'">'+r+'</span>';}).join("")+'</div>';}
+  function showInfo(id){
+    picked=id; light(pathFor(id), id);
+    var s=S[id], i=INFO[id]||{}, kind={root:"Root",trunk:"Trunk",division:"Division",cord:"Cord",nerve:s.minor?"Branch before the terminal five":"Terminal branch"}[s.t];
+    var h='<p class="kind">'+kind+'</p><h3>'+nameOf(id)+'</h3>';
+    h+='<p class="lab">Roots carried</p>'+chips(rootsOf(id));
+    if(s.t==="nerve") h+='<p class="lab">Comes off</p><p>'+arisesFrom(id)+'</p>';
+    if(i.d) h+='<p class="lab">Formed by</p><p>'+i.d+'</p>';
+    if(i.m) h+='<p class="lab">Motor</p><p>'+i.m+'</p>';
+    if(i.s) h+='<p class="lab">Sensory</p><p>'+i.s+'</p>';
+    if(i.c) h+='<p class="lab">Note</p><p>'+i.c+'</p>';
+    panel.innerHTML=h;
+  }
+  function lookIntro(){
+    picked=null; light(null);
+    panel.innerHTML='<p class="kind">Look</p><h3>Pick a part of the plexus</h3><p>Five roots (C5-T1, the ventral rami) regroup into five terminal nerves: <b>roots → trunks → divisions → cords → branches</b> ("Really Thirsty? Drink Cold Beer").</p><p>Drawing it: "3 Wise (Y) Men (M) go bowling. One got a strike (X); the other got a spare (\\)." The X is where the superior and middle trunks\' divisions cross; the \\ is the inferior trunk\'s posterior division joining the posterior cord.</p><p>Root count of the terminal five: "3 Musketeers Assassinate: 5 Mice, 5 Rats and 2 Unicorns" (musculocutaneous 3, axillary C5-6, median 5, radial 5, ulnar 2).</p>';
+  }
+  svg.addEventListener("click",function(e){
+    var g=e.target.closest(".bp-seg"); if(!g||mode!=="look")return; showInfo(g.dataset.id);
+  });
+  svg.addEventListener("keydown",function(e){
+    var g=e.target.closest&&e.target.closest(".bp-seg"); if(!g||mode!=="look"||(e.key!=="Enter"&&e.key!==" "))return; e.preventDefault(); showInfo(g.dataset.id);
+  });
+
+  // ---- Test ----
+  var NERVES=Object.keys(S).filter(function(id){return S[id].t==="nerve";});
+  var STRUCT=["sup","mid","inf","lat","post","med"];
+  var score={right:0,total:0}, q=null;
+  function shuffle(a){a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t;} return a;}
+  function pick(a){return a[Math.floor(Math.random()*a.length)];}
+  function options(right, pool){return shuffle([right].concat(shuffle(pool.filter(function(x){return x!==right;})).slice(0,3)));}
+  var SUPPLY = NERVES.filter(function(id){return INFO[id].m && id!=="lp" && id!=="mp";});
+  var MAKERS = [
+    function(){ var id=pick(NERVES.concat(STRUCT)); return {kind:"roots", id:id, text:"Which roots does the <b>"+nameOf(id).toLowerCase()+"</b> carry?", answer:rootsOf(id)}; },
+    function(){ var id=pick(NERVES); var all=["Roots","Superior trunk","Lateral cord","Posterior cord","Medial cord","Lateral + medial cords"];
+      return {kind:"choice", id:id, text:"Where does the <b>"+nameOf(id).toLowerCase()+"</b> come off the plexus?", opts:options(arisesFrom(id), all), answer:arisesFrom(id)}; },
+    function(){ var id=pick(SUPPLY); var names=SUPPLY.map(nameOf);
+      return {kind:"choice", id:id, text:"Which nerve supplies: <b>"+INFO[id].m.split(":")[0].split(" (")[0].split(". ")[0].toLowerCase()+"</b>?", opts:options(nameOf(id), names), answer:nameOf(id)}; },
+    function(){ var id=pick(NERVES.concat(STRUCT)); var same=Object.keys(S).filter(function(x){return S[x].t===S[id].t;}).map(nameOf);
+      return {kind:"choice", id:id, name:true, text:"Name the highlighted structure.", opts:options(nameOf(id), same), answer:nameOf(id)}; }
+  ];
+  function ask(){
+    q=pick(MAKERS)(); svg.classList.add("quiz");
+    if(q.name){ var hl={}; hl[q.id]=1; light(hl, q.id); } else light(null);
+    var h='<p class="kind">Test · '+score.right+' / '+score.total+'</p><p class="q">'+q.text+'</p>';
+    if(q.kind==="roots") h+='<div class="chips pickable">'+R.map(function(r){return '<button class="chip" data-r="'+r+'" aria-pressed="false">'+r+'</button>';}).join("")+'</div><button class="go" id="bp-check">Check</button>';
+    else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt">'+o+'</button>';}).join("")+'</div>';
+    h+='<div class="fb" id="bp-fb"></div>';
+    panel.innerHTML=h;
+    panel.querySelectorAll(".chip[data-r]").forEach(function(b){b.addEventListener("click",function(){b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")!=="true");});});
+    var chk=document.getElementById("bp-check");
+    if(chk) chk.addEventListener("click",function(){
+      var got=[].slice.call(panel.querySelectorAll('.chip[aria-pressed="true"]')).map(function(b){return b.dataset.r;});
+      panel.querySelectorAll(".chip[data-r]").forEach(function(b){ var inAns=q.answer.indexOf(b.dataset.r)>=0; b.classList.add(inAns?"right":(b.getAttribute("aria-pressed")==="true"?"wrong":"off")); b.disabled=true;});
+      chk.remove(); finish(got.join()===q.answer.join(), q.answer.join(", "));
+    });
+    panel.querySelectorAll(".opt").forEach(function(b){b.addEventListener("click",function(){
+      panel.querySelectorAll(".opt").forEach(function(x){x.disabled=true; if(x.textContent===q.answer)x.classList.add("right");});
+      if(b.textContent!==q.answer) b.classList.add("wrong");
+      finish(b.textContent===q.answer, q.answer);
+    });});
+  }
+  function finish(ok, ans){
+    score.total++; if(ok) score.right++;
+    svg.classList.remove("quiz"); light(pathFor(q.id), q.id);
+    var fb=document.getElementById("bp-fb");
+    fb.className="fb "+(ok?"ok":"no");
+    fb.innerHTML=(ok?"Right. ":"Not quite: <b>"+ans+"</b>. ")+nameOf(q.id)+" carries "+rootsOf(q.id).join(", ")+'. <button class="go" id="bp-next">Next question</button>';
+    panel.querySelector(".kind").textContent="Test · "+score.right+" / "+score.total;
+    document.getElementById("bp-next").addEventListener("click",ask);
+  }
+  document.addEventListener("anatomy-mode",function(e){
+    mode=e.detail;
+    hint.textContent = mode==="test" ? "Answer on the right: the nerve names are hidden until you do, then its path lights up." : LOOK_HINT;
+    if(mode==="test") ask(); else { svg.classList.remove("quiz"); lookIntro(); }
+  });
+  lookIntro();
+})();
+</script>

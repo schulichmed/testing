@@ -6,9 +6,9 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>Anatomy Tables</title>
 <style>
-:root{--bg:#f7f5fa;--card:#ffffff;--ink:#201436;--muted:#5f5670;--line:#ddd5ea;--accent:#7a3fb0;--accent-soft:#efe8f6;--hide:#ece6f4}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--hide:#2a2336}}
-:root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--hide:#2a2336}
+:root{--bg:#f7f5fa;--card:#ffffff;--ink:#201436;--muted:#5f5670;--line:#ddd5ea;--accent:#7a3fb0;--accent-soft:#efe8f6;--hide:#ece6f4;--wire:#9b8fb0;--hot:#c2410c;--ok:#2f6b4f;--ok-bg:#e9f4ee;--bad:#b42318;--bad-bg:#fdeeec}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--hide:#2a2336;--wire:#6f6585;--hot:#fb923c;--ok:#7fd1a6;--ok-bg:#16291f;--bad:#ff8f80;--bad-bg:#331814}}
+:root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--accent-soft:#2c2240;--hide:#2a2336;--wire:#6f6585;--hot:#fb923c;--ok:#7fd1a6;--ok-bg:#16291f;--bad:#ff8f80;--bad-bg:#331814}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,sans-serif}
@@ -65,13 +65,58 @@ h3.clin{font-size:16px;margin:18px 0 8px}
 .box-h{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
 .foot{color:var(--muted);font-size:13px;margin-top:16px;max-width:90ch}
 @media (max-width:600px){.boxes{grid-template-columns:1fr}}
+.bp{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+@media (max-width:980px){.bp{grid-template-columns:minmax(0,1fr)}.bp-panel{position:static}}
+.bp-fig svg{display:block;width:100%;min-width:760px;height:auto}
+.help{font-size:13px;color:var(--muted);margin:8px 0 0}
+.bp-head{font:600 12px Inter,sans-serif;fill:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.bp-seg{cursor:pointer;outline:none}
+.bp-seg .vis{fill:none;stroke:var(--wire);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s,opacity .15s}
+.bp-seg.minor .vis{stroke-width:2.2}
+.bp-seg .hit{fill:none;stroke:transparent;stroke-width:16}
+.bp-seg .lbl{font:600 13px Inter,sans-serif;fill:var(--ink)}
+.bp-seg.minor .lbl,.bp-seg.t-division .lbl{font-size:11.5px;font-weight:500}
+.bp-seg.t-root .lbl{font-size:15px;font-weight:700}
+.bp-seg:hover .vis,.bp-seg:focus-visible .vis{stroke:var(--accent)}
+svg.dim .bp-seg:not(.on) .vis{opacity:.25}
+svg.dim .bp-seg:not(.on) .lbl{opacity:.4}
+.bp-seg.on .vis{stroke:var(--accent);stroke-width:4.5}
+.bp-seg.minor.on .vis{stroke-width:3.2}
+.bp-seg.focus .vis{stroke:var(--hot);stroke-width:5.5}
+.bp-seg.focus .lbl{fill:var(--hot)}
+svg.quiz .bp-seg:not(.t-root) .lbl{visibility:hidden}
+svg.quiz .bp-seg.focus .vis{stroke:var(--hot)}
+.bp-panel{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14px;position:sticky;top:12px}
+.bp-panel h3{font-size:19px;margin:0 0 6px}
+.bp-panel p{margin:0 0 8px}
+.bp-panel .kind{text-transform:uppercase;letter-spacing:.1em;font-size:11.5px;font-weight:600;color:var(--accent);margin:0 0 4px}
+.bp-panel .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;margin:10px 0 2px}
+.bp-panel .q{font-size:16px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 6px}
+.chip{font:700 13px Inter,sans-serif;border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--card);color:var(--muted)}
+.chip.in{background:var(--accent);border-color:var(--accent);color:#fff}
+button.chip{cursor:pointer;color:var(--ink)}
+button.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.chip.right{background:var(--ok-bg)!important;border-color:var(--ok)!important;color:var(--ok)!important}
+.chip.wrong{background:var(--bad-bg)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.chip.off{opacity:.5}
+.opts{display:grid;gap:6px;margin:6px 0}
+.opt{font:500 14px Inter,sans-serif;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);padding:9px 12px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.go{font:600 13px Inter,sans-serif;border:0;border-radius:999px;background:var(--accent);color:#fff;padding:7px 14px;cursor:pointer;margin-top:6px}
+.fb{display:none;margin-top:10px;padding:10px;border-radius:10px;font-size:13.5px}
+.fb.ok{display:block;background:var(--ok-bg);color:var(--ok)}
+.fb.no{display:block;background:var(--bad-bg);color:var(--bad)}
+.fb .go{display:block}
 </style>
 </head>
 <body>
 <div class="wrap">
 <p class="eyebrow">PoM 2 · MSK and neuro anatomy</p>
 <h1>Anatomy tables</h1>
-<p class="lead">The cranial nerves and every muscle from the back to the foot, in lecture order: what each one does and what supplies it. A <b>bold nerve</b> is the one that breaks its group's rule. From Andy's anatomy tables, as tidied in the medwiki notes.</p>
+<p class="lead">The cranial nerves, the brachial plexus and every muscle from the back to the foot, in lecture order: what each one does and what supplies it. A <b>bold nerve</b> is the one that breaks its group's rule. The tables are Andy's anatomy tables, as tidied in the medwiki notes; the brachial plexus is drawn from this year's lecture, and you can click through it or test yourself on it.</p>
 
 <div class="tabs" role="tablist">{{TABS}}</div>
 
@@ -107,6 +152,10 @@ h3.clin{font-size:16px;margin:18px 0 8px}
     var sec=current(), isCn=sec.dataset.kind==="cn";
     document.getElementById("hide-mu").style.display=(mode==="test"&&!isCn)?"flex":"none";
     document.getElementById("hide-cn").style.display=(mode==="test"&&isCn)?"flex":"none";
+    var isBp=sec.dataset.kind==="bp";
+    if(isBp) document.getElementById("hide-mu").style.display="none";
+    document.getElementById("reset").style.display=(mode==="test"&&!isBp)?"":"none";
+    if(isBp && sec.dataset.mode!==mode){ sec.dataset.mode=mode; document.dispatchEvent(new CustomEvent("anatomy-mode",{detail:mode})); }
     document.querySelectorAll("td[data-col]").forEach(function(td){
       td.classList.toggle("hid",mode==="test"&&hidden[td.dataset.col]&&!td.dataset.shown);
     });

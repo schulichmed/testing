@@ -6,6 +6,8 @@ Date: 2026-10-19
 Input: anatomy-tables/vault_tables.json, the "summary table" sections of the nine medwiki anatomy
        notes (Andy's CNs.xlsx and MSK-muscles.xlsx, already tidied in the vault), snapshotted.
        FIXES below corrects the rows that disagree with the notes' own lecture content.
+       anatomy-tables/plexus.html, the interactive brachial plexus tab (from the lecture slides and
+       the vault's "Anatomy of the Brachial Plexus" note), dropped in after the back.
 Output: anatomy-tables/index.html
 
 Usage: python3 anatomy-tables/build.py
@@ -358,6 +360,9 @@ def build_region(table: dict, region: str, seen_notes: set[str]) -> str:
                    if boxes else "")
 
 
+KINDS = {"cn": "cn", "plexus": "bp"}
+
+
 def main() -> None:
     """Build anatomy-tables/index.html from the snapshot."""
     tables = json.loads((HERE / "vault_tables.json").read_text(encoding="utf-8"))
@@ -369,12 +374,16 @@ def main() -> None:
         table = next(t for s, t in by_stem.items() if s.startswith(prefix))
         sections.append((re.sub(r"\W+", "-", tab.lower()), tab, heading, build_region(table, tab, seen)))
         log.info("%s: %d rows", tab, len(table["rows"]))
+        if tab == "Back":
+            # The brachial plexus lecture opens Week 8, between the back and the shoulder.
+            plexus = (HERE / "plexus.html").read_text(encoding="utf-8")
+            sections.append(("plexus", "Brachial plexus", "Brachial plexus", plexus))
     template = (HERE / "template.html").read_text(encoding="utf-8")
     tabs = "".join(
         f'<button role="tab" data-sec="{sid}" aria-selected="{"true" if i == 0 else "false"}">{html.escape(tab)}</button>'
         for i, (sid, tab, _, _) in enumerate(sections))
     secs = "".join(
-        f'<section id="{sid}" data-kind="{"cn" if sid == "cn" else "mu"}"{"" if i == 0 else " hidden"}>'
+        f'<section id="{sid}" data-kind="{KINDS.get(sid, "mu")}"{"" if i == 0 else " hidden"}>'
         f"<h2>{html.escape(heading)}</h2>{body}</section>"
         for i, (sid, _, heading, body) in enumerate(sections))
     out = template.replace("{{TABS}}", tabs).replace("{{SECTIONS}}", secs)
