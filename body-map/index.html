@@ -95,6 +95,8 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 ul.sup{margin:2px 0 8px;padding-left:18px;font-size:14px}ul.sup li{margin:0 0 6px;line-height:1.35}
 p.moves{background:#fff3b0;color:#222;border-radius:6px;padding:6px 8px;font-weight:600;font-size:14px;line-height:1.4;margin:8px 0}
 ul.sup .ac{font-weight:600}
+.notes{font-size:13.5px;line-height:1.4}.notes .note{margin:0 0 8px}.notes .nh{display:block;font-weight:700}.notes .ln{display:block}.notes .sub{display:block;padding-left:12px;color:var(--muted)}
+details.fold{margin:10px 0;border:1px solid var(--line);border-radius:8px;padding:6px 10px}details.fold summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted)}details.fold .notes{margin-top:8px}
 table.rn{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}table.rn th,table.rn td{border-top:1px solid var(--line);padding:6px 5px;vertical-align:top;text-align:left;line-height:1.35}
 table.rn thead th{font-size:13px;border-top:0}table.rn thead th span{font-weight:400;color:var(--muted);font-size:11.5px}table.rn tbody th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);width:72px}
 ul.terr{list-style:none;padding:0;font-size:13.5px}ul.terr li{margin:0 0 7px;line-height:1.35}ul.terr .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}ul.sup .bl{color:#a33;font-size:13px}ul.sup .nt{color:var(--muted);font-size:12.5px;font-style:italic}
@@ -548,7 +550,7 @@ function ensureTables() {
   if (tablesLoading) return tablesLoading;
   tablesLoading = Promise.all([new GLTFLoader().loadAsync("muscles.glb"), fetch("tables.json").then(r => r.json())]).then(([g, tb]) => {
     TB = tb;
-    for (const reg of tb.regions) for (const row of reg.rows) if (!MU[row.key]) MU[row.key] = { ...row, reg };
+    for (const reg of tb.regions) for (const row of reg.rows) if (!MU[row.key]) MU[row.key] = { ...row, reg }; else MU[row.key].notes = MU[row.key].notes.concat(row.notes);
     muscleRoot = g.scene; scene.add(muscleRoot);
     muscleRoot.traverse(o => {
       if (!o.isMesh) return;
@@ -561,6 +563,12 @@ function ensureTables() {
     applyLayers();
   });
   return tablesLoading;
+}
+/* notes arrive as HTML built by anatomy-tables/build.py from the vault text (escaped there) */
+function notesBox(list) { const d = document.createElement("div"); d.className = "notes"; d.innerHTML = list.join(""); return d; }
+function foldNotes(title, list) {
+  const det = document.createElement("details"); det.className = "fold";
+  const sm = document.createElement("summary"); sm.textContent = title; det.append(sm, notesBox(list)); return det;
 }
 function rowHtml(header, cells, skip) {
   const dl = document.createElement("dl"); dl.className = "row";
@@ -611,6 +619,7 @@ function showTablesIntro(sid) {
       b.onclick = () => selectMuscle(row.key, row.in3d); l.appendChild(b);
     }
     panel.appendChild(l);
+    if (reg.boxes.length) panel.appendChild(foldNotes(`Spaces, landmarks and nerve injuries (${reg.boxes.length})`, reg.boxes));
     const a = document.createElement("div"); a.className = "acts"; a.innerHTML = `<a target="_blank" rel="noopener" href="../anatomy-tables/#${sid}">Open the full ${reg.tab.toLowerCase()} table</a>`; panel.appendChild(a);
   }
   const hb = hiddenBar(); if (hb) panel.appendChild(hb);
@@ -629,6 +638,10 @@ function selectMuscle(key, zoom = true) {
     dt.textContent = "Blood supply"; dd.textContent = row.blood.join(", "); dl.append(dt, dd);
   }
   panel.appendChild(dl);
+  // clinical notes from the notes' table, only the ones about this muscle; its group's shared notes fold away
+  if (row.notes.length) { const h3 = document.createElement("h3"); h3.textContent = "Clinical notes"; panel.appendChild(h3); panel.appendChild(notesBox(row.notes)); }
+  const gn = row.reg.group_notes[row.cells[0]];
+  if (gn) panel.appendChild(foldNotes(`${row.cells[0]} group (${gn.length})`, gn));
   const a = document.createElement("div"); a.className = "acts";
   if (objs.length) { const hb = document.createElement("button"); hb.textContent = "Hide it to see underneath"; hb.onclick = () => { objs.forEach(o => o.visible = false); picked = null; shade(null); showTablesIntro(row.reg.sid); }; a.appendChild(hb); }
   const back = document.createElement("button"); back.textContent = `All ${row.reg.tab.toLowerCase()} muscles`; back.onclick = () => showTablesIntro(row.reg.sid); a.appendChild(back);

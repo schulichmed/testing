@@ -141,24 +141,35 @@ def build_tables(obj_dir: Path) -> None:
     # blood supply of the upper limb muscles: Netter, kept to the arteries in our notes (netter_tables.py)
     netter = json.loads((TABLES_DIR / "netter_upper_limb.json").read_text(encoding="utf-8"))["muscles"]
     scene = trimesh.Scene()
-    seen = set()
+    seen, seen_notes = set(), set()
     for prefix, tab, sid in REGIONS:
         table = next(t for s, t in by_stem.items() if s.startswith(prefix))
         rows = [list(r) for r in table["rows"]]
         ab.apply_fixes(rows, 1)
-        reg = {"tab": tab, "sid": sid, "header": table["header"], "rows": []}
-        group, notes = "", {}
+        reg = {"tab": tab, "sid": sid, "header": table["header"][:4], "rows": [], "group_notes": {}, "boxes": []}
+        # the clinical notes, each on the muscle (or group, or space) it is about, exactly as the anatomy tables
+        # place them: a merged spreadsheet cell otherwise puts a whole group's notes on every muscle in it
+        raw = []
+        for r in rows:
+            for n in ab.split_notes(ab.clean(r[4])):
+                k = re.sub(r"\W+", "", re.sub(r"\(\w+\)", "", n.lower()))[:40]
+                if k not in seen_notes:
+                    seen_notes.add(k)
+                    raw.append(n)
+        by_target: dict[str, list[str]] = {}
+        for target, h in ab.place_notes(tab, raw):
+            by_target.setdefault(target.removesuffix(" tendon"), []).append(h)
+        reg["boxes"] = by_target.pop("REGION", [])
+        group = ""
         for r in rows:
             group = ab.clean(r[0]) or group  # a blank group cell continues the one above
             r[0] = group
-            ref = re.match(r"As for (.+?) \(above\)\s*$", ab.clean(r[4]), re.I)
-            if ref and ref.group(1).lower() in notes:
-                r[4] = notes[ref.group(1).lower()]
-            notes[re.sub(r"\s*\(.*", "", ab.clean(r[1])).lower()] = r[4]
+            if f"@{group}" in by_target:
+                reg["group_notes"][group] = by_target.pop(f"@{group}")
             name = ab.clean(r[1])
             key = slug(name)
             files = MUSCLE_FILES.get(name, [])
-            row = {"key": key, "cells": [ab.clean(c) for c in r], "in3d": bool(files)}
+            row = {"key": key, "cells": [ab.clean(c) for c in r[:4]], "in3d": bool(files), "notes": by_target.pop(name, [])}
             if netter.get(name, {}).get("blood"):
                 row["blood"] = netter[name]["blood"]
             reg["rows"].append(row)
@@ -168,6 +179,8 @@ def build_tables(obj_dir: Path) -> None:
             for n, fid in enumerate(files):
                 m = simplify(trimesh.load(obj_dir / f"{fid}.obj", process=True, force="mesh"), MUSCLE_FACES)
                 scene.add_geometry(m.apply_transform(Y_UP), node_name=f"mu_{key}_{n}", geom_name=f"mu_{key}_{n}")
+        if by_target:
+            raise ValueError(f"{tab}: clinical notes with nowhere to go: {sorted(by_target)}")
         out["regions"].append(reg)
         log.info("%s: %d rows, %d in 3D", tab, len(rows), sum(r["in3d"] for r in reg["rows"]))
     scene.export(HERE / "muscles.glb")
