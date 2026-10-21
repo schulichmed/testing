@@ -111,13 +111,11 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 <div class="wrap">
 <p class="eyebrow"><a href="../">Prototypes</a> · MSK · throwaway</p>
 <h1>Where does it hurt?</h1>
-<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts every muscle from the muscle tables on the body: tap one for its action, nerve and clinical notes. <b>Cranial nerves</b> runs each nerve from the brainstem through its opening in the skull to what it supplies, with its row of the cranial nerve table on the body; <b>Brachial plexus</b> traces roots, trunks, divisions, cords and branches down the arm. <b>Dermatome map</b> is the dermatome model from the anatomy tables.</p>
+<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts the muscle tables, the cranial nerves and the brachial plexus on one skeleton, each switched on or off from its Show bar: tap a muscle for its action, nerve and clinical notes, a cranial nerve for its table row on the body, or any part of the plexus to light its path back to the roots. <b>Dermatome map</b> is the dermatome model from the anatomy tables.</p>
 <div class="chips" id="modes">
   <button class="chip" data-mode="region" aria-pressed="true">Where it hurts</button>
   <button class="chip" data-mode="structure" aria-pressed="false">Which structure</button>
   <button class="chip" data-mode="tables" aria-pressed="false">Anatomy tables</button>
-  <button class="chip" data-mode="cn3d" aria-pressed="false">Cranial nerves</button>
-  <button class="chip" data-mode="bp3d" aria-pressed="false">Brachial plexus</button>
   <button class="chip" data-mode="dermmap" aria-pressed="false">Dermatome map</button>
 </div>
 <div class="dermmap" id="dermmap" hidden>
@@ -398,9 +396,7 @@ function selectStructure(sk) {
 const HINT = {
   region: "Drag to turn · pinch or scroll to zoom · tap a body part",
   structure: "Coloured parts are tappable (right side) · tap one to open its chart with that diagnosis lit",
-  tables: "Muscles of the right side · tap one for its table row · hide it to see the one underneath · tap the skull for the cranial nerves",
-  cn3d: "Drag to turn · scroll to zoom · tap a nerve or its numeral for its table row on the body",
-  bp3d: "Drag to turn · scroll to zoom · tap a root, trunk, cord or nerve to light its path back to the roots",
+  tables: "Right side · tap a muscle or nerve for its table row · hide a muscle to see the one underneath · tap the skull for the cranial nerves",
   derm: "Tap the skin or a label · zoom in to see more levels · dots are the key sensory points",
 };
 /* the anatomy tables' Dermatomes tab, framed exactly as that page frames it */
@@ -420,19 +416,9 @@ async function setMode(m) {
   mode = m; document.querySelectorAll("#modes .chip").forEach(x => x.setAttribute("aria-pressed", x.dataset.mode === m ? "true" : "false"));
   setStructVisible(m === "structure");
   bones.forEach(b => b.visible = m !== "derm");
-
   if (skinRoot) skinRoot.visible = m === "derm";
   if (m !== "region" && m !== "structure") { halo.visible = false; tint(null); fly = { t0: performance.now(), fromT: controls.target.clone(), toT: home.t, fromP: camera.position.clone(), toP: home.p }; }
   applyLayers();
-  if (m === "cn3d" || m === "bp3d") {
-    setLegend(null); panel.innerHTML = `<p class="empty">Loading the nerves…</p>`;
-    document.getElementById("hint").textContent = HINT[m]; tip.style.display = "none";
-    const [t, c] = m === "cn3d" ? [[0, 1.505, 0.095], [-0.2, 1.56, 0.36]] : [[-0.13, 1.25, 0.09], [-0.42, 1.36, 0.62]];
-    fly = { t0: performance.now(), fromT: controls.target.clone(), toT: new THREE.Vector3(...t), fromP: camera.position.clone(), toP: new THREE.Vector3(...c) };
-    await ensureNerves();
-    if (mode === "cn3d") showCNIntro(); else if (mode === "bp3d") showBPIntro();
-    return;
-  }
   document.getElementById("hint").textContent = HINT[m];
   tip.style.display = "none";
   if (m === "structure") setLegend("st");
@@ -451,7 +437,6 @@ function pick(e) {
   ray.setFromCamera(ptr, camera);
   const targets = mode === "structure" ? structs.concat(bones)
     : mode === "tables" ? (layers.muscles ? muscles.filter(o => o.visible) : []).concat(layers.cn ? cnPick : [], layers.bp ? bpPick : [], bones)
-    : mode === "cn3d" ? cnPick : mode === "bp3d" ? bpPick
     : mode === "derm" ? skins : bones;
   return ray.intersectObjects(targets, false)[0];
 }
@@ -462,9 +447,7 @@ renderer.domElement.addEventListener("pointerup", e => {
   const hit = pick(e); if (!hit) return;
   if (mode === "tables" && hit.object.userData.cn) { selectCN(hit.object.userData.cn); return; }
   if (mode === "tables" && hit.object.userData.bp) { selectBP(hit.object.userData.bp); return; }
-  if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (isSkull(hit.object)) showCN(); return; }
-  if (mode === "cn3d") { if (hit.object.userData.cn) selectCN(hit.object.userData.cn); return; }
-  if (mode === "bp3d") { if (hit.object.userData.bp) selectBP(hit.object.userData.bp); return; }
+  if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (isSkull(hit.object)) showLayer("cn"); return; }
   if (mode === "derm") { tapDerm(hit.object.userData.field ? fieldLevel(hit) : hit.object.userData.dm); return; }
   if (hit.object.userData.st) selectStructure(hit.object.userData.st);
   else selectRegion(regionAt(hit.point), true);
@@ -476,7 +459,7 @@ renderer.domElement.addEventListener("pointermove", e => {
   if (hovered && hovered.material.emissive && hovered.userData.st) hovered.material.emissive.set(0x000000);
   hovered = null;
   if (!hit) { tip.style.display = "none"; return; }
-  if (mode === "cn3d" || mode === "bp3d" || hit.object.userData.cn || hit.object.userData.bp) {
+  if (hit.object.userData.cn || hit.object.userData.bp) {
     const o = hit.object, t = o.userData.cn ? cnTitle(o.userData.cn) : o.userData.bp ? bpName(o.userData.bp) : "";
     tip.textContent = t; tip.style.display = t ? "block" : "none";
     tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
@@ -589,10 +572,10 @@ function hiddenBar() {
 }
 function clearNerveSel() { if (!NV) return; clearCalls(); cnSel = null; cnShade(null); bpSel = null; bpShade(null); }
 function showTablesIntro(sid) {
-  picked = null; shade(null); clearNerveSel();
+  picked = null; shade(null); clearNerveSel(); panel.dataset.list = "";
   panel.innerHTML = `<h2>Anatomy tables</h2><p class="sub">Tap a muscle on the body, or pick a table. Colours follow the table each muscle is in.</p>`;
   const d = document.createElement("div"); d.className = "st"; d.style.marginTop = "10px";
-  const cn = document.createElement("button"); cn.textContent = "Cranial nerves"; cn.onclick = showCN; d.appendChild(cn);
+  for (const [k, t] of [["cn", "Cranial nerves"], ["bp", "Brachial plexus"]]) { const b = document.createElement("button"); b.textContent = t; b.onclick = () => showLayer(k); d.appendChild(b); }
   for (const reg of TB.regions) {
     const b = document.createElement("button"); b.innerHTML = `<span class="sw" style="background:#${REGION_COL[reg.sid].toString(16).padStart(6, "0")}"></span>`;
     b.append(reg.tab); if (reg.sid === sid) b.classList.add("on"); b.onclick = () => showTablesIntro(reg.sid); d.appendChild(b);
@@ -627,17 +610,6 @@ function selectMuscle(key, zoom = true) {
   panel.appendChild(a);
   const hb = hiddenBar(); if (hb) panel.appendChild(hb);
 }
-function showCN(i) {
-  picked = null; shade(null);
-  panel.innerHTML = `<h2>Cranial nerves</h2>`;
-  const d = document.createElement("div"); d.className = "st"; d.style.marginTop = "10px";
-  TB.cn.rows.forEach((r, k) => { const b = document.createElement("button"); b.textContent = `${r[0]} ${r[1]}`; if (k === i) b.classList.add("on"); b.onclick = () => showCN(k); d.appendChild(b); });
-  panel.appendChild(d);
-  if (typeof i === "number") { const r = TB.cn.rows[i], h = document.createElement("h3"); h.textContent = `CN ${r[0]} · ${r[1]}`; panel.appendChild(h); panel.appendChild(rowHtml(TB.cn.header, r, [0, 1])); }
-  const a = document.createElement("div"); a.className = "acts";
-  a.innerHTML = `<a target="_blank" rel="noopener" href="../anatomy-tables/#cn">Open the full cranial nerve table</a>`;
-  const bk = document.createElement("button"); bk.textContent = "Muscle tables"; bk.onclick = () => showTablesIntro(); a.prepend(bk); panel.appendChild(a);
-}
 
 /* ---------- Cranial nerve and brachial plexus views ---------- */
 const MODC = { S: 0x2a8fb8, M: 0xd9822b, B: 0x8a63d2 }, MODNAME = { S: "Sensory", M: "Motor", B: "Both" };
@@ -650,7 +622,7 @@ function bpName(id) { const s = NV.plexus.S[id]; return s.name || `Root ${id}`; 
 function firstLine(t, n = 90) { const l = String(t || "").split("<br>")[0].replace(/^- /, "").trim(); return l.length > n ? l.slice(0, n - 1) + "…" : l; }
 /* in the Anatomy tables view the muscles, cranial nerves and plexus are layers on one skeleton, each switched on or off */
 const layers = { muscles: true, cn: false, bp: false };
-function viewOn(v) { return v === mode || (mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp))); }
+function viewOn(v) { return mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp)); }
 function applyLayers() {
   if (muscleRoot) muscleRoot.visible = mode === "tables" && layers.muscles;
   if (cnRoot) cnRoot.visible = viewOn("cn3d");
@@ -660,10 +632,20 @@ function applyLayers() {
   if (muscles.length) shade(picked);
 }
 document.querySelectorAll("#layers input").forEach(i => i.addEventListener("change", async () => {
-  layers[i.dataset.layer] = i.checked;
+  const k = i.dataset.layer; layers[k] = i.checked;
   if ((layers.cn || layers.bp) && !NV) await ensureNerves();
   applyLayers();
+  if (k === "muscles") return;
+  if (i.checked) (k === "cn" ? showCNIntro : showBPIntro)();
+  else if ((k === "cn" && cnSel) || (k === "bp" && bpSel) || panel.dataset.list === k) showTablesIntro();
 }));
+/* switch a nerve layer on (if it is off) and open its list */
+async function showLayer(k) {
+  const box = document.querySelector(`#layers input[data-layer="${k}"]`);
+  if (!box.checked) { box.checked = true; box.dispatchEvent(new Event("change")); return; }
+  if (!NV) await ensureNerves();
+  (k === "cn" ? showCNIntro : showBPIntro)();
+}
 function boneLook(m) {
   for (const b of bones) {
     const c = b.userData.c, head = c.y > 1.42, girdle = /^bone_FJ(3362|3334|3384)/.test(b.name);
@@ -743,12 +725,15 @@ function placeNerveLabels() {
       tmp.copy(L.p).project(camera);
       const x = (tmp.x + 1) / 2 * w, y = (1 - tmp.y) / 2 * h;
       vis = tmp.z < 1 && x > 0 && x < w && y > 0 && y < h;
-      const rw = L.call ? 200 : 14 + 7 * L.e.textContent.length, rh = L.call ? 40 : 18, cx = L.call ? x + 10 + rw / 2 : x;
-      if (vis && placed.some(r => Math.abs(r[0] - cx) < (r[2] + rw) / 2 && Math.abs(r[1] - y) < (r[3] + rh) / 2)) vis = false;
-      if (vis) { placed.push([cx, y, rw, rh]); L.e.style.left = x + "px"; L.e.style.top = y + "px"; }
+      const rw = L.call ? 200 : 14 + 7 * L.e.textContent.length, rh = L.call ? 44 : 18, cx = L.call ? x + 10 + rw / 2 : x;
+      const hits = yy => placed.some(r => Math.abs(r[0] - cx) < (r[2] + rw) / 2 && Math.abs(r[1] - yy) < (r[3] + rh) / 2);
+      let yy = y;
+      if (vis && L.call) for (let k = 0; k < 6 && hits(yy); k++) yy += rh;  // callouts stack rather than vanish
+      if (vis && hits(yy)) vis = false;
+      if (vis) { placed.push([cx, yy, rw, rh]); L.e.style.left = x + "px"; L.e.style.top = yy + "px"; }
     }
     L.e.style.display = vis ? "block" : "none";
-    if (!L.call) L.e.style.opacity = (mode === "cn3d" && cnSel && L.key !== cnSel) || (mode === "bp3d" && bpLit && !bpLit[L.key]) ? 0.45 : 1;
+    if (!L.call) L.e.style.opacity = (L.view === "cn3d" && cnSel && L.key !== cnSel) || (L.view === "bp3d" && bpLit && !bpLit[L.key]) ? 0.45 : 1;
   }
 }
 function cellBlock(t) {
@@ -776,7 +761,8 @@ function showCNIntro() {
   panel.innerHTML = `<h2>Cranial nerves</h2><p class="sub">Right side. Each nerve runs from where it leaves the brainstem, through its opening in the see-through skull, to what it supplies. Tap a nerve or pick one; its table row appears on the body and below. Colour: <b style="color:#2a8fb8">sensory</b> · <b style="color:#d9822b">motor</b> · <b style="color:#8a63d2">both</b>.</p>`;
   const d = document.createElement("div"); d.className = "st"; d.style.marginTop = "10px";
   for (const n of CN_NUM) { const b = document.createElement("button"); b.textContent = cnTitle(n); b.onclick = () => selectCN(n); d.appendChild(b); }
-  panel.appendChild(d);
+  panel.appendChild(d); panel.dataset.list = "cn";
+  const a = document.createElement("div"); a.className = "acts"; backToTables(a); panel.appendChild(a);
 }
 function selectCN(n) {
   cnSel = n; cnShade(n); clearCalls();
@@ -832,6 +818,8 @@ function showBPIntro() {
     for (const id of ids) { const b = document.createElement("button"); b.textContent = bpName(id); b.onclick = () => selectBP(id); d.appendChild(b); }
     panel.appendChild(d);
   }
+  panel.dataset.list = "bp";
+  const a = document.createElement("div"); a.className = "acts"; backToTables(a); panel.appendChild(a);
 }
 function selectBP(id) {
   bpSel = id; const S = NV.plexus.S, s = S[id], i = NV.plexus.INFO[id] || {}, path = NV.bp[id];
