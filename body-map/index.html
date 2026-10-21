@@ -18,6 +18,9 @@
 --stage:#1b1624;--stage2:#2a2336;--tip:#f1ecf8;--tip-ink:#15111c;--shade:rgba(0,0,0,.65)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+html.only-derm #modes,html.only-derm .credit.main{display:none}
+html.embed .wrap>.eyebrow,html.embed .wrap>h1,html.embed .wrap>.lead{display:none}
+html.embed .wrap{padding:0 0 8px}html.embed .app{margin-top:0}html.embed body{background:transparent}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,-apple-system,BlinkMacSystemFont,sans-serif}
 .wrap{max-width:1320px;margin:0 auto;padding:24px 16px 60px}
@@ -82,6 +85,16 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 .dlab.sel{font-size:13px;padding:4px 8px;outline:2px solid #201436}
 .good{color:#2f6b4f;font-weight:600}.bad{color:#b42318;font-weight:600}
 </style>
+<script>
+/* ?view=derm opens the painted dermatomes on their own: the anatomy tables frame it as a tab
+   (with &embed=1, which drops this page's header and view buttons; &theme= follows that page's theme) */
+(function () {
+  var q = new URLSearchParams(location.search), h = document.documentElement;
+  if (q.get("view") === "derm") h.classList.add("only-derm");
+  if (q.get("embed") === "1") h.classList.add("embed");
+  if (q.get("theme")) h.setAttribute("data-theme", q.get("theme"));
+})();
+</script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
 </script>
@@ -90,12 +103,11 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 <div class="wrap">
 <p class="eyebrow"><a href="../">Prototypes</a> · MSK · throwaway</p>
 <h1>Where does it hurt?</h1>
-<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts every muscle from the muscle tables on the body: tap one for its action, nerve and clinical notes. <b>Dermatomes</b> paints the skin by spinal level, with the key sensory points you test; <b>Dermatome map</b> is the Sketchfab dermatome model from the anatomy tables.</p>
+<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts every muscle from the muscle tables on the body: tap one for its action, nerve and clinical notes. <b>Dermatome map</b> is the dermatome model from the anatomy tables.</p>
 <div class="chips" id="modes">
   <button class="chip" data-mode="region" aria-pressed="true">Where it hurts</button>
   <button class="chip" data-mode="structure" aria-pressed="false">Which structure</button>
   <button class="chip" data-mode="tables" aria-pressed="false">Anatomy tables</button>
-  <button class="chip" data-mode="derm" aria-pressed="false">Dermatomes</button>
   <button class="chip" data-mode="dermmap" aria-pressed="false">Dermatome map</button>
 </div>
 <div class="dermmap" id="dermmap" hidden>
@@ -117,7 +129,7 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
   </div>
   <aside class="panel" id="panel"></aside>
 </div>
-<p class="credit">Skeleton and muscles: BodyParts3D, © The Database Center for Life Science, CC BY 4.0. Ligaments, bursae and nerves are drawn approximately on the right side only. Charts are the interactive overview charts from the PoM 2 MSK notes; the muscle and cranial nerve rows are the anatomy tables, with the same corrections. Dermatomes are painted onto the BodyParts3D skin from the skeleton under it, following the usual textbook map; borders vary between people and between maps, and the dots are the ISNCSCI key sensory points.</p>
+<p class="credit main">Skeleton and muscles: BodyParts3D, © The Database Center for Life Science, CC BY 4.0. Ligaments, bursae and nerves are drawn approximately on the right side only. Charts are the interactive overview charts from the PoM 2 MSK notes; the muscle and cranial nerve rows are the anatomy tables, with the same corrections.</p>
 </div>
 
 <dialog id="pop">
@@ -761,7 +773,15 @@ function tapDerm(lv) {
   const n = panel.querySelector(".acts button"); n.textContent = "Next";
 }
 
-showIntro(); requestAnimationFrame(loop);
+if (document.documentElement.classList.contains("only-derm")) {
+  document.querySelector("h1").textContent = "Dermatomes on the body";
+  document.querySelector(".lead").textContent = "The skin painted by spinal level from the skeleton under it. Tap the skin or a label to name the level; the dots are the ISNCSCI key sensory points; Test me hides the colours and asks you to find one.";
+  const c = document.createElement("p"); c.className = "credit";
+  c.textContent = "Skin: BodyParts3D, © The Database Center for Life Science, CC BY 4.0. Dermatomes are painted from the skeleton under the skin, following the usual textbook map; borders vary between people and between maps.";
+  document.querySelector(".wrap").appendChild(c);
+  setMode("derm");
+} else showIntro();
+requestAnimationFrame(loop);
 </script>
 </body>
 </html>
