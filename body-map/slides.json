@@ -1,0 +1,2467 @@
+{
+ "muscles": {
+  "Trapezius": {
+   "action": "Elevates, depresses and retracts scapula; rotates glenoid cavity superiorly",
+   "innervation": "Spinal accessory nerve (CN XI)",
+   "clinical": [],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 41"
+  },
+  "Levator scapulae": {
+   "action": "Elevates scapula; rotates to depress glenoid cavity",
+   "innervation": "Dorsal scapular nerve; C3-4 spinal nerves",
+   "clinical": [],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 44"
+  },
+  "Rhomboids (major and minor)": {
+   "action": "Retract scapula; rotate to depress glenoid cavity; fix scapula to thoracic wall",
+   "innervation": "Dorsal scapular nerve",
+   "clinical": [
+    "Two muscle bellies (major and minor), often fused"
+   ],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 43"
+  },
+  "Latissimus dorsi": {
+   "action": "Extends, adducts and medially rotates humerus",
+   "innervation": "Thoracodorsal nerve",
+   "clinical": [],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 42"
+  },
+  "Serratus posterior superior": {
+   "action": "",
+   "innervation": "",
+   "clinical": [],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 40"
+  },
+  "Serratus posterior inferior": {
+   "action": "",
+   "innervation": "",
+   "clinical": [],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 40"
+  },
+  "Erector spinae (Spinalis (medial), longissimus (intermediate), iliocostalis (lateral))": {
+   "action": "Bilaterally: extend vertebral column and head, eccentrically control trunk flexion; unilaterally: laterally flex vertebral column",
+   "innervation": "Dorsal rami of spinal nerves",
+   "clinical": [],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 46"
+  },
+  "Splenius": {
+   "action": "Bilaterally: extend head and neck; unilaterally: laterally flex and rotate head and neck",
+   "innervation": "Dorsal rami of spinal nerves",
+   "clinical": [
+    "Two parts: splenius capitis and splenius cervicis"
+   ],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 47"
+  },
+  "Transversospinalis": {
+   "action": "Contralateral rotation; stabilization; proprioception",
+   "innervation": "Dorsal rami of spinal nerves",
+   "clinical": [
+    "Transverse process to spinous process: semispinalis spans 4-6 segments, multifidus 2-4, rotatores 1-2"
+   ],
+   "src": "Clinical Approach to Mechanical Back Pain, slide 48"
+  },
+  "Pectoralis major": {
+   "action": "Adducts, flexes and medially rotates humerus",
+   "innervation": "Medial and lateral pectoral nerves",
+   "clinical": [],
+   "src": "Muscles of the Shoulder, slide 6"
+  },
+  "Pectoralis minor": {
+   "action": "Stabilizes scapula by drawing it inferiorly and anteriorly against thoracic wall",
+   "innervation": "Medial and lateral pectoral nerves",
+   "clinical": [],
+   "src": "Muscles of the Shoulder, slide 7"
+  },
+  "Serratus anterior": {
+   "action": "Protraction of the scapula",
+   "innervation": "Long thoracic nerve (C5,6,7)",
+   "clinical": [
+    "Long thoracic nerve lesion: winged scapula, medial border lifts off thoracic wall when pushing with the upper limb"
+   ],
+   "src": "Muscles of the Shoulder, slide 8"
+  },
+  "Deltoid": {
+   "action": "Anterior head: flexes and medially rotates arm; middle head: abducts arm; posterior head: extends and laterally rotates arm",
+   "innervation": "Axillary nerve (C5, C6)",
+   "clinical": [
+    "Myotome: C5 and C6"
+   ],
+   "src": "Muscles of the Shoulder, slide 12"
+  },
+  "Supraspinatus": {
+   "action": "First 15 degrees of arm abduction; stabilizes glenohumeral joint",
+   "innervation": "Suprascapular nerve (C5, 6)",
+   "clinical": [
+    "Rotator cuff muscle; supraspinous fossa to greater tubercle, beneath subdeltoid/subacromial bursa",
+    "Has its own strength test in rotator cuff disease examination"
+   ],
+   "src": "Muscles of the Shoulder, slide 14"
+  },
+  "Infraspinatus": {
+   "action": "Lateral rotation of arm; stabilizes glenohumeral joint",
+   "innervation": "Suprascapular nerve (C5, 6)",
+   "clinical": [
+    "Rotator cuff muscle; infraspinous fossa to greater tubercle",
+    "Has its own strength test in rotator cuff disease examination"
+   ],
+   "src": "Muscles of the Shoulder, slide 15"
+  },
+  "Teres minor": {
+   "action": "Lateral rotation of arm; stabilizes glenohumeral joint",
+   "innervation": "Axillary nerve (C5, 6)",
+   "clinical": [
+    "Rotator cuff muscle; lateral border of scapula to greater tubercle"
+   ],
+   "src": "Muscles of the Shoulder, slide 16"
+  },
+  "Teres major": {
+   "action": "Adducts and medially rotates arm",
+   "innervation": "Lower subscapular nerve",
+   "clinical": [],
+   "src": "Muscles of the Shoulder, slide 18"
+  },
+  "Subscapularis": {
+   "action": "Medially rotates arm; stabilizes glenohumeral joint",
+   "innervation": "Upper and lower subscapular nerves (C5, 6, 7)",
+   "clinical": [
+    "Rotator cuff muscle; subscapular fossa to lesser tubercle",
+    "Has its own strength test in rotator cuff disease examination"
+   ],
+   "src": "Muscles of the Shoulder, slide 17"
+  },
+  "Biceps brachii": {
+   "action": "Strong supinator; flexes forearm; weak shoulder flexor; resists dislocation",
+   "innervation": "Musculocutaneous nerve",
+   "clinical": [
+    "Proximal biceps tendinopathy: anterior shoulder pain, tender in intertubercular groove, worse with shoulder/elbow flexion when supinated",
+    "Long head arises from supraglenoid tubercle and superior labrum, so labral problems are biceps problems",
+    "Bicipital reflex tests integrity of C5 and C6"
+   ],
+   "src": "Muscles of the Arm, slide 5"
+  },
+  "Coracobrachialis": {
+   "action": "Flexes arm; adducts arm; resists dislocation",
+   "innervation": "Musculocutaneous nerve",
+   "clinical": [],
+   "src": "Muscles of the Arm, slide 6"
+  },
+  "Brachialis": {
+   "action": "Primary flexor of the forearm",
+   "innervation": "Musculocutaneous nerve",
+   "clinical": [],
+   "src": "Muscles of the Arm, slide 7"
+  },
+  "Triceps": {
+   "action": "Together extend elbow; long head extends shoulder joint and resists shoulder dislocation",
+   "innervation": "Radial nerve",
+   "clinical": [
+    "Three heads (long, medial, lateral); only the long head crosses the shoulder joint"
+   ],
+   "src": "Muscles of the Arm, slide 9"
+  },
+  "Palmaris longus": {
+   "action": "Flexes wrist; tenses palmar aponeurosis",
+   "innervation": "Median nerve",
+   "clinical": [
+    "Its tendon is one graft option for ulnar collateral ligament reconstruction (Tommy John surgery)."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 8"
+  },
+  "Pronator teres": {
+   "action": "Pronates forearm; elbow flexion",
+   "innervation": "Median nerve",
+   "clinical": [
+    "Median nerve passes between its two heads, a site of entrapment (pronator syndrome).",
+    "Forms the medial border of the cubital fossa."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 6"
+  },
+  "Flexor carpi radialis": {
+   "action": "Flexes wrist; abducts wrist (radial deviation)",
+   "innervation": "Median nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 7"
+  },
+  "Flexor carpi ulnaris": {
+   "action": "Flexes wrist; adducts wrist (ulnar deviation)",
+   "innervation": "Ulnar nerve",
+   "clinical": [
+    "One of the 1½ anterior compartment muscles supplied by the ulnar nerve rather than the median nerve."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 9"
+  },
+  "Flexor digitorum superficialis": {
+   "action": "Flexes MCP joints (digits 2-5); flexes wrist",
+   "innervation": "Median nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 10"
+  },
+  "Flexor digitorum profundus": {
+   "action": "Flexes wrist; flexes IP joints in digits 2-5",
+   "innervation": "Lateral part (digits 2 & 3): median nerve; medial part (digits 4 & 5): ulnar nerve",
+   "clinical": [
+    "Its medial part is the 'half' muscle of the 1½ anterior compartment muscles supplied by the ulnar nerve."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 12"
+  },
+  "Flexor pollicis longus": {
+   "action": "Flexes wrist; flexes MCP & IP joint of digit 1",
+   "innervation": "Median nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 13"
+  },
+  "Pronator quadratus": {
+   "action": "Pronates forearm",
+   "innervation": "Median nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 14"
+  },
+  "Brachioradialis": {
+   "action": "Weakly flexes the forearm; strongest in mid-pronated position (\"drinking muscle\")",
+   "innervation": "Radial nerve",
+   "clinical": [
+    "Forms the lateral border of the cubital fossa."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 19"
+  },
+  "Extensor carpi radialis longus": {
+   "action": "Extends and abducts wrist; active during fist clenching",
+   "innervation": "Radial nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 20"
+  },
+  "Extensor carpi radialis brevis": {
+   "action": "Extends and abducts wrist",
+   "innervation": "Radial nerve",
+   "clinical": [
+    "Lateral epicondylosis (tennis elbow) is predominantly a tendinopathy of extensor carpi radialis brevis."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 20"
+  },
+  "Extensor digitorum": {
+   "action": "Extends MCP joints primarily, IP joints secondarily (digits 2-5); also extends wrist",
+   "innervation": "Radial nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 21"
+  },
+  "Extensor digiti minimi": {
+   "action": "Extends digit 5 (MCP joint primarily, IP joints secondarily); also extends wrist",
+   "innervation": "Radial nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 21"
+  },
+  "Extensor carpi ulnaris": {
+   "action": "Extends and adducts wrist; active during fist clenching",
+   "innervation": "Radial nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 22"
+  },
+  "Supinator": {
+   "action": "Supinates forearm",
+   "innervation": "Radial nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 24"
+  },
+  "Extensor indicis": {
+   "action": "Extends 2nd digit, enabling independent extension",
+   "innervation": "Radial nerve",
+   "clinical": [],
+   "src": "Muscles of the Distal Upper Extremity, slide 25"
+  },
+  "Abductor pollicis longus": {
+   "action": "",
+   "innervation": "Radial nerve",
+   "clinical": [
+    "Outcropping muscle of the deep posterior compartment, shown with the anatomical snuff box."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 26"
+  },
+  "Extensor pollicis brevis": {
+   "action": "",
+   "innervation": "Radial nerve",
+   "clinical": [
+    "Its tendon outlines the anatomical snuff box (radial artery over scaphoid and trapezium)."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 26"
+  },
+  "Extensor pollicis longus": {
+   "action": "",
+   "innervation": "Radial nerve",
+   "clinical": [
+    "Its tendon outlines the anatomical snuff box (radial artery over scaphoid and trapezium)."
+   ],
+   "src": "Muscles of the Distal Upper Extremity, slide 26"
+  },
+  "Abductor pollicis brevis": {
+   "action": "Abduction of CMC joint",
+   "innervation": "Recurrent br. of median nerve",
+   "clinical": [
+    "Carpal tunnel syndrome may cause thumb weakness (APB, abductor pollicis brevis)."
+   ],
+   "src": "Wrist and Hand, part 1, slide 53"
+  },
+  "Opponens pollicis": {
+   "action": "Opposition of CMC joint",
+   "innervation": "Recurrent br. of median nerve",
+   "clinical": [],
+   "src": "Wrist and Hand, part 1, slide 55"
+  },
+  "Flexor pollicis brevis": {
+   "action": "Flexes CMC joint",
+   "innervation": "Recurrent br. of median nerve",
+   "clinical": [],
+   "src": "Wrist and Hand, part 1, slide 54"
+  },
+  "Abductor digiti minimi": {
+   "action": "Abduction of 5th digit",
+   "innervation": "Ulnar nerve",
+   "clinical": [],
+   "src": "Wrist and Hand, part 1, slide 59"
+  },
+  "Flexor digiti minimi brevis": {
+   "action": "Flexion of 5th digit",
+   "innervation": "Ulnar nerve",
+   "clinical": [],
+   "src": "Wrist and Hand, part 1, slide 60"
+  },
+  "Opponens digiti minimi": {
+   "action": "Opposition of the 5th digit",
+   "innervation": "Ulnar nerve",
+   "clinical": [],
+   "src": "Wrist and Hand, part 1, slide 61"
+  },
+  "Lumbricals": {
+   "action": "Flex the MCP joint; extend the IP joints",
+   "innervation": "Medial two: ulnar nerve; lateral two: median nerve",
+   "clinical": [],
+   "src": "Wrist and Hand, part 1, slide 63"
+  },
+  "Adductor pollicis": {
+   "action": "Adduction of CMC joint",
+   "innervation": "Ulnar nerve",
+   "clinical": [],
+   "src": "Wrist and Hand, part 1, slide 56"
+  },
+  "Interossei": {
+   "action": "Palmar (3): adduction (P-A-D); dorsal (4): abduction (D-A-B)",
+   "innervation": "Ulnar nerve",
+   "clinical": [
+    "Ulnar canal (Guyon's canal) compression weakens the intrinsic hand muscles."
+   ],
+   "src": "Wrist and Hand, part 1, slide 65"
+  },
+  "Gluteus maximus": {
+   "action": "Extension of hip; assists in standing from seated position",
+   "innervation": "Inferior gluteal nerve",
+   "clinical": [
+    "Myotome: S1."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 7"
+  },
+  "Gluteus medius/minimus": {
+   "action": "Abduction & medial rotation of thigh; gait stabilization",
+   "innervation": "Superior gluteal nerve",
+   "clinical": [],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 9"
+  },
+  "Tensor fascia latae": {
+   "action": "Flexes hip; tenses IT band",
+   "innervation": "Superior gluteal nerve",
+   "clinical": [
+    "Myotome: L5."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 8"
+  },
+  "Piriformis": {
+   "action": "Lateral rotation of thigh; abduction of thigh; stabilization of hip",
+   "innervation": "Nerve to piriformis",
+   "clinical": [
+    "Key gluteal landmark: superior gluteal vessels/nerve pass above it, inferior gluteal vessels/nerve and sciatic nerve below.",
+    "Piriformis syndrome is a listed cause of sciatic nerve injury."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 11"
+  },
+  "Superior gemellus": {
+   "action": "Laterally rotate hip; stabilize head of femur in acetabulum",
+   "innervation": "",
+   "clinical": [],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 10"
+  },
+  "Obturator internus": {
+   "action": "Laterally rotate hip; stabilize head of femur in acetabulum",
+   "innervation": "",
+   "clinical": [],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 10"
+  },
+  "Inferior gemellus": {
+   "action": "Laterally rotate hip; stabilize head of femur in acetabulum",
+   "innervation": "",
+   "clinical": [],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 10"
+  },
+  "Quadratus femoris": {
+   "action": "Laterally rotate hip; stabilize head of femur in acetabulum",
+   "innervation": "",
+   "clinical": [],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 10"
+  },
+  "Iliopsoas": {
+   "action": "Flexion of hip",
+   "innervation": "Femoral nerve; anterior rami L1-L3",
+   "clinical": [
+    "Myotome: L1/2."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 32"
+  },
+  "Sartorius": {
+   "action": "Lateral rotation of hip; flexion of hip; flexion of knee; hip abduction",
+   "innervation": "Femoral nerve",
+   "clinical": [
+    "Lateral boundary of the femoral triangle.",
+    "Part of pes anserinus (Sartorius, Gracilis, semiTendinosus: SGT)."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 33"
+  },
+  "Rectus femoris": {
+   "action": "Powerful knee extensor; flexes the hip",
+   "innervation": "Femoral nerve",
+   "clinical": [
+    "Patellar tendon reflex tests the integrity of L3-L4.",
+    "Myotome: L3/4."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 34"
+  },
+  "Vastus lateralis": {
+   "action": "Powerful knee extensor",
+   "innervation": "Femoral nerve",
+   "clinical": [
+    "Patellar tendon reflex tests the integrity of L3-L4.",
+    "Myotome: L3/4."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 34"
+  },
+  "Vastus medialis": {
+   "action": "Powerful knee extensor",
+   "innervation": "Femoral nerve",
+   "clinical": [
+    "Patellar tendon reflex tests the integrity of L3-L4.",
+    "Myotome: L3/4."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 34"
+  },
+  "Vastus intermedius": {
+   "action": "Powerful knee extensor",
+   "innervation": "Femoral nerve",
+   "clinical": [
+    "Patellar tendon reflex tests the integrity of L3-L4.",
+    "Myotome: L3/4."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 34"
+  },
+  "Biceps femoris": {
+   "action": "Extension of hip; flexion of knee",
+   "innervation": "Long head: tibial division of sciatic nerve; short head: common peroneal division of sciatic nerve",
+   "clinical": [
+    "Forms a boundary of the popliteal fossa.",
+    "Hamstrings myotome: L5."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 22"
+  },
+  "Semitendinosus": {
+   "action": "Extension of hip; flexion of knee",
+   "innervation": "Tibial division of sciatic nerve",
+   "clinical": [
+    "Part of pes anserinus (SGT).",
+    "Forms a boundary of the popliteal fossa."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 23"
+  },
+  "Semimembranosus": {
+   "action": "Extension of hip; flexion of knee",
+   "innervation": "Tibial division of sciatic nerve",
+   "clinical": [
+    "Forms a boundary of the popliteal fossa."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 23"
+  },
+  "Adductor longus": {
+   "action": "Adduction of hip",
+   "innervation": "Obturator nerve",
+   "clinical": [
+    "Medial boundary of the femoral triangle.",
+    "Groin pull: active contraction plus passive stretch of medial compartment; bruising, pain; RICE and NSAIDs (non-steroidal anti-inflammatory drugs)."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 40"
+  },
+  "Adductor brevis": {
+   "action": "Adduction of hip",
+   "innervation": "Obturator nerve",
+   "clinical": [
+    "Groin pull: active contraction plus passive stretch of medial compartment; treated conservatively."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 40"
+  },
+  "Adductor magnus": {
+   "action": "Adductor part: adduction and flexion of hip; hamstring part: adduction and extension of hip",
+   "innervation": "Adductor part: obturator nerve; hamstring part: tibial nerve",
+   "clinical": [
+    "Adductor hiatus: femoral artery passes through to become the popliteal artery."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 41"
+  },
+  "Gracilis": {
+   "action": "Adduction of hip; flexion of knee",
+   "innervation": "Obturator nerve",
+   "clinical": [
+    "Part of pes anserinus (SGT)."
+   ],
+   "src": "Anatomy of the Gluteal Region and Thigh, slide 42"
+  },
+  "Tibialis anterior": {
+   "action": "Dorsiflexes ankle; inverts the foot",
+   "innervation": "Deep fibular nerve",
+   "clinical": [
+    "Myotome: L4 & L5",
+    "Supports the medial longitudinal and transverse arches; broad attachment on medial foot"
+   ],
+   "src": "Anatomy of the Leg, slide 11"
+  },
+  "Extensor digitorum longus": {
+   "action": "Dorsiflexes ankle; extends lateral four digits",
+   "innervation": "Deep fibular nerve",
+   "clinical": [
+    "Splits into 4 tendons on the dorsum of the foot; functions with extensor digitorum brevis"
+   ],
+   "src": "Anatomy of the Leg, slide 12"
+  },
+  "Extensor hallucis longus": {
+   "action": "Dorsiflexes ankle; extends 1st digit (great toe)",
+   "innervation": "Deep fibular nerve",
+   "clinical": [
+    "Myotome: L5"
+   ],
+   "src": "Anatomy of the Leg, slide 13"
+  },
+  "Fibularis tertius": {
+   "action": "",
+   "innervation": "Deep fibular nerve",
+   "clinical": [],
+   "src": "Anatomy of the Leg, slide 12"
+  },
+  "Fibularis longus": {
+   "action": "Everts foot; weakly plantarflexes ankle; supports transverse arch",
+   "innervation": "Superficial fibular nerve",
+   "clinical": [
+    "Inserts on medial plantar foot; supports medial longitudinal and transverse arches"
+   ],
+   "src": "Anatomy of the Leg, slide 16"
+  },
+  "Fibularis brevis": {
+   "action": "Everts foot; weakly plantarflexes ankle; supports transverse arch",
+   "innervation": "Superficial fibular nerve",
+   "clinical": [
+    "Inserts on base of 5th metatarsal"
+   ],
+   "src": "Anatomy of the Leg, slide 17"
+  },
+  "Gastrocnemius": {
+   "action": "Plantarflexes ankle with knee extended; flexes leg at knee",
+   "innervation": "Tibial nerve",
+   "clinical": [
+    "Myotome: S1",
+    "Inserts via calcaneal (Achilles) tendon: Achilles tendinopathy and rupture",
+    "Baker's cyst: synovial extension through the gastrocnemius/semimembranosus bursa into the popliteal fossa",
+    "Gastrocnemius strain or tendinopathy causes posterior knee pain"
+   ],
+   "src": "Anatomy of the Leg, slide 21"
+  },
+  "Soleus": {
+   "action": "Plantarflexes ankle",
+   "innervation": "Tibial nerve",
+   "clinical": [
+    "Myotome: S1",
+    "Inserts via calcaneal (Achilles) tendon: Achilles tendinopathy and rupture"
+   ],
+   "src": "Anatomy of the Leg, slide 22"
+  },
+  "Plantaris": {
+   "action": "Weakly plantarflexes ankle",
+   "innervation": "Tibial nerve",
+   "clinical": [
+    "Can be used for tendon grafts"
+   ],
+   "src": "Anatomy of the Leg, slide 23"
+  },
+  "Popliteus": {
+   "action": "Weakly flexes knee; unlocks knee",
+   "innervation": "Tibial nerve",
+   "clinical": [
+    "Contracts to rotate the femur 5 degrees laterally, unlocking the screw-home mechanism so flexion can occur",
+    "Popliteus strain or tendinopathy causes posterior knee pain"
+   ],
+   "src": "Anatomy of the Leg, slide 25"
+  },
+  "Tibialis posterior": {
+   "action": "Plantarflexes ankle; inverts foot; supports longitudinal arches of foot",
+   "innervation": "Tibial nerve",
+   "clinical": [
+    "Myotome: L5",
+    "Most anterior structure in the tarsal tunnel (Tom, Dick, And Very Nervous Harry)",
+    "Tibialis posterior dysfunction: tendon hypovascular distal to medial malleolus; medial ankle pain, pes planus, 'too many toes' sign"
+   ],
+   "src": "Anatomy of the Leg, slide 27"
+  },
+  "Flexor digitorum longus": {
+   "action": "Flexes lateral four digits; plantarflexes ankle; supports longitudinal arches of foot",
+   "innervation": "Tibial nerve",
+   "clinical": [
+    "'Dick' in the tarsal tunnel (Tom, Dick, And Very Nervous Harry), behind tibialis posterior"
+   ],
+   "src": "Anatomy of the Leg, slide 26"
+  },
+  "Flexor hallucis longus": {
+   "action": "Flexion of 1st digit; weakly plantarflexes ankle; supports medial longitudinal arch of foot",
+   "innervation": "Tibial nerve",
+   "clinical": [
+    "'Harry', the most posterior tarsal tunnel structure; its tendon runs under the sustentaculum tali"
+   ],
+   "src": "Anatomy of the Leg, slide 28"
+  },
+  "Extensor digitorum brevis": {
+   "action": "",
+   "innervation": "",
+   "clinical": [
+    "Functions with extensor digitorum longus on the dorsum of the foot"
+   ],
+   "src": "Clinical Approach to the Ankle and Foot, slide 4"
+  },
+  "Extensor hallucis brevis": {
+   "action": "",
+   "innervation": "",
+   "clinical": [
+    "Functions with extensor hallucis longus on the dorsum of the foot"
+   ],
+   "src": "Clinical Approach to the Ankle and Foot, slide 4"
+  },
+  "Plantar fascia": {
+   "action": "Protects sole; supports longitudinal arches; holds everything together",
+   "innervation": "",
+   "clinical": [
+    "Plantar fasciitis: pain at anteromedial calcaneus on first morning steps, worse with passive dorsiflexion, often with tight Achilles"
+   ],
+   "src": "Clinical Approach to the Ankle and Foot, slide 5"
+  }
+ },
+ "excluded": [
+  "Anconeus",
+  "Pectineus",
+  "Obturator externus",
+  "Quadratus plantae"
+ ],
+ "arteries": {
+  "vertebral": {
+   "name": "Vertebral artery",
+   "facts": [
+    "Vertebral artery insufficiency is a vascular red flag in neck pain: dizziness with neck movement, cranial nerve abnormalities, drop attacks"
+   ],
+   "src": [
+    "Clinical Approach to Mechanical Back Pain, slide 7"
+   ]
+  },
+  "subclavian": {
+   "name": "Subclavian artery",
+   "facts": [
+    "First segment of the upper extremity supply: subclavian, then axillary, then brachial artery"
+   ],
+   "src": [
+    "Neurovascular Supply to the Proximal Upper Extremity, slide 3, 4, 9"
+   ]
+  },
+  "axillary": {
+   "name": "Axillary artery",
+   "facts": [
+    "Continues from the subclavian artery into the brachial artery, supplying the axilla"
+   ],
+   "src": [
+    "Neurovascular Supply to the Proximal Upper Extremity, slide 3, 4, 9"
+   ]
+  },
+  "brachial": {
+   "name": "Brachial artery",
+   "facts": [
+    "Supplies the anterior compartment of the arm",
+    "Used to measure blood pressure (BP)",
+    "Susceptible to humeral shaft fractures",
+    "Supplies the anterior compartment, continuing as the radial and ulnar arteries.",
+    "In the cubital fossa with biceps tendon and median nerve (TAN: Tendon, Artery, Nerve).",
+    "Cubital fossa is pictured as the site for blood pressure measurement."
+   ],
+   "src": [
+    "Neurovascular Supply to the Proximal Upper Extremity, slide 5",
+    "Neurovascular Supply to the Distal Upper Extremity, slide 3, 6"
+   ]
+  },
+  "deep_brachial": {
+   "name": "Profunda brachii (deep brachial) artery",
+   "facts": [
+    "Branch of the brachial artery; arterial supply of the posterior compartment of the arm"
+   ],
+   "src": [
+    "Neurovascular Supply to the Proximal Upper Extremity, slide 5, 6"
+   ]
+  },
+  "radial": {
+   "name": "Radial artery",
+   "facts": [
+    "Named after the brachial artery on the upper extremity blood supply overview",
+    "Radial pulse is taken at the wrist.",
+    "Supplies both anterior and posterior compartments of the forearm.",
+    "Crosses the anatomical snuff box over the scaphoid and trapezium.",
+    "Enters the hand laterally; contributes to the two palmar arterial arches, labelled leading into the deep palmar arch."
+   ],
+   "src": [
+    "Neurovascular Supply to the Proximal Upper Extremity, slide 3",
+    "Neurovascular Supply to the Distal Upper Extremity, slide 3, 4",
+    "Wrist and Hand, part 1, slide 67, 68"
+   ]
+  },
+  "ulnar": {
+   "name": "Ulnar artery",
+   "facts": [
+    "Named after the brachial artery on the upper extremity blood supply overview",
+    "Supplies the anterior compartment of the forearm, arising from the brachial artery.",
+    "Enters the hand medially, labelled leading into the superficial palmar arch.",
+    "Runs with the ulnar nerve within the ulnar (Guyon's) canal.",
+    "Lies superficial to the carpal tunnel."
+   ],
+   "src": [
+    "Neurovascular Supply to the Proximal Upper Extremity, slide 3",
+    "Neurovascular Supply to the Distal Upper Extremity, slide 3",
+    "Wrist and Hand, part 1, slide 67"
+   ]
+  },
+  "sup_palmar_arch": {
+   "name": "Superficial palmar arch",
+   "facts": [
+    "One of two palmar arterial arches; gives off the palmar digital arteries."
+   ],
+   "src": [
+    "Wrist and Hand, part 1, slide 67, 68"
+   ]
+  },
+  "deep_palmar_arch": {
+   "name": "Deep palmar arch",
+   "facts": [
+    "Second palmar arterial arch, deep to the superficial arch, labelled continuous with the radial artery."
+   ],
+   "src": [
+    "Wrist and Hand, part 1, slide 68"
+   ]
+  },
+  "palmar_digital": {
+   "name": "Common and proper palmar digital arteries",
+   "facts": [
+    "Palmar digital arteries arise from the superficial palmar arch to supply the digits."
+   ],
+   "src": [
+    "Wrist and Hand, part 1, slide 67"
+   ]
+  },
+  "sup_gluteal": {
+   "name": "Superior gluteal artery",
+   "facts": [
+    "Exits the pelvis superior to piriformis, the key gluteal landmark."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 14"
+   ]
+  },
+  "inf_gluteal": {
+   "name": "Inferior gluteal artery",
+   "facts": [
+    "Exits inferior to piriformis.",
+    "Part of the collateral circulation around the hip."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 14, 48"
+   ]
+  },
+  "obturator": {
+   "name": "Obturator artery",
+   "facts": [
+    "Its branches, with perforating branches, supply the medial compartment of the thigh."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 55"
+   ]
+  },
+  "external_iliac": {
+   "name": "External iliac artery",
+   "facts": [
+    "Becomes the femoral artery deep to the inguinal ligament."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 47"
+   ]
+  },
+  "femoral": {
+   "name": "Femoral artery",
+   "facts": [
+    "Femoral pulse palpable below the inguinal ligament; in femoral triangle, order lateral to medial is NAVEL (nerve, artery, vein, empty canal, lymphatics).",
+    "Enclosed by the femoral sheath; passes the adductor hiatus to become the popliteal artery.",
+    "Its branches supply the anterior compartment of the thigh.",
+    "Shown continuing into the popliteal artery in the leg's arterial supply"
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 47, 49, 55",
+    "Anatomy of the Leg, slide 34, 35"
+   ]
+  },
+  "deep_femoral": {
+   "name": "Deep femoral (profunda femoris) artery",
+   "facts": [
+    "Branch of the femoral artery giving the medial and lateral circumflex femoral arteries and perforating branches.",
+    "Supplies the hip joint via the circumflex femoral arteries."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 47"
+   ]
+  },
+  "perforating": {
+   "name": "Perforating arteries",
+   "facts": [
+    "Perforating branches of the profunda femoris supply the posterior compartment of the thigh.",
+    "Part of the collateral circulation around the hip."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 26, 48"
+   ]
+  },
+  "med_circumflex_femoral": {
+   "name": "Medial circumflex femoral artery",
+   "facts": [
+    "Branch of the profunda femoris; supplies the hip joint and femoral head.",
+    "Part of the collateral circulation around the hip.",
+    "Displaced femoral neck fractures need surgery to preserve femoral head blood supply."
+   ],
+   "src": [
+    "Clinical Approach to the Hip, slide 8, 27"
+   ]
+  },
+  "lat_circumflex_femoral": {
+   "name": "Lateral circumflex femoral artery",
+   "facts": [
+    "Branch of the profunda femoris; supplies the hip joint.",
+    "Part of the collateral circulation around the hip.",
+    "Its descending branch joins the collateral circulation around the knee."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 47, 48"
+   ]
+  },
+  "popliteal": {
+   "name": "Popliteal artery",
+   "facts": [
+    "Continuation of the femoral artery after the adductor hiatus.",
+    "Deepest content of the popliteal fossa (deep to superficial: artery, vein, nerve; AVN).",
+    "Knowledge check: painless pulsatile popliteal mass in an 85-year-old (diagnosis left blank on slide).",
+    "Divides into the anterior and posterior tibial arteries",
+    "Popliteal artery aneurysm is in the differential of a popliteal (Baker's) cyst"
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 27, 28, 47",
+    "Anatomy of the Leg, slide 34, 35"
+   ]
+  },
+  "ligament_head_femur": {
+   "name": "Artery of the ligament of the head of the femur",
+   "facts": [
+    "Carried in the ligament of the head of the femur; contributes to hip joint blood supply."
+   ],
+   "src": [
+    "Clinical Approach to the Hip, slide 6, 8"
+   ]
+  },
+  "ant_tibial": {
+   "name": "Anterior tibial artery",
+   "facts": [
+    "Branch of the popliteal artery supplying the anterior leg",
+    "Continues onto the dorsal foot as the dorsalis pedis artery"
+   ],
+   "src": [
+    "Anatomy of the Leg, slide 34"
+   ]
+  },
+  "post_tibial": {
+   "name": "Posterior tibial artery",
+   "facts": [
+    "Branch of the popliteal artery; gives off the fibular artery",
+    "Runs in the tarsal tunnel ('A' in Tom, Dick, And Very Nervous Harry); divides into medial and lateral plantar arteries",
+    "Pulse felt between medial malleolus and calcaneal tendon; invert foot to relax flexor retinaculum; check both sides for symmetry"
+   ],
+   "src": [
+    "Anatomy of the Leg, slide 35"
+   ]
+  },
+  "fibular": {
+   "name": "Fibular artery",
+   "facts": [
+    "Branch of the posterior tibial artery in the posterior leg"
+   ],
+   "src": [
+    "Anatomy of the Leg, slide 35"
+   ]
+  },
+  "dorsalis_pedis": {
+   "name": "Dorsalis pedis artery",
+   "facts": [
+    "Continuation of the anterior tibial artery on the dorsal foot",
+    "Diminished or absent dorsalis pedis pulse usually indicates vascular insufficiency from arterial disease",
+    "Five P's of arterial occlusion: pain, pallor, paresthesia, paralysis, pulselessness"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 38, 39"
+   ]
+  },
+  "med_plantar": {
+   "name": "Medial plantar artery",
+   "facts": [
+    "Branch of the posterior tibial artery supplying the plantar foot"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 40"
+   ]
+  },
+  "lat_plantar": {
+   "name": "Lateral plantar artery",
+   "facts": [
+    "Branch of the posterior tibial artery supplying the plantar foot"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 40"
+   ]
+  }
+ },
+ "ligaments": {
+  "all": {
+   "name": "Anterior longitudinal ligament",
+   "facts": [
+    "Vertebral ligament running along the front of the vertebral bodies",
+    "In whiplash, injured less often than muscles or facets (order: facets > anterior longitudinal ligament (ALL) > bones > cord)"
+   ],
+   "src": [
+    "Clinical Approach to Mechanical Back Pain, slide 22, 54"
+   ]
+  },
+  "pll": {
+   "name": "Posterior longitudinal ligament",
+   "facts": [
+    "Vertebral ligament running along the back of the vertebral bodies"
+   ],
+   "src": [
+    "Clinical Approach to Mechanical Back Pain, slide 22"
+   ]
+  },
+  "supraspinous": {
+   "name": "Supraspinous ligament",
+   "facts": [
+    "Vertebral ligament along the tips of the spinous processes"
+   ],
+   "src": [
+    "Clinical Approach to Mechanical Back Pain, slide 22"
+   ]
+  },
+  "interspinous": {
+   "name": "Interspinous ligament",
+   "facts": [
+    "Vertebral ligament between adjacent spinous processes"
+   ],
+   "src": [
+    "Clinical Approach to Mechanical Back Pain, slide 22"
+   ]
+  },
+  "nuchal": {
+   "name": "Ligamentum nuchae",
+   "facts": [
+    "Vertebral ligament of the neck, labelled on the vertebral ligaments slide"
+   ],
+   "src": [
+    "Clinical Approach to Mechanical Back Pain, slide 22"
+   ]
+  },
+  "acromioclavicular": {
+   "name": "Acromioclavicular ligament",
+   "facts": [
+    "Stabilizes the acromioclavicular (AC) joint, a synovial plane joint"
+   ],
+   "src": [
+    "Osteology and Joints of the Proximal Upper Extremity, slide 11"
+   ]
+  },
+  "coracoclavicular": {
+   "name": "Coracoclavicular ligament",
+   "facts": [
+    "Joins coracoid process to clavicle at the acromioclavicular (AC) joint"
+   ],
+   "src": [
+    "Osteology and Joints of the Proximal Upper Extremity, slide 11"
+   ]
+  },
+  "glenohumeral": {
+   "name": "Glenohumeral ligaments",
+   "facts": [
+    "Three glenohumeral ligaments reinforce the joint capsule of the glenohumeral (GH) joint",
+    "Ligaments are an anatomic factor in shoulder stability; in instability they may be torn or stretched"
+   ],
+   "src": [
+    "Osteology and Joints of the Proximal Upper Extremity, slide 13, 14, 49, 50"
+   ]
+  },
+  "coracoacromial": {
+   "name": "Coracoacromial ligament",
+   "facts": [
+    "Spans coracoid process to acromion above the glenohumeral joint"
+   ],
+   "src": [
+    "Osteology and Joints of the Proximal Upper Extremity, slide 13, 50"
+   ]
+  },
+  "coracohumeral": {
+   "name": "Coracohumeral ligament",
+   "facts": [
+    "Labelled on the shoulder ligament anatomy figure with the glenohumeral and coracoacromial ligaments"
+   ],
+   "src": [
+    "Osteology and Joints of the Proximal Upper Extremity, slide 50"
+   ]
+  },
+  "ucl": {
+   "name": "Ulnar (medial) collateral ligament",
+   "facts": [
+    "Stabilizes the medial elbow.",
+    "Injured by chronic repetitive overuse (baseball pitchers); lax with no end point on valgus stress.",
+    "Reconstruction (Tommy John surgery) uses a tendon graft such as palmaris longus or semitendinosus."
+   ],
+   "src": [
+    "Osteology of the Distal Upper Extremity and the Elbow, slide 4, 23, 25"
+   ]
+  },
+  "rcl_elbow": {
+   "name": "Radial (lateral) collateral ligament",
+   "facts": [
+    "Lateral ligament of the elbow joint."
+   ],
+   "src": [
+    "Osteology of the Distal Upper Extremity and the Elbow, slide 4"
+   ]
+  },
+  "annular_ligament": {
+   "name": "Anular ligament",
+   "facts": [
+    "Holds the radial head at the proximal radioulnar joint and allows rotation.",
+    "Thinner and weaker distally in children, letting the radial head sublux (nursemaid's elbow)."
+   ],
+   "src": [
+    "Osteology of the Distal Upper Extremity and the Elbow, slide 7, 22"
+   ]
+  },
+  "interosseous_membrane_forearm": {
+   "name": "Interosseous membrane",
+   "facts": [
+    "Connects radius and ulna (intermediate radioulnar syndesmosis).",
+    "Separates the anterior and posterior compartments of the forearm."
+   ],
+   "src": [
+    "Osteology of the Distal Upper Extremity and the Elbow, slide 5"
+   ]
+  },
+  "flexor_retinaculum": {
+   "name": "Flexor retinaculum",
+   "facts": [
+    "Median nerve passes deep to it; compression there is carpal tunnel syndrome.",
+    "Deep to the palmar carpal ligament; forms the roof of the carpal tunnel.",
+    "Carpal tunnel: floor carpal bones; contains median nerve and tendons of FPL (flexor pollicis longus), FDS, FDP."
+   ],
+   "src": [
+    "Neurovascular Supply to the Distal Upper Extremity, slide 10",
+    "Wrist and Hand, part 2, slide 6, 11"
+   ]
+  },
+  "extensor_retinaculum_wrist": {
+   "name": "Extensor retinaculum",
+   "facts": [
+    "Six osseofibrous tunnels deep to it carry the extensor tendons in synovial sheaths."
+   ],
+   "src": [
+    "Muscles of the Distal Upper Extremity, slide 29"
+   ]
+  },
+  "palmar_carpal": {
+   "name": "Palmar carpal ligament",
+   "facts": [
+    "Labelled over the anterior compartment tendons at the wrist.",
+    "Thickening of the antebrachial fascia, continuous with the extensor retinaculum.",
+    "Superficial to the flexor retinaculum."
+   ],
+   "src": [
+    "Muscles of the Distal Upper Extremity, slide 4",
+    "Wrist and Hand, part 1, slide 50"
+   ]
+  },
+  "sacrospinous": {
+   "name": "Sacrospinous ligament",
+   "facts": [
+    "Named with the sacrotuberous ligament as boundaries of the greater and lesser sciatic foramina."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 4"
+   ]
+  },
+  "sacrotuberous": {
+   "name": "Sacrotuberous ligament",
+   "facts": [
+    "Named with the sacrospinous ligament as boundaries of the greater and lesser sciatic foramina."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 4"
+   ]
+  },
+  "itb": {
+   "name": "Iliotibial (IT) band",
+   "facts": [
+    "Insertion of tensor fascia latae and gluteus maximus; tensed by tensor fascia latae.",
+    "Friction between ITB (iliotibial band) and lateral epicondyle during stance, below 30 degrees of knee flexion, causes ITB friction syndrome"
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 7, 8",
+    "Clinical Approach to the Knee, part 2, slide 14"
+   ]
+  },
+  "inguinal": {
+   "name": "Inguinal ligament",
+   "facts": [
+    "Superior boundary of the femoral triangle (with sartorius and adductor longus).",
+    "External iliac artery becomes femoral artery deep to it."
+   ],
+   "src": [
+    "Anatomy of the Gluteal Region and Thigh, slide 47, 49"
+   ]
+  },
+  "ligament_head_femur": {
+   "name": "Ligament of the head of the femur",
+   "facts": [
+    "Carries the artery of the ligament of the head of the femur."
+   ],
+   "src": [
+    "Clinical Approach to the Hip, slide 6"
+   ]
+  },
+  "acetabular_labrum": {
+   "name": "Acetabular labrum",
+   "facts": [
+    "Hip joint associated structure, with hyaline cartilage and the articular capsule (balancing mobility and stability)."
+   ],
+   "src": [
+    "Clinical Approach to the Hip, slide 6"
+   ]
+  },
+  "hip_capsular": {
+   "name": "Hip capsular ligaments (unnamed on slide)",
+   "facts": [
+    "Colour-coded only: one ligament set limits extension, another (from the pubis) limits abduction."
+   ],
+   "src": [
+    "Clinical Approach to the Hip, slide 7"
+   ]
+  },
+  "acl": {
+   "name": "Anterior cruciate ligament",
+   "facts": [
+    "Taut in extension; foot free, prevents tibia moving anteriorly under femur",
+    "Foot planted, prevents femur moving posteriorly on tibia",
+    "Not enclosed within the synovial membrane"
+   ],
+   "src": [
+    "Clinical Approach to the Knee, part 1, slide 10, 12, 28"
+   ]
+  },
+  "pcl": {
+   "name": "Posterior cruciate ligament",
+   "facts": [
+    "Strongest cruciate; taut in flexion; foot planted, prevents femur moving anteriorly on tibia",
+    "Foot free, prevents tibia moving posteriorly under femur",
+    "Dashboard injury: torn when tibia is forced posteriorly relative to femur"
+   ],
+   "src": [
+    "Clinical Approach to the Knee, part 1, slide 10, 12, 13"
+   ]
+  },
+  "mcl": {
+   "name": "Tibial (medial) collateral ligament",
+   "facts": [
+    "Medial meniscus is firmly adhered to it",
+    "Injured by valgus force, almost always in collisions; complete tear often with ACL (anterior cruciate ligament) tear"
+   ],
+   "src": [
+    "Clinical Approach to the Knee, part 1, slide 8, 21, 26"
+   ]
+  },
+  "lcl": {
+   "name": "Fibular (lateral) collateral ligament",
+   "facts": [
+    "Injured by high-energy varus force; uncommon in isolation",
+    "Associated with PCL (posterior cruciate ligament) injuries; no swelling in isolation"
+   ],
+   "src": [
+    "Clinical Approach to the Knee, part 1, slide 8, 22"
+   ]
+  },
+  "medial_meniscus": {
+   "name": "Medial meniscus",
+   "facts": [
+    "C-shaped, broader posteriorly, firmly adhered to tibial collateral ligament",
+    "Peripheral part richly vascularized; central part avascular, nourished by synovial fluid",
+    "Bucket-handle tear in the unhappy triad, since it is attached to the MCL (medial collateral ligament)"
+   ],
+   "src": [
+    "Clinical Approach to the Knee, part 1, slide 26, 27, 39"
+   ]
+  },
+  "lateral_meniscus": {
+   "name": "Lateral meniscus",
+   "facts": [
+    "Nearly circular, smaller, freely movable; not as susceptible to injury",
+    "Menisci deepen and stabilize the joint and act as shock absorbers"
+   ],
+   "src": [
+    "Clinical Approach to the Knee, part 1, slide 26"
+   ]
+  },
+  "patellar_ligament": {
+   "name": "Patellar tendon",
+   "facts": [
+    "Continuation of quadriceps femoris to the tibial tuberosity",
+    "May avulse from the tibial tuberosity in a PCL (posterior cruciate ligament) dashboard injury"
+   ],
+   "src": [
+    "Clinical Approach to the Knee, part 1, slide 8, 13"
+   ]
+  },
+  "atfl": {
+   "name": "Anterior talofibular ligament",
+   "facts": [
+    "Lateral collateral ligament of the ankle; most often sprained (ATFL > CFL > PTFL)",
+    "Tested with the anterior drawer test"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 17, 26, 27"
+   ]
+  },
+  "calcaneofibular": {
+   "name": "Calcaneofibular ligament",
+   "facts": [
+    "Lateral collateral ligament of the ankle; second most often sprained"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 17, 26"
+   ]
+  },
+  "ptfl": {
+   "name": "Posterior talofibular ligament",
+   "facts": [
+    "Lateral collateral ligament of the ankle; least often sprained of the three",
+    "Dislocation happens when all three lateral ligaments are fully torn"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 17, 26"
+   ]
+  },
+  "deltoid_ankle": {
+   "name": "Deltoid ligament",
+   "facts": [
+    "Medial collateral ligament of the ankle",
+    "Medial ankle sprain (catching foot on turf during kick); may rupture in a Maisonneuve fracture"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 18, 26, 33"
+   ]
+  },
+  "spring": {
+   "name": "Spring (calcaneonavicular) ligament",
+   "facts": [
+    "Plantar foot ligament between calcaneus and navicular"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 18, 20"
+   ]
+  },
+  "long_plantar": {
+   "name": "Long plantar ligament",
+   "facts": [
+    "Plantar foot ligament on the calcaneus"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 20"
+   ]
+  },
+  "interosseous_membrane_leg": {
+   "name": "Interosseous membrane",
+   "facts": [
+    "Joins tibia and fibula, separating the leg compartments"
+   ],
+   "src": [
+    "Anatomy of the Leg, slide 5"
+   ]
+  },
+  "flexor_retinaculum_ankle": {
+   "name": "Flexor retinaculum",
+   "facts": [
+    "Deep posterior compartment tendons pass under it in the tarsal tunnel",
+    "Invert the foot to relax it when feeling the posterior tibial pulse"
+   ],
+   "src": [
+    "Anatomy of the Leg, slide 24"
+   ]
+  },
+  "extensor_retinaculum_ankle": {
+   "name": "Extensor retinacula",
+   "facts": [
+    "Labelled over the anterior compartment tendons at the ankle"
+   ],
+   "src": [
+    "Anatomy of the Leg, slide 10"
+   ]
+  },
+  "plantar_fascia": {
+   "name": "Plantar fascia",
+   "facts": [
+    "Protects sole; supports longitudinal arches; holds everything together",
+    "Plantar fasciitis: pain at anteromedial calcaneus on first morning steps, worse with passive dorsiflexion, often with tight Achilles"
+   ],
+   "src": [
+    "Clinical Approach to the Ankle and Foot, slide 5"
+   ]
+  }
+ },
+ "bones": {
+  "spine": [
+   {
+    "name": "Vertebral column",
+    "facts": [
+     "Protects spinal cord, supports body weight, aids posture and movement",
+     "Cervical and lumbar curves concave posteriorly (secondary); thoracic and sacral concave anteriorly (primary)",
+     "Abnormal curves: kyphosis, lordosis, scoliosis"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 16, 17"
+   },
+   {
+    "name": "Vertebra (typical)",
+    "facts": [
+     "Body, pedicles, laminae, transverse and spinous processes, articular processes; vertebral arch encloses vertebral foramen for spinal cord",
+     "Superior and inferior vertebral notches form the intervertebral foramen for the spinal nerve"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 18"
+   },
+   {
+    "name": "Intervertebral disc",
+    "facts": [
+     "Anulus fibrosus around nucleus pulposus; attaches vertebrae, permits movement, absorbs shock",
+     "Discogenic pain: axial-predominant, mechanical, aggravated by forward flexion"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 19, 30"
+   },
+   {
+    "name": "Zygapophysial (facet) joints",
+    "facts": [
+     "Between inferior and superior articular process facets; synovial, prone to arthritis",
+     "Facetogenic pain: classically worse with extension, relieved by flexion; cervical facets commonly cause headache"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 19, 36"
+   }
+  ],
+  "cervical_vertebrae": [
+   {
+    "name": "Cervical vertebrae",
+    "facts": [
+     "Small bodies, large vertebral foramen, transverse foramina, bifid spinous process",
+     "C7 prominens is a palpable back landmark"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 9, 20"
+   }
+  ],
+  "thoracic_vertebrae": [
+   {
+    "name": "Thoracic vertebrae",
+    "facts": [
+     "Small vertebral foramen, long transverse and spinous processes, costal facets articulating with ribs"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 20"
+   }
+  ],
+  "lumbar_vertebrae": [
+   {
+    "name": "Lumbar vertebrae",
+    "facts": [
+     "Large bodies, large vertebral foramen, no costal facets"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 20"
+   }
+  ],
+  "atlas": [
+   {
+    "name": "Atlas (C1)",
+    "facts": [
+     "Lateral masses, anterior and posterior arches; labelled the 'yes' vertebra"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 21"
+   }
+  ],
+  "axis": [
+   {
+    "name": "Axis (C2)",
+    "facts": [
+     "Has the dens; labelled the 'no' vertebra"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 21"
+   }
+  ],
+  "sacrum": [
+   {
+    "name": "Sacrum",
+    "facts": [
+     "Five fused vertebrae; palpable back structure"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 9, 16"
+   }
+  ],
+  "coccyx": [
+   {
+    "name": "Coccyx",
+    "facts": [
+     "Four fused vertebrae"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 16"
+   }
+  ],
+  "hip_bone": [
+   {
+    "name": "Iliac crest",
+    "facts": [
+     "Palpable back structure"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 9"
+   },
+   {
+    "name": "Iliac crest",
+    "facts": [
+     "Level of L4 in surface anatomy."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 6"
+   },
+   {
+    "name": "ASIS (anterior superior iliac spine)",
+    "facts": [
+     "Origin of tensor fascia latae and sartorius."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 8, 33"
+   },
+   {
+    "name": "AIIS (anterior inferior iliac spine)",
+    "facts": [
+     "Origin of rectus femoris."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 34"
+   },
+   {
+    "name": "Ischial tuberosity",
+    "facts": [
+     "Origin of the hamstrings (biceps femoris long head, semimembranosus, semitendinosus).",
+     "Surface landmark of the gluteal region."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 6, 22, 23"
+   },
+   {
+    "name": "Greater sciatic foramen",
+    "facts": [
+     "Piriformis exits the pelvis through it."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 4, 11"
+   }
+  ],
+  "ribs": [
+   {
+    "name": "Ribs 6-12",
+    "facts": [
+     "Palpable back structures"
+    ],
+    "src": "Clinical Approach to Mechanical Back Pain, slide 9"
+   }
+  ],
+  "clavicle": [
+   {
+    "name": "Clavicle",
+    "facts": [
+     "Pectoral girdle bone with sternal and acromial ends",
+     "Forms the sternoclavicular and acromioclavicular joints"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 3"
+   }
+  ],
+  "scapula": [
+   {
+    "name": "Scapula",
+    "facts": [
+     "Landmarks: acromion, coracoid process, glenoid fossa, superior and inferior angles",
+     "Fossae: subscapular (anterior), supraspinous and infraspinous (posterior)",
+     "Scapulothoracic joint is one of the four pectoral girdle joints"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 4, 9"
+   },
+   {
+    "name": "Acromion",
+    "facts": [
+     "Scapular landmark; meets the clavicle at the acromioclavicular (AC) joint"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 4, 11"
+   },
+   {
+    "name": "Coracoid process",
+    "facts": [
+     "Scapular landmark; coracoclavicular ligament joins it to the clavicle"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 4, 11"
+   },
+   {
+    "name": "Glenoid fossa",
+    "facts": [
+     "Socket of the glenohumeral joint, lined by hyaline cartilage and deepened by the labrum"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 4, 14"
+   },
+   {
+    "name": "Supraglenoid tubercle",
+    "facts": [
+     "Origin of the long head of biceps brachii, together with the superior glenoid labrum"
+    ],
+    "src": "Muscles of the Arm, slide 5, 13"
+   },
+   {
+    "name": "Infraglenoid tubercle",
+    "facts": [
+     "Origin of the long head of triceps"
+    ],
+    "src": "Muscles of the Arm, slide 9"
+   }
+  ],
+  "humerus": [
+   {
+    "name": "Humerus (proximal)",
+    "facts": [
+     "Head, greater and lesser tubercles, intertubercular groove, radial (spiral) groove",
+     "Head articulates with the glenoid fossa at the glenohumeral joint"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 5"
+   },
+   {
+    "name": "Humerus (distal)",
+    "facts": [
+     "Trochlea, capitulum, medial and lateral epicondyles, coronoid and olecranon fossae"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 6"
+   },
+   {
+    "name": "Humerus",
+    "facts": [
+     "Distal humerus forms the elbow joint with the ulna (humeroulnar) and radius (humeroradial)."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 2, 3"
+   },
+   {
+    "name": "Trochlea",
+    "facts": [
+     "Distal humerus landmark at the elbow."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 2"
+   },
+   {
+    "name": "Capitulum",
+    "facts": [
+     "Distal humerus landmark at the elbow."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 2"
+   },
+   {
+    "name": "Coronoid fossa",
+    "facts": [
+     "Distal humerus landmark at the elbow."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 2"
+   },
+   {
+    "name": "Medial epicondyle",
+    "facts": [
+     "Common origin of anterior compartment (flexor-pronator) muscles.",
+     "Ulnar nerve passes posterior to it (the 'funny bone').",
+     "Medial epicondylosis (golfer's elbow) is tendinopathy at the common flexor origin here."
+    ],
+    "src": "Muscles of the Distal Upper Extremity, slide 4, 42"
+   },
+   {
+    "name": "Lateral epicondyle",
+    "facts": [
+     "Common origin of posterior compartment (extensor-supinator) muscles.",
+     "Lateral epicondylosis (tennis elbow): pain just distal to it."
+    ],
+    "src": "Muscles of the Distal Upper Extremity, slide 17, 40"
+   },
+   {
+    "name": "Elbow joint",
+    "facts": [
+     "Synovial hinge joint with two articulations: humeroradial and humeroulnar."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 3"
+   }
+  ],
+  "ulna": [
+   {
+    "name": "Olecranon",
+    "facts": [
+     "Ulnar landmark at the elbow; fits the olecranon fossa of the humerus"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 6"
+   },
+   {
+    "name": "Coronoid process (ulna)",
+    "facts": [
+     "Ulnar landmark labelled at the elbow"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 6"
+   },
+   {
+    "name": "Coronoid process",
+    "facts": [
+     "Proximal ulna landmark at the elbow."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 2"
+   },
+   {
+    "name": "Olecranon",
+    "facts": [
+     "Covered by the subcutaneous olecranon bursa, the most common superficial bursitis."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 4, 28"
+   },
+   {
+    "name": "Ulnar head",
+    "facts": [
+     "Distal ulna landmark at the wrist."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 8"
+   },
+   {
+    "name": "Ulnar styloid process",
+    "facts": [
+     "Distal ulna landmark at the wrist."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 8"
+   }
+  ],
+  "radius": [
+   {
+    "name": "Radial head",
+    "facts": [
+     "Radial landmark labelled at the elbow"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 6"
+   },
+   {
+    "name": "Radial tuberosity",
+    "facts": [
+     "Radial landmark labelled at the elbow"
+    ],
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 6"
+   },
+   {
+    "name": "Radial head",
+    "facts": [
+     "Articulates with the radial notch of the ulna at the proximal radioulnar joint.",
+     "Subluxes in young children after traction on the arm (nursemaid's elbow)."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 2, 7, 22"
+   },
+   {
+    "name": "Radial tuberosity",
+    "facts": [
+     "Proximal radius landmark at the elbow."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 2"
+   },
+   {
+    "name": "Radial styloid process",
+    "facts": [
+     "Distal radius landmark at the wrist."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 8"
+   },
+   {
+    "name": "Radioulnar joints",
+    "facts": [
+     "Proximal and distal are synovial pivot joints; intermediate is a syndesmosis (interosseous membrane).",
+     "Proximal joint lies within the elbow joint capsule; anular ligament allows rotation.",
+     "Allow supination and pronation."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 5, 6, 7"
+   },
+   {
+    "name": "Distal radius",
+    "facts": [
+     "Fracture: very common, FOOSH (fall on outstretched hand); poor function if anatomy not restored.",
+     "Assess three parameters: crooked/bent (articular angle), length (ulnar variance), joint surface.",
+     ">1 mm articular step associated with post-traumatic arthrosis; shortening causes ulnar impaction syndrome."
+    ],
+    "src": "Wrist and Hand, part 1, slide 6, 7, 12, 13"
+   }
+  ],
+  "carpals": [
+   {
+    "name": "Carpal bones",
+    "facts": [
+     "Scaphoid, lunate, triquetrum, pisiform, trapezium, trapezoid, capitate, hamate.",
+     "Mnemonic: Some Lovers Try Positions That They Can't Handle."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 8"
+   },
+   {
+    "name": "Trapezium",
+    "facts": [
+     "Carpal bone lying in the anatomical snuff box with the scaphoid."
+    ],
+    "src": "Muscles of the Distal Upper Extremity, slide 26"
+   },
+   {
+    "name": "Hook of hamate",
+    "facts": [
+     "Hamate landmark labelled on the wrist osteology slide."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 8"
+   },
+   {
+    "name": "Carpal bones",
+    "facts": [
+     "Form the floor of the carpal tunnel.",
+     "With an overlying ligament form the ulnar (Guyon's) canal."
+    ],
+    "src": "Wrist and Hand, part 2, slide 8, 11"
+   }
+  ],
+  "scaphoid": [
+   {
+    "name": "Scaphoid",
+    "facts": [
+     "Carpal bone lying in the anatomical snuff box with the trapezium."
+    ],
+    "src": "Muscles of the Distal Upper Extremity, slide 26"
+   },
+   {
+    "name": "Scaphoid",
+    "facts": [
+     "Most common carpal bone fracture, young people; retrograde blood flow risks nonunion and osteonecrosis.",
+     "If X-rays normal but suspicious: treat as fractured, get CT or MRI.",
+     "Undisplaced/distal: cast until union; displaced/proximal: surgery."
+    ],
+    "src": "Wrist and Hand, part 1, slide 32, 33, 35, 37"
+   }
+  ],
+  "metacarpals": [
+   {
+    "name": "Metacarpals",
+    "facts": [
+     "Five metacarpals; carpometacarpal (CMC) joints proximally, metacarpophalangeal (MCP) joints distally."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 9"
+   },
+   {
+    "name": "Hand joints (CMC, MCP, IP)",
+    "facts": [
+     "IP joints hinge; MCP joints condyloid; CMC plane in digits 2-5, saddle in digit 1 (allows opposition).",
+     "All supported by joint capsule and extensive ligamentous support."
+    ],
+    "src": "Wrist and Hand, part 1, slide 3"
+   }
+  ],
+  "phalanges_hand": [
+   {
+    "name": "Phalanges",
+    "facts": [
+     "Proximal, middle and distal phalanges joined at interphalangeal (IP) joints.",
+     "Digits numbered 1-5: thumb, index, long, ring, small."
+    ],
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 9, 10"
+   }
+  ],
+  "femur": [
+   {
+    "name": "Greater trochanter",
+    "facts": [
+     "Insertion of gluteus medius and minimus; surface landmark."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 6, 9"
+   },
+   {
+    "name": "Femoral neck",
+    "facts": [
+     "Hip fracture means proximal femur fracture: femoral neck (subcapital), intertrochanteric, subtrochanteric.",
+     "Displaced neck fractures need arthroplasty (hemi or total) to preserve femoral head blood supply.",
+     "Intertrochanteric and subtrochanteric fractures: intramedullary nail."
+    ],
+    "src": "Clinical Approach to the Hip, slide 18, 27, 31, 33"
+   },
+   {
+    "name": "Femur",
+    "facts": [
+     "Knee joint has 3 articulations"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4"
+   },
+   {
+    "name": "Lateral femoral condyle",
+    "facts": [
+     "Origin of popliteus and lateral head of gastrocnemius"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4"
+   },
+   {
+    "name": "Medial femoral condyle",
+    "facts": [
+     "Origin of medial head of gastrocnemius"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4"
+   },
+   {
+    "name": "Intercondylar fossa (notch)",
+    "facts": [
+     "Posterior femur between the condyles"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 6"
+   },
+   {
+    "name": "Patellar surface",
+    "facts": [
+     "Femoral surface forming the patellofemoral joint"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 5"
+   }
+  ],
+  "tibia": [
+   {
+    "name": "Tibial tuberosity",
+    "facts": [
+     "Quadriceps insert here via the quadriceps tendon."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 34"
+   },
+   {
+    "name": "Pes anserinus",
+    "facts": [
+     "Insertion of sartorius, gracilis and semitendinosus (SGT) on the medial tibia."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 23, 33, 42"
+   },
+   {
+    "name": "Tibia",
+    "facts": [
+     "Origin of soleus with the fibula"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4"
+   },
+   {
+    "name": "Lateral tibial condyle",
+    "facts": [
+     "Proximal tibia, lateral side of the knee joint"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4"
+   },
+   {
+    "name": "Medial tibial condyle",
+    "facts": [
+     "Proximal tibia, medial side of the knee joint"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4"
+   },
+   {
+    "name": "Tibial tuberosity",
+    "facts": [
+     "Attachment of the patellar tendon; may avulse in a PCL (posterior cruciate ligament) dashboard injury"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4, 13"
+   },
+   {
+    "name": "Intercondylar eminence",
+    "facts": [
+     "Proximal tibia between the tibial condyles"
+    ],
+    "src": "Clinical Approach to the Knee, part 1, slide 4"
+   },
+   {
+    "name": "Medial malleolus",
+    "facts": [
+     "Tip/posterior edge tenderness: Ottawa ankle x-ray criterion",
+     "Posterior tibial pulse felt between it and calcaneal tendon"
+    ],
+    "src": "Clinical Approach to the Ankle and Foot, slide 28, 41"
+   }
+  ],
+  "fibula": [
+   {
+    "name": "Head of fibula",
+    "facts": [
+     "Insertion of biceps femoris."
+    ],
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 22"
+   },
+   {
+    "name": "Fibula",
+    "facts": [
+     "Origin of soleus with the tibia"
+    ],
+    "src": "Anatomy of the Leg, slide 3"
+   },
+   {
+    "name": "Head of fibula",
+    "facts": [
+     "Proximal fibula, lateral to the knee"
+    ],
+    "src": "Anatomy of the Leg, slide 3"
+   },
+   {
+    "name": "Lateral malleolus",
+    "facts": [
+     "Tip/posterior edge tenderness: Ottawa ankle x-ray criterion",
+     "Fractured with medial malleolus in a bimalleolar fracture, usually forceful eversion"
+    ],
+    "src": "Clinical Approach to the Ankle and Foot, slide 28, 31"
+   }
+  ],
+  "patella": [
+   {
+    "name": "Patella",
+    "facts": [
+     "Tends to subluxate laterally during knee extension",
+     "Countered by pull of vastus medialis and an extra buttress of bone on the lateral patellar surface"
+    ],
+    "src": "Clinical Approach to the Knee, part 2, slide 4, 5"
+   }
+  ],
+  "talus": [
+   {
+    "name": "Talus",
+    "facts": [
+     "Trochlea articulates with tibia and fibula at the talocrural joint; wider anteriorly, so most congruent in dorsiflexion",
+     "Inferior surface forms the subtalar joint with calcaneus, where most inversion/eversion occurs"
+    ],
+    "src": "Clinical Approach to the Ankle and Foot, slide 16, 19"
+   }
+  ],
+  "calcaneus": [
+   {
+    "name": "Calcaneus",
+    "facts": [
+     "Calcaneal tendon inserts on its posterior surface",
+     "Plantar fasciitis pain at the anteromedial calcaneus"
+    ],
+    "src": "Anatomy of the Leg, slide 4, 21"
+   },
+   {
+    "name": "Calcaneal tuberosity",
+    "facts": [
+     "Posterior calcaneus"
+    ],
+    "src": "Anatomy of the Leg, slide 4"
+   },
+   {
+    "name": "Sustentaculum tali",
+    "facts": [
+     "Flexor hallucis longus tendon runs beneath it"
+    ],
+    "src": "Anatomy of the Leg, slide 4, 28"
+   }
+  ],
+  "navicular": [
+   {
+    "name": "Navicular",
+    "facts": [
+     "Tenderness is an Ottawa foot x-ray criterion"
+    ],
+    "src": "Clinical Approach to the Ankle and Foot, slide 28"
+   }
+  ],
+  "cuboid": [
+   {
+    "name": "Cuboid",
+    "facts": [
+     "Part of the transverse arch"
+    ],
+    "src": "Clinical Approach to the Ankle and Foot, slide 22"
+   }
+  ],
+  "cuneiforms": [
+   {
+    "name": "Cuneiforms",
+    "facts": [
+     "Part of the transverse arch"
+    ],
+    "src": "Clinical Approach to the Ankle and Foot, slide 22"
+   }
+  ],
+  "metatarsals": [
+   {
+    "name": "Tuberosity of 5th metatarsal",
+    "facts": [
+     "Fibularis brevis inserts at the base of the 5th metatarsal",
+     "Base of 5th metatarsal tenderness is an Ottawa foot x-ray criterion"
+    ],
+    "src": "Anatomy of the Leg, slide 4, 17"
+   },
+   {
+    "name": "Heads of metatarsals",
+    "facts": [
+     "Bear half of body weight; the calcaneus bears the other half"
+    ],
+    "src": "Clinical Approach to the Ankle and Foot, slide 23"
+   }
+  ]
+ },
+ "regional": {
+  "Back": [
+   {
+    "title": "Red flags in back and neck pain",
+    "text": "Neurologic, inflammatory, neoplastic, infectious, fracture and vascular red flags suggest a sinister cause; e.g. saddle anaesthesia, night pain, weight loss, fever, IV drug use, osteoporosis.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 6"
+   },
+   {
+    "title": "Mechanical back pain",
+    "text": "Axial pain worse with movement and relieved by rest, midline or peri-midline, with no red flags; often degenerative and 'tweaked' by an acute event.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 14"
+   },
+   {
+    "title": "Who to image",
+    "text": "No red flags and symptoms under 6 weeks: no imaging. X-ray only for red flags or persistent pain despite treatment; CT only if MRI cannot be done.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 58"
+   },
+   {
+    "title": "Discogenic pain",
+    "text": "Internal disc disruption may cause 20-40% of back pain: axial-predominant, mechanical, worse with forward flexion. Managed conservatively with therapy, exercise, NSAIDs or acetaminophen.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 30"
+   },
+   {
+    "title": "Disc herniation",
+    "text": "Causes both discogenic pain and nerve compression; acute herniation in younger people after lifting, worse with coughing or sneezing; lumbar discs herniate posterolaterally toward nerve roots.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 31"
+   },
+   {
+    "title": "Facetogenic pain",
+    "text": "Facet joint arthritis: localized axial pain, headache in cervical spine, rarely past the knee in lumbar spine; worse with extension, relieved by flexion. Flexion-based therapy, NSAIDs, injections.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 38"
+   },
+   {
+    "title": "Spondylosis and stenosis",
+    "text": "Degenerative disc disease plus facet arthropathy; progression to subluxation, osteophytes, ligament hypertrophy and spondylolisthesis can narrow neural foramina (lateral stenosis) or the central canal.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 62"
+   },
+   {
+    "title": "Muscle problems",
+    "text": "Acute strain/spasm, repetitive strain and myofascial trigger points have no diagnostic test; manage conservatively with reassurance, relative rest, ice/heat, short NSAIDs and physiotherapy.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 53"
+   },
+   {
+    "title": "Whiplash associated disorder",
+    "text": "Acceleration/deceleration neck injury, most often muscle strain; most improve conservatively: keep moving, avoid C-collars, modest physiotherapy. X-ray if fracture concern, MRI if neurological signs.",
+    "src": "Clinical Approach to Mechanical Back Pain, slide 55"
+   }
+  ],
+  "Shoulder": [
+   {
+    "title": "Acromioclavicular (AC) joint problems",
+    "text": "Acute injury causes AC separation (grades I-V, increasing displacement); gradual onset suggests osteoarthritis. Grades I-III: education, sling, ice, early exercise; IV-V: surgery.",
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 25"
+   },
+   {
+    "title": "Shoulder arthritis",
+    "text": "Noninflammatory: reduced active and passive motion, cuff strength intact, asymmetric joint space, osteophytes. Inflammatory: passive > active motion, weak cuff, symmetric joint space, erosions, osteopenia.",
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 35"
+   },
+   {
+    "title": "Shoulder replacement",
+    "text": "Anatomic or reverse arthroplasty: 85% good or excellent, 90% survive 10 years; complications include infection, loosening, instability, fracture.",
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 43"
+   },
+   {
+    "title": "Shoulder instability",
+    "text": "Traumatic: unidirectional, mostly anterior, 'torn loose', surgery (labral repair) often for young recurrent dislocators. Atraumatic (AMBRI): multidirectional, 'born loose', physiotherapy first, inferior capsular shift.",
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 55"
+   },
+   {
+    "title": "Glenoid labrum",
+    "text": "Increases surface area and depth of the glenoid and acts as a bumper; ligaments, labrum, bones, rotator cuff/muscle forces and nerves all contribute to stability.",
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 51"
+   },
+   {
+    "title": "Adhesive capsulitis",
+    "text": "Spontaneous global loss of active AND passive motion with normal X-rays; 2% of adults, 20% of diabetics, onset 40s-50s; freezing, frozen, thawing stages; usually self-limited.",
+    "src": "Osteology and Joints of the Proximal Upper Extremity, slide 72"
+   },
+   {
+    "title": "Rotator cuff disease",
+    "text": "Most common shoulder disorder, onset 40s, progressive; intrinsic (vascularity, tendon degeneration) or extrinsic (acromion morphology). Painful arc, Neer and Hawkins impingement signs; staged I-III to arthropathy.",
+    "src": "Muscles of the Shoulder, slide 31"
+   },
+   {
+    "title": "Rotator cuff treatment",
+    "text": "Mostly nonsurgical: education, NSAIDs, physiotherapy, injections. Stage I: physio or subacromial decompression; Stage II: consider repair; Stage III (full thickness): repair.",
+    "src": "Muscles of the Shoulder, slide 42"
+   },
+   {
+    "title": "Winged scapula",
+    "text": "Long thoracic nerve lesion: serratus anterior cannot hold the medial border of the scapula against the thoracic wall when pushing with the upper limb.",
+    "src": "Muscles of the Shoulder, slide 9"
+   },
+   {
+    "title": "Brachial plexus roots and branches",
+    "text": "Ventral rami C5-T1: roots, trunks, divisions, cords, terminal branches. Axillary C5-6, musculocutaneous C5-7, radial and median C5-T1, ulnar C8-T1.",
+    "src": "Brachial Plexus, slide 14"
+   }
+  ],
+  "Arm": [
+   {
+    "title": "Arm compartments",
+    "text": "Anterior compartment flexes shoulder and elbow and supinates (musculocutaneous nerve); posterior compartment extends shoulder and elbow (radial nerve).",
+    "src": "Muscles of the Arm, slide 3"
+   },
+   {
+    "title": "Proximal biceps tendinopathy",
+    "text": "Common anterior shoulder pain; tender in intertubercular groove, worse with flexion when supinated. Differential: rotator cuff, bursitis, SLAP tear, arthritis, radiculopathy. Ultrasound helps; physiotherapy is mainstay.",
+    "src": "Muscles of the Arm, slide 15"
+   },
+   {
+    "title": "C8 radiculopathy is not shoulder pain",
+    "text": "Higher cervical radiculopathy (C4 or C5) may cause shoulder complaints, but C8 radiculopathy typically gives pain or paraesthesiae in the hand.",
+    "src": "Muscles of the Arm, slide 18"
+   },
+   {
+    "title": "Radial nerve in the spiral groove",
+    "text": "The radial nerve (C5-T1) runs in the radial (spiral) groove of the humerus, a site at risk of injury; it supplies the posterior compartment.",
+    "src": "Neurovascular Supply to the Proximal Upper Extremity, slide 12"
+   },
+   {
+    "title": "Brachial artery and humeral fractures",
+    "text": "The brachial artery is used to measure blood pressure and is susceptible to humeral shaft fractures.",
+    "src": "Neurovascular Supply to the Proximal Upper Extremity, slide 5"
+   },
+   {
+    "title": "Bicipital reflex",
+    "text": "The bicipital myotatic reflex tests the integrity of C5 and C6.",
+    "src": "Neurovascular Supply to the Proximal Upper Extremity, slide 11"
+   },
+   {
+    "title": "Distal biceps rupture",
+    "text": "Rare but consequential: anterior elbow pain, poor supination and weak flexion after a pop; refer to orthopedics urgently. Proximal ruptures are commoner and usually managed non-operatively.",
+    "src": "Muscles of the Distal Upper Extremity, slide 43"
+   }
+  ],
+  "Forearm": [
+   {
+    "title": "Lateral epicondylosis (tennis elbow)",
+    "text": "Common (1-3%/year), 30s-40s, mostly occupational. Mainly extensor carpi radialis brevis tendinopathy. Pain just distal to lateral epicondyle, worse gripping and supinating, with resisted middle-finger/wrist extension, and passive stretch.",
+    "src": "Muscles of the Distal Upper Extremity, slide 40"
+   },
+   {
+    "title": "Medial epicondylosis (golfer's elbow)",
+    "text": "Tendinopathy at the common flexor origin. Pain at the origin, with resisted wrist flexion and pronation, and with passive stretch.",
+    "src": "Muscles of the Distal Upper Extremity, slide 42"
+   },
+   {
+    "title": "Tendinitis vs tendinosis",
+    "text": "Tendinitis is true inflammation (rheumatologic, acute overload, infection); treat inflammation, faster recovery. Tendinosis is collagen degeneration from chronic overuse; more common, slow (100+ days) recovery.",
+    "src": "Muscles of the Distal Upper Extremity, slide 39"
+   },
+   {
+    "title": "Managing tendinopathy",
+    "text": "Educate, modify the offending activity, ice/RICE, counterforce strap for tennis elbow, PT eccentric strengthening twice daily for 12 weeks; topical anti-inflammatories; surgical referral if refractory.",
+    "src": "Muscles of the Distal Upper Extremity, slide 44"
+   },
+   {
+    "title": "Elbow osteoarthritis",
+    "text": "Gradual achy pain, stiffness, loss of range of motion, locking. X-ray: joint-space loss, osteophytes, subchondral sclerosis/cysts. PT/OT, topical anti-inflammatories, acetaminophen, NSAIDs, steroid injection; arthroplasty if end stage.",
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 18"
+   },
+   {
+    "title": "Elbow dislocation",
+    "text": "Usually fall onto outstretched hand (FOOSH); posterior is most common. Red flag: capsule and ligament rupture, ulnar nerve at risk, compartment syndrome. Closed reduction and splint at 90 degrees, or open reduction internal fixation.",
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 21"
+   },
+   {
+    "title": "Radial head subluxation (nursemaid's elbow)",
+    "text": "Children under 5, girls and left arm more often. Pain after traction on the arm; holds arm flexed and refuses to use it. Closed reduction by pronation and extension; image only to exclude fracture.",
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 22"
+   },
+   {
+    "title": "Ulnar collateral ligament injury",
+    "text": "Repetitive overuse (baseball pitchers); may pop at medial elbow. Medial tenderness, no end point on valgus stress. PT, orthoses; reconstruction (Tommy John surgery) only if needed for function.",
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 23"
+   },
+   {
+    "title": "Olecranon bursitis",
+    "text": "Most common superficial bursitis, from a fall on the elbow or repeated leaning. Red, hot, systemically unwell suggests septic bursitis: aspirate and give antibiotics. Otherwise pad, ice, NSAIDs.",
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 28"
+   },
+   {
+    "title": "Ulnar neuropathy at the elbow (cubital tunnel)",
+    "text": "From a hit to the funny bone, leaning, or sleeping flexed. Medial elbow pain, numbness into ring and small fingers, positive Tinel sign; small hand muscles weaken first. EMG/NCS; avoid pressure and hyperflexion.",
+    "src": "Neurovascular Supply to the Distal Upper Extremity, slide 23"
+   },
+   {
+    "title": "Pronator syndrome",
+    "text": "Median nerve entrapment where it passes between the two heads of pronator teres.",
+    "src": "Neurovascular Supply to the Distal Upper Extremity, slide 10"
+   },
+   {
+    "title": "Cubital fossa",
+    "text": "Bounded by brachioradialis, pronator teres and the epicondyle line; holds biceps tendon, brachial artery, median nerve (TAN), with median cubital vein superficially. Pictured uses: IV access, blood pressure, venipuncture.",
+    "src": "Neurovascular Supply to the Distal Upper Extremity, slide 6"
+   },
+   {
+    "title": "Elbow pain by location",
+    "text": "Anterior: arthritis, distal biceps. Medial: medial epicondylosis, ulnar neuritis, UCL tear. Lateral: lateral epicondylosis. Posterior: olecranon bursitis, arthritis, triceps tendinopathy. Fracture anywhere.",
+    "src": "Osteology of the Distal Upper Extremity and the Elbow, slide 15"
+   }
+  ],
+  "Hand": [
+   {
+    "title": "Ganglion (synovial) cyst",
+    "text": "Cyst of clear mucinous fluid, usually on the dorsum of the wrist, communicating with synovial sheaths ('Bible bump'). Leave alone, drain or excise.",
+    "src": "Muscles of the Distal Upper Extremity, slide 30"
+   },
+   {
+    "title": "Mallet finger",
+    "text": "Cannot extend the DIP joint after the extensor tendon partly tears from the base of the distal phalanx. RICE and splinting; complete avulsion fracture needs surgical pinning.",
+    "src": "Muscles of the Distal Upper Extremity, slide 31"
+   },
+   {
+    "title": "Carpal tunnel syndrome",
+    "text": "Median nerve compression where it passes deep to the flexor retinaculum.",
+    "src": "Neurovascular Supply to the Distal Upper Extremity, slide 10"
+   },
+   {
+    "title": "Ulnar (Guyon's) canal",
+    "text": "Site at the wrist where the ulnar nerve is at risk of injury; less common than compression at the elbow.",
+    "src": "Neurovascular Supply to the Distal Upper Extremity, slide 12"
+   },
+   {
+    "title": "Superficial radial nerve in the snuff box",
+    "text": "The superficial (dorsal sensory) branch of the radial nerve, sensory to the dorsum of the hand lateral to the 4th digit, is at risk in the anatomical snuff box.",
+    "src": "Neurovascular Supply to the Distal Upper Extremity, slide 16"
+   },
+   {
+    "title": "Distal radius fracture treatment",
+    "text": "Treatment depends on age/activity and displacement: adequate analgesia, closed reduction (traction, increase deformity, correct) and casting with 3-point mold; surgical reduction if inadequate; then rehabilitation.",
+    "src": "Wrist and Hand, part 1, slide 30"
+   },
+   {
+    "title": "Scaphoid fracture complications",
+    "text": "Tenuous retrograde blood supply: delayed diagnosis leads to nonunion, osteonecrosis and late arthrosis. Be suspicious: treat as fractured if X-ray normal.",
+    "src": "Wrist and Hand, part 1, slide 47"
+   },
+   {
+    "title": "Carpal tunnel syndrome",
+    "text": "Median nerve compression at the wrist; night numbness/tingling in median territory, worse with flexed/extended wrist, possible APB weakness, Tinel/Phalen signs; median forearm muscles normal.",
+    "src": "Wrist and Hand, part 2, slide 13"
+   },
+   {
+    "title": "Carpal tunnel causes",
+    "text": "Extrinsic: fracture, flexor tenosynovitis, ganglia, inflammation, pregnancy, acromegaly. Intrinsic: diabetes, amyloidosis, alcohol. Very commonly idiopathic.",
+    "src": "Wrist and Hand, part 2, slide 12"
+   },
+   {
+    "title": "Carpal tunnel: differential and management",
+    "text": "Main differential C6 radiculopathy; EMG/NCS (electromyography/nerve conduction) helps. Manage with education, overnight wrist orthosis, corticosteroid injection, carpal tunnel release.",
+    "src": "Wrist and Hand, part 2, slide 15"
+   },
+   {
+    "title": "Ulnar canal (Guyon's) syndrome",
+    "text": "Ulnar nerve compression in Guyon's canal (fracture, ganglia, inflammation, handlebar neuropathy): hypoesthesia of medial 1½ digits, intrinsic hand weakness. Differential C8 radiculopathy, ulnar nerve at elbow.",
+    "src": "Wrist and Hand, part 2, slide 19"
+   },
+   {
+    "title": "Ulnar neuropathy management",
+    "text": "Education on hand position and pressure; relieve pressure (specialized gloves, change handlebars); Guyon's release.",
+    "src": "Wrist and Hand, part 2, slide 21"
+   }
+  ],
+  "Hip & thigh": [
+   {
+    "title": "Sciatic nerve injury",
+    "text": "Sciatic nerve (L4-S3; tibial plus common peroneal) injury gives buttock pain or numbness radiating down the leg; causes: herniated disc, hip surgery, piriformis syndrome, intragluteal injection.",
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 16"
+   },
+   {
+    "title": "Limp after hip replacement (knowledge check)",
+    "text": "Pelvis drops on the side of the swinging leg after total hip replacement; slide asks which muscle, side and nerve (answer not on slide).",
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 12"
+   },
+   {
+    "title": "Hamstring avulsion (knowledge check)",
+    "text": "Hurdler feels a pop in posterior thigh, later extensive posterior thigh bleeding; X-ray shows an avulsion fracture.",
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 25"
+   },
+   {
+    "title": "Groin pull",
+    "text": "Active contraction and passive stretch of medial compartment muscles; bruising and pain; conservative treatment with RICE and NSAIDs.",
+    "src": "Anatomy of the Gluteal Region and Thigh, slide 43"
+   },
+   {
+    "title": "Hip fracture presentation",
+    "text": "Sudden groin/lateral thigh pain after a fall; shortened, externally rotated, abducted limb; cannot weight bear. High suspicion in elderly. AP pelvis/hip X-ray; CT if negative but suspicious.",
+    "src": "Clinical Approach to the Hip, slide 16"
+   },
+   {
+    "title": "Hip fracture work-up",
+    "text": "Check stability (ABCs), pelvic fracture, distal pulses and sciatic nerve; ask why they fell (CBC, electrolytes, troponin, ECG, chest X-ray) and why they fractured (pathologic, osteoporosis).",
+    "src": "Clinical Approach to the Hip, slide 24"
+   },
+   {
+    "title": "Hip fracture management",
+    "text": "Surgical fixation within 24-48 hours is standard; neck fractures: screws or arthroplasty; inter/subtrochanteric: intramedullary nail. Prevent VTE (LMWH 14-30 days), pneumonia, delirium; mobilize early.",
+    "src": "Clinical Approach to the Hip, slide 35"
+   }
+  ],
+  "Leg": [
+   {
+    "title": "ACL injury",
+    "text": "Non-contact cutting/pivoting on deceleration; female 4.5:1. 'Pop', immediate hemarthrosis, giving way. Lachman, anterior drawer, pivot shift; MRI if unclear; reconstruction; return to play 9-12 months.",
+    "src": "Clinical Approach to the Knee, part 1, slide 17"
+   },
+   {
+    "title": "PCL injury",
+    "text": "Direct blow to anterior tibia with knee flexed (dashboard) or hyperextension; poorly defined pain, minimal swelling. Posterior drawer, sag sign, reverse Lachman; physiotherapy usually sufficient.",
+    "src": "Clinical Approach to the Knee, part 1, slide 19"
+   },
+   {
+    "title": "MCL and LCL injuries",
+    "text": "MCL: very common, valgus collision, minimal swelling, early range of motion and bracing. LCL: uncommon alone, high-energy varus, associated with PCL injury.",
+    "src": "Clinical Approach to the Knee, part 1, slide 21"
+   },
+   {
+    "title": "Meniscal injuries",
+    "text": "Rotation with foot planted; joint line pain, delayed swelling, locking/catching. McMurray and Thessaly tests; MRI if failing conservative care. Repair vs resection depends on zone and age.",
+    "src": "Clinical Approach to the Knee, part 1, slide 36"
+   },
+   {
+    "title": "Unhappy triad",
+    "text": "Forced valgus tears the MCL, then a bucket-handle tear of the attached medial meniscus, then abduction, external rotation and slight flexion tear the ACL.",
+    "src": "Clinical Approach to the Knee, part 1, slide 39"
+   },
+   {
+    "title": "Screw-home mechanism",
+    "text": "Femur rotates medially on tibia in the last 15-20 degrees of extension, tightening the ligaments; popliteus laterally rotates the femur 5 degrees to unlock.",
+    "src": "Clinical Approach to the Knee, part 1, slide 29"
+   },
+   {
+    "title": "Patellofemoral pain syndrome",
+    "text": "Anterior knee ache after loading, prolonged sitting, stairs; no swelling. Females, adolescents, increased Q-angle. Clinical diagnosis; physiotherapy balancing vastus lateralis and vastus medialis.",
+    "src": "Clinical Approach to the Knee, part 2, slide 8"
+   },
+   {
+    "title": "Knee bursitis",
+    "text": "Prepatellar, infrapatellar, suprapatellar bursae; friction irritation; mild swelling and tenderness over the bursa. PRICE, NSAIDs. Don't confuse with septic bursitis.",
+    "src": "Clinical Approach to the Knee, part 2, slide 12"
+   },
+   {
+    "title": "Popliteal (Baker's) cyst",
+    "text": "Synovial extension through posterior capsule defects into the popliteal fossa. Ultrasound confirms. Differential: popliteal artery aneurysm, DVT (deep vein thrombosis), tumour, meniscal cyst. Conservative 6 weeks.",
+    "src": "Clinical Approach to the Knee, part 2, slide 13"
+   },
+   {
+    "title": "IT band friction syndrome",
+    "text": "Friction between ITB and lateral epicondyle below 30 degrees of flexion; running, especially downhill. Aching lateral knee. PRICE, stretch ITB.",
+    "src": "Clinical Approach to the Knee, part 2, slide 14"
+   },
+   {
+    "title": "Traumatic knee swelling timing",
+    "text": "Swelling under 6 hours: ACL tear, fracture, patellar dislocation, large chondral injury. Over 6 hours: OA flare, meniscal, PCL, high-grade MCL.",
+    "src": "Clinical Approach to the Knee, part 2, slide 25"
+   },
+   {
+    "title": "Knee injections",
+    "text": "Corticosteroid: rapid, cheap, short-acting. Hyaluronic acid: over 26 weeks relief, expensive. PRP: no clinically significant benefit on Cochrane review. Stem cells: unproven, regulated as drugs.",
+    "src": "Clinical Approach to the Knee, part 2, slide 16"
+   },
+   {
+    "title": "Four compartments of the leg",
+    "text": "Anterior (dorsiflexion, deep fibular nerve), lateral (eversion, superficial fibular nerve), superficial posterior (plantarflexion, tibial nerve), deep posterior (tibial nerve, under flexor retinaculum).",
+    "src": "Anatomy of the Leg, slide 5"
+   },
+   {
+    "title": "Venous return and varicose veins",
+    "text": "Valves, arteriovenous and musculovenous pumps return blood. Dilated great saphenous vein with incompetent valves gives varicose veins; laser treatment scars the vein closed.",
+    "src": "Anatomy of the Leg, slide 38"
+   }
+  ],
+  "Foot": [
+   {
+    "title": "Tarsal tunnel",
+    "text": "Anterior to posterior: Tibialis posterior, flexor Digitorum longus, posterior tibial Artery and Vein, tibial Nerve, flexor Hallucis longus.",
+    "src": "Anatomy of the Leg, slide 29"
+   },
+   {
+    "title": "Achilles tendinopathy and rupture",
+    "text": "Runners after training increase; posterior heel pain, worse with passive dorsiflexion. Eccentric strengthening. Rupture in active 30-40s; surgery vs casting, surgery risks sural nerve injury.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 9"
+   },
+   {
+    "title": "Plantar fasciitis",
+    "text": "Chronic insertional inflammation; anteromedial calcaneal pain on first morning steps, 40-60 years, F>M; tight Achilles. Heel pad, arch support, stretching, night splints.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 13"
+   },
+   {
+    "title": "Lateral ankle sprain",
+    "text": "Up to 85% of sprains; inversion and plantarflexion. ATFL > CFL > PTFL. Anterior drawer test of ATFL. Early mobilization, strengthening, proprioception.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 26"
+   },
+   {
+    "title": "Ottawa foot and ankle rules",
+    "text": "X-ray if malleolar/midfoot pain plus bone tenderness at either malleolus posterior edge/tip, base of 5th metatarsal, or navicular, or inability to bear weight.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 28"
+   },
+   {
+    "title": "Ankle fractures",
+    "text": "Unimalleolar may be non-operative; bimalleolar (forceful eversion) and trimalleolar need surgery. Maisonneuve: forceful external rotation, interosseous ligament disruption, usually surgical.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 31"
+   },
+   {
+    "title": "Tibialis posterior dysfunction and pes planus",
+    "text": "Tendon hypovascular distal to medial malleolus; medial ankle pain, flexible then rigid flat foot, 'too many toes' sign. Strengthening, orthoses.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 34"
+   },
+   {
+    "title": "Bunions (hallux valgus)",
+    "text": "Footwear and metatarsus varus; medial first MTP (metatarsophalangeal) pain; poor toe-off. Wider toe box; surgical realignment.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 46"
+   },
+   {
+    "title": "Morton's neuroma",
+    "text": "Perineural fibrosis of common digital nerve, usually between 3rd and 4th metatarsals; burning dysesthesia, worse in narrow high heels; squeeze test.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 48"
+   },
+   {
+    "title": "Diabetic foot",
+    "text": "Microvascular disease and neuropathy cause insensate foot, intrinsic atrophy, Charcot joint, ulcers (15% of diabetics). Monofilament test, proper footwear, daily foot checks.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 50"
+   },
+   {
+    "title": "Arterial pulses of the foot",
+    "text": "Absent dorsalis pedis pulse suggests arterial disease; five P's of occlusion. Posterior tibial pulse between medial malleolus and calcaneal tendon, compare sides.",
+    "src": "Clinical Approach to the Ankle and Foot, slide 39"
+   }
+  ]
+ }
+}

@@ -2,7 +2,9 @@
 Purpose: Take the upper limb muscle tables of Netter's Atlas of Human Anatomy (Tables 6-1 to 6-4) and keep
          what the brachial plexus pages need: which muscles each plexus nerve supplies, exactly, and each
          muscle's blood supply. Only muscles in our anatomy tables, nerves in our plexus and arteries named
-         in our MSK lecture notes are kept.
+         in our MSK lecture notes are kept, then cut down to this year's slides (body-map/slides.json): the slides'
+         action for each muscle, no muscle the slides leave out, no nerve the slides disagree with, and only arteries
+         the slides name.
 Author: nsimsam, with Claude Code
 Date: 2026-10-21
 Input: the Netter atlas PDF (pages 512-515 of the file, the upper limb muscle tables)
@@ -68,7 +70,6 @@ NERVE_RULES = [
 ]
 # Nerves our own table adds to a muscle that Netter does not list: (plexus id, muscle, branch, note)
 OUR_EXTRA = [
-    ("uln", "Flexor pollicis brevis", "deep branch", "deep head, per our table; Netter lists the median nerve only"),
     ("lp", "Pectoralis minor", "", "per our table; Netter lists the medial pectoral nerve only"),
 ]
 
@@ -93,9 +94,33 @@ MOVES = {
 }
 
 
+# This year's slides (body-map/slides.json) are the cut-down version taught: a muscle the slides leave out is dropped,
+# a nerve is kept for a muscle only if the slide's nerve agrees, and a blood supply only if the slides name that artery
+SLIDES = json.loads((HERE.parent / "body-map" / "slides.json").read_text(encoding="utf-8"))
+NERVE_WORD = {"uln": "ulnar", "medn": "median", "rad": "radial", "mc": "musculocutaneous", "ax": "axillary", "ss": "suprascapular",
+              "td": "thoracodorsal", "ds": "dorsal scapular", "lt": "long thoracic", "lp": "pectoral", "mp": "pectoral",
+              "us": "subscapular", "ls": "subscapular"}
+SLIDE_ARTERIES = {re.sub(r" arter(y|ies)$", "", a["name"].split(" (")[0].lower()) for a in SLIDES["arteries"].values()}
+SLIDE_ARTERIES |= {"profunda brachii", "superficial and deep palmar arches"}
+
+
+def slide_artery(text: str) -> bool:
+    """Whether Netter's artery is one the slides name (its own branches count; another artery's branch does not)."""
+    t = re.sub(r"^(muscular branches|branches|branch) of ", "", text.lower())
+    return re.sub(r" arter(y|ies)$", "", t) in SLIDE_ARTERIES
+
+
+def on_slides(muscle: str, nid: str) -> bool:
+    """Whether the slides teach this muscle with this nerve (a slide that gives no nerve does not contradict)."""
+    if muscle in SLIDES["excluded"]:
+        return False
+    nerve = SLIDES["muscles"].get(muscle, {}).get("innervation", "")
+    return not nerve or NERVE_WORD[nid] in nerve.lower()
+
+
 def our_actions() -> dict[str, str]:
-    """Our anatomy tables' Action column, by muscle name."""
-    actions = {}
+    """Each muscle's action as the slides give it, else our anatomy tables' Action column, by muscle name."""
+    actions = {k: v["action"] for k, v in SLIDES["muscles"].items()}  # "" where the slides give none
     for table in json.loads((HERE / "vault_tables.json").read_text(encoding="utf-8")):
         if "Action" in table["header"]:
             muscle, action = table["header"].index("Muscle"), table["header"].index("Action")
@@ -118,7 +143,7 @@ def action_for(action: str, label: str, note: str) -> str:
 
 
 def pick_action(action: str, label: str, note: str) -> str:
-    lines = action.split("<br>")
+    lines = re.split(r"<br>|; ", action)
     if len(lines) > 1:
         for line in lines:
             head = line.split(":")[0].split(" (")[0].lower()
@@ -160,7 +185,8 @@ def our_blood(text: str) -> list[str]:
         if OUR_ARTERIES.search(p):
             p = re.sub(r"\barteries$", "artery", p if re.search(r"arter|arch", p) else p + " artery")
             p = re.sub(r"\bartery artery\b", "artery", p)
-            keep.append(p[0].upper() + p[1:])
+            if slide_artery(p):
+                keep.append(p[0].upper() + p[1:])
     return keep
 
 
@@ -184,10 +210,11 @@ def main(pdf: Path) -> None:
                     left = re.sub(pattern, "", left, flags=re.I)
                     branch = re.search(r"\(([^)C]+)\)", text)
                     label = shown + (f" ({part.lower()} part)" if part else "")
-                    note = "radial nerve supplies part of it (C7), per Netter" if name == "Brachialis" and ids == "rad" else ""
+                    note = ""
                     act = action_for(actions.get(ours, ""), label, note)
                     for nid in ids.split("+"):
-                        nerves.setdefault(nid, []).append([label, branch.group(1) if branch else "", art, note, act])
+                        if on_slides(ours, nid):
+                            nerves.setdefault(nid, []).append([label, branch.group(1) if branch else "", art, note, act])
     for nid, muscle, branch, note in OUR_EXTRA:
         nerves[nid].append([muscle, branch, muscles.get(muscle, {}).get("blood", []), note,
                             action_for(actions.get(muscle, ""), muscle, note)])

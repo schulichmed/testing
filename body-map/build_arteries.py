@@ -1,13 +1,12 @@
 """
 Purpose: The body map's Blood supply layer: the arteries named in our MSK lecture notes (medwiki, PoM 2 Weeks 7-10),
-         right side, each with what the notes say about it and, for the upper limb, the table muscles it supplies.
+         right side, kept to the ones this year's slides name and each with what the slides say about it.
          BodyParts3D has most of them as meshes; the few it lacks (deep femoral, medial circumflex femoral, obturator,
          superior and inferior gluteal, internal pudendal, fibular, posterior interosseous) are drawn as tubes from
          bony landmarks and the arteries they branch from, so they are approximate.
 Author: nsimsam, with Claude Code
 Date: 2026-10-21
-Input: the BodyParts3D 4.0 "is_a" OBJ archive unzipped at BP3D_DIR;
-       anatomy-tables/netter_upper_limb.json (each upper limb muscle's blood supply, kept to our arteries)
+Input: the BodyParts3D 4.0 "is_a" OBJ archive unzipped at BP3D_DIR; body-map/slides.json (slides_merge.py)
 Output: body-map/arteries.glb (one node per artery piece, ar_<id>_<n>) and body-map/arteries.json
         ({"info": {id: {...}}, "drawn": {id: [path, ...]}, "groups": [[title, [ids]]]})
 Usage: python build_arteries.py <BP3D_DIR>   (needs trimesh, fast-simplification, numpy, scipy)
@@ -15,7 +14,6 @@ Usage: python build_arteries.py <BP3D_DIR>   (needs trimesh, fast-simplification
 
 import json
 import logging
-import re
 import sys
 from pathlib import Path
 
@@ -193,19 +191,17 @@ def drawn_paths(sk: Skeleton, V) -> dict:
     }
 
 
-def muscles_of(pattern: str, netter: dict) -> list:
-    """The upper limb table muscles whose blood supply (Netter, kept to our arteries) names this artery."""
-    return sorted(m for m, v in netter["muscles"].items() if any(re.search(pattern, b, re.I) for b in v["blood"]))
-
-
 def main(bp3d_dir: Path) -> None:
     obj_dir = bp3d_dir / "objs" / "isa_BP3D_4.0_obj_99"
     sk = Skeleton(bp3d_dir, obj_dir)
     V = lambda fid: load(obj_dir, fid).vertices
-    netter = json.loads((HERE.parent / "anatomy-tables" / "netter_upper_limb.json").read_text(encoding="utf-8"))
+    # only the arteries this year's slides name, with what the slides say about them (slides_merge.py)
+    slides = json.loads((HERE / "slides.json").read_text(encoding="utf-8"))["arteries"]
     scene = trimesh.Scene()
     info, faces = {}, 0
     for aid, (name, meshes, frm, text, clinical, pattern) in ARTERIES.items():
+        if aid not in slides:
+            continue
         for n, fid in enumerate(meshes):
             m = simplify(load(obj_dir, fid))
             if fid in MIRROR:
@@ -213,11 +209,12 @@ def main(bp3d_dir: Path) -> None:
                 m.invert()
             faces += len(m.faces)
             scene.add_geometry(m.apply_transform(Y_UP), node_name=f"ar_{aid}_{n}", geom_name=f"ar_{aid}_{n}")
-        info[aid] = {"name": name, "from": frm, "text": text, "clinical": clinical, "drawn": not meshes,
-                     "muscles": muscles_of(pattern, netter) if pattern else []}
-    drawn = {k: [to_three(np.array(p, float)) for p in ps] for k, ps in drawn_paths(sk, V).items()}
+        facts = [f for f in slides[aid]["facts"] if "overview" not in f]  # drop "it is on the overview diagram" filler
+        info[aid] = {"name": name, "facts": facts, "src": slides[aid]["src"], "drawn": not meshes}
+    drawn = {k: [to_three(np.array(p, float)) for p in ps] for k, ps in drawn_paths(sk, V).items() if k in info}
     scene.export(HERE / "arteries.glb")
-    (HERE / "arteries.json").write_text(json.dumps({"info": info, "drawn": drawn, "groups": GROUPS}, ensure_ascii=False))
+    groups = [[t, [i for i in ids if i in info]] for t, ids in GROUPS]
+    (HERE / "arteries.json").write_text(json.dumps({"info": info, "drawn": drawn, "groups": [g for g in groups if g[1]]}, ensure_ascii=False))
     log.info("arteries.glb: %.1f MB, %d faces; %d arteries (%d drawn)", (HERE / "arteries.glb").stat().st_size / 1e6, faces, len(info), len(drawn))
 
 

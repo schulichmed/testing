@@ -96,6 +96,8 @@ ul.sup{margin:2px 0 8px;padding-left:18px;font-size:14px}ul.sup li{margin:0 0 6p
 p.moves{background:#fff3b0;color:#222;border-radius:6px;padding:6px 8px;font-weight:600;font-size:14px;line-height:1.4;margin:8px 0}
 ul.sup .ac{font-weight:600}
 .notes{font-size:13.5px;line-height:1.4}.notes .note{margin:0 0 8px}.notes .nh{display:block;font-weight:700}.notes .ln{display:block}.notes .sub{display:block;padding-left:12px;color:var(--muted)}
+p.src{font-size:11.5px;color:var(--muted);margin:10px 0 0}
+ul.facts{margin:4px 0 10px;padding-left:18px;font-size:14px;line-height:1.4}ul.facts li{margin:0 0 5px}
 details.fold{margin:10px 0;border:1px solid var(--line);border-radius:8px;padding:6px 10px}details.fold summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted)}details.fold .notes{margin-top:8px}
 table.rn{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}table.rn th,table.rn td{border-top:1px solid var(--line);padding:6px 5px;vertical-align:top;text-align:left;line-height:1.35}
 table.rn thead th{font-size:13px;border-top:0}table.rn thead th span{font-weight:400;color:var(--muted);font-size:11.5px}table.rn tbody th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);width:72px}
@@ -122,7 +124,7 @@ ul.terr{list-style:none;padding:0;font-size:13.5px}ul.terr li{margin:0 0 7px;lin
 <div class="wrap">
 <p class="eyebrow"><a href="../">Prototypes</a> · MSK · throwaway</p>
 <h1>Where does it hurt?</h1>
-<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts the muscle tables, the cranial nerves, the brachial plexus and the blood supply on one skeleton, each switched on or off from its Show bar: tap a muscle for its action, nerve and clinical notes, a cranial nerve for its table row on the body, any part of the plexus to light its path back to the roots, or an artery for what the notes say about it and the muscles it feeds. <b>Dermatome map</b> is the dermatome model from the anatomy tables. <b>Root or nerve?</b> puts a pinched root on one arm and a compressed nerve on the other, so you can see why a root's numb patch is fuzzy and spread across nerves while a nerve's is sharp-edged.</p>
+<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts the bones, muscles, ligaments, cranial nerves, brachial plexus and blood supply on one skeleton, each switched on or off from its Show bar: tap a muscle for its action, nerve and clinical notes, a cranial nerve for its table row on the body, any part of the plexus to light its path back to the roots, an artery, ligament or bone for what this year's slides say about it. Everything follows the slides: what they leave out is left out. <b>Dermatome map</b> is the dermatome model from the anatomy tables. <b>Root or nerve?</b> puts a pinched root on one arm and a compressed nerve on the other, so you can see why a root's numb patch is fuzzy and spread across nerves while a nerve's is sharp-edged.</p>
 <div class="chips" id="modes">
   <button class="chip" data-mode="region" aria-pressed="true">Where it hurts</button>
   <button class="chip" data-mode="structure" aria-pressed="false">Which structure</button>
@@ -139,7 +141,9 @@ ul.terr{list-style:none;padding:0;font-size:13.5px}ul.terr li{margin:0 0 7px;lin
     <div class="loading" id="loading">Loading the skeleton…</div>
     <div class="layers" id="layers" hidden>
       <span>Show</span>
+      <label><input type="checkbox" data-layer="bones" checked> Bones</label>
       <label><input type="checkbox" data-layer="muscles" checked> Muscles</label>
+      <label><input type="checkbox" data-layer="lig"> Ligaments</label>
       <label><input type="checkbox" data-layer="cn"> Cranial nerves</label>
       <label><input type="checkbox" data-layer="bp"> Brachial plexus</label>
       <label><input type="checkbox" data-layer="ar"> Blood supply</label>
@@ -453,7 +457,8 @@ function pick(e) {
   ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ptr, camera);
   const targets = mode === "structure" ? structs.concat(bones)
-    : mode === "tables" ? (layers.muscles ? muscles.filter(o => o.visible) : []).concat(layers.cn ? cnPick : [], layers.bp ? bpPick : [], layers.ar ? arPick : [], bones)
+    : mode === "tables" ? (layers.muscles ? muscles.filter(o => o.visible) : []).concat(layers.cn ? cnPick : [], layers.bp ? bpPick : [], layers.ar ? arPick : [],
+      layers.lig ? ligPick.concat(structs.filter(o => o.visible)) : [], layers.bones ? bones : [])
     : mode === "derm" ? skins : mode === "rootnerve" ? limbs : bones;
   return ray.intersectObjects(targets, false)[0];
 }
@@ -465,7 +470,8 @@ renderer.domElement.addEventListener("pointerup", e => {
   if (mode === "tables" && hit.object.userData.cn) { selectCN(hit.object.userData.cn); return; }
   if (mode === "tables" && hit.object.userData.bp) { selectBP(hit.object.userData.bp); return; }
   if (mode === "tables" && hit.object.userData.ar) { selectArtery(hit.object.userData.ar); return; }
-  if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (isSkull(hit.object)) showLayer("cn"); return; }
+  if (mode === "tables" && (hit.object.userData.lg || hit.object.userData.st)) { selectLig(hit.object.userData.lg || hit.object.userData.st); return; }
+  if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (hit.object.name.startsWith("bone_")) selectBone(hit.object.name.slice(5)); return; }
   if (mode === "rootnerve") { if (hit.object.userData.ct) tapLimb(hit.object.userData.ct, hit.point); return; }
   if (mode === "derm") { tapDerm(hit.object.userData.field ? fieldLevel(hit) : hit.object.userData.dm); return; }
   if (hit.object.userData.st) selectStructure(hit.object.userData.st);
@@ -488,7 +494,8 @@ renderer.domElement.addEventListener("pointermove", e => {
     tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
   }
   if (mode === "tables" || mode === "derm") {
-    const o = hit.object, t = mode === "derm" ? (quiz ? "" : o.userData.field ? fieldLevel(hit) : o.userData.dm) : o.userData.mu ? MU[o.userData.mu].cells[1] : isSkull(o) ? "Skull: cranial nerves" : "";
+    const o = hit.object, t = mode === "derm" ? (quiz ? "" : o.userData.field ? fieldLevel(hit) : o.userData.dm) : o.userData.mu ? MU[o.userData.mu].cells[1] : (o.userData.lg || o.userData.st) && LG ? ligName(o.userData.lg || o.userData.st)
+      : o.name.startsWith("bone_") && LG && LG.bones[o.name.slice(5)] ? LG.bones[o.name.slice(5)][0] : "";
     tip.textContent = t; tip.style.display = t ? "block" : "none";
     tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
   }
@@ -599,12 +606,12 @@ function hiddenBar() {
   const b = document.createElement("button"); b.textContent = `Show the ${new Set(hid.map(o => o.userData.mu)).size} hidden muscle(s)`;
   b.onclick = () => { muscles.forEach(o => o.visible = true); picked ? selectMuscle(picked) : showTablesIntro(); }; d.appendChild(b); return d;
 }
-function clearNerveSel() { if (AR && arSel) { arSel = null; arShade(null); clearCalls(); } if (!NV) return; clearCalls(); cnSel = null; cnShade(null); bpSel = null; bpShade(null); }
+function clearNerveSel() { if (LG) { if (ligSel) { ligSel = null; ligShade(null); clearCalls(); } if (boneSel || panel.dataset.list === "bones") { boneSel = null; boneShade(null); } } if (AR && arSel) { arSel = null; arShade(null); clearCalls(); } if (!NV) return; clearCalls(); cnSel = null; cnShade(null); bpSel = null; bpShade(null); }
 function showTablesIntro(sid) {
   picked = null; shade(null); clearNerveSel(); panel.dataset.list = "";
   panel.innerHTML = `<h2>Anatomy tables</h2><p class="sub">Tap a muscle on the body, or pick a table. Colours follow the table each muscle is in.</p>`;
   const d = document.createElement("div"); d.className = "st"; d.style.marginTop = "10px";
-  for (const [k, t] of [["cn", "Cranial nerves"], ["bp", "Brachial plexus"], ["ar", "Blood supply"]]) { const b = document.createElement("button"); b.textContent = t; b.onclick = () => showLayer(k); d.appendChild(b); }
+  for (const [k, t] of [["bones", "Bones"], ["lig", "Ligaments"], ["cn", "Cranial nerves"], ["bp", "Brachial plexus"], ["ar", "Blood supply"]]) { const b = document.createElement("button"); b.textContent = t; b.onclick = () => showLayer(k); d.appendChild(b); }
   for (const reg of TB.regions) {
     const b = document.createElement("button"); b.innerHTML = `<span class="sw" style="background:#${REGION_COL[reg.sid].toString(16).padStart(6, "0")}"></span>`;
     b.append(reg.tab); if (reg.sid === sid) b.classList.add("on"); b.onclick = () => showTablesIntro(reg.sid); d.appendChild(b);
@@ -619,7 +626,7 @@ function showTablesIntro(sid) {
       b.onclick = () => selectMuscle(row.key, row.in3d); l.appendChild(b);
     }
     panel.appendChild(l);
-    if (reg.boxes.length) panel.appendChild(foldNotes(`Spaces, landmarks and nerve injuries (${reg.boxes.length})`, reg.boxes));
+    if (reg.boxes.length) panel.appendChild(foldNotes(`Clinical points from the ${reg.tab.toLowerCase()} slides (${reg.boxes.length})`, reg.boxes));
     const a = document.createElement("div"); a.className = "acts"; a.innerHTML = `<a target="_blank" rel="noopener" href="../anatomy-tables/#${sid}">Open the full ${reg.tab.toLowerCase()} table</a>`; panel.appendChild(a);
   }
   const hb = hiddenBar(); if (hb) panel.appendChild(hb);
@@ -633,15 +640,11 @@ function selectMuscle(key, zoom = true) {
   const h = document.createElement("h2"); h.textContent = row.cells[1]; panel.appendChild(h);
   const sub = document.createElement("p"); sub.className = "sub"; sub.textContent = `${row.reg.tab} table · ${row.cells[0]}` + (objs.length ? "" : " · not in the 3D model"); panel.appendChild(sub);
   const dl = rowHtml(row.reg.header, row.cells, [0, 1]);
-  if (row.blood) {  // Netter's blood supply, kept to the arteries in our notes
-    const dt = document.createElement("dt"), dd = document.createElement("dd");
-    dt.textContent = "Blood supply"; dd.textContent = row.blood.join(", "); dl.append(dt, dd);
-  }
   panel.appendChild(dl);
-  // clinical notes from the notes' table, only the ones about this muscle; its group's shared notes fold away
-  if (row.notes.length) { const h3 = document.createElement("h3"); h3.textContent = "Clinical notes"; panel.appendChild(h3); panel.appendChild(notesBox(row.notes)); }
-  const gn = row.reg.group_notes[row.cells[0]];
-  if (gn) panel.appendChild(foldNotes(`${row.cells[0]} group (${gn.length})`, gn));
+  if (!row.cells[2] && !row.cells[3]) { const p = document.createElement("p"); p.className = "sub"; p.textContent = "Named on the slides, with no action or nerve given."; panel.appendChild(p); }
+  // only what this year's slides say about this muscle
+  if (row.notes.length) { const h3 = document.createElement("h3"); h3.textContent = "Clinical"; panel.appendChild(h3); panel.appendChild(notesBox(row.notes)); }
+  const src = document.createElement("p"); src.className = "src"; src.textContent = "Slides: " + row.src; panel.appendChild(src);
   const a = document.createElement("div"); a.className = "acts";
   if (objs.length) { const hb = document.createElement("button"); hb.textContent = "Hide it to see underneath"; hb.onclick = () => { objs.forEach(o => o.visible = false); picked = null; shade(null); showTablesIntro(row.reg.sid); }; a.appendChild(hb); }
   const back = document.createElement("button"); back.textContent = `All ${row.reg.tab.toLowerCase()} muscles`; back.onclick = () => showTablesIntro(row.reg.sid); a.appendChild(back);
@@ -660,13 +663,16 @@ function cnTitle(n) { return `CN ${n}` + (CNROWS[n] ? ` · ${CNROWS[n][1]}` : ""
 function bpName(id) { const s = NV.plexus.S[id]; return s.name || `Root ${id}`; }
 function firstLine(t, n = 90) { const l = String(t || "").split("<br>")[0].replace(/^- /, "").trim(); return l.length > n ? l.slice(0, n - 1) + "…" : l; }
 /* in the Anatomy tables view the muscles, cranial nerves and plexus are layers on one skeleton, each switched on or off */
-const layers = { muscles: true, cn: false, bp: false, ar: false };
-const INTRO = { cn: () => showCNIntro(), bp: () => showBPIntro(), ar: () => showARIntro() };
-function viewOn(v) { return (mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp) || (v === "ar3d" && layers.ar))) || (mode === "rootnerve" && v === "rn"); }
+const layers = { bones: true, muscles: true, lig: false, cn: false, bp: false, ar: false };
+const INTRO = { cn: () => showCNIntro(), bp: () => showBPIntro(), ar: () => showARIntro(), lig: () => showLigIntro(), bones: () => showBoneIntro() };
+function viewOn(v) { return (mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp) || (v === "ar3d" && layers.ar) || (v === "lg3d" && layers.lig))) || (mode === "rootnerve" && v === "rn"); }
 function applyLayers() {
   if (muscleRoot) muscleRoot.visible = mode === "tables" && layers.muscles;
   if (cnRoot) cnRoot.visible = viewOn("cn3d");
   if (arRoot) arRoot.visible = viewOn("ar3d");
+  if (mode === "tables") bones.forEach(b => b.visible = layers.bones);
+  if (ligRoot) ligRoot.visible = mode === "tables" && layers.lig;
+  if (mode === "tables") structs.forEach(o => o.visible = layers.lig && !!LG && LG.existing.includes(o.userData.st));
   if (bpRoot) bpRoot.visible = viewOn("bp3d") || mode === "rootnerve";
   if (bpRoot) bpRoot.children.forEach(o => { if (o.userData.ctx) o.visible = mode !== "rootnerve"; });
   if (bpMirror) bpMirror.visible = mode === "rootnerve";
@@ -678,8 +684,9 @@ document.querySelectorAll("#layers input").forEach(i => i.addEventListener("chan
   const k = i.dataset.layer; layers[k] = i.checked;
   if ((layers.cn || layers.bp) && !NV) await ensureNerves();
   if (layers.ar && !AR) await ensureArteries();
+  if ((layers.lig || k === "bones") && !LG) await ensureLigaments();
   applyLayers();
-  if (k === "muscles") return;
+  if (k === "muscles" || (k === "bones" && !i.checked)) return;
   if (i.checked) INTRO[k]();
   else if ((k === "cn" && cnSel) || (k === "bp" && bpSel) || (k === "ar" && arSel) || panel.dataset.list === k) showTablesIntro();
 }));
@@ -687,7 +694,7 @@ document.querySelectorAll("#layers input").forEach(i => i.addEventListener("chan
 async function showLayer(k) {
   const box = document.querySelector(`#layers input[data-layer="${k}"]`);
   if (!box.checked) { box.checked = true; box.dispatchEvent(new Event("change")); return; }
-  if (k === "ar") await ensureArteries(); else if (!NV) await ensureNerves();
+  if (k === "ar") await ensureArteries(); else if (k === "lig" || k === "bones") await ensureLigaments(); else if (!NV) await ensureNerves();
   INTRO[k]();
 }
 function boneLook(m) {
@@ -1082,6 +1089,122 @@ function tapDerm(lv) {
   const n = panel.querySelector(".acts button"); n.textContent = "Next";
 }
 
+/* ---------- Bones and ligaments layers: names, and only the facts our notes give ---------- */
+let LG = null, ligRoot = null, ligPick = [], ligLoading = null, ligSel = null, boneSel = null;
+const LIG_COL = 0xe8c547, LIG_ON = 0xff9f1c;
+const ligMat = new THREE.MeshStandardMaterial({ color: LIG_COL, roughness: 0.5, side: THREE.DoubleSide });
+function ligName(k) { const i = LG.info[k]; return i ? i.name : (ST[k] ? ST[k][0] : k); }
+function sheetGeo(a, b) {
+  const pos = [], idx = [];
+  a.forEach((p, i) => { pos.push(...p, ...b[i]); if (i) { const q = 2 * i; idx.push(q - 2, q - 1, q, q - 1, q + 1, q); } });
+  const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+function ensureLigaments() {
+  if (ligLoading) return ligLoading;
+  ligLoading = fetch("ligaments.json").then(r => r.json()).then(lj => {
+    LG = lj; ligRoot = new THREE.Group(); scene.add(ligRoot);
+    for (const d of lj.drawn) {
+      const mat = ligMat.clone();
+      const m = d.kind === "sheet" ? new THREE.Mesh(sheetGeo(d.a, d.b), mat) : tube(d.path, d.r, mat);
+      m.userData.lg = d.key; m.userData.sub = d.sub; ligRoot.add(m); ligPick.push(m);
+    }
+    applyLayers();
+  });
+  return ligLoading;
+}
+function ligShade(sel) {
+  for (const o of [...ligPick, ...structs.filter(o => LG.existing.includes(o.userData.st))]) {
+    const k = o.userData.lg || o.userData.st, on = !sel || k === sel;
+    o.material.color.set(sel && on ? LIG_ON : KCOL.lig); o.material.emissive.set(sel && on ? 0x3a2000 : 0);
+    if (o.userData.op0 === undefined) o.userData.op0 = o.material.transparent ? o.material.opacity : 1;
+    o.material.transparent = true; o.material.opacity = on ? o.userData.op0 : 0.3; o.material.depthTest = !(sel && on); o.renderOrder = sel && on ? 11 : 0;
+  }
+}
+function factsList(facts) {
+  const ul = document.createElement("ul"); ul.className = "facts";
+  for (const f of facts) { const li = document.createElement("li"); li.textContent = f; ul.appendChild(li); }
+  return ul;
+}
+function showLigIntro() {
+  ligSel = null; ligShade(null); clearCalls(); panel.dataset.list = "lig";
+  panel.innerHTML = `<h2>Ligaments</h2><p class="sub">Only the ligaments this year's slides name: right side, and the spine's midline ligaments. Drawn from landmarks on the bones (BodyParts3D has almost none), so their lines are approximate. Tap one for what the slides say.</p>`;
+  for (const [title, ids] of LG.groups) {
+    const h = document.createElement("h3"); h.textContent = title; panel.appendChild(h);
+    const d = document.createElement("div"); d.className = "st";
+    for (const id of ids) { const b = document.createElement("button"); b.textContent = ligName(id); b.onclick = () => selectLig(id); d.appendChild(b); }
+    panel.appendChild(d);
+  }
+  const a = document.createElement("div"); a.className = "acts"; backToTables(a); panel.appendChild(a);
+}
+function selectLig(id) {
+  ligSel = id; ligShade(id); clearCalls();
+  const objs = [...ligPick.filter(o => o.userData.lg === id), ...structs.filter(o => o.userData.st === id)];
+  if (objs.length) {
+    const bx = new THREE.Box3(); objs.forEach(o => bx.expandByObject(o)); const c = bx.getCenter(new THREE.Vector3());
+    flyTo(c, Math.max(0.3, bx.getSize(new THREE.Vector3()).length() * 2.2));
+    callout(ligName(id), objs.map(o => o.userData.sub).filter(Boolean).join(", ") || "Ligament", c, "lg3d");
+  }
+  const i = LG.info[id] || { facts: [] };
+  panel.innerHTML = ""; panel.dataset.list = "";
+  const k = document.createElement("p"); k.className = "sub"; k.textContent = "Ligament · drawn approximately"; panel.appendChild(k);
+  const h = document.createElement("h2"); h.textContent = ligName(id); panel.appendChild(h);
+  if (i.facts.length) panel.appendChild(factsList(i.facts));
+  else { const p = document.createElement("p"); p.className = "sub"; p.textContent = "Named on the slides, with nothing more about it."; panel.appendChild(p); }
+  if (i.src) { const src = document.createElement("p"); src.className = "src"; src.textContent = srcLine(i.src); panel.appendChild(src); }
+  const a = document.createElement("div"); a.className = "acts";
+  if (ST[id]) { const c = document.createElement("button"); c.textContent = "Open its chart"; c.onclick = () => openChart(ST[id][2], ST[id][3]); a.appendChild(c); }
+  const b = document.createElement("button"); b.textContent = "All ligaments"; b.onclick = showLigIntro; a.appendChild(b);
+  backToTables(a); panel.appendChild(a);
+}
+function boneShade(fids) {
+  for (const b of bones) { const on = fids && fids.has(b.name.slice(5)); b.material.emissive.set(on ? 0x5a3a00 : 0); }
+  if (fids) muscles.forEach(o => { o.material.opacity = 0.12; o.material.depthWrite = false; });  // let the bone show
+}
+function showBoneIntro() {
+  boneSel = null; boneShade(null); clearCalls(); panel.dataset.list = "bones";
+  panel.innerHTML = `<h2>Bones</h2><p class="sub">Tap any bone for its name and what the slides say about it. The bones below are the ones the slides teach; pick one to light it up.</p>`;
+  const d = document.createElement("div"); d.className = "st";
+  for (const k of Object.keys(LG.bone_facts)) { const b = document.createElement("button"); b.textContent = boneTitle(k); b.onclick = () => selectBoneGroup(k); d.appendChild(b); }
+  panel.appendChild(d);
+  const a = document.createElement("div"); a.className = "acts"; backToTables(a); panel.appendChild(a);
+}
+/* "Deck, slide 4, 9" pieces -> one line per deck: "Deck: slides 4, 9, 11" */
+function srcLine(list) {
+  const by = new Map();
+  for (const x of list) { const m = /^(.*?), slides? (.*)$/.exec(x); const [d, n] = m ? [m[1], m[2].split(/,\s*/)] : [x, []]; by.set(d, [...(by.get(d) || []), ...n]); }
+  return "Slides: " + [...by].map(([d, n]) => n.length ? `${d}, ${[...new Set(n)].length > 1 ? "slides" : "slide"} ${[...new Set(n)].join(", ")}` : d).join(" · ");
+}
+function boneTitle(k) { return k === "spine" ? "Vertebral column" : (k.charAt(0).toUpperCase() + k.slice(1)).replace(/_/g, " ").replace(" hand", " of the hand"); }
+function boneFids(fact) { return new Set(Object.entries(LG.bones).filter(([, v]) => v[1].includes(fact)).map(([f]) => f)); }
+function boneFacts(name, facts, fids) {
+  boneShade(fids); clearCalls(); panel.innerHTML = ""; panel.dataset.list = "";
+  const k = document.createElement("p"); k.className = "sub"; k.textContent = "Bone"; panel.appendChild(k);
+  const h = document.createElement("h2"); h.textContent = name; panel.appendChild(h);
+  const sections = facts.flatMap(f => LG.bone_facts[f] || []);
+  for (const sct of sections) {  // the bone itself first, then each landmark the slides name on it
+    const h3 = document.createElement("h3"); h3.textContent = sct.name; panel.appendChild(h3); panel.appendChild(factsList(sct.facts));
+  }
+  if (!sections.length) { const p = document.createElement("p"); p.className = "sub"; p.textContent = "Not on this year's slides."; panel.appendChild(p); }
+  else { const src = document.createElement("p"); src.className = "src"; src.textContent = srcLine(sections.map(x => x.src)); panel.appendChild(src); }
+  const a = document.createElement("div"); a.className = "acts";
+  const b = document.createElement("button"); b.textContent = "All bones"; b.onclick = showBoneIntro; a.appendChild(b);
+  backToTables(a); panel.appendChild(a);
+}
+async function selectBone(fid) {
+  if (!LG) await ensureLigaments();
+  const [name, facts] = LG.bones[fid] || ["Bone", []];
+  boneSel = fid; picked = null; if (muscles.length) shade(null);
+  boneFacts(name, facts, new Set([fid]));
+  if (/skull|cranial|frontal|parietal|occipital|temporal|sphenoid|ethmoid|maxilla|mandible|zygomatic|nasal|lacrimal|palatine|vomer|concha/i.test(name)) {
+    const c = document.createElement("button"); c.textContent = "Cranial nerves"; c.onclick = () => showLayer("cn"); panel.querySelector(".acts").prepend(c);
+  }
+}
+function selectBoneGroup(fact) {
+  const fids = boneFids(fact); boneFacts(boneTitle(fact), [fact], fids);
+  const bx = new THREE.Box3(); bones.filter(b => fids.has(b.name.slice(5)) && b.userData.c.x < 0.02).forEach(b => bx.expandByObject(b));  // the right side's
+  if (!bx.isEmpty()) flyTo(bx.getCenter(new THREE.Vector3()), Math.max(0.35, bx.getSize(new THREE.Vector3()).length() * 1.8));
+}
+
 /* ---------- Blood supply layer: the arteries named in our MSK notes ---------- */
 const AR_LABEL = ["subclavian", "axillary", "brachial", "deep_brachial", "radial", "ulnar", "sup_palmar_arch", "external_iliac", "femoral", "deep_femoral",
   "popliteal", "ant_tibial", "post_tibial", "fibular", "dorsalis_pedis", "sup_gluteal", "inf_gluteal", "vertebral"];
@@ -1119,18 +1242,11 @@ function arShade(sel) {
     m.opacity = on ? 1 : 0.25; m.depthWrite = on; m.depthTest = !(sel && on);  // the chosen artery shows through bone and muscle m.emissive.set(sel && on ? 0x550000 : 0x000000); m.color.set(sel && on ? 0xff2a2a : AR_RED);
   }
   for (const o of arPick) o.renderOrder = sel && o.userData.ar === sel ? 12 : 0;
-  // the table muscles this artery supplies stay lit; the rest fade
-  const keep = sel ? new Set(AR.info[sel].muscles) : null;
-  for (const o of muscles) {
-    if (!keep) continue;
-    const on = keep.has(MU[o.userData.mu].cells[1]);
-    o.material.opacity = on ? 0.75 : 0.12; o.material.depthWrite = false; o.material.emissive.set(on ? 0x3a0a00 : 0x000000);
-  }
-  if (!keep && muscles.length && !picked) shade(null);
+  if (muscles.length && !picked) shade(null);
 }
 function showARIntro() {
   arSel = null; if (AR) arShade(null); clearCalls(); panel.dataset.list = "ar";
-  panel.innerHTML = `<h2>Blood supply</h2><p class="sub">Right side. Only the arteries named in our MSK notes. Tap one, on the body or here: its course and clinical points from the notes, and in the upper limb the table muscles it supplies light up. Marked * are not in BodyParts3D and are drawn approximately.</p>`;
+  panel.innerHTML = `<h2>Blood supply</h2><p class="sub">Right side. Only the arteries this year's slides name. Tap one, on the body or here, for what the slides say about it. Marked * are not in BodyParts3D and are drawn approximately.</p>`;
   for (const [title, ids] of AR.groups) {
     const h = document.createElement("h3"); h.textContent = title; panel.appendChild(h);
     const d = document.createElement("div"); d.className = "st";
@@ -1146,23 +1262,12 @@ function selectArtery(id) {
   const c = bx.getCenter(new THREE.Vector3()), sz = Math.max(0.3, bx.getSize(new THREE.Vector3()).length() * 1.6);
   const dir = new THREE.Vector3(-0.35, 0.12, AR_BACK.has(id) ? -1 : 1).normalize();  // from the right side, front or back
   fly = { t0: performance.now(), fromT: controls.target.clone(), toT: c, fromP: camera.position.clone(), toP: dir.multiplyScalar(sz).add(c) };
-  callout(i.name, "From the " + i.from.replace(/^./, x => x.toLowerCase()), c, "ar3d");
+  callout(i.name, i.facts[0] || "Artery", c, "ar3d");
   panel.innerHTML = ""; panel.dataset.list = "";
   const k = document.createElement("p"); k.className = "sub"; k.textContent = "Artery" + (i.drawn ? " · drawn approximately (not in BodyParts3D)" : ""); panel.appendChild(k);
   const h = document.createElement("h2"); h.textContent = i.name; panel.appendChild(h);
-  const dl = document.createElement("dl"); dl.className = "row";
-  const add = (t, v) => { if (!v) return; const dt = document.createElement("dt"); dt.textContent = t; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); };
-  add("From", i.from); add("Course and supply", i.text); add("Clinical", i.clinical);
-  panel.appendChild(dl);
-  if (i.muscles.length) {
-    const h3 = document.createElement("h3"); h3.textContent = `Table muscles it supplies (${i.muscles.length})`; panel.appendChild(h3);
-    const d = document.createElement("div"); d.className = "st";
-    for (const name of i.muscles) {
-      const key = Object.keys(MU).find(x => MU[x].cells[1] === name); const b = document.createElement("button"); b.textContent = name.replace(/\s*\(.*$/, "");
-      if (key) b.onclick = () => { arSel = null; arShade(null); clearCalls(); selectMuscle(key); }; d.appendChild(b);
-    }
-    panel.appendChild(d);
-  }
+  if (i.facts.length) panel.appendChild(factsList(i.facts));
+  const src = document.createElement("p"); src.className = "src"; src.textContent = srcLine(i.src); panel.appendChild(src);
   const a = document.createElement("div"); a.className = "acts";
   const b = document.createElement("button"); b.textContent = "All arteries"; b.onclick = showARIntro; a.appendChild(b);
   backToTables(a); panel.appendChild(a);

@@ -2,19 +2,13 @@
  "source": "Netter, Atlas of Human Anatomy, Tables 6-1 to 6-4 (upper limb muscles), filtered to our curriculum",
  "muscles": {
   "Abductor digiti minimi": {
-   "blood": [
-    "Deep palmar branch of ulnar artery"
-   ]
+   "blood": []
   },
   "Abductor pollicis brevis": {
-   "blood": [
-    "Superficial palmar branch of radial artery"
-   ]
+   "blood": []
   },
   "Abductor pollicis longus": {
-   "blood": [
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Adductor pollicis": {
    "blood": [
@@ -22,9 +16,7 @@
    ]
   },
   "Anconeus": {
-   "blood": [
-    "Deep brachial artery"
-   ]
+   "blood": []
   },
   "Biceps brachii": {
    "blood": [
@@ -33,14 +25,11 @@
   },
   "Brachialis": {
    "blood": [
-    "Radial recurrent artery",
     "Muscular branches of brachial artery"
    ]
   },
   "Brachioradialis": {
-   "blood": [
-    "Radial recurrent artery"
-   ]
+   "blood": []
   },
   "Coracobrachialis": {
    "blood": [
@@ -48,10 +37,7 @@
    ]
   },
   "Deltoid": {
-   "blood": [
-    "Posterior circumflex humeral artery",
-    "Deltoid branch of thoracoacromial artery"
-   ]
+   "blood": []
   },
   "Interossei": {
    "blood": [
@@ -60,45 +46,31 @@
   },
   "Extensor carpi radialis brevis": {
    "blood": [
-    "Radial artery",
-    "Radial recurrent artery"
+    "Radial artery"
    ]
   },
   "Extensor carpi radialis longus": {
    "blood": [
-    "Radial artery",
-    "Radial recurrent artery"
+    "Radial artery"
    ]
   },
   "Extensor carpi ulnaris": {
-   "blood": [
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Extensor digiti minimi": {
-   "blood": [
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Extensor digitorum": {
-   "blood": [
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Extensor indicis": {
-   "blood": [
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Extensor pollicis brevis": {
-   "blood": [
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Extensor pollicis longus": {
-   "blood": [
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Flexor carpi radialis": {
    "blood": [
@@ -106,18 +78,13 @@
    ]
   },
   "Flexor carpi ulnaris": {
-   "blood": [
-    "Posterior ulnar recurrent artery"
-   ]
+   "blood": []
   },
   "Flexor digiti minimi brevis": {
-   "blood": [
-    "Deep palmar branch of ulnar artery"
-   ]
+   "blood": []
   },
   "Flexor digitorum profundus": {
    "blood": [
-    "Anterior interosseous artery",
     "Muscular branches of ulnar artery"
    ]
   },
@@ -128,29 +95,19 @@
    ]
   },
   "Flexor pollicis brevis": {
-   "blood": [
-    "Superficial palmar branch of radial artery"
-   ]
+   "blood": []
   },
   "Flexor pollicis longus": {
-   "blood": [
-    "Anterior interosseous artery"
-   ]
+   "blood": []
   },
   "Infraspinatus": {
-   "blood": [
-    "Suprascapular artery"
-   ]
+   "blood": []
   },
   "Latissimus dorsi": {
-   "blood": [
-    "Thoracodorsal artery"
-   ]
+   "blood": []
   },
   "Levator scapulae": {
-   "blood": [
-    "Dorsal scapular artery"
-   ]
+   "blood": []
   },
   "Lumbricals": {
    "blood": [
@@ -158,77 +115,46 @@
    ]
   },
   "Opponens digiti minimi": {
-   "blood": [
-    "Deep palmar branch of ulnar artery"
-   ]
+   "blood": []
   },
   "Opponens pollicis": {
-   "blood": [
-    "Superficial palmar branch of radial artery"
-   ]
+   "blood": []
   },
   "Palmaris longus": {
-   "blood": [
-    "Posterior ulnar recurrent artery"
-   ]
+   "blood": []
   },
   "Pectoralis major": {
-   "blood": [
-    "Pectoral branch of thoracoacromial artery"
-   ]
+   "blood": []
   },
   "Pectoralis minor": {
-   "blood": [
-    "Pectoral branch of thoracoacromial artery",
-    "Lateral thoracic artery"
-   ]
+   "blood": []
   },
   "Pronator quadratus": {
-   "blood": [
-    "Anterior interosseous artery"
-   ]
+   "blood": []
   },
   "Pronator teres": {
-   "blood": [
-    "Anterior ulnar recurrent artery"
-   ]
+   "blood": []
   },
   "Rhomboids (major and minor)": {
-   "blood": [
-    "Dorsal scapular artery"
-   ]
+   "blood": []
   },
   "Serratus anterior": {
-   "blood": [
-    "Lateral thoracic artery"
-   ]
+   "blood": []
   },
   "Subscapularis": {
-   "blood": [
-    "Subscapular artery",
-    "Lateral thoracic artery"
-   ]
+   "blood": []
   },
   "Supinator": {
-   "blood": [
-    "Radial recurrent artery",
-    "Posterior interosseous artery"
-   ]
+   "blood": []
   },
   "Supraspinatus": {
-   "blood": [
-    "Suprascapular artery"
-   ]
+   "blood": []
   },
   "Teres major": {
-   "blood": [
-    "Circumflex scapular artery"
-   ]
+   "blood": []
   },
   "Teres minor": {
-   "blood": [
-    "Circumflex scapular artery"
-   ]
+   "blood": []
   },
   "Trapezius": {
    "blood": []
@@ -244,11 +170,9 @@
    [
     "Abductor digiti minimi",
     "deep branch",
-    [
-     "Deep palmar branch of ulnar artery"
-    ],
+    [],
     "",
-    "Abduct digit 5"
+    "Abduction of 5th digit"
    ],
    [
     "Adductor pollicis",
@@ -257,7 +181,7 @@
      "Deep palmar arch"
     ],
     "",
-    "Adduct CMC, flex MCP of thumb"
+    "Adduction of CMC joint"
    ],
    [
     "Dorsal interossei",
@@ -266,44 +190,30 @@
      "Deep palmar arch"
     ],
     "",
-    "Abduct digits 2-4 from midline (dorsal abduct (DAB))"
+    "Abduction (D-A-B)"
    ],
    [
     "Flexor carpi ulnaris",
     "",
-    [
-     "Posterior ulnar recurrent artery"
-    ],
+    [],
     "",
-    "Flex/adduct wrist"
+    "Flexes wrist; adducts wrist (ulnar deviation)"
    ],
    [
     "Flexor digiti minimi brevis",
     "deep branch",
-    [
-     "Deep palmar branch of ulnar artery"
-    ],
+    [],
     "",
-    "Flex digit 5"
+    "Flexion of 5th digit"
    ],
    [
     "Flexor digitorum profundus (medial part)",
     "",
     [
-     "Anterior interosseous artery",
      "Muscular branches of ulnar artery"
     ],
     "",
-    "Flex wrist & interphalangeal joints (IPs) of digits 4-5"
-   ],
-   [
-    "Flexor pollicis brevis",
-    "deep branch",
-    [
-     "Superficial palmar branch of radial artery"
-    ],
-    "deep head, per our table; Netter lists the median nerve only",
-    "Adduct CMC"
+    "Flexes wrist; flexes IP joints in digits 4-5"
    ],
    [
     "Lumbricals 3 and 4",
@@ -312,16 +222,14 @@
      "Superficial and deep palmar arches"
     ],
     "",
-    "Flex metacarpophalangeal joints (MCPs) & extend IPs of digits 4-5"
+    "Flex the MCP joint; extend the IP joints"
    ],
    [
     "Opponens digiti minimi",
     "deep branch",
-    [
-     "Deep palmar branch of ulnar artery"
-    ],
+    [],
     "",
-    "Oppose digit 5"
+    "Opposition of the 5th digit"
    ],
    [
     "Palmar interossei",
@@ -330,18 +238,16 @@
      "Deep palmar arch"
     ],
     "",
-    "Adduct digits 2/4/5 to midline (palmar adduct (PAD))"
+    "Adduction (P-A-D)"
    ]
   ],
   "medn": [
    [
     "Abductor pollicis brevis",
     "recurrent branch",
-    [
-     "Superficial palmar branch of radial artery"
-    ],
+    [],
     "",
-    "Abduct carpometacarpal joint (CMC)"
+    "Abduction of CMC joint"
    ],
    [
     "Flexor carpi radialis",
@@ -350,17 +256,16 @@
      "Radial artery"
     ],
     "",
-    "Flex/abduct wrist"
+    "Flexes wrist; abducts wrist (radial deviation)"
    ],
    [
     "Flexor digitorum profundus (lateral part)",
     "",
     [
-     "Anterior interosseous artery",
      "Muscular branches of ulnar artery"
     ],
     "",
-    "Flex wrist & interphalangeal joints (IPs) of digits 2-3"
+    "Flexes wrist; flexes IP joints in digits 2-3"
    ],
    [
     "Flexor digitorum superficialis",
@@ -370,25 +275,21 @@
      "Radial artery"
     ],
     "",
-    "Flex wrist & metacarpophalangeal joints (MCPs) of digits 2-5"
+    "Flexes MCP joints (digits 2-5); flexes wrist"
    ],
    [
     "Flexor pollicis brevis",
     "recurrent branch",
-    [
-     "Superficial palmar branch of radial artery"
-    ],
+    [],
     "",
-    "Flex CMC"
+    "Flexes CMC joint"
    ],
    [
     "Flexor pollicis longus",
     "anterior interosseous",
-    [
-     "Anterior interosseous artery"
-    ],
+    [],
     "",
-    "Flex wrist & MCP/IP of thumb"
+    "Flexes wrist; flexes MCP & IP joint of digit 1"
    ],
    [
     "Lumbricals 1 and 2",
@@ -397,166 +298,118 @@
      "Superficial and deep palmar arches"
     ],
     "",
-    "Flex metacarpophalangeal joints (MCPs) & extend IPs of digits 2-3"
+    "Flex the MCP joint; extend the IP joints"
    ],
    [
     "Opponens pollicis",
     "recurrent branch",
-    [
-     "Superficial palmar branch of radial artery"
-    ],
+    [],
     "",
-    "Oppose CMC"
+    "Opposition of CMC joint"
    ],
    [
     "Palmaris longus",
     "",
-    [
-     "Posterior ulnar recurrent artery"
-    ],
+    [],
     "",
-    "Flex wrist, tense palmar aponeurosis"
+    "Flexes wrist; tenses palmar aponeurosis"
    ],
    [
     "Pronator quadratus",
     "anterior interosseous",
-    [
-     "Anterior interosseous artery"
-    ],
+    [],
     "",
-    "Pronate forearm"
+    "Pronates forearm"
    ],
    [
     "Pronator teres",
     "",
-    [
-     "Anterior ulnar recurrent artery"
-    ],
+    [],
     "",
-    "Pronate forearm, flex elbow"
+    "Pronates forearm; elbow flexion"
    ]
   ],
   "rad": [
    [
     "Abductor pollicis longus",
     "posterior interosseous",
-    [
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Abduct & extend carpometacarpal joint (CMC) of digit 1"
-   ],
-   [
-    "Anconeus",
-    "",
-    [
-     "Deep brachial artery"
-    ],
-    "",
-    "Weakly extend forearm, stabilize elbow"
-   ],
-   [
-    "Brachialis",
-    "",
-    [
-     "Radial recurrent artery",
-     "Muscular branches of brachial artery"
-    ],
-    "radial nerve supplies part of it (C7), per Netter",
-    "Flex forearm (primary forearm flexor - fully supinated curls)"
+    ""
    ],
    [
     "Brachioradialis",
     "",
-    [
-     "Radial recurrent artery"
-    ],
+    [],
     "",
-    "Weakly flex forearm (maximum flexion in mid-pronation - drinking)"
+    "Weakly flexes the forearm; strongest in mid-pronated position (\"drinking muscle\")"
    ],
    [
     "Extensor carpi radialis brevis",
     "deep branch",
     [
-     "Radial artery",
-     "Radial recurrent artery"
+     "Radial artery"
     ],
     "",
-    "Extend/abduct wrist"
+    "Extends and abducts wrist"
    ],
    [
     "Extensor carpi radialis longus",
     "",
     [
-     "Radial artery",
-     "Radial recurrent artery"
+     "Radial artery"
     ],
     "",
-    "Extend/abduct wrist, active during fist clenching"
+    "Extends and abducts wrist; active during fist clenching"
    ],
    [
     "Extensor carpi ulnaris",
     "posterior interosseous",
-    [
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Extend/adduct wrist, active during fist clenching"
+    "Extends and adducts wrist; active during fist clenching"
    ],
    [
     "Extensor digiti minimi",
     "posterior interosseous",
-    [
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Extend MCP/IPs of digit 5"
+    "Extends digit 5 (MCP joint primarily, IP joints secondarily); also extends wrist"
    ],
    [
     "Extensor digitorum",
     "posterior interosseous",
-    [
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Extend MCP/proximal interphalangeal joints (PIPs) of digits 2-5"
+    "Extends MCP joints primarily, IP joints secondarily (digits 2-5); also extends wrist"
    ],
    [
     "Extensor indicis",
     "posterior interosseous",
-    [
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Extend digit 2"
+    "Extends 2nd digit, enabling independent extension"
    ],
    [
     "Extensor pollicis brevis",
     "posterior interosseous",
-    [
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Extend CMC/MCP of digit 1"
+    ""
    ],
    [
     "Extensor pollicis longus",
     "posterior interosseous",
-    [
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Extend CMC/MCP/IP of digit 1"
+    ""
    ],
    [
     "Supinator",
     "deep branch",
-    [
-     "Radial recurrent artery",
-     "Posterior interosseous artery"
-    ],
+    [],
     "",
-    "Supinate forearm"
+    "Supinates forearm"
    ],
    [
     "Triceps brachii",
@@ -565,7 +418,7 @@
      "Branch of profunda brachii artery"
     ],
     "",
-    "Extend elbow (primary elbow extensor); Long head: extend shoulder joint, resist dislocation"
+    "Together extend elbow; long head extends shoulder joint and resists shoulder dislocation"
    ]
   ],
   "mc": [
@@ -576,17 +429,16 @@
      "Muscular branches of brachial artery"
     ],
     "",
-    "Supinate/flex forearm, flex shoulder, resist dislocation"
+    "Strong supinator; flexes forearm; weak shoulder flexor; resists dislocation"
    ],
    [
     "Brachialis",
     "",
     [
-     "Radial recurrent artery",
      "Muscular branches of brachial artery"
     ],
     "",
-    "Flex forearm (primary forearm flexor - fully supinated curls)"
+    "Primary flexor of the forearm"
    ],
    [
     "Coracobrachialis",
@@ -595,174 +447,137 @@
      "Muscular branches of brachial artery"
     ],
     "",
-    "Flex/adduct shoulder, resist dislocation"
+    "Flexes arm; adducts arm; resists dislocation"
    ]
   ],
   "ax": [
    [
     "Deltoid",
     "",
-    [
-     "Posterior circumflex humeral artery",
-     "Deltoid branch of thoracoacromial artery"
-    ],
+    [],
     "",
-    "Anterior head: flex/medially rotate arm; Middle head: abduct arm; Posterior head: extend/laterally rotate arm"
+    "Anterior head: flexes and medially rotates arm; middle head: abducts arm; posterior head: extends and laterally rotates arm"
    ],
    [
     "Teres minor",
     "",
-    [
-     "Circumflex scapular artery"
-    ],
+    [],
     "",
-    "Laterally rotate arm, stabilize glenohumeral joint"
+    "Lateral rotation of arm; stabilizes glenohumeral joint"
    ]
   ],
   "ss": [
    [
     "Infraspinatus",
     "",
-    [
-     "Suprascapular artery"
-    ],
+    [],
     "",
-    "Laterally rotate arm, stabilize glenohumeral joint"
+    "Lateral rotation of arm; stabilizes glenohumeral joint"
    ],
    [
     "Supraspinatus",
     "",
-    [
-     "Suprascapular artery"
-    ],
+    [],
     "",
-    "Abduct arm (first 15°), stabilize glenohumeral joint"
+    "First 15 degrees of arm abduction; stabilizes glenohumeral joint"
    ]
   ],
   "td": [
    [
     "Latissimus dorsi",
     "",
-    [
-     "Thoracodorsal artery"
-    ],
+    [],
     "",
-    "Adduct/extend/medially rotate humerus"
+    "Extends, adducts and medially rotates humerus"
    ]
   ],
   "ds": [
    [
     "Levator scapulae",
     "",
-    [
-     "Dorsal scapular artery"
-    ],
+    [],
     "",
-    "Elevate scapula, rotate to depress glenoid cavity"
+    "Elevates scapula; rotates to depress glenoid cavity"
    ],
    [
     "Rhomboid major",
     "",
-    [
-     "Dorsal scapular artery"
-    ],
+    [],
     "",
-    "Retract scapula, rotate to depress glenoid cavity; fix scapula to thoracic wall"
+    "Retract scapula; rotate to depress glenoid cavity; fix scapula to thoracic wall"
    ],
    [
     "Rhomboid minor",
     "",
-    [
-     "Dorsal scapular artery"
-    ],
+    [],
     "",
-    "Retract scapula, rotate to depress glenoid cavity; fix scapula to thoracic wall"
+    "Retract scapula; rotate to depress glenoid cavity; fix scapula to thoracic wall"
    ]
   ],
   "lp": [
    [
     "Pectoralis major",
     "",
-    [
-     "Pectoral branch of thoracoacromial artery"
-    ],
+    [],
     "",
-    "Adduct/flex/medially rotate humerus"
+    "Adducts, flexes and medially rotates humerus"
    ],
    [
     "Pectoralis minor",
     "",
-    [
-     "Pectoral branch of thoracoacromial artery",
-     "Lateral thoracic artery"
-    ],
+    [],
     "per our table; Netter lists the medial pectoral nerve only",
-    "Stabilize scapula by drawing it anteriorly/inferiorly against thoracic wall"
+    "Stabilizes scapula by drawing it inferiorly and anteriorly against thoracic wall"
    ]
   ],
   "mp": [
    [
     "Pectoralis major",
     "",
-    [
-     "Pectoral branch of thoracoacromial artery"
-    ],
+    [],
     "",
-    "Adduct/flex/medially rotate humerus"
+    "Adducts, flexes and medially rotates humerus"
    ],
    [
     "Pectoralis minor",
     "",
-    [
-     "Pectoral branch of thoracoacromial artery",
-     "Lateral thoracic artery"
-    ],
+    [],
     "",
-    "Stabilize scapula by drawing it anteriorly/inferiorly against thoracic wall"
+    "Stabilizes scapula by drawing it inferiorly and anteriorly against thoracic wall"
    ]
   ],
   "lt": [
    [
     "Serratus anterior",
     "",
-    [
-     "Lateral thoracic artery"
-    ],
+    [],
     "",
-    "Protract scapula (boxer's muscle)"
+    "Protraction of the scapula"
    ]
   ],
   "us": [
    [
     "Subscapularis",
     "",
-    [
-     "Subscapular artery",
-     "Lateral thoracic artery"
-    ],
+    [],
     "",
-    "Medially rotate arm"
+    "Medially rotates arm; stabilizes glenohumeral joint"
    ]
   ],
   "ls": [
    [
     "Subscapularis",
     "",
-    [
-     "Subscapular artery",
-     "Lateral thoracic artery"
-    ],
+    [],
     "",
-    "Medially rotate arm"
+    "Medially rotates arm; stabilizes glenohumeral joint"
    ],
    [
     "Teres major",
     "",
-    [
-     "Circumflex scapular artery"
-    ],
+    [],
     "",
-    "Adduct/medially rotate arm (mini latissimus dorsi)"
+    "Adducts and medially rotates arm"
    ]
   ]
  },
