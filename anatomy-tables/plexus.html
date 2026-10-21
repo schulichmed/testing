@@ -201,6 +201,7 @@
     document.getElementById("bp-next").addEventListener("click",ask);
   }
   document.addEventListener("anatomy-mode",function(e){
+    if(document.getElementById("plexus").hidden) return;  // the event is shared with the cranial nerve map
     mode=e.detail;
     hint.textContent = mode==="test" ? "Answer on the right: the nerve names are hidden until you do, then its path lights up." : LOOK_HINT;
     if(mode==="test") ask(); else { svg.classList.remove("quiz"); lookIntro(); }

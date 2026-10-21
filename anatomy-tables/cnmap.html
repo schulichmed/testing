@@ -1,0 +1,207 @@
+<div class="bp cnm">
+  <div class="bp-fig">
+    <div class="scroll"><svg id="cn-svg" viewBox="0 0 1020 600" role="img" aria-label="The twelve cranial nerves: where each leaves the brain, the opening it leaves the skull by, and what it supplies"></svg></div>
+    <p class="help" id="cn-hint">Click a nerve to light it and read its row of the table, or click an opening in the skull to see which nerves pass through it. Colour: <b class="cn-k m-S">sensory</b> · <b class="cn-k m-M">motor</b> · <b class="cn-k m-B">both</b> (Some Say Marry Money But My Brother Says Big Brains Matter More).</p>
+  </div>
+  <aside class="bp-panel" id="cn-panel"></aside>
+</div>
+<style>
+.cnm .bp-seg.m-S .vis{stroke:#1f6f8b}.cnm .bp-seg.m-M .vis{stroke:#b5600f}.cnm .bp-seg.m-B .vis{stroke:#6a4aa8}
+.cn-k.m-S{color:#1f6f8b}.cn-k.m-M{color:#b5600f}.cn-k.m-B{color:#6a4aa8}
+:root[data-theme="dark"] .cnm .bp-seg.m-S .vis{stroke:#5fb3cf}:root[data-theme="dark"] .cnm .bp-seg.m-M .vis{stroke:#f0a35c}:root[data-theme="dark"] .cnm .bp-seg.m-B .vis{stroke:#b49be8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cnm .bp-seg.m-S .vis{stroke:#5fb3cf}:root:not([data-theme="light"]) .cnm .bp-seg.m-M .vis{stroke:#f0a35c}:root:not([data-theme="light"]) .cnm .bp-seg.m-B .vis{stroke:#b49be8}}
+.cnm .bp-seg .lbl{paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+.cnm .bp-seg .tgt{font:500 12.5px Inter,sans-serif;fill:var(--ink)}
+.cn-brain{fill:var(--accent-soft);stroke:var(--wire);stroke-width:1.2}
+.cn-region{font:600 11px Inter,sans-serif;fill:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.cn-for{cursor:pointer}
+.cn-for rect{fill:var(--card);stroke:var(--wire);stroke-width:1.2;opacity:.94}
+.cn-for:hover rect,.cn-for.on rect{stroke:var(--accent);stroke-width:2}
+.cn-for text{font:600 11.5px Inter,sans-serif;fill:var(--ink);pointer-events:none}
+svg.quiz .cn-for text.nm{visibility:hidden}
+svg.quiz .bp-seg .tgt{visibility:hidden}
+.cnm .row-cell span{display:block}
+.cnm .row-cell span.sub{padding-left:12px;color:var(--muted)}
+</style>
+<script>
+(function(){
+  // The table's rows (CN, Name, Origin, Exits via, Fibres and function, Test, Clinical notes), filled in by build.py.
+  var ROWS = /*CN_ROWS*/[];
+  var NUM = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+  // Sensory, motor or both, as the mnemonic has it (III, VII, IX and X also carry parasympathetic fibres).
+  var MOD = {I:"S",II:"S",III:"M",IV:"M",V:"B",VI:"M",VII:"B",VIII:"S",IX:"B",X:"B",XI:"M",XII:"M"};
+  var MODNAME = {S:"Sensory",M:"Motor",B:"Both"};
+  // Openings in the skull, top to bottom: [id, name, y top, y bottom, nerves through it]
+  var FOR = [
+    ["crib","Cribriform plate",46,74,["I"]],
+    ["opt","Optic canal",104,132,["II"]],
+    ["sof","Superior orbital fissure",176,260,["III","IV","V1","VI"]],
+    ["rot","Foramen rotundum",274,302,["V2"]],
+    ["ova","Foramen ovale",316,344,["V3"]],
+    ["iam","Internal acoustic meatus",352,390,["VII","VIII"]],
+    ["jug","Jugular foramen",398,456,["IX","X","XI"]],
+    ["hyp","Hypoglossal canal",474,502,["XII"]]
+  ];
+  var X0 = 470, X1 = 600, XT = 650;
+  // Each nerve: its path from where it leaves the brain to the opening, then what it supplies (y of each end).
+  var S = {
+    I:   {paths:[[[237,60],[300,60],[X0,60]]], ends:[[60,"Smell"]], lbl:[246,52]},
+    II:  {paths:[[[203,114],[300,118],[X0,118]]], ends:[[118,"Vision"]], lbl:[252,108]},
+    III: {paths:[[[174,198],[250,194],[X0,190]]], ends:[[190,"Most eye muscles, upper lid, pupil, lens"]], lbl:[214,186]},
+    IV:  {paths:[[[219,232],[262,212],[X0,205]]], ends:[[205,"Superior oblique"]], lbl:[262,226]},
+    V:   {paths:[[[252,282],[360,282]],[[360,282],[405,240],[X0,232]],[[360,282],[X0,288]],[[360,282],[405,322],[X0,330]]],
+          ends:[[232,"V1: forehead, eye, nose"],[288,"V2: cheek, upper teeth"],[330,"V3: jaw, lower teeth, chewing"]], lbl:[284,274],
+          sub:[[408,232,"V1"],[420,283,"V2"],[408,341,"V3"]], ganglion:[360,282]},
+    VI:  {paths:[[[182,342],[262,322],[322,264],[400,250],[X0,247]]], ends:[[247,"Lateral rectus"]], lbl:[300,300]},
+    VII: {paths:[[[242,348],[X0,362]]], ends:[[362,"Face muscles, taste, tears, saliva"]], lbl:[262,344]},
+    VIII:{paths:[[[248,358],[X0,377]]], ends:[[377,"Hearing, balance (does not leave the skull)"]], lbl:[262,376]},
+    IX:  {paths:[[[214,388],[X0,412]]], ends:[[412,"Taste (back third), pharynx, parotid"]], lbl:[330,392]},
+    X:   {paths:[[[216,408],[X0,427]]], ends:[[427,"Palate, larynx, heart, gut"]], lbl:[330,412]},
+    XI:  {paths:[[[216,428],[X0,442]],[[193,548],[226,520],[262,474],[330,434]]], ends:[[442,"Sternocleidomastoid, trapezius"]], lbl:[268,520]},
+    XII: {paths:[[[194,424],[236,468],[330,488],[X0,488]]], ends:[[488,"Tongue"]], lbl:[214,470]}
+  };
+  var NAME = {}; ROWS.forEach(function(r){ NAME[r[0]] = r[1]; });
+  function title(n){ return "CN " + n + (NAME[n] ? " · " + NAME[n] : ""); }
+
+  var NS="http://www.w3.org/2000/svg", svg=document.getElementById("cn-svg");
+  function el(tag, attrs, parent){var e=document.createElementNS(NS,tag); for(var k in attrs)e.setAttribute(k,attrs[k]); (parent||svg).appendChild(e); return e;}
+  function d(pts){ return pts.map(function(p,i){return (i?"L":"M")+p[0]+" "+p[1];}).join(" "); }
+
+  // the brain from below, schematic
+  el("rect",{x:52,y:30,width:236,height:120,rx:46,"class":"cn-brain"});
+  el("ellipse",{cx:222,cy:60,rx:16,ry:8,"class":"cn-brain"});
+  el("path",{d:"M140 108 L200 134 M140 134 L200 108","class":"cn-brain",style:"stroke-width:7;stroke:var(--wire);opacity:.6"});
+  el("circle",{cx:170,cy:146,r:6,"class":"cn-brain"});
+  el("path",{d:"M118 162 L222 162 L208 238 L132 238 Z","class":"cn-brain"});
+  el("ellipse",{cx:170,cy:290,rx:86,ry:50,"class":"cn-brain"});
+  el("path",{d:"M130 340 L210 340 L198 470 L142 470 Z","class":"cn-brain"});
+  el("ellipse",{cx:206,cy:398,rx:8,ry:22,"class":"cn-brain"});
+  el("rect",{x:148,y:470,width:44,height:96,rx:8,"class":"cn-brain"});
+  [["Forebrain",66,98],["Midbrain",18,204],["Pons",18,294],["Medulla",18,410],["Spinal cord",18,526]].forEach(function(t){ el("text",{x:t[1],y:t[2],"class":"cn-region"}).textContent=t[0]; });
+  [["Leaves the brain",170],["Leaves the skull",535],["Supplies",790]].forEach(function(h){ el("text",{x:h[1],y:592,"text-anchor":"middle","class":"bp-head"}).textContent=h[0]; });
+
+  var nodes={}, fors={};
+  NUM.forEach(function(n){
+    var s=S[n], g=el("g",{"class":"bp-seg m-"+MOD[n],"data-id":n,tabindex:0,role:"button","aria-label":title(n)});
+    var all=s.paths.map(d).concat(s.ends.map(function(e){return "M"+X1+" "+e[0]+" L"+(XT-8)+" "+e[0];})).join(" ");
+    el("path",{d:all,"class":"vis"},g); el("path",{d:all,"class":"hit"},g);
+    if(s.ganglion) el("ellipse",{cx:s.ganglion[0],cy:s.ganglion[1],rx:9,ry:6,"class":"cn-brain"},g);
+    el("text",{x:s.lbl[0],y:s.lbl[1],"text-anchor":"middle","class":"lbl"},g).textContent=n;
+    (s.sub||[]).forEach(function(t){ el("text",{x:t[0],y:t[1],"text-anchor":"middle","class":"lbl",style:"font-size:11px"},g).textContent=t[2]; });
+    s.ends.forEach(function(e){ el("text",{x:XT,y:e[0]+4,"class":"tgt"},g).textContent=e[1]; });
+    nodes[n]=g;
+  });
+  FOR.forEach(function(f){
+    var g=el("g",{"class":"cn-for","data-for":f[0],tabindex:0,role:"button","aria-label":f[1]});
+    el("rect",{x:X0,y:f[2],width:X1-X0,height:f[3]-f[2],rx:7},g);
+    var words=f[1].split(" "), lines=f[1].length>18?[words.slice(0,-1).join(" "),words[words.length-1]]:[f[1]];
+    lines.forEach(function(l,i){ el("text",{x:(X0+X1)/2,y:(f[2]+f[3])/2+4+(i-(lines.length-1)/2)*13,"text-anchor":"middle","class":"nm"},g).textContent=l; });
+    fors[f[0]]=g;
+  });
+
+  function base(n){ return n.charAt(0)==="V" && n.length===2 && /[123]/.test(n.charAt(1)) ? "V" : n; }
+  function forOf(n){ return FOR.filter(function(f){ return f[4].indexOf(n)>=0; })[0]; }
+  function exitsOf(n){ return n==="V" ? ["V1","V2","V3"].map(function(b){return b+": "+forOf(b)[1];}).join(" · ") : forOf(n)[1]; }
+
+  var panel=document.getElementById("cn-panel"), mode="look", hint=document.getElementById("cn-hint"), LOOK_HINT=hint.innerHTML;
+  function light(set, focus){
+    NUM.forEach(function(n){ nodes[n].classList.toggle("on", !!(set&&set[n])); nodes[n].classList.toggle("focus", n===focus); });
+    FOR.forEach(function(f){ fors[f[0]].classList.toggle("on", !!(set&&f[4].some(function(x){return set[base(x)];}))); });
+    svg.classList.toggle("dim", !!set);
+  }
+  function cell(text){
+    var out=document.createElement("div"); out.className="row-cell";
+    String(text||"").split("<br>").map(function(l){return l.trim();}).filter(Boolean).forEach(function(l){
+      var sp=document.createElement("span"); if(l.indexOf("- ")===0){ sp.className="sub"; l=l.slice(2); } sp.textContent=l; out.appendChild(sp);
+    });
+    return out;
+  }
+  function showNerve(n){
+    var one={}; one[n]=1; light(one, n);
+    var r=ROWS.filter(function(x){return x[0]===n;})[0]||[];
+    panel.innerHTML='<p class="kind">'+MODNAME[MOD[n]]+'</p><h3></h3>';
+    panel.querySelector("h3").textContent=title(n);
+    [["Leaves the brain",r[2]],["Leaves the skull",r[3]],["Fibres and function",r[4]],["Test",r[5]],["Clinical notes",r[6]]].forEach(function(p){
+      if(!p[1]) return; var l=document.createElement("p"); l.className="lab"; l.textContent=p[0]; panel.appendChild(l); panel.appendChild(cell(p[1]));
+    });
+  }
+  function showFor(id){
+    var f=FOR.filter(function(x){return x[0]===id;})[0], set={};
+    f[4].forEach(function(x){ set[base(x)]=1; }); light(set, null); fors[id].classList.add("on");
+    panel.innerHTML='<p class="kind">Opening in the skull</p><h3></h3><p class="lab">What passes through</p>';
+    panel.querySelector("h3").textContent=f[1];
+    var ul=document.createElement("div"); ul.className="chips";
+    f[4].forEach(function(x){ var b=document.createElement("button"); b.className="chip in"; b.textContent=x; b.onclick=function(){showNerve(base(x));}; ul.appendChild(b); });
+    panel.appendChild(ul);
+    if(id==="iam"){ var p=document.createElement("p"); p.textContent="VIII stops here: it never leaves the skull. VII runs on through the facial canal and leaves by the stylomastoid foramen."; panel.appendChild(p); }
+    if(id==="jug"){ var p2=document.createElement("p"); p2.textContent="XI's spinal root climbs up through the foramen magnum first, then leaves with IX and X."; panel.appendChild(p2); }
+  }
+  function lookIntro(){
+    light(null);
+    panel.innerHTML='<p class="kind">Look</p><h3>Pick a nerve or an opening</h3><p>Each nerve runs left to right: where it leaves the brain (seen from below), the opening it leaves the skull by, and what it supplies. Four nerves share the superior orbital fissure, two the internal acoustic meatus, three the jugular foramen.</p>';
+  }
+  svg.addEventListener("click",function(e){
+    if(mode!=="look") return;
+    var g=e.target.closest(".bp-seg"), f=e.target.closest(".cn-for");
+    if(f) showFor(f.dataset.for); else if(g) showNerve(g.dataset.id);
+  });
+  svg.addEventListener("keydown",function(e){
+    if(mode!=="look"||(e.key!=="Enter"&&e.key!==" ")) return;
+    var g=e.target.closest&&e.target.closest(".bp-seg"), f=e.target.closest&&e.target.closest(".cn-for");
+    if(f||g){ e.preventDefault(); f?showFor(f.dataset.for):showNerve(g.dataset.id); }
+  });
+
+  // ---- Test ----
+  var BRANCHES=["I","II","III","IV","V1","V2","V3","VI","VII","VIII","IX","X","XI","XII"];
+  var score={right:0,total:0}, q=null;
+  function shuffle(a){a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t;} return a;}
+  function pick(a){return a[Math.floor(Math.random()*a.length)];}
+  function options(right, pool){return shuffle([right].concat(shuffle(pool.filter(function(x){return x!==right;})).slice(0,3)));}
+  function endOf(b){ var n=base(b), s=S[n]; return n==="V" ? s.ends[["V1","V2","V3"].indexOf(b)][1].replace(/^V\d: /,"") : s.ends[0][1]; }
+  var MAKERS=[
+    function(){ var b=pick(BRANCHES); return {kind:"choice", id:base(b), text:"Which opening does <b>"+(b.length===2&&b.charAt(0)==="V"&&b!=="VI"?b+" (CN V)":"CN "+b)+"</b> leave the skull by?", opts:options(forOf(b)[1], FOR.map(function(f){return f[1];})), answer:forOf(b)[1]}; },
+    function(){ var n=pick(NUM); return {kind:"choice", id:n, text:"Is <b>CN "+n+"</b> sensory, motor or both?", opts:["Sensory","Motor","Both"], answer:MODNAME[MOD[n]]}; },
+    function(){ var n=pick(NUM); return {kind:"choice", id:n, name:true, text:"Name the highlighted nerve.", opts:options(title(n), NUM.map(title)), answer:title(n)}; },
+    function(){ var b=pick(BRANCHES.filter(function(x){return x!=="V1"&&x!=="V2"&&x!=="V3";})); return {kind:"choice", id:base(b), text:"Which nerve: <b>"+endOf(b).toLowerCase()+"</b>?", opts:options(title(b), NUM.map(title)), answer:title(b)}; },
+    function(){ var f=pick(FOR.filter(function(x){return x[4].length>1;})); return {kind:"multi", id:null, f:f, text:"Which nerves leave by the <b>"+f[1].toLowerCase()+"</b>? Pick all.", answer:f[4]}; }
+  ];
+  function ask(){
+    q=pick(MAKERS)(); svg.classList.add("quiz");
+    if(q.name){ var hl={}; hl[q.id]=1; light(hl, q.id); } else light(null);
+    var h='<p class="kind">Test · '+score.right+' / '+score.total+'</p><p class="q">'+q.text+'</p>';
+    if(q.kind==="multi") h+='<div class="chips pickable">'+BRANCHES.map(function(r){return '<button class="chip" data-r="'+r+'" aria-pressed="false">'+r+'</button>';}).join("")+'</div><button class="go" id="cn-check">Check</button>';
+    else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt">'+o+'</button>';}).join("")+'</div>';
+    h+='<div class="fb" id="cn-fb"></div>';
+    panel.innerHTML=h;
+    panel.querySelectorAll(".chip[data-r]").forEach(function(b){b.addEventListener("click",function(){b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")!=="true");});});
+    var chk=document.getElementById("cn-check");
+    if(chk) chk.addEventListener("click",function(){
+      var got=[].slice.call(panel.querySelectorAll('.chip[aria-pressed="true"]')).map(function(b){return b.dataset.r;});
+      panel.querySelectorAll(".chip[data-r]").forEach(function(b){ var inAns=q.answer.indexOf(b.dataset.r)>=0; b.classList.add(inAns?"right":(b.getAttribute("aria-pressed")==="true"?"wrong":"off")); b.disabled=true;});
+      chk.remove(); finish(got.slice().sort().join()===q.answer.slice().sort().join(), q.answer.join(", "));
+    });
+    panel.querySelectorAll(".opt").forEach(function(b){b.addEventListener("click",function(){
+      panel.querySelectorAll(".opt").forEach(function(x){x.disabled=true; if(x.textContent===q.answer)x.classList.add("right");});
+      if(b.textContent!==q.answer) b.classList.add("wrong");
+      finish(b.textContent===q.answer, q.answer);
+    });});
+  }
+  function finish(ok, ans){
+    score.total++; if(ok) score.right++;
+    svg.classList.remove("quiz");
+    if(q.f){ var set={}; q.f[4].forEach(function(x){set[base(x)]=1;}); light(set,null); } else { var one={}; one[q.id]=1; light(one, q.id); }
+    var fb=document.getElementById("cn-fb");
+    fb.className="fb "+(ok?"ok":"no");
+    fb.innerHTML=(ok?"Right. ":"Not quite: <b>"+ans+"</b>. ")+(q.id?title(q.id)+" leaves the skull by "+exitsOf(q.id)+". ":"")+'<button class="go" id="cn-next">Next question</button>';
+    panel.querySelector(".kind").textContent="Test · "+score.right+" / "+score.total;
+    document.getElementById("cn-next").addEventListener("click",ask);
+  }
+  document.addEventListener("anatomy-mode",function(e){
+    if(document.getElementById("cn-map").hidden) return;  // the event is shared with the plexus tab
+    mode=e.detail;
+    hint.innerHTML = mode==="test" ? "Answer on the right: names, openings and targets are hidden until you do." : LOOK_HINT;
+    if(mode==="test") ask(); else { svg.classList.remove("quiz"); lookIntro(); }
+  });
+  lookIntro();
+})();
+</script>

@@ -8,6 +8,8 @@ Input: anatomy-tables/vault_tables.json, the "summary table" sections of the nin
        FIXES below corrects the rows that disagree with the notes' own lecture content.
        anatomy-tables/plexus.html, the interactive brachial plexus tab (from the lecture slides and
        the vault's "Anatomy of the Brachial Plexus" note), dropped in after the back.
+       anatomy-tables/cnmap.html, the drawn cranial nerve map (brain, opening, target), dropped in after
+       the cranial nerve table, with that table's corrected rows filled in for its panel.
 Output: anatomy-tables/index.html
 
 Usage: python3 anatomy-tables/build.py
@@ -130,6 +132,14 @@ def apply_fixes(rows: list[list[str]], key_col: int) -> None:
                 if old not in row[col]:
                     raise ValueError(f"fix for {key} col {col} no longer matches: {old!r}")
                 row[col] = row[col].replace(old, new)
+
+
+def build_cn_map(table: dict) -> str:
+    """The cranial nerve map tab, with the corrected table rows it shows when a nerve is clicked."""
+    rows = [list(r) for r in table["rows"]]
+    apply_fixes(rows, 0)
+    data = json.dumps([[clean(c) for c in r] for r in rows], ensure_ascii=False).replace("</", "<\\/")
+    return (HERE / "cnmap.html").read_text(encoding="utf-8").replace("/*CN_ROWS*/[]", data)
 
 
 def build_cn(table: dict) -> str:
@@ -360,7 +370,7 @@ def build_region(table: dict, region: str, seen_notes: set[str]) -> str:
                    if boxes else "")
 
 
-KINDS = {"cn": "cn", "plexus": "bp", "dermatomes": "derm"}
+KINDS = {"cn": "cn", "cn-map": "bp", "plexus": "bp", "dermatomes": "derm"}
 DERMATOMES = ('<iframe class="derm-frame" data-src="../dermatomes/?embed=1" title="Dermatome map in 3D" '
               'loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>'
               '<p class="help">Also on its own page: <a href="../dermatomes/">dermatome map in 3D</a>.</p>')
@@ -371,7 +381,8 @@ def main() -> None:
     tables = json.loads((HERE / "vault_tables.json").read_text(encoding="utf-8"))
     by_stem = {Path(t["note"]).stem: t for t in tables}
     cn = next(t for s, t in by_stem.items() if s.startswith("05 - Cranial Nerve"))
-    sections = [("cn", "Cranial nerves", "Cranial nerves I to XII", build_cn(cn))]
+    sections = [("cn", "Cranial nerves", "Cranial nerves I to XII", build_cn(cn)),
+                ("cn-map", "Cranial nerve map", "Cranial nerve map", build_cn_map(cn))]
     seen: set[str] = set()
     for prefix, tab, heading in REGIONS:
         table = next(t for s, t in by_stem.items() if s.startswith(prefix))
