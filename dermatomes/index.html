@@ -61,6 +61,13 @@ h2{font-size:20px}
 .row dl{margin:0;display:grid;grid-template-columns:62px 1fr;gap:1px 8px}
 .row dt{color:var(--muted);font-size:12px}
 .row dd{margin:0}
+mark{background:#fff1a8;color:#201436;border-radius:3px;padding:0 2px}
+.keytest{font-weight:600}
+.keytest small{font-weight:400;color:var(--muted)}
+.match{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;margin-top:8px;font-size:14px}
+.match select{font:inherit;font-size:14px;padding:4px 6px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.match .ok{color:var(--ok);font-weight:600}.match .bad{color:var(--bad);font-weight:600}
+.check{margin-top:10px}
 .q{font-size:16px;margin:4px 0 10px}
 .q b{color:var(--accent)}
 .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
@@ -176,7 +183,7 @@ html.embed body{background:transparent}
       <button role="tab" aria-selected="false" data-tab="test">Test</button>
     </div>
     <section id="look">
-      <p class="help">Every colour band on the model is labelled with its level; the ten on our table are in purple. Labels that would overlap are left out, so zoom in to see them all. Click a level to fly to its test point; click it again to go back to the whole body.</p>
+      <p class="help">Every colour band on the model is labelled with its level; the ten on our table are in purple. Labels that would overlap are left out, so zoom in to see them all. Click a level to fly to its test point; click it again to go back to the whole body. <mark>Yellow</mark> is the movement each myotome is tested with; <u>underlined</u> is its second test.</p>
       <div id="rows"></div>
     </section>
     <section id="test" hidden>
@@ -184,6 +191,7 @@ html.embed body{background:transparent}
         <button data-kind="name" aria-pressed="true">Name the marked point</button>
         <button data-kind="find" aria-pressed="false">Find it on the body</button>
         <button data-kind="table" aria-pressed="false">From the table</button>
+        <button data-kind="myo" aria-pressed="false">Match the myotomes</button>
       </div>
       <div id="qbox"></div>
       <div class="score" id="score"></div>
@@ -221,7 +229,24 @@ const els=LABELS.map(([n,p,nrm])=>{ const el=document.createElement('div'); el.c
 const probe=document.createElement('div'); probe.className='lbl probe'; probe.textContent='?'; layer.appendChild(probe);
 let probeAt=null;
 
-function rowDetail(k){ return `<dt>Sensory</dt><dd>${k.sensory}</dd><dt>Motor</dt><dd>${k.motor.join('<br>')}</dd><dt>Reflexes</dt><dd>${k.reflex}</dd>`; }
+/* The movement each upper-limb myotome is tested with (from the class's "Testing myotomes & dermatomes" slide),
+   and which of the table's motor entries it is, so the row can highlight them */
+const MYO = [
+  {lv:'C5', test:'Abduction of the arm', muscle:'deltoid', also:'elbow flexion (biceps)', row:'C5', hl:['Shoulder abduction'], soft:['Elbow flexion']},
+  {lv:'C6', test:'Wrist extension', muscle:'wrist extensors', also:'elbow flexion (biceps)', row:'C6', hl:['Wrist extension'], soft:['Elbow flexion']},
+  {lv:'C7', test:'Elbow extension', muscle:'triceps', also:'wrist flexion, finger extension', row:'C7', hl:['Elbow extension'], soft:['Finger extension']},
+  {lv:'C8', test:'Finger flexion', muscle:'finger flexors', row:'C8/T1', hl:['Finger flexion']},
+  {lv:'T1', test:'Finger abduction & adduction', muscle:'interossei', row:'C8/T1', hl:['Finger abduction','Finger adduction']},
+];
+function keyTest(k){
+  const m = MYO.filter(x=>x.row===k.id); if (!m.length) return '';
+  return `<dt>Key test</dt><dd class="keytest">${m.map(x=>`${m.length>1?x.lv+': ':''}<mark>${x.test}</mark> <small>(${x.muscle}${x.also?'; also '+x.also:''})</small>`).join('<br>')}</dd>`;
+}
+function motorList(k){
+  const m = MYO.filter(x=>x.row===k.id), hl = m.flatMap(x=>x.hl), soft = m.flatMap(x=>x.soft||[]);
+  return k.motor.map(t=> hl.includes(t) ? `<mark>${t}</mark>` : soft.includes(t) ? `<u>${t}</u>` : t).join('<br>');
+}
+function rowDetail(k){ return `${keyTest(k)}<dt>Sensory</dt><dd>${k.sensory}</dd><dt>Motor</dt><dd>${motorList(k)}</dd><dt>Reflexes</dt><dd>${k.reflex}</dd>`; }
 function pressed(sel, fn){ document.querySelectorAll(sel).forEach(b=>b.setAttribute('aria-pressed', fn(b)?'true':'false')); }
 const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]], dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2], len=a=>Math.hypot(...a);
 function fly(eye, target){ if (ready) api.setCameraLookAt(eye, target, 1.2); }
@@ -331,7 +356,29 @@ document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{ quiz.kind=b.
 const qbox=document.getElementById('qbox');
 function pickKey(){ let k; do { k=KEY[Math.floor(Math.random()*KEY.length)]; } while (k===quiz.cur); return k; }
 const choices=()=>`<div class="choices">${KEY.map(c=>`<button data-a="${c.id}">${c.id}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+function shuffled(a){ a=a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function matchQuestion(){
+  quiz.done=false; probeAt=null; force=true;
+  const order=shuffled(MYO), levels=MYO.map(x=>x.lv);
+  qbox.innerHTML=`<p class="q">Match the anatomical movement with the myotome being tested.</p><div class="match">${order.map((x,i)=>`<span>${x.test}</span><span><select data-i="${i}" aria-label="${x.test}"><option value="">—</option>${levels.map(l=>`<option>${l}</option>`).join('')}</select></span>`).join('')}</div><button class="next check" id="mcheck">Check</button><div class="fb" id="fb"></div>`;
+  document.getElementById('mcheck').onclick=()=>{
+    if (quiz.done) return;
+    let right=0;
+    qbox.querySelectorAll('select').forEach(sel=>{
+      const x=order[+sel.dataset.i], ok=sel.value===x.lv; if (ok) right++;
+      sel.disabled=true; const mark=document.createElement('b'); mark.className=ok?'ok':'bad';
+      mark.textContent = ok ? ' ✓' : ` ${x.lv}`; sel.after(mark);
+    });
+    quiz.done=true; quiz.total+=MYO.length; quiz.right+=right; score();
+    const fb=document.getElementById('fb'); fb.className='fb '+(right===MYO.length?'ok':'bad');
+    fb.innerHTML=`<b>${right} of ${MYO.length}</b><dl>${MYO.map(x=>`<dt>${x.lv}</dt><dd><mark>${x.test}</mark> (${x.muscle})</dd>`).join('')}</dl>`;
+    const nb=document.createElement('button'); nb.className='next'; nb.textContent='Shuffle and try again'; nb.onclick=matchQuestion; fb.appendChild(nb);
+    document.getElementById('mcheck').remove();
+  };
+  score();
+}
 function newQuestion(){
+  if (quiz.kind==='myo') return matchQuestion();
   quiz.cur=pickKey(); quiz.done=false; probeAt=null; probe.textContent='?'; force=true; const k=quiz.cur;
   if (quiz.kind==='name'){
     qbox.innerHTML=`<p class="q">Which level's test point is marked <b>?</b> on the model?</p>`+choices();
