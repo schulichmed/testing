@@ -430,6 +430,8 @@ def build_dermatomes(bp3d_dir: Path, obj_dir: Path) -> None:
     scene.export(HERE / "skin.glb")
     log.info("skin.glb: %.1f MB, %s", (HERE / "skin.glb").stat().st_size / 1e6, counts)
 
+    build_limb(skin, q, part, digit, near_fid, sk, level, hum_top, elbow, wrist)
+
     # ISNCSCI key sensory points, snapped onto the right half of the skin
     right = skin.vertices[skin.vertices[:, 0] < 0]
     snap_tree = cKDTree(right)
@@ -496,6 +498,91 @@ def build_dermatomes(bp3d_dir: Path, obj_dir: Path) -> None:
     out = {"keypoints": {k: snap(v) for k, v in key.items()}, "trunk_field": TRUNK_FIELD, "labels": labels}
     (HERE / "dermatomes.json").write_text(json.dumps(out))
     log.info("dermatomes.json: %d key points, %d labels", len(key), len(labels))
+
+
+# Cutaneous nerve territories of the upper limb (Netter N400, as on the class slides), and the parent nerve of each
+TERRITORIES = ["ax", "rad", "mca", "mcf", "lcf", "medn", "mpb", "uln"]  # mpb: the median's palmar branch, kept apart
+ROOT_CHANNELS = ["C6", "C7", "C8", "T1"]  # each one's signed distance from its dermatome border rides in one colour channel
+FUZZ_MM = 60.0  # distances are clipped to +-FUZZ_MM before they are packed into a byte
+
+
+def build_limb(skin: trimesh.Trimesh, q: np.ndarray, part: np.ndarray, digit: np.ndarray, near_fid: np.ndarray,
+               sk: "Skeleton", level: np.ndarray, hum_top: np.ndarray, elbow: np.ndarray, wrist: np.ndarray) -> None:
+    """
+    limb.glb: the skin of both upper limbs, one mesh per cutaneous nerve territory (ct_<nerve>), so a nerve's
+    patch has the sharp edge of a single nerve. Each vertex also carries how far it sits inside (+) or outside (-)
+    the C6, C7, C8 and T1 dermatomes, so the page can draw a root's patch with the fuzzy edge of overlapping roots.
+    """
+    limb = np.isin(part, ["arm", "forearm", "hand"])
+    # skin of the thigh beside the hanging hand can find a hand bone nearest; keep only the two arms themselves
+    sub = np.where(limb)[0]
+    pos = {f: i for i, f in enumerate(sub)}
+    adj = [(pos[a], pos[b]) for a, b in skin.face_adjacency if a in pos and b in pos]
+    comp = trimesh.graph.connected_component_labels(adj, node_count=len(sub))
+    sizes = np.bincount(comp)
+    limb[sub[sizes[comp] < 0.2 * sizes.max()]] = False
+    terr = np.full(len(q), "", dtype=object)
+
+    m = limb & (part == "arm")
+    t, th = axis_frame(q[m], hum_top, elbow)
+    terr[m] = np.select(
+        [(t < 0.45) & (th >= 0) & (th < 165),  # superior lateral cutaneous nerve of the arm
+         (th >= 0) | (th <= -150),  # inferior lateral and posterior cutaneous nerves of the arm
+         (th > -60) & (t >= 0.55)],  # the medial cutaneous nerve of the forearm starts above the elbow
+        ["ax", "rad", "mcf"], "mca")
+
+    m = limb & (part == "forearm")
+    t, th = axis_frame(q[m], elbow, wrist)
+    terr[m] = np.select([(th >= 0) & (th < 150), (th >= 150) | (th <= -150)], ["lcf", "rad"], "mcf")
+
+    # hand: in anatomical position the palm faces forward (-Y); the ring finger is split down its middle
+    m = np.where(limb & (part == "hand"))[0]
+    bone_x = {f: sk.v[f][:, 0].mean() for f in set(near_fid[m].tolist())}
+    bone_y = {f: sk.v[f][:, 1].mean() for f in set(near_fid[m].tolist())}
+    fourth_mc = sk.find(r"right fourth metacarpal")[:, 0].mean()
+    for i in m:
+        f, d = near_fid[i], digit[i]
+        name = sk.names[f]
+        medial = q[i, 0] > (bone_x[f] if d else fourth_mc)
+        palm = q[i, 1] < bone_y[f]
+        if d == 5 or (d == 4 and medial) or (d == 0 and medial):
+            terr[i] = "uln"
+        elif palm and "phalanx" not in name:
+            terr[i] = "mpb"  # palmar cutaneous branch of the median: passes over the carpal tunnel, so carpal tunnel syndrome spares the palm
+        elif palm or (d in (2, 3, 4) and re.search(r"middle phalanx|distal phalanx", name)) or (d == 1 and "distal phalanx" in name):
+            terr[i] = "medn"
+        else:
+            terr[i] = "rad"  # superficial branch of the radial nerve
+
+    # each root's signed distance from its dermatome's border, over the limb's vertices
+    vq = skin.vertices.copy()
+    vq[:, 0] = -np.abs(vq[:, 0])
+    faces = skin.faces[limb]
+    used = np.unique(faces)
+    tree = cKDTree(vq[used])
+    dist = np.zeros((len(skin.vertices), 4))
+    for c, root in enumerate(ROOT_CHANNELS):
+        inside = np.zeros(len(skin.vertices), bool)
+        inside[np.unique(skin.faces[limb & (level == root)])] = True
+        ins, out = used[inside[used]], used[~inside[used]]
+        d_in = cKDTree(vq[out]).query(vq[used])[0] if len(out) else np.full(len(used), FUZZ_MM)
+        d_out = cKDTree(vq[ins]).query(vq[used])[0] if len(ins) else np.full(len(used), FUZZ_MM)
+        dist[used, c] = np.where(inside[used], d_in, -d_out)
+    packed = np.round((np.clip(dist, -FUZZ_MM, FUZZ_MM) / FUZZ_MM + 1) * 127.5).astype(np.uint8)
+
+    scene = trimesh.Scene()
+    counts = {}
+    for nerve in TERRITORIES:
+        sel = skin.faces[limb & (terr == nerve)]
+        if not len(sel):
+            continue
+        vs = np.unique(sel)
+        sub = trimesh.Trimesh(skin.vertices[vs], np.searchsorted(vs, sel), process=False)
+        sub.visual = trimesh.visual.ColorVisuals(sub, vertex_colors=packed[vs])
+        counts[nerve] = len(sel)
+        scene.add_geometry(sub.apply_transform(Y_UP), node_name=f"ct_{nerve}", geom_name=f"ct_{nerve}")
+    scene.export(HERE / "limb.glb")
+    log.info("limb.glb: %.1f MB, %s", (HERE / "limb.glb").stat().st_size / 1e6, counts)
 
 
 if __name__ == "__main__":

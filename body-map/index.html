@@ -93,7 +93,10 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 .chips2{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}.chips2 span{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.chips2 span.in{background:var(--accent);border-color:var(--accent);color:#fff}
 ul.sup{margin:2px 0 8px;padding-left:18px;font-size:14px}ul.sup li{margin:0 0 6px;line-height:1.35}
 p.moves{background:#fff3b0;color:#222;border-radius:6px;padding:6px 8px;font-weight:600;font-size:14px;line-height:1.4;margin:8px 0}
-ul.sup .ac{font-weight:600}ul.sup .bl{color:#a33;font-size:13px}ul.sup .nt{color:var(--muted);font-size:12.5px;font-style:italic}
+ul.sup .ac{font-weight:600}
+table.rn{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}table.rn th,table.rn td{border-top:1px solid var(--line);padding:6px 5px;vertical-align:top;text-align:left;line-height:1.35}
+table.rn thead th{font-size:13px;border-top:0}table.rn thead th span{font-weight:400;color:var(--muted);font-size:11.5px}table.rn tbody th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);width:72px}
+ul.terr{list-style:none;padding:0;font-size:13.5px}ul.terr li{margin:0 0 7px;line-height:1.35}ul.terr .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}ul.sup .bl{color:#a33;font-size:13px}ul.sup .nt{color:var(--muted);font-size:12.5px;font-style:italic}
 :root[data-theme="dark"] ul.sup .bl{color:#ff9f9f}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) ul.sup .bl{color:#ff9f9f}}
 .good{color:#2f6b4f;font-weight:600}.bad{color:#b42318;font-weight:600}
@@ -116,12 +119,13 @@ ul.sup .ac{font-weight:600}ul.sup .bl{color:#a33;font-size:13px}ul.sup .nt{color
 <div class="wrap">
 <p class="eyebrow"><a href="../">Prototypes</a> · MSK · throwaway</p>
 <h1>Where does it hurt?</h1>
-<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts the muscle tables, the cranial nerves and the brachial plexus on one skeleton, each switched on or off from its Show bar: tap a muscle for its action, nerve and clinical notes, a cranial nerve for its table row on the body, or any part of the plexus to light its path back to the roots. <b>Dermatome map</b> is the dermatome model from the anatomy tables.</p>
+<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts the muscle tables, the cranial nerves and the brachial plexus on one skeleton, each switched on or off from its Show bar: tap a muscle for its action, nerve and clinical notes, a cranial nerve for its table row on the body, or any part of the plexus to light its path back to the roots. <b>Dermatome map</b> is the dermatome model from the anatomy tables. <b>Root or nerve?</b> puts a pinched root on one arm and a compressed nerve on the other, so you can see why a root's numb patch is fuzzy and spread across nerves while a nerve's is sharp-edged.</p>
 <div class="chips" id="modes">
   <button class="chip" data-mode="region" aria-pressed="true">Where it hurts</button>
   <button class="chip" data-mode="structure" aria-pressed="false">Which structure</button>
   <button class="chip" data-mode="tables" aria-pressed="false">Anatomy tables</button>
   <button class="chip" data-mode="dermmap" aria-pressed="false">Dermatome map</button>
+  <button class="chip" data-mode="rootnerve" aria-pressed="false">Root or nerve?</button>
 </div>
 <div class="dermmap" id="dermmap" hidden>
   <iframe class="derm-frame" data-src="../dermatomes/?embed=1" title="Dermatome map in 3D" loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
@@ -403,6 +407,7 @@ const HINT = {
   structure: "Coloured parts are tappable (right side) · tap one to open its chart with that diagnosis lit",
   tables: "Right side · tap a muscle or nerve for its table row · hide a muscle to see the one underneath · tap the skull for the cranial nerves",
   derm: "Tap the skin or a label · zoom in to see more levels · dots are the key sensory points",
+  rootnerve: "Patient's right arm: the root · patient's left arm: the nerve · tap the skin to name the nerve that supplies it",
 };
 /* the anatomy tables' Dermatomes tab, framed exactly as that page frames it */
 const dermmap = document.getElementById("dermmap"), app = document.getElementById("app");
@@ -422,6 +427,8 @@ async function setMode(m) {
   setStructVisible(m === "structure");
   bones.forEach(b => b.visible = m !== "derm");
   if (skinRoot) skinRoot.visible = m === "derm";
+  if (limbRoot) limbRoot.visible = m === "rootnerve";
+  if (m !== "rootnerve") rnMarks.forEach(o => o.visible = false);
   if (m !== "region" && m !== "structure") { halo.visible = false; tint(null); fly = { t0: performance.now(), fromT: controls.target.clone(), toT: home.t, fromP: camera.position.clone(), toP: home.p }; }
   applyLayers();
   document.getElementById("hint").textContent = HINT[m];
@@ -429,6 +436,7 @@ async function setMode(m) {
   if (m === "structure") setLegend("st");
   else if (m === "region") setLegend(null);
   if (m === "tables") { setLegend(null); panel.innerHTML = `<p class="empty">Loading the muscles…</p>`; await ensureTables(); if (mode === "tables") showTablesIntro(); }
+  else if (m === "rootnerve") { setLegend(null); panel.innerHTML = `<p class="empty">Loading the arms and the plexus…</p>`; await ensureLimb(); if (mode === "rootnerve") showRootNerve(rnPair); }
   else if (m === "derm") { setLegend(null); panel.innerHTML = `<p class="empty">Loading the skin…</p>`; await ensureDerm(); if (mode === "derm") showDermIntro(); }
   else if (selected) showRegion(selected); else showIntro();
 }
@@ -442,7 +450,7 @@ function pick(e) {
   ray.setFromCamera(ptr, camera);
   const targets = mode === "structure" ? structs.concat(bones)
     : mode === "tables" ? (layers.muscles ? muscles.filter(o => o.visible) : []).concat(layers.cn ? cnPick : [], layers.bp ? bpPick : [], bones)
-    : mode === "derm" ? skins : bones;
+    : mode === "derm" ? skins : mode === "rootnerve" ? limbs : bones;
   return ray.intersectObjects(targets, false)[0];
 }
 let down = null;
@@ -453,6 +461,7 @@ renderer.domElement.addEventListener("pointerup", e => {
   if (mode === "tables" && hit.object.userData.cn) { selectCN(hit.object.userData.cn); return; }
   if (mode === "tables" && hit.object.userData.bp) { selectBP(hit.object.userData.bp); return; }
   if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (isSkull(hit.object)) showLayer("cn"); return; }
+  if (mode === "rootnerve") { if (hit.object.userData.ct) tapLimb(hit.object.userData.ct, hit.point); return; }
   if (mode === "derm") { tapDerm(hit.object.userData.field ? fieldLevel(hit) : hit.object.userData.dm); return; }
   if (hit.object.userData.st) selectStructure(hit.object.userData.st);
   else selectRegion(regionAt(hit.point), true);
@@ -467,6 +476,10 @@ renderer.domElement.addEventListener("pointermove", e => {
   if (hit.object.userData.cn || hit.object.userData.bp) {
     const o = hit.object, t = o.userData.cn ? cnTitle(o.userData.cn) : o.userData.bp ? bpName(o.userData.bp) : "";
     tip.textContent = t; tip.style.display = t ? "block" : "none";
+    tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
+  }
+  if (mode === "rootnerve") {
+    const ct = hit.object.userData.ct; tip.textContent = ct ? TERR[ct][0] : ""; tip.style.display = ct ? "block" : "none";
     tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
   }
   if (mode === "tables" || mode === "derm") {
@@ -632,11 +645,13 @@ function bpName(id) { const s = NV.plexus.S[id]; return s.name || `Root ${id}`; 
 function firstLine(t, n = 90) { const l = String(t || "").split("<br>")[0].replace(/^- /, "").trim(); return l.length > n ? l.slice(0, n - 1) + "…" : l; }
 /* in the Anatomy tables view the muscles, cranial nerves and plexus are layers on one skeleton, each switched on or off */
 const layers = { muscles: true, cn: false, bp: false };
-function viewOn(v) { return mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp)); }
+function viewOn(v) { return (mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp))) || (mode === "rootnerve" && v === "rn"); }
 function applyLayers() {
   if (muscleRoot) muscleRoot.visible = mode === "tables" && layers.muscles;
   if (cnRoot) cnRoot.visible = viewOn("cn3d");
-  if (bpRoot) bpRoot.visible = viewOn("bp3d");
+  if (bpRoot) bpRoot.visible = viewOn("bp3d") || mode === "rootnerve";
+  if (bpRoot) bpRoot.children.forEach(o => { if (o.userData.ctx) o.visible = mode !== "rootnerve"; });
+  if (bpMirror) bpMirror.visible = mode === "rootnerve";
   document.getElementById("layers").hidden = mode !== "tables";
   boneLook(mode);
   if (muscles.length) shade(picked);
@@ -659,7 +674,7 @@ async function showLayer(k) {
 function boneLook(m) {
   for (const b of bones) {
     const c = b.userData.c, head = c.y > 1.42, girdle = /^bone_FJ(3362|3334|3384)/.test(b.name);
-    const cnOn = viewOn("cn3d"), bpOn = viewOn("bp3d"), see = (cnOn && head) || (bpOn && girdle);
+    const cnOn = viewOn("cn3d"), bpOn = viewOn("bp3d") || mode === "rootnerve", see = (cnOn && head) || (bpOn && girdle);
     if (b.material.transparent !== see) b.material.needsUpdate = true;
     b.material.transparent = see; b.material.opacity = see ? (cnOn && head ? 0.16 : 0.35) : 1; b.material.depthWrite = !see;
   }
@@ -696,7 +711,7 @@ function ensureNerves() {
       if (m) { o.material = cnMat[m[1]]; o.userData.cn = m[1]; cnRoot.add(o); cnPick.push(o); return; }
       m = /^ctx_(cn|bp)_(.+)$/.exec(o.name); if (!m) return;
       o.material = /artery|carotid|jugular/.test(m[2]) ? ctxMat.art : m[2] === "eye" ? ctxMat.eye : ctxMat.mus;
-      (m[1] === "cn" ? cnRoot : bpRoot).add(o);
+      o.userData.ctx = true; (m[1] === "cn" ? cnRoot : bpRoot).add(o);
     });
     const stemMat = new THREE.MeshStandardMaterial({ color: 0xd9c6ea, roughness: 0.8, transparent: true, opacity: 0.8 });
     for (const s of nv.brainstem) cnRoot.add(shape(s, stemMat));
@@ -813,7 +828,7 @@ function bpShade(lit, focus) {
   bpLit = lit;
   for (const o of bpPick) {
     const id = o.userData.bp, on = !lit || lit[id];
-    o.material.opacity = on ? 1 : 0.15; o.material.depthWrite = on;
+    o.material.opacity = on ? 1 : 0.15; o.material.depthWrite = on; o.material.depthTest = true; o.renderOrder = 0;
     o.material.color.set(id === focus ? 0x5b21b6 : lit && on ? 0xa98bdc : NV.plexus.S[id].minor ? 0xe6c35c : 0xf2d34f);  // purple, never artery red
   }
 }
@@ -1046,6 +1061,166 @@ function tapDerm(lv) {
   const kp = document.createElement("p"); kp.className = "sub"; kp.textContent = `Key point: ${DERM_INFO[quiz.ask][0]}`; q.appendChild(kp);
   document.getElementById("qscore").textContent = `${quiz.right} of ${quiz.done} right`;
   const n = panel.querySelector(".acts button"); n.textContent = "Next";
+}
+
+/* ---------- Root or nerve? ----------
+   The same skin twice: the patient's right arm shows a pinched root (its dermatome, edges faded because the
+   neighbouring roots overlap it, and the plexus lighting every nerve that root feeds); the left arm shows one
+   compressed nerve (its cutaneous patch with a hard edge, and only that nerve lit). */
+const TERR = {  // cutaneous territory: [name, from, roots, slide colour (N400)]
+  ax: ["Superior lateral cutaneous nerve of the arm", "axillary nerve", "C5-C6", 0xa9b0bd],
+  rad: ["Posterior and inferior lateral cutaneous nerves of the arm, posterior cutaneous nerve of the forearm, superficial branch on the back of the hand", "radial nerve", "C5-C8", 0xe8737a],
+  mca: ["Medial cutaneous nerve of the arm (with the intercostobrachial, T2)", "medial cord", "C8-T1", 0xf0a35e],
+  mcf: ["Medial cutaneous nerve of the forearm", "medial cord, its own branch: not the ulnar nerve", "C8-T1", 0xb9a6e0],
+  lcf: ["Lateral cutaneous nerve of the forearm", "musculocutaneous nerve", "C5-C6", 0x6fbf8a],
+  medn: ["Palmar digital branches (and the fingertips on the back)", "median nerve", "C6-C8", 0xf2c94c],
+  mpb: ["Palmar cutaneous branch: leaves above the wrist and runs over the carpal tunnel, so carpal tunnel syndrome spares the palm", "median nerve", "C6-C8", 0xf2c94c],
+  uln: ["Palmar and dorsal branches", "ulnar nerve", "C8-T1", 0x5aa9e6],
+};
+const NUMB = new THREE.Color(0xd6246e), SKIN = new THREE.Color(0xeadfd3);
+const RN = {
+  c8: { root: "C8", nerve: "uln", ch: 2, at: "elbow", label: "C8 or ulnar?",
+    rootName: "C8 root pinched in the neck (radiculopathy)", nerveName: "Ulnar nerve compressed at the elbow (mononeuropathy)",
+    rows: [
+      ["Numb skin", "Little and ring fingers, the inner hand and the lower inner forearm. Fuzzy edges: C7 and T1 overlap it", "Little finger and the little-finger half of the ring finger, front and back. A sharp edge down the middle of the ring finger"],
+      ["Inner forearm", "Numb: C8 reaches it through the medial cutaneous nerve of the forearm", "Normal: that skin is the medial cutaneous nerve of the forearm, a separate branch of the medial cord"],
+      ["Weak", "Every muscle with C8 fibres, whatever its nerve: finger flexors (median and ulnar), abductor pollicis brevis (median), extensor indicis (radial), interossei (ulnar). Key test: finger flexion", "Ulnar muscles only: interossei (spreading the fingers), hypothenar, adductor pollicis, flexor carpi ulnaris, FDP to the ring and little fingers. Thumb abduction is normal"],
+      ["Pain", "Neck pain running down the arm; worse extending the neck", "At the elbow; worse leaning on it"],
+      ["Plexus", "C8 lights every nerve it feeds", "Only the ulnar nerve is cut off below the elbow"]] },
+  c6: { root: "C6", nerve: "medn", ch: 0, at: "wrist", label: "C6 or median? (numb thumb)",
+    rootName: "C6 root pinched in the neck (radiculopathy)", nerveName: "Median nerve compressed at the wrist (carpal tunnel)",
+    rows: [
+      ["Numb skin", "Lateral forearm, thumb and index finger. Fuzzy edges", "Palm side of the thumb, index, middle and half the ring finger, and those fingertips on the back. Sharp edges. The palm itself is spared: its branch leaves above the wrist and runs over the tunnel, not through it"],
+      ["Lateral forearm", "Numb: C6 reaches it through the musculocutaneous nerve (lateral cutaneous nerve of the forearm)", "Normal"],
+      ["Weak", "Biceps (elbow flexion) and wrist extension; biceps reflex down", "Abductor pollicis brevis (thumb abduction), a C8 muscle. Biceps normal"],
+      ["Pain", "Neck pain running down the arm", "Wrist and hand; worse at night, typing or driving"],
+      ["Plexus", "C6 lights every nerve it feeds", "Only the median nerve is cut off below the wrist"]] },
+};
+let limbRoot = null, limbs = [], limbLoading = null, bpMirror = null, mirrorTubes = [], rnPair = "c8", rnMap = false, rnMarks = [];
+const rnU = { uChan: { value: new THREE.Vector4(0, 0, 1, 0) }, uMap: { value: 0 }, uNumb: { value: NUMB }, uSkin: { value: SKIN } };
+function limbMaterial(ct) {
+  const m = new THREE.MeshStandardMaterial({ roughness: 0.8, side: THREE.DoubleSide, transparent: true, opacity: 0.86, depthWrite: false });
+  m.userData.u = { uOn: { value: 0 }, uCol: { value: new THREE.Color(TERR[ct][3]) } };
+  m.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, rnU, m.userData.u);
+    sh.vertexShader = "attribute vec4 dist;\nvarying float vD;\nvarying float vWX;\nuniform vec4 uChan;\n" + sh.vertexShader.replace("#include <begin_vertex>",
+      "#include <begin_vertex>\nvD = dot(dist, uChan) * 2.0 - 1.0;\nvWX = (modelMatrix * vec4(position, 1.0)).x;");
+    sh.fragmentShader = "uniform float uOn, uMap;\nuniform vec3 uCol, uNumb, uSkin;\nvarying float vD;\nvarying float vWX;\n" +
+      sh.fragmentShader.replace("vec4 diffuseColor = vec4( diffuse, opacity );", `
+        vec3 col;
+        if (uMap > 0.5) col = uCol;
+        else if (vWX < 0.0) col = mix(uSkin, uNumb, 0.92 * smoothstep(-0.4, 0.3, vD));  // the root: fades over about 2 cm either side
+        else col = uOn > 0.5 ? uNumb : mix(uSkin, uCol, 0.3);  // the nerve: its own patch, hard-edged
+        vec4 diffuseColor = vec4(col, opacity);`);
+  };
+  return m;
+}
+async function ensureLimb() {
+  await ensureNerves();
+  if (limbLoading) return limbLoading;
+  limbLoading = new GLTFLoader().loadAsync("limb.glb").then(g => {
+    limbRoot = g.scene; limbRoot.visible = mode === "rootnerve"; scene.add(limbRoot);
+    limbRoot.traverse(o => {
+      if (!o.isMesh || !o.name.startsWith("ct_")) return;
+      if (!o.geometry.attributes.normal) o.geometry.computeVertexNormals();
+      o.geometry.setAttribute("dist", o.geometry.getAttribute("color")); o.geometry.deleteAttribute("color");
+      o.userData.ct = o.name.slice(3); o.material = limbMaterial(o.userData.ct); o.renderOrder = 1; limbs.push(o);
+    });
+    // the plexus is drawn on the right; the left arm gets a mirror copy for the nerve
+    bpMirror = new THREE.Group(); bpMirror.scale.x = -1; scene.add(bpMirror);
+    for (const o of bpPick) {
+      const c = new THREE.Mesh(o.geometry, o.material.clone()); c.material.side = THREE.DoubleSide; c.userData.bp = o.userData.bp;
+      bpMirror.add(c); mirrorTubes.push(c);
+    }
+    const mark = new THREE.MeshBasicMaterial({ color: 0xd6246e, depthTest: false, transparent: true });
+    for (let k = 0; k < 2; k++) { const s = new THREE.Mesh(new THREE.SphereGeometry(0.009, 16, 12), mark); s.renderOrder = 20; s.visible = false; scene.add(s); rnMarks.push(s); }
+    applyLayers();
+  });
+  return limbLoading;
+}
+function litTube(o, on, focus, deep) {
+  const id = o.userData.bp;
+  o.material.opacity = on ? 1 : 0.12; o.material.depthWrite = on;
+  o.material.depthTest = !on; o.renderOrder = on ? 10 : 0;  // lit nerves show through the skin
+  o.material.color.set(id === focus ? deep : on ? 0xa98bdc : NV.plexus.S[id].minor ? 0xe6c35c : 0xf2d34f);
+}
+function nearest(path, p) { let best = path[0], d = 1e9; for (const q of path) { const e = v3(q).distanceTo(p); if (e < d) { d = e; best = q; } } return v3(best); }
+function rnShade() {
+  const P = RN[rnPair];
+  rnU.uChan.value.set(...[0, 1, 2, 3].map(i => i === P.ch ? 1 : 0)); rnU.uMap.value = rnMap ? 1 : 0;
+  for (const o of limbs) o.material.userData.u.uOn.value = !rnMap && o.userData.ct === P.nerve ? 1 : 0;
+  const rootLit = rnMap ? {} : pathFor(P.root), nerveLit = rnMap ? {} : pathFor(P.nerve);
+  bpLit = null;
+  for (const o of bpPick) litTube(o, rnMap || !!rootLit[o.userData.bp], P.root, 0xd6246e);
+  for (const o of mirrorTubes) litTube(o, rnMap || !!nerveLit[o.userData.bp], P.nerve, 0xd6246e);
+  if (rnMap) { [...bpPick, ...mirrorTubes].forEach(o => { o.material.color.set(0xf2d34f); o.material.depthTest = true; o.renderOrder = 0; }); }
+  // where it is pinched: the root by the spine, the nerve at the elbow or wrist (mirrored to the left arm)
+  const rootP = v3(NV.bp[P.root][0]);
+  const at = P.at === "elbow" ? anchors.elbow : anchors.forearm.clone().lerp(anchors.hand, 0.55);
+  const nerveP = nearest(NV.bp[P.nerve], at); nerveP.x = -nerveP.x;
+  rnMarks[0].position.copy(rootP); rnMarks[1].position.copy(nerveP); rnMarks.forEach(m => m.visible = !rnMap && mode === "rootnerve");
+  clearCalls();
+  if (!rnMap) {
+    callout("Patient's right · root", P.rootName, rootP, "rn");
+    callout("Patient's left · nerve", P.nerveName, nerveP, "rn");
+  }
+}
+function rnView(back, hands) {
+  const t = new THREE.Vector3(0, hands ? anchors.hand.y - 0.02 : anchors.elbow.y - 0.1, 0.05);
+  fly = { t0: performance.now(), fromT: controls.target.clone(), toT: t, fromP: camera.position.clone(), toP: t.clone().add(new THREE.Vector3(0, 0.03, (back ? -1 : 1) * (hands ? 1.3 : 2.05))) };
+}
+function showRootNerve(key, keepView) {
+  rnPair = key; rnMap = false; const P = RN[key];
+  rnShade(); if (!keepView) rnView(false);
+  panel.innerHTML = "";
+  const h = document.createElement("h2"); h.textContent = "Root or nerve?"; panel.appendChild(h);
+  const sub = document.createElement("p"); sub.className = "sub";
+  sub.textContent = "A root's fibres are shared out among several nerves in the plexus, and each nerve carries fibres from several roots. Pinch a root and every nerve it feeds loses a little; neighbouring roots overlap its skin, so the edges stay fuzzy. Compress a nerve and only its own patch goes, right up to a sharp edge.";
+  panel.appendChild(sub);
+  const pick = document.createElement("div"); pick.className = "st";
+  for (const [k, v] of Object.entries(RN)) { const b = document.createElement("button"); b.textContent = v.label; if (k === key) b.classList.add("on"); b.onclick = () => showRootNerve(k, true); pick.appendChild(b); }
+  const all = document.createElement("button"); all.textContent = "Every nerve's patch"; all.onclick = showNerveMap; pick.appendChild(all);
+  panel.appendChild(pick);
+  const tbl = document.createElement("table"); tbl.className = "rn";
+  tbl.innerHTML = `<thead><tr><th></th><th>${P.root} root<br><span>patient's right arm</span></th><th>${TERR[P.nerve][1].replace(/^./, c => c.toUpperCase())}<br><span>patient's left arm</span></th></tr></thead>`;
+  const tb = document.createElement("tbody");
+  for (const r of P.rows) { const tr = document.createElement("tr"); r.forEach((c, i) => { const td = document.createElement(i ? "td" : "th"); td.textContent = c; tr.appendChild(td); }); tb.appendChild(tr); }
+  tbl.appendChild(tb); panel.appendChild(tbl);
+  const tap = document.createElement("div"); tap.id = "rnTap"; tap.className = "sub"; tap.textContent = "Tap the skin of either arm to see which nerve supplies it."; panel.appendChild(tap);
+  const a = document.createElement("div"); a.className = "acts";
+  const f = document.createElement("button"); f.textContent = "Front"; f.onclick = () => rnView(false); a.appendChild(f);
+  const bk = document.createElement("button"); bk.textContent = "Back of the arms"; bk.onclick = () => rnView(true); a.appendChild(bk);
+  const hp = document.createElement("button"); hp.textContent = "Palms close up"; hp.onclick = () => rnView(false, true); a.appendChild(hp);
+  const hb = document.createElement("button"); hb.textContent = "Backs of the hands"; hb.onclick = () => rnView(true, true); a.appendChild(hb);
+  panel.appendChild(a);
+}
+function showNerveMap() {
+  rnMap = true; rnShade();
+  panel.innerHTML = `<h2>Every nerve's patch</h2><p class="sub">The cutaneous nerves of the upper limb, coloured as on the class slide (Netter N400). Compare the dermatome map: the same skin, cut up by root instead of by nerve.</p>`;
+  const ul = document.createElement("ul"); ul.className = "terr";
+  for (const [k, [name, from, roots, col]] of Object.entries(TERR)) {
+    if (k === "mpb") continue;
+    const li = document.createElement("li"); li.innerHTML = `<span class="sw" style="background:#${col.toString(16).padStart(6, "0")}"></span>`;
+    const b = document.createElement("b"); b.textContent = from.split(",")[0].replace(/^./, c => c.toUpperCase()); li.append(b, ` (${roots}): ${name}`); ul.appendChild(li);
+  }
+  panel.appendChild(ul);
+  const a = document.createElement("div"); a.className = "acts";
+  const back = document.createElement("button"); back.textContent = "Root or nerve?"; back.onclick = () => showRootNerve(rnPair, true); a.appendChild(back);
+  const f = document.createElement("button"); f.textContent = "Front"; f.onclick = () => rnView(false); a.appendChild(f);
+  const bk = document.createElement("button"); bk.textContent = "Back of the arms"; bk.onclick = () => rnView(true); a.appendChild(bk);
+  const hp = document.createElement("button"); hp.textContent = "Palms close up"; hp.onclick = () => rnView(false, true); a.appendChild(hp);
+  const hb = document.createElement("button"); hb.textContent = "Backs of the hands"; hb.onclick = () => rnView(true, true); a.appendChild(hb);
+  panel.appendChild(a);
+}
+function tapLimb(ct, p) {
+  const [name, from, roots] = TERR[ct], box = document.getElementById("rnTap");
+  if (!box) return;
+  box.innerHTML = ""; const b = document.createElement("b"); b.textContent = name; box.append(b, ` · from the ${from} · carries ${roots}`);
+  if (!rnMap) {
+    const P = RN[rnPair];
+    box.append(document.createElement("br"), p.x < 0 ? `Right arm (root): numb wherever it lies in the ${P.root} dermatome, whichever nerve carries it there; faint at the edges, where the next root overlaps`
+      : `Left arm (nerve): ${ct === P.nerve ? "numb, the whole patch" : "feels normally: a different nerve, even if it carries the same roots"}`);
+  }
 }
 
 if (document.documentElement.classList.contains("only-derm")) {
