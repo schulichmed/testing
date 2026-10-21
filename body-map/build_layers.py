@@ -7,7 +7,8 @@ Purpose: Build the two extra views of the body map:
 Author: nsimsam, with Claude Code
 Date: 2026-10-21
 Input: the BodyParts3D 4.0 "is_a" OBJ archive unzipped at BP3D_DIR (see build_body.py);
-       anatomy-tables/vault_tables.json and anatomy-tables/build.py (its FIXES and clean())
+       anatomy-tables/vault_tables.json and anatomy-tables/build.py (its FIXES and clean());
+       anatomy-tables/netter_upper_limb.json (blood supply of the upper limb muscles)
 Output: body-map/muscles.glb (nodes mu_<slug>_<n>), body-map/tables.json,
         body-map/skin.glb (nodes dm_<level>), body-map/dermatomes.json; metres, Y up, front facing +Z
 Usage: python build_layers.py <BP3D_DIR>   (needs trimesh, fast-simplification, numpy, scipy)
@@ -137,6 +138,8 @@ def build_tables(obj_dir: Path) -> None:
     ab.apply_fixes(cn_rows, 0)
     out = {"cn": {"header": cn["header"], "rows": [[ab.clean(c) for c in r] for r in cn_rows]}, "regions": []}
 
+    # blood supply of the upper limb muscles: Netter, kept to the arteries in our notes (netter_tables.py)
+    netter = json.loads((TABLES_DIR / "netter_upper_limb.json").read_text(encoding="utf-8"))["muscles"]
     scene = trimesh.Scene()
     seen = set()
     for prefix, tab, sid in REGIONS:
@@ -155,7 +158,10 @@ def build_tables(obj_dir: Path) -> None:
             name = ab.clean(r[1])
             key = slug(name)
             files = MUSCLE_FILES.get(name, [])
-            reg["rows"].append({"key": key, "cells": [ab.clean(c) for c in r], "in3d": bool(files)})
+            row = {"key": key, "cells": [ab.clean(c) for c in r], "in3d": bool(files)}
+            if netter.get(name, {}).get("blood"):
+                row["blood"] = netter[name]["blood"]
+            reg["rows"].append(row)
             if key in seen:  # flexor digitorum longus and flexor hallucis longus are in both the leg and foot tables
                 continue
             seen.add(key)

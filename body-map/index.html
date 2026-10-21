@@ -91,6 +91,10 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 .nlab.call{max-width:260px;white-space:normal;border-radius:9px;font-weight:500;text-align:left;padding:5px 8px;transform:translate(10px,-50%);cursor:default;border-left:4px solid var(--accent)}
 .nlab.call b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .chips2{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}.chips2 span{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.chips2 span.in{background:var(--accent);border-color:var(--accent);color:#fff}
+ul.sup{margin:2px 0 8px;padding-left:18px;font-size:14px}ul.sup li{margin:0 0 6px;line-height:1.35}
+ul.sup .bl{color:#a33;font-size:13px}ul.sup .nt{color:var(--muted);font-size:12.5px;font-style:italic}
+:root[data-theme="dark"] ul.sup .bl{color:#ff9f9f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) ul.sup .bl{color:#ff9f9f}}
 .good{color:#2f6b4f;font-weight:600}.bad{color:#b42318;font-weight:600}
 </style>
 <script>
@@ -602,7 +606,12 @@ function selectMuscle(key, zoom = true) {
   panel.innerHTML = "";
   const h = document.createElement("h2"); h.textContent = row.cells[1]; panel.appendChild(h);
   const sub = document.createElement("p"); sub.className = "sub"; sub.textContent = `${row.reg.tab} table · ${row.cells[0]}` + (objs.length ? "" : " · not in the 3D model"); panel.appendChild(sub);
-  panel.appendChild(rowHtml(row.reg.header, row.cells, [0, 1]));
+  const dl = rowHtml(row.reg.header, row.cells, [0, 1]);
+  if (row.blood) {  // Netter's blood supply, kept to the arteries in our notes
+    const dt = document.createElement("dt"), dd = document.createElement("dd");
+    dt.textContent = "Blood supply"; dd.textContent = row.blood.join(", "); dl.append(dt, dd);
+  }
+  panel.appendChild(dl);
   const a = document.createElement("div"); a.className = "acts";
   if (objs.length) { const hb = document.createElement("button"); hb.textContent = "Hide it to see underneath"; hb.onclick = () => { objs.forEach(o => o.visible = false); picked = null; shade(null); showTablesIntro(row.reg.sid); }; a.appendChild(hb); }
   const back = document.createElement("button"); back.textContent = `All ${row.reg.tab.toLowerCase()} muscles`; back.onclick = () => showTablesIntro(row.reg.sid); a.appendChild(back);
@@ -827,7 +836,9 @@ function selectBP(id) {
   const end = v3(path[path.length - 1]), start = v3(path[0]);
   const roots = rootsOf(id).join(", ");
   callout(bpName(id), `Roots ${roots}` + (s.t === "nerve" ? ` · from ${arisesFrom(id).toLowerCase()}` : ""), v3(path[Math.floor(path.length / 2)]), "bp3d");
-  if (i.m) callout("Motor", i.m, end, "bp3d"); else if (i.s) callout("Sensory", i.s, end, "bp3d");
+  const sup = NV.plexus.SUPPLY && NV.plexus.SUPPLY[id];
+  const motor = sup ? sup.map(m => m[0]).join(", ") : i.m;
+  if (motor) callout(sup ? `Supplies (${sup.length})` : "Motor", motor.length > 150 ? motor.slice(0, 148) + "…" : motor, end, "bp3d"); else if (i.s) callout("Sensory", i.s, end, "bp3d");
   if (i.m && i.s) callout("Sensory", i.s, v3(path[Math.max(0, path.length - 2)]), "bp3d");
   const box = new THREE.Box3(); path.forEach(p => box.expandByPoint(v3(p)));
   const c = box.getCenter(new THREE.Vector3()), size = Math.max(0.25, box.getSize(new THREE.Vector3()).length() * 1.3);
@@ -838,8 +849,20 @@ function selectBP(id) {
   const dl = document.createElement("dl"); dl.className = "row";
   const add = (k, v) => { if (!v) return; const dt = document.createElement("dt"); dt.textContent = k; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); };
   if (s.t === "nerve") add("Comes off", arisesFrom(id));
-  add("Formed by", i.d); add("Motor", i.m); add("Sensory", i.s); add("Note", i.c);
+  add("Formed by", i.d); if (!sup) add("Motor", i.m); add("Sensory", i.s); add("Note", i.c);
   panel.appendChild(dl);
+  if (sup) {
+    const h3 = document.createElement("h3"); h3.textContent = `Muscles it supplies (${sup.length})`; panel.appendChild(h3);
+    const ul = document.createElement("ul"); ul.className = "sup";
+    for (const [m, br, blood, note] of sup) {
+      const li = document.createElement("li"), b = document.createElement("b"); b.textContent = m; li.appendChild(b);
+      if (br) li.append(` (${br})`);
+      if (blood.length) { const s = document.createElement("span"); s.className = "bl"; s.textContent = "Blood: " + blood.join(", "); li.append(document.createElement("br"), s); }
+      if (note) { const s = document.createElement("span"); s.className = "nt"; s.textContent = note; li.append(document.createElement("br"), s); }
+      ul.appendChild(li);
+    }
+    panel.appendChild(ul);
+  }
   const a = document.createElement("div"); a.className = "acts";
   const b = document.createElement("button"); b.textContent = "Whole plexus"; b.onclick = showBPIntro; a.appendChild(b);
   const t = document.createElement("a"); t.href = "../anatomy-tables/#plexus"; t.target = "_blank"; t.rel = "noopener"; t.textContent = "Plexus diagram"; a.appendChild(t);

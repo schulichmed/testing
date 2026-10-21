@@ -8,6 +8,8 @@ Input: anatomy-tables/vault_tables.json, the "summary table" sections of the nin
        FIXES below corrects the rows that disagree with the notes' own lecture content.
        anatomy-tables/plexus.html, the interactive brachial plexus tab (from the lecture slides and
        the vault's "Anatomy of the Brachial Plexus" note), dropped in after the back.
+       anatomy-tables/netter_upper_limb.json (from netter_tables.py): each plexus nerve's exact muscles and
+       their blood supply, shown in the plexus panel.
        anatomy-tables/cnmap.html, the drawn cranial nerve map (brain, opening, target), dropped in after
        the cranial nerve table, with that table's corrected rows filled in for its panel.
 Output: anatomy-tables/index.html
@@ -399,6 +401,9 @@ def main() -> None:
             sections.append(("dermatome-levels", "Dermatome levels", "Dermatomes on the body", SKIN_DERMATOMES))
             # The brachial plexus lecture opens Week 8, between the back and the shoulder.
             plexus = (HERE / "plexus.html").read_text(encoding="utf-8")
+            # exactly which muscles each nerve supplies, with blood supply (Netter, kept to our curriculum)
+            supply = json.loads((HERE / "netter_upper_limb.json").read_text(encoding="utf-8"))["nerves"]
+            plexus = plexus.replace("/*SUPPLY*/{}", json.dumps(supply, ensure_ascii=False).replace("</", "<\\/"))
             sections.append(("plexus", "Brachial plexus", "Brachial plexus", plexus))
     template = (HERE / "template.html").read_text(encoding="utf-8")
     tabs = "".join(

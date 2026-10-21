@@ -91,6 +91,10 @@ svg.quiz .bp-seg.focus .vis{stroke:var(--hot)}
 .bp-panel{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14px;position:sticky;top:12px}
 .bp-panel h3{font-size:19px;margin:0 0 6px}
 .bp-panel p{margin:0 0 8px}
+.bp-panel ul.sup{margin:2px 0 8px;padding-left:16px}.bp-panel ul.sup li{margin:0 0 5px;line-height:1.35}
+.bp-panel ul.sup .br{color:var(--muted);font-size:12.5px}.bp-panel ul.sup .bl{color:#a33;font-size:12.5px}.bp-panel ul.sup .nt{color:var(--muted);font-size:12px;font-style:italic}
+:root[data-theme="dark"] .bp-panel ul.sup .bl{color:#ff9f9f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bp-panel ul.sup .bl{color:#ff9f9f}}
 .bp-panel .kind{text-transform:uppercase;letter-spacing:.1em;font-size:11.5px;font-weight:600;color:var(--accent);margin:0 0 4px}
 .bp-panel .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;margin:10px 0 2px}
 .bp-panel .q{font-size:16px}
@@ -414,8 +418,8 @@ svg.quiz .bp-seg .tgt{visibility:hidden}
     post:{d:"All three posterior divisions. Named for where it sits around the axillary artery.", c:"Ends as the axillary and radial nerves. Gives off the upper subscapular, thoracodorsal and lower subscapular nerves."},
     med:{d:"Anterior division of the inferior trunk, carrying on alone. Named for where it sits around the axillary artery.", c:"Ends as the ulnar nerve and the medial root of the median nerve. Gives off the medial pectoral and the medial cutaneous nerves of the arm and forearm."},
     mc:{m:"All of the anterior arm: pierces coracobrachialis, then runs between biceps and brachialis", s:"Lateral forearm (ends as the lateral cutaneous nerve of the forearm)"},
-    medn:{m:"Most forearm flexors + five hand muscles. Nothing in the arm", s:"Part of the hand", c:"A lateral root from the lateral cord and a medial root from the medial cord join to form it: the middle of the \"M\"."},
-    uln:{m:"1.5 anterior forearm muscles + most hand muscles. Nothing in the arm", s:"Medial hand"},
+    medn:{m:"Most forearm flexors, the thenar muscles and lumbricals 1-2. Nothing in the arm", s:"Part of the hand", c:"A lateral root from the lateral cord and a medial root from the medial cord join to form it: the middle of the \"M\"."},
+    uln:{m:"Flexor carpi ulnaris, the medial half of flexor digitorum profundus and most intrinsic hand muscles. Nothing in the arm", s:"Medial hand"},
     ax:{m:"Deltoid + teres minor", s:"Skin over the shoulder", c:"A surgical neck fracture of the humerus threatens it."},
     rad:{m:"Extensors of the back of the arm and forearm", s:"Back of the upper limb", c:"A humeral shaft fracture threatens it. Like the median nerve, it carries every root (C5-T1)."},
     ds:{m:"Rhomboids + levator scapulae", c:"Pierces the middle scalene, then runs back to the rhomboids."},
@@ -429,6 +433,17 @@ svg.quiz .bp-seg .tgt{visibility:hidden}
     td:{m:"Latissimus dorsi", c:"Also called the middle subscapular nerve."},
     ls:{m:"Lower subscapularis + teres major"}
   };
+  // Exactly which muscles each nerve supplies, with each muscle's blood supply: Netter's upper limb muscle tables,
+  // kept to the muscles, nerves and arteries of our curriculum (netter_tables.py, filled in by build.py).
+  var NERVE_MUSCLES = {"uln": [["Abductor digiti minimi", "deep branch", ["Deep palmar branch of ulnar artery"], ""], ["Adductor pollicis", "deep branch", ["Deep palmar arch"], ""], ["Dorsal interossei", "deep branch", ["Deep palmar arch"], ""], ["Flexor carpi ulnaris", "", ["Posterior ulnar recurrent artery"], ""], ["Flexor digiti minimi brevis", "deep branch", ["Deep palmar branch of ulnar artery"], ""], ["Flexor digitorum profundus (medial part)", "", ["Anterior interosseous artery", "Muscular branches of ulnar artery"], ""], ["Flexor pollicis brevis", "deep branch", ["Superficial palmar branch of radial artery"], "deep head, per our table; Netter lists the median nerve only"], ["Lumbricals 3 and 4", "deep branch", ["Superficial and deep palmar arches"], ""], ["Opponens digiti minimi", "deep branch", ["Deep palmar branch of ulnar artery"], ""], ["Palmar interossei", "deep branch", ["Deep palmar arch"], ""]], "medn": [["Abductor pollicis brevis", "recurrent branch", ["Superficial palmar branch of radial artery"], ""], ["Flexor carpi radialis", "", ["Radial artery"], ""], ["Flexor digitorum profundus (lateral part)", "", ["Anterior interosseous artery", "Muscular branches of ulnar artery"], ""], ["Flexor digitorum superficialis", "", ["Ulnar artery", "Radial artery"], ""], ["Flexor pollicis brevis", "recurrent branch", ["Superficial palmar branch of radial artery"], ""], ["Flexor pollicis longus", "anterior interosseous", ["Anterior interosseous artery"], ""], ["Lumbricals 1 and 2", "digital branches", ["Superficial and deep palmar arches"], ""], ["Opponens pollicis", "recurrent branch", ["Superficial palmar branch of radial artery"], ""], ["Palmaris longus", "", ["Posterior ulnar recurrent artery"], ""], ["Pronator quadratus", "anterior interosseous", ["Anterior interosseous artery"], ""], ["Pronator teres", "", ["Anterior ulnar recurrent artery"], ""]], "rad": [["Abductor pollicis longus", "posterior interosseous", ["Posterior interosseous artery"], ""], ["Anconeus", "", ["Deep brachial artery"], ""], ["Brachialis", "", ["Radial recurrent artery", "Muscular branches of brachial artery"], "radial nerve supplies part of it (C7), per Netter"], ["Brachioradialis", "", ["Radial recurrent artery"], ""], ["Extensor carpi radialis brevis", "deep branch", ["Radial artery", "Radial recurrent artery"], ""], ["Extensor carpi radialis longus", "", ["Radial artery", "Radial recurrent artery"], ""], ["Extensor carpi ulnaris", "posterior interosseous", ["Posterior interosseous artery"], ""], ["Extensor digiti minimi", "posterior interosseous", ["Posterior interosseous artery"], ""], ["Extensor digitorum", "posterior interosseous", ["Posterior interosseous artery"], ""], ["Extensor indicis", "posterior interosseous", ["Posterior interosseous artery"], ""], ["Extensor pollicis brevis", "posterior interosseous", ["Posterior interosseous artery"], ""], ["Extensor pollicis longus", "posterior interosseous", ["Posterior interosseous artery"], ""], ["Supinator", "deep branch", ["Radial recurrent artery", "Posterior interosseous artery"], ""], ["Triceps brachii", "", ["Branch of profunda brachii artery"], ""]], "mc": [["Biceps brachii", "", ["Muscular branches of brachial artery"], ""], ["Brachialis", "", ["Radial recurrent artery", "Muscular branches of brachial artery"], ""], ["Coracobrachialis", "", ["Muscular branches of brachial artery"], ""]], "ax": [["Deltoid", "", ["Posterior circumflex humeral artery", "Deltoid branch of thoracoacromial artery"], ""], ["Teres minor", "", ["Circumflex scapular artery"], ""]], "ss": [["Infraspinatus", "", ["Suprascapular artery"], ""], ["Supraspinatus", "", ["Suprascapular artery"], ""]], "td": [["Latissimus dorsi", "", ["Thoracodorsal artery"], ""]], "ds": [["Levator scapulae", "", ["Dorsal scapular artery"], ""], ["Rhomboid major", "", ["Dorsal scapular artery"], ""], ["Rhomboid minor", "", ["Dorsal scapular artery"], ""]], "lp": [["Pectoralis major", "", ["Pectoral branch of thoracoacromial artery"], ""], ["Pectoralis minor", "", ["Pectoral branch of thoracoacromial artery", "Lateral thoracic artery"], "per our table; Netter lists the medial pectoral nerve only"]], "mp": [["Pectoralis major", "", ["Pectoral branch of thoracoacromial artery"], ""], ["Pectoralis minor", "", ["Pectoral branch of thoracoacromial artery", "Lateral thoracic artery"], ""]], "lt": [["Serratus anterior", "", ["Lateral thoracic artery"], ""]], "us": [["Subscapularis", "", ["Subscapular artery", "Lateral thoracic artery"], ""]], "ls": [["Subscapularis", "", ["Subscapular artery", "Lateral thoracic artery"], ""], ["Teres major", "", ["Circumflex scapular artery"], ""]]};
+  function supplyList(id){
+    var ms=NERVE_MUSCLES[id]; if(!ms) return "";
+    return '<ul class="sup">'+ms.map(function(m){
+      return '<li><b>'+m[0]+'</b>'+(m[1]?' <span class="br">('+m[1]+')</span>':'')+
+        (m[2].length?'<br><span class="bl">Blood: '+m[2].join(', ')+'</span>':'')+
+        (m[3]?'<br><span class="nt">'+m[3]+'</span>':'')+'</li>';
+    }).join("")+'</ul>';
+  }
   var FROM = {root:"Roots",sup:"Superior trunk",mid:"Middle trunk",inf:"Inferior trunk",lat:"Lateral cord",post:"Posterior cord",med:"Medial cord"};
   function rootsOf(id){
     var s=S[id]; if(s.roots) return s.roots; if(s.t==="root") return [id];
@@ -487,7 +502,8 @@ svg.quiz .bp-seg .tgt{visibility:hidden}
     h+='<p class="lab">Roots carried</p>'+chips(rootsOf(id));
     if(s.t==="nerve") h+='<p class="lab">Comes off</p><p>'+arisesFrom(id)+'</p>';
     if(i.d) h+='<p class="lab">Formed by</p><p>'+i.d+'</p>';
-    if(i.m) h+='<p class="lab">Motor</p><p>'+i.m+'</p>';
+    if(NERVE_MUSCLES[id]) h+='<p class="lab">Muscles it supplies ('+NERVE_MUSCLES[id].length+')</p>'+supplyList(id);
+    else if(i.m) h+='<p class="lab">Motor</p><p>'+i.m+'</p>';
     if(i.s) h+='<p class="lab">Sensory</p><p>'+i.s+'</p>';
     if(i.c) h+='<p class="lab">Note</p><p>'+i.c+'</p>';
     panel.innerHTML=h;

@@ -1,0 +1,715 @@
+{
+ "source": "Netter, Atlas of Human Anatomy, Tables 6-1 to 6-4 (upper limb muscles), filtered to our curriculum",
+ "muscles": {
+  "Abductor digiti minimi": {
+   "blood": [
+    "Deep palmar branch of ulnar artery"
+   ]
+  },
+  "Abductor pollicis brevis": {
+   "blood": [
+    "Superficial palmar branch of radial artery"
+   ]
+  },
+  "Abductor pollicis longus": {
+   "blood": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "Adductor pollicis": {
+   "blood": [
+    "Deep palmar arch"
+   ]
+  },
+  "Anconeus": {
+   "blood": [
+    "Deep brachial artery"
+   ]
+  },
+  "Biceps brachii": {
+   "blood": [
+    "Muscular branches of brachial artery"
+   ]
+  },
+  "Brachialis": {
+   "blood": [
+    "Radial recurrent artery",
+    "Muscular branches of brachial artery"
+   ]
+  },
+  "Brachioradialis": {
+   "blood": [
+    "Radial recurrent artery"
+   ]
+  },
+  "Coracobrachialis": {
+   "blood": [
+    "Muscular branches of brachial artery"
+   ]
+  },
+  "Deltoid": {
+   "blood": [
+    "Posterior circumflex humeral artery",
+    "Deltoid branch of thoracoacromial artery"
+   ]
+  },
+  "Interossei": {
+   "blood": [
+    "Deep palmar arch"
+   ]
+  },
+  "Extensor carpi radialis brevis": {
+   "blood": [
+    "Radial artery",
+    "Radial recurrent artery"
+   ]
+  },
+  "Extensor carpi radialis longus": {
+   "blood": [
+    "Radial artery",
+    "Radial recurrent artery"
+   ]
+  },
+  "Extensor carpi ulnaris": {
+   "blood": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "Extensor digiti minimi": {
+   "blood": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "Extensor digitorum": {
+   "blood": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "Extensor indicis": {
+   "blood": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "Extensor pollicis brevis": {
+   "blood": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "Extensor pollicis longus": {
+   "blood": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "Flexor carpi radialis": {
+   "blood": [
+    "Radial artery"
+   ]
+  },
+  "Flexor carpi ulnaris": {
+   "blood": [
+    "Posterior ulnar recurrent artery"
+   ]
+  },
+  "Flexor digiti minimi brevis": {
+   "blood": [
+    "Deep palmar branch of ulnar artery"
+   ]
+  },
+  "Flexor digitorum profundus": {
+   "blood": [
+    "Anterior interosseous artery",
+    "Muscular branches of ulnar artery"
+   ]
+  },
+  "Flexor digitorum superficialis": {
+   "blood": [
+    "Ulnar artery",
+    "Radial artery"
+   ]
+  },
+  "Flexor pollicis brevis": {
+   "blood": [
+    "Superficial palmar branch of radial artery"
+   ]
+  },
+  "Flexor pollicis longus": {
+   "blood": [
+    "Anterior interosseous artery"
+   ]
+  },
+  "Infraspinatus": {
+   "blood": [
+    "Suprascapular artery"
+   ]
+  },
+  "Latissimus dorsi": {
+   "blood": [
+    "Thoracodorsal artery"
+   ]
+  },
+  "Levator scapulae": {
+   "blood": [
+    "Dorsal scapular artery"
+   ]
+  },
+  "Lumbricals": {
+   "blood": [
+    "Superficial and deep palmar arches"
+   ]
+  },
+  "Opponens digiti minimi": {
+   "blood": [
+    "Deep palmar branch of ulnar artery"
+   ]
+  },
+  "Opponens pollicis": {
+   "blood": [
+    "Superficial palmar branch of radial artery"
+   ]
+  },
+  "Palmaris longus": {
+   "blood": [
+    "Posterior ulnar recurrent artery"
+   ]
+  },
+  "Pectoralis major": {
+   "blood": [
+    "Pectoral branch of thoracoacromial artery"
+   ]
+  },
+  "Pectoralis minor": {
+   "blood": [
+    "Pectoral branch of thoracoacromial artery",
+    "Lateral thoracic artery"
+   ]
+  },
+  "Pronator quadratus": {
+   "blood": [
+    "Anterior interosseous artery"
+   ]
+  },
+  "Pronator teres": {
+   "blood": [
+    "Anterior ulnar recurrent artery"
+   ]
+  },
+  "Rhomboids (major and minor)": {
+   "blood": [
+    "Dorsal scapular artery"
+   ]
+  },
+  "Serratus anterior": {
+   "blood": [
+    "Lateral thoracic artery"
+   ]
+  },
+  "Subscapularis": {
+   "blood": [
+    "Subscapular artery",
+    "Lateral thoracic artery"
+   ]
+  },
+  "Supinator": {
+   "blood": [
+    "Radial recurrent artery",
+    "Posterior interosseous artery"
+   ]
+  },
+  "Supraspinatus": {
+   "blood": [
+    "Suprascapular artery"
+   ]
+  },
+  "Teres major": {
+   "blood": [
+    "Circumflex scapular artery"
+   ]
+  },
+  "Teres minor": {
+   "blood": [
+    "Circumflex scapular artery"
+   ]
+  },
+  "Trapezius": {
+   "blood": []
+  },
+  "Triceps": {
+   "blood": [
+    "Branch of profunda brachii artery"
+   ]
+  }
+ },
+ "nerves": {
+  "uln": [
+   [
+    "Abductor digiti minimi",
+    "deep branch",
+    [
+     "Deep palmar branch of ulnar artery"
+    ],
+    ""
+   ],
+   [
+    "Adductor pollicis",
+    "deep branch",
+    [
+     "Deep palmar arch"
+    ],
+    ""
+   ],
+   [
+    "Dorsal interossei",
+    "deep branch",
+    [
+     "Deep palmar arch"
+    ],
+    ""
+   ],
+   [
+    "Flexor carpi ulnaris",
+    "",
+    [
+     "Posterior ulnar recurrent artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor digiti minimi brevis",
+    "deep branch",
+    [
+     "Deep palmar branch of ulnar artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor digitorum profundus (medial part)",
+    "",
+    [
+     "Anterior interosseous artery",
+     "Muscular branches of ulnar artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor pollicis brevis",
+    "deep branch",
+    [
+     "Superficial palmar branch of radial artery"
+    ],
+    "deep head, per our table; Netter lists the median nerve only"
+   ],
+   [
+    "Lumbricals 3 and 4",
+    "deep branch",
+    [
+     "Superficial and deep palmar arches"
+    ],
+    ""
+   ],
+   [
+    "Opponens digiti minimi",
+    "deep branch",
+    [
+     "Deep palmar branch of ulnar artery"
+    ],
+    ""
+   ],
+   [
+    "Palmar interossei",
+    "deep branch",
+    [
+     "Deep palmar arch"
+    ],
+    ""
+   ]
+  ],
+  "medn": [
+   [
+    "Abductor pollicis brevis",
+    "recurrent branch",
+    [
+     "Superficial palmar branch of radial artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor carpi radialis",
+    "",
+    [
+     "Radial artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor digitorum profundus (lateral part)",
+    "",
+    [
+     "Anterior interosseous artery",
+     "Muscular branches of ulnar artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor digitorum superficialis",
+    "",
+    [
+     "Ulnar artery",
+     "Radial artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor pollicis brevis",
+    "recurrent branch",
+    [
+     "Superficial palmar branch of radial artery"
+    ],
+    ""
+   ],
+   [
+    "Flexor pollicis longus",
+    "anterior interosseous",
+    [
+     "Anterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Lumbricals 1 and 2",
+    "digital branches",
+    [
+     "Superficial and deep palmar arches"
+    ],
+    ""
+   ],
+   [
+    "Opponens pollicis",
+    "recurrent branch",
+    [
+     "Superficial palmar branch of radial artery"
+    ],
+    ""
+   ],
+   [
+    "Palmaris longus",
+    "",
+    [
+     "Posterior ulnar recurrent artery"
+    ],
+    ""
+   ],
+   [
+    "Pronator quadratus",
+    "anterior interosseous",
+    [
+     "Anterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Pronator teres",
+    "",
+    [
+     "Anterior ulnar recurrent artery"
+    ],
+    ""
+   ]
+  ],
+  "rad": [
+   [
+    "Abductor pollicis longus",
+    "posterior interosseous",
+    [
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Anconeus",
+    "",
+    [
+     "Deep brachial artery"
+    ],
+    ""
+   ],
+   [
+    "Brachialis",
+    "",
+    [
+     "Radial recurrent artery",
+     "Muscular branches of brachial artery"
+    ],
+    "radial nerve supplies part of it (C7), per Netter"
+   ],
+   [
+    "Brachioradialis",
+    "",
+    [
+     "Radial recurrent artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor carpi radialis brevis",
+    "deep branch",
+    [
+     "Radial artery",
+     "Radial recurrent artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor carpi radialis longus",
+    "",
+    [
+     "Radial artery",
+     "Radial recurrent artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor carpi ulnaris",
+    "posterior interosseous",
+    [
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor digiti minimi",
+    "posterior interosseous",
+    [
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor digitorum",
+    "posterior interosseous",
+    [
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor indicis",
+    "posterior interosseous",
+    [
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor pollicis brevis",
+    "posterior interosseous",
+    [
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Extensor pollicis longus",
+    "posterior interosseous",
+    [
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Supinator",
+    "deep branch",
+    [
+     "Radial recurrent artery",
+     "Posterior interosseous artery"
+    ],
+    ""
+   ],
+   [
+    "Triceps brachii",
+    "",
+    [
+     "Branch of profunda brachii artery"
+    ],
+    ""
+   ]
+  ],
+  "mc": [
+   [
+    "Biceps brachii",
+    "",
+    [
+     "Muscular branches of brachial artery"
+    ],
+    ""
+   ],
+   [
+    "Brachialis",
+    "",
+    [
+     "Radial recurrent artery",
+     "Muscular branches of brachial artery"
+    ],
+    ""
+   ],
+   [
+    "Coracobrachialis",
+    "",
+    [
+     "Muscular branches of brachial artery"
+    ],
+    ""
+   ]
+  ],
+  "ax": [
+   [
+    "Deltoid",
+    "",
+    [
+     "Posterior circumflex humeral artery",
+     "Deltoid branch of thoracoacromial artery"
+    ],
+    ""
+   ],
+   [
+    "Teres minor",
+    "",
+    [
+     "Circumflex scapular artery"
+    ],
+    ""
+   ]
+  ],
+  "ss": [
+   [
+    "Infraspinatus",
+    "",
+    [
+     "Suprascapular artery"
+    ],
+    ""
+   ],
+   [
+    "Supraspinatus",
+    "",
+    [
+     "Suprascapular artery"
+    ],
+    ""
+   ]
+  ],
+  "td": [
+   [
+    "Latissimus dorsi",
+    "",
+    [
+     "Thoracodorsal artery"
+    ],
+    ""
+   ]
+  ],
+  "ds": [
+   [
+    "Levator scapulae",
+    "",
+    [
+     "Dorsal scapular artery"
+    ],
+    ""
+   ],
+   [
+    "Rhomboid major",
+    "",
+    [
+     "Dorsal scapular artery"
+    ],
+    ""
+   ],
+   [
+    "Rhomboid minor",
+    "",
+    [
+     "Dorsal scapular artery"
+    ],
+    ""
+   ]
+  ],
+  "lp": [
+   [
+    "Pectoralis major",
+    "",
+    [
+     "Pectoral branch of thoracoacromial artery"
+    ],
+    ""
+   ],
+   [
+    "Pectoralis minor",
+    "",
+    [
+     "Pectoral branch of thoracoacromial artery",
+     "Lateral thoracic artery"
+    ],
+    "per our table; Netter lists the medial pectoral nerve only"
+   ]
+  ],
+  "mp": [
+   [
+    "Pectoralis major",
+    "",
+    [
+     "Pectoral branch of thoracoacromial artery"
+    ],
+    ""
+   ],
+   [
+    "Pectoralis minor",
+    "",
+    [
+     "Pectoral branch of thoracoacromial artery",
+     "Lateral thoracic artery"
+    ],
+    ""
+   ]
+  ],
+  "lt": [
+   [
+    "Serratus anterior",
+    "",
+    [
+     "Lateral thoracic artery"
+    ],
+    ""
+   ]
+  ],
+  "us": [
+   [
+    "Subscapularis",
+    "",
+    [
+     "Subscapular artery",
+     "Lateral thoracic artery"
+    ],
+    ""
+   ]
+  ],
+  "ls": [
+   [
+    "Subscapularis",
+    "",
+    [
+     "Subscapular artery",
+     "Lateral thoracic artery"
+    ],
+    ""
+   ],
+   [
+    "Teres major",
+    "",
+    [
+     "Circumflex scapular artery"
+    ],
+    ""
+   ]
+  ]
+ }
+}

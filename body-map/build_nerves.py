@@ -10,7 +10,8 @@ Purpose: Build the two nerve views of the body map:
 Author: nsimsam, with Claude Code
 Date: 2026-10-21
 Input: the BodyParts3D 4.0 "is_a" OBJ archive unzipped at BP3D_DIR; dermatomes/roots.json (spinal root paths);
-       anatomy-tables/plexus.html (the plexus tab's structures and notes, read with node)
+       anatomy-tables/plexus.html (the plexus tab's structures and notes, read with node);
+       anatomy-tables/netter_upper_limb.json (each nerve's exact muscles and their blood supply)
 Output: body-map/nerves.glb (real meshes: cn_<nerve>_<n>, ctx_<name>) and body-map/nerves.json
         (drawn paths, brainstem shapes, label points, plexus data); metres, Y up, front facing +Z
 Usage: python build_nerves.py <BP3D_DIR>   (needs trimesh, fast-simplification, numpy, scipy; node)
@@ -104,6 +105,8 @@ def plexus_data() -> dict:
     out = subprocess.run(["node", "-e", "let R,S,INFO;" + js + ";process.stdout.write(JSON.stringify({R,S,INFO}))"],
                          capture_output=True, text=True, check=True).stdout
     data = json.loads(out)
+    netter = json.loads((HERE.parent / "anatomy-tables" / "netter_upper_limb.json").read_text(encoding="utf-8"))
+    data["SUPPLY"] = netter["nerves"]  # exactly which muscles each nerve supplies, with blood supply
     for s in data["S"].values():  # the 2D drawing's coordinates mean nothing here
         s.pop("pts", None)
         s.pop("lbl", None)
