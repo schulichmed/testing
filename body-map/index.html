@@ -88,6 +88,7 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 .layers label{display:flex;gap:5px;align-items:center;cursor:pointer;padding:2px 8px;border-radius:999px;border:1px solid var(--line)}
 .layers label:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
 .nlab{position:absolute;transform:translate(-50%,-50%);font-size:11px;font-weight:700;line-height:1.1;padding:3px 7px;border-radius:999px;cursor:pointer;white-space:nowrap;background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.nlab.ar{color:#a12a1e;border-color:#e3a59d;font-weight:600;font-size:10.5px}
 .nlab.call{max-width:260px;white-space:normal;border-radius:9px;font-weight:500;text-align:left;padding:5px 8px;transform:translate(10px,-50%);cursor:default;border-left:4px solid var(--accent)}
 .nlab.call b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .chips2{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}.chips2 span{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.chips2 span.in{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -119,7 +120,7 @@ ul.terr{list-style:none;padding:0;font-size:13.5px}ul.terr li{margin:0 0 7px;lin
 <div class="wrap">
 <p class="eyebrow"><a href="../">Prototypes</a> · MSK · throwaway</p>
 <h1>Where does it hurt?</h1>
-<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts the muscle tables, the cranial nerves and the brachial plexus on one skeleton, each switched on or off from its Show bar: tap a muscle for its action, nerve and clinical notes, a cranial nerve for its table row on the body, or any part of the plexus to light its path back to the roots. <b>Dermatome map</b> is the dermatome model from the anatomy tables. <b>Root or nerve?</b> puts a pinched root on one arm and a compressed nerve on the other, so you can see why a root's numb patch is fuzzy and spread across nerves while a nerve's is sharp-edged.</p>
+<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts the muscle tables, the cranial nerves, the brachial plexus and the blood supply on one skeleton, each switched on or off from its Show bar: tap a muscle for its action, nerve and clinical notes, a cranial nerve for its table row on the body, any part of the plexus to light its path back to the roots, or an artery for what the notes say about it and the muscles it feeds. <b>Dermatome map</b> is the dermatome model from the anatomy tables. <b>Root or nerve?</b> puts a pinched root on one arm and a compressed nerve on the other, so you can see why a root's numb patch is fuzzy and spread across nerves while a nerve's is sharp-edged.</p>
 <div class="chips" id="modes">
   <button class="chip" data-mode="region" aria-pressed="true">Where it hurts</button>
   <button class="chip" data-mode="structure" aria-pressed="false">Which structure</button>
@@ -139,6 +140,7 @@ ul.terr{list-style:none;padding:0;font-size:13.5px}ul.terr li{margin:0 0 7px;lin
       <label><input type="checkbox" data-layer="muscles" checked> Muscles</label>
       <label><input type="checkbox" data-layer="cn"> Cranial nerves</label>
       <label><input type="checkbox" data-layer="bp"> Brachial plexus</label>
+      <label><input type="checkbox" data-layer="ar"> Blood supply</label>
     </div>
     <div class="legend" id="legend">
       <span style="--c:#c8524a">Muscle or tendon</span>
@@ -449,7 +451,7 @@ function pick(e) {
   ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ptr, camera);
   const targets = mode === "structure" ? structs.concat(bones)
-    : mode === "tables" ? (layers.muscles ? muscles.filter(o => o.visible) : []).concat(layers.cn ? cnPick : [], layers.bp ? bpPick : [], bones)
+    : mode === "tables" ? (layers.muscles ? muscles.filter(o => o.visible) : []).concat(layers.cn ? cnPick : [], layers.bp ? bpPick : [], layers.ar ? arPick : [], bones)
     : mode === "derm" ? skins : mode === "rootnerve" ? limbs : bones;
   return ray.intersectObjects(targets, false)[0];
 }
@@ -460,6 +462,7 @@ renderer.domElement.addEventListener("pointerup", e => {
   const hit = pick(e); if (!hit) return;
   if (mode === "tables" && hit.object.userData.cn) { selectCN(hit.object.userData.cn); return; }
   if (mode === "tables" && hit.object.userData.bp) { selectBP(hit.object.userData.bp); return; }
+  if (mode === "tables" && hit.object.userData.ar) { selectArtery(hit.object.userData.ar); return; }
   if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (isSkull(hit.object)) showLayer("cn"); return; }
   if (mode === "rootnerve") { if (hit.object.userData.ct) tapLimb(hit.object.userData.ct, hit.point); return; }
   if (mode === "derm") { tapDerm(hit.object.userData.field ? fieldLevel(hit) : hit.object.userData.dm); return; }
@@ -473,8 +476,8 @@ renderer.domElement.addEventListener("pointermove", e => {
   if (hovered && hovered.material.emissive && hovered.userData.st) hovered.material.emissive.set(0x000000);
   hovered = null;
   if (!hit) { tip.style.display = "none"; return; }
-  if (hit.object.userData.cn || hit.object.userData.bp) {
-    const o = hit.object, t = o.userData.cn ? cnTitle(o.userData.cn) : o.userData.bp ? bpName(o.userData.bp) : "";
+  if (hit.object.userData.cn || hit.object.userData.bp || hit.object.userData.ar) {
+    const o = hit.object, t = o.userData.cn ? cnTitle(o.userData.cn) : o.userData.bp ? bpName(o.userData.bp) : AR.info[o.userData.ar].name;
     tip.textContent = t; tip.style.display = t ? "block" : "none";
     tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
   }
@@ -576,7 +579,7 @@ function rowHtml(header, cells, skip) {
 function shade(sel) {
   for (const o of muscles) {
     const on = !sel || o.userData.mu === sel;
-    const base = mode === "tables" && (layers.cn || layers.bp) ? 0.4 : 0.92;  // let the nerves show through
+    const base = mode === "tables" && (layers.cn || layers.bp || layers.ar) ? 0.4 : 0.92;  // let the nerves and arteries show through
     o.material.opacity = on ? base : 0.18; o.material.depthWrite = on && base > 0.5;
     o.material.emissive.set(sel && o.userData.mu === sel ? 0x3a2a00 : 0x000000);
   }
@@ -588,12 +591,12 @@ function hiddenBar() {
   const b = document.createElement("button"); b.textContent = `Show the ${new Set(hid.map(o => o.userData.mu)).size} hidden muscle(s)`;
   b.onclick = () => { muscles.forEach(o => o.visible = true); picked ? selectMuscle(picked) : showTablesIntro(); }; d.appendChild(b); return d;
 }
-function clearNerveSel() { if (!NV) return; clearCalls(); cnSel = null; cnShade(null); bpSel = null; bpShade(null); }
+function clearNerveSel() { if (AR && arSel) { arSel = null; arShade(null); clearCalls(); } if (!NV) return; clearCalls(); cnSel = null; cnShade(null); bpSel = null; bpShade(null); }
 function showTablesIntro(sid) {
   picked = null; shade(null); clearNerveSel(); panel.dataset.list = "";
   panel.innerHTML = `<h2>Anatomy tables</h2><p class="sub">Tap a muscle on the body, or pick a table. Colours follow the table each muscle is in.</p>`;
   const d = document.createElement("div"); d.className = "st"; d.style.marginTop = "10px";
-  for (const [k, t] of [["cn", "Cranial nerves"], ["bp", "Brachial plexus"]]) { const b = document.createElement("button"); b.textContent = t; b.onclick = () => showLayer(k); d.appendChild(b); }
+  for (const [k, t] of [["cn", "Cranial nerves"], ["bp", "Brachial plexus"], ["ar", "Blood supply"]]) { const b = document.createElement("button"); b.textContent = t; b.onclick = () => showLayer(k); d.appendChild(b); }
   for (const reg of TB.regions) {
     const b = document.createElement("button"); b.innerHTML = `<span class="sw" style="background:#${REGION_COL[reg.sid].toString(16).padStart(6, "0")}"></span>`;
     b.append(reg.tab); if (reg.sid === sid) b.classList.add("on"); b.onclick = () => showTablesIntro(reg.sid); d.appendChild(b);
@@ -644,11 +647,13 @@ function cnTitle(n) { return `CN ${n}` + (CNROWS[n] ? ` · ${CNROWS[n][1]}` : ""
 function bpName(id) { const s = NV.plexus.S[id]; return s.name || `Root ${id}`; }
 function firstLine(t, n = 90) { const l = String(t || "").split("<br>")[0].replace(/^- /, "").trim(); return l.length > n ? l.slice(0, n - 1) + "…" : l; }
 /* in the Anatomy tables view the muscles, cranial nerves and plexus are layers on one skeleton, each switched on or off */
-const layers = { muscles: true, cn: false, bp: false };
-function viewOn(v) { return (mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp))) || (mode === "rootnerve" && v === "rn"); }
+const layers = { muscles: true, cn: false, bp: false, ar: false };
+const INTRO = { cn: () => showCNIntro(), bp: () => showBPIntro(), ar: () => showARIntro() };
+function viewOn(v) { return (mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp) || (v === "ar3d" && layers.ar))) || (mode === "rootnerve" && v === "rn"); }
 function applyLayers() {
   if (muscleRoot) muscleRoot.visible = mode === "tables" && layers.muscles;
   if (cnRoot) cnRoot.visible = viewOn("cn3d");
+  if (arRoot) arRoot.visible = viewOn("ar3d");
   if (bpRoot) bpRoot.visible = viewOn("bp3d") || mode === "rootnerve";
   if (bpRoot) bpRoot.children.forEach(o => { if (o.userData.ctx) o.visible = mode !== "rootnerve"; });
   if (bpMirror) bpMirror.visible = mode === "rootnerve";
@@ -659,17 +664,18 @@ function applyLayers() {
 document.querySelectorAll("#layers input").forEach(i => i.addEventListener("change", async () => {
   const k = i.dataset.layer; layers[k] = i.checked;
   if ((layers.cn || layers.bp) && !NV) await ensureNerves();
+  if (layers.ar && !AR) await ensureArteries();
   applyLayers();
   if (k === "muscles") return;
-  if (i.checked) (k === "cn" ? showCNIntro : showBPIntro)();
-  else if ((k === "cn" && cnSel) || (k === "bp" && bpSel) || panel.dataset.list === k) showTablesIntro();
+  if (i.checked) INTRO[k]();
+  else if ((k === "cn" && cnSel) || (k === "bp" && bpSel) || (k === "ar" && arSel) || panel.dataset.list === k) showTablesIntro();
 }));
 /* switch a nerve layer on (if it is off) and open its list */
 async function showLayer(k) {
   const box = document.querySelector(`#layers input[data-layer="${k}"]`);
   if (!box.checked) { box.checked = true; box.dispatchEvent(new Event("change")); return; }
-  if (!NV) await ensureNerves();
-  (k === "cn" ? showCNIntro : showBPIntro)();
+  if (k === "ar") await ensureArteries(); else if (!NV) await ensureNerves();
+  INTRO[k]();
 }
 function boneLook(m) {
   for (const b of bones) {
@@ -1061,6 +1067,92 @@ function tapDerm(lv) {
   const kp = document.createElement("p"); kp.className = "sub"; kp.textContent = `Key point: ${DERM_INFO[quiz.ask][0]}`; q.appendChild(kp);
   document.getElementById("qscore").textContent = `${quiz.right} of ${quiz.done} right`;
   const n = panel.querySelector(".acts button"); n.textContent = "Next";
+}
+
+/* ---------- Blood supply layer: the arteries named in our MSK notes ---------- */
+const AR_LABEL = ["subclavian", "axillary", "brachial", "deep_brachial", "radial", "ulnar", "sup_palmar_arch", "external_iliac", "femoral", "deep_femoral",
+  "popliteal", "ant_tibial", "post_tibial", "fibular", "dorsalis_pedis", "sup_gluteal", "inf_gluteal", "vertebral"];
+let AR = null, arRoot = null, arPick = [], arLoading = null, arSel = null, arMat = {};
+const AR_RED = 0xc0392b;
+const AR_BACK = new Set(["sup_gluteal", "inf_gluteal", "internal_pudendal", "post_interosseous", "deep_brachial", "popliteal", "post_tibial", "fibular",
+  "circumflex_scapular", "post_circumflex_humeral", "dorsal_scapular", "suprascapular", "perforating", "med_circumflex_femoral", "lat_plantar", "med_plantar", "plantar_arch"]);
+function ensureArteries() {
+  if (arLoading) return arLoading;
+  arLoading = Promise.all([new GLTFLoader().loadAsync("arteries.glb"), fetch("arteries.json").then(r => r.json())]).then(([g, aj]) => {
+    AR = aj; arRoot = new THREE.Group(); scene.add(arRoot);
+    for (const id of Object.keys(aj.info)) arMat[id] = new THREE.MeshStandardMaterial({ color: AR_RED, roughness: 0.45, transparent: true, opacity: 1, emissive: 0x000000 });
+    const where = {};
+    [...g.scene.children].forEach(o => {
+      const m = /^ar_(.+)_(\d+)$/.exec(o.name); if (!o.isMesh || !m) return;
+      if (!o.geometry.attributes.normal) o.geometry.computeVertexNormals();
+      o.material = arMat[m[1]]; o.userData.ar = m[1]; arRoot.add(o); arPick.push(o);
+      if (m[2] === "0") { o.geometry.computeBoundingSphere(); where[m[1]] = o.geometry.boundingSphere.center.clone(); }
+    });
+    for (const [id, paths] of Object.entries(aj.drawn)) {
+      for (const p of paths) { const t = tube(p, 0.0022, arMat[id]); t.userData.ar = id; arRoot.add(t); arPick.push(t); }
+      where[id] = v3(paths[0][Math.floor(paths[0].length / 2)]);
+    }
+    for (const id of AR_LABEL) {
+      if (!where[id]) continue;
+      const L = nlabel(aj.info[id].name.replace(/ \(.*\)/, "").replace(/ artery$/, ""), where[id], "ar", () => selectArtery(id)); L.view = "ar3d"; L.key = id;
+    }
+    applyLayers();
+  });
+  return arLoading;
+}
+function arShade(sel) {
+  for (const [id, m] of Object.entries(arMat)) {
+    const on = !sel || id === sel;
+    m.opacity = on ? 1 : 0.25; m.depthWrite = on; m.depthTest = !(sel && on);  // the chosen artery shows through bone and muscle m.emissive.set(sel && on ? 0x550000 : 0x000000); m.color.set(sel && on ? 0xff2a2a : AR_RED);
+  }
+  for (const o of arPick) o.renderOrder = sel && o.userData.ar === sel ? 12 : 0;
+  // the table muscles this artery supplies stay lit; the rest fade
+  const keep = sel ? new Set(AR.info[sel].muscles) : null;
+  for (const o of muscles) {
+    if (!keep) continue;
+    const on = keep.has(MU[o.userData.mu].cells[1]);
+    o.material.opacity = on ? 0.75 : 0.12; o.material.depthWrite = false; o.material.emissive.set(on ? 0x3a0a00 : 0x000000);
+  }
+  if (!keep && muscles.length && !picked) shade(null);
+}
+function showARIntro() {
+  arSel = null; if (AR) arShade(null); clearCalls(); panel.dataset.list = "ar";
+  panel.innerHTML = `<h2>Blood supply</h2><p class="sub">Right side. Only the arteries named in our MSK notes. Tap one, on the body or here: its course and clinical points from the notes, and in the upper limb the table muscles it supplies light up. Marked * are not in BodyParts3D and are drawn approximately.</p>`;
+  for (const [title, ids] of AR.groups) {
+    const h = document.createElement("h3"); h.textContent = title; panel.appendChild(h);
+    const d = document.createElement("div"); d.className = "st";
+    for (const id of ids) { const b = document.createElement("button"); b.textContent = AR.info[id].name.replace(/ artery$/, "") + (AR.info[id].drawn ? " *" : ""); b.onclick = () => selectArtery(id); d.appendChild(b); }
+    panel.appendChild(d);
+  }
+  const a = document.createElement("div"); a.className = "acts"; backToTables(a); panel.appendChild(a);
+}
+function selectArtery(id) {
+  arSel = id; picked = null; arShade(id); clearCalls();
+  const i = AR.info[id], objs = arPick.filter(o => o.userData.ar === id);
+  const bx = new THREE.Box3(); objs.forEach(o => bx.expandByObject(o));
+  const c = bx.getCenter(new THREE.Vector3()), sz = Math.max(0.3, bx.getSize(new THREE.Vector3()).length() * 1.6);
+  const dir = new THREE.Vector3(-0.35, 0.12, AR_BACK.has(id) ? -1 : 1).normalize();  // from the right side, front or back
+  fly = { t0: performance.now(), fromT: controls.target.clone(), toT: c, fromP: camera.position.clone(), toP: dir.multiplyScalar(sz).add(c) };
+  callout(i.name, "From the " + i.from.replace(/^./, x => x.toLowerCase()), c, "ar3d");
+  panel.innerHTML = ""; panel.dataset.list = "";
+  const k = document.createElement("p"); k.className = "sub"; k.textContent = "Artery" + (i.drawn ? " · drawn approximately (not in BodyParts3D)" : ""); panel.appendChild(k);
+  const h = document.createElement("h2"); h.textContent = i.name; panel.appendChild(h);
+  const dl = document.createElement("dl"); dl.className = "row";
+  const add = (t, v) => { if (!v) return; const dt = document.createElement("dt"); dt.textContent = t; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); };
+  add("From", i.from); add("Course and supply", i.text); add("Clinical", i.clinical);
+  panel.appendChild(dl);
+  if (i.muscles.length) {
+    const h3 = document.createElement("h3"); h3.textContent = `Table muscles it supplies (${i.muscles.length})`; panel.appendChild(h3);
+    const d = document.createElement("div"); d.className = "st";
+    for (const name of i.muscles) {
+      const key = Object.keys(MU).find(x => MU[x].cells[1] === name); const b = document.createElement("button"); b.textContent = name.replace(/\s*\(.*$/, "");
+      if (key) b.onclick = () => { arSel = null; arShade(null); clearCalls(); selectMuscle(key); }; d.appendChild(b);
+    }
+    panel.appendChild(d);
+  }
+  const a = document.createElement("div"); a.className = "acts";
+  const b = document.createElement("button"); b.textContent = "All arteries"; b.onclick = showARIntro; a.appendChild(b);
+  backToTables(a); panel.appendChild(a);
 }
 
 /* ---------- Root or nerve? ----------
