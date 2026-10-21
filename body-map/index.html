@@ -83,6 +83,10 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 .quiz b{font-size:18px}
 .dlab{position:absolute;transform:translate(-50%,-50%);font-size:11px;font-weight:600;line-height:1;padding:3px 6px;border-radius:999px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.25);border:1px solid rgba(0,0,0,.18)}
 .dlab.sel{font-size:13px;padding:4px 8px;outline:2px solid #201436}
+.nlab{position:absolute;transform:translate(-50%,-50%);font-size:11px;font-weight:700;line-height:1.1;padding:3px 7px;border-radius:999px;cursor:pointer;white-space:nowrap;background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.nlab.call{max-width:260px;white-space:normal;border-radius:9px;font-weight:500;text-align:left;padding:5px 8px;transform:translate(10px,-50%);cursor:default;border-left:4px solid var(--accent)}
+.nlab.call b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.chips2{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}.chips2 span{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.chips2 span.in{background:var(--accent);border-color:var(--accent);color:#fff}
 .good{color:#2f6b4f;font-weight:600}.bad{color:#b42318;font-weight:600}
 </style>
 <script>
@@ -103,11 +107,13 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 <div class="wrap">
 <p class="eyebrow"><a href="../">Prototypes</a> · MSK · throwaway</p>
 <h1>Where does it hurt?</h1>
-<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts every muscle from the muscle tables on the body: tap one for its action, nerve and clinical notes. <b>Dermatome map</b> is the dermatome model from the anatomy tables.</p>
+<p class="lead">Tap where the patient points. You get that region's own chart first, then the charts that cut across regions (arthritis, infection, nerves, fractures). Switch to <b>Which structure</b> to tap a single ligament, tendon, muscle or bursa and open its chart with that diagnosis already lit. <b>Anatomy tables</b> puts every muscle from the muscle tables on the body: tap one for its action, nerve and clinical notes. <b>Cranial nerves</b> runs each nerve from the brainstem through its opening in the skull to what it supplies, with its row of the cranial nerve table on the body; <b>Brachial plexus</b> traces roots, trunks, divisions, cords and branches down the arm. <b>Dermatome map</b> is the dermatome model from the anatomy tables.</p>
 <div class="chips" id="modes">
   <button class="chip" data-mode="region" aria-pressed="true">Where it hurts</button>
   <button class="chip" data-mode="structure" aria-pressed="false">Which structure</button>
   <button class="chip" data-mode="tables" aria-pressed="false">Anatomy tables</button>
+  <button class="chip" data-mode="cn3d" aria-pressed="false">Cranial nerves</button>
+  <button class="chip" data-mode="bp3d" aria-pressed="false">Brachial plexus</button>
   <button class="chip" data-mode="dermmap" aria-pressed="false">Dermatome map</button>
 </div>
 <div class="dermmap" id="dermmap" hidden>
@@ -383,6 +389,8 @@ const HINT = {
   region: "Drag to turn · pinch or scroll to zoom · tap a body part",
   structure: "Coloured parts are tappable (right side) · tap one to open its chart with that diagnosis lit",
   tables: "Muscles of the right side · tap one for its table row · hide it to see the one underneath · tap the skull for the cranial nerves",
+  cn3d: "Drag to turn · scroll to zoom · tap a nerve or its numeral for its table row on the body",
+  bp3d: "Drag to turn · scroll to zoom · tap a root, trunk, cord or nerve to light its path back to the roots",
   derm: "Tap the skin or a label · zoom in to see more levels · dots are the key sensory points",
 };
 /* the anatomy tables' Dermatomes tab, framed exactly as that page frames it */
@@ -405,6 +413,18 @@ async function setMode(m) {
   if (muscleRoot) muscleRoot.visible = m === "tables";
   if (skinRoot) skinRoot.visible = m === "derm";
   if (m !== "region" && m !== "structure") { halo.visible = false; tint(null); fly = { t0: performance.now(), fromT: controls.target.clone(), toT: home.t, fromP: camera.position.clone(), toP: home.p }; }
+  if (cnRoot) cnRoot.visible = m === "cn3d";
+  if (bpRoot) bpRoot.visible = m === "bp3d";
+  boneLook(m);
+  if (m === "cn3d" || m === "bp3d") {
+    setLegend(null); panel.innerHTML = `<p class="empty">Loading the nerves…</p>`;
+    document.getElementById("hint").textContent = HINT[m]; tip.style.display = "none";
+    const [t, c] = m === "cn3d" ? [[0, 1.505, 0.095], [-0.2, 1.56, 0.36]] : [[-0.13, 1.25, 0.09], [-0.42, 1.36, 0.62]];
+    fly = { t0: performance.now(), fromT: controls.target.clone(), toT: new THREE.Vector3(...t), fromP: camera.position.clone(), toP: new THREE.Vector3(...c) };
+    await ensureNerves();
+    if (mode === "cn3d") showCNIntro(); else if (mode === "bp3d") showBPIntro();
+    return;
+  }
   document.getElementById("hint").textContent = HINT[m];
   tip.style.display = "none";
   if (m === "structure") setLegend("st");
@@ -423,6 +443,7 @@ function pick(e) {
   ray.setFromCamera(ptr, camera);
   const targets = mode === "structure" ? structs.concat(bones)
     : mode === "tables" ? muscles.filter(o => o.visible).concat(bones)
+    : mode === "cn3d" ? cnPick : mode === "bp3d" ? bpPick
     : mode === "derm" ? skins : bones;
   return ray.intersectObjects(targets, false)[0];
 }
@@ -432,6 +453,8 @@ renderer.domElement.addEventListener("pointerup", e => {
   if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) return; down = null;
   const hit = pick(e); if (!hit) return;
   if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (isSkull(hit.object)) showCN(); return; }
+  if (mode === "cn3d") { if (hit.object.userData.cn) selectCN(hit.object.userData.cn); return; }
+  if (mode === "bp3d") { if (hit.object.userData.bp) selectBP(hit.object.userData.bp); return; }
   if (mode === "derm") { tapDerm(hit.object.userData.field ? fieldLevel(hit) : hit.object.userData.dm); return; }
   if (hit.object.userData.st) selectStructure(hit.object.userData.st);
   else selectRegion(regionAt(hit.point), true);
@@ -443,6 +466,11 @@ renderer.domElement.addEventListener("pointermove", e => {
   if (hovered && hovered.material.emissive && hovered.userData.st) hovered.material.emissive.set(0x000000);
   hovered = null;
   if (!hit) { tip.style.display = "none"; return; }
+  if (mode === "cn3d" || mode === "bp3d") {
+    const o = hit.object, t = o.userData.cn ? cnTitle(o.userData.cn) : o.userData.bp ? bpName(o.userData.bp) : "";
+    tip.textContent = t; tip.style.display = t ? "block" : "none";
+    tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
+  }
   if (mode === "tables" || mode === "derm") {
     const o = hit.object, t = mode === "derm" ? (quiz ? "" : o.userData.field ? fieldLevel(hit) : o.userData.dm) : o.userData.mu ? MU[o.userData.mu].cells[1] : isSkull(o) ? "Skull: cranial nerves" : "";
     tip.textContent = t; tip.style.display = t ? "block" : "none";
@@ -496,7 +524,7 @@ function loop(now) {
     if (u >= 1) fly = null;
   }
   if (halo.visible) halo.material.opacity = 0.16 + 0.1 * Math.sin(now / 300);
-  controls.update(); placeTags(); placeDermLabels(); renderer.render(scene, camera); requestAnimationFrame(loop);
+  controls.update(); placeTags(); placeDermLabels(); placeNerveLabels(); renderer.render(scene, camera); requestAnimationFrame(loop);
 }
 /* ---------- Anatomy tables view ---------- */
 const REGION_COL = { back: 0x8a5a2b, shoulder: 0xb5600f, arm: 0xc8524a, forearm: 0xa3336b, hand: 0x6a4aa8, "hip-thigh": 0x1f5f9e, leg: 0x1f6f8b, foot: 0x4f6d1f };
@@ -596,6 +624,205 @@ function showCN(i) {
   const a = document.createElement("div"); a.className = "acts";
   a.innerHTML = `<a target="_blank" rel="noopener" href="../anatomy-tables/#cn">Open the full cranial nerve table</a>`;
   const bk = document.createElement("button"); bk.textContent = "Muscle tables"; bk.onclick = () => showTablesIntro(); a.prepend(bk); panel.appendChild(a);
+}
+
+/* ---------- Cranial nerve and brachial plexus views ---------- */
+const MODC = { S: 0x2a8fb8, M: 0xd9822b, B: 0x8a63d2 }, MODNAME = { S: "Sensory", M: "Motor", B: "Both" };
+const CN_MOD = { I: "S", II: "S", III: "M", IV: "M", V: "B", VI: "M", VII: "B", VIII: "S", IX: "B", X: "B", XI: "M", XII: "M" };
+const CN_NUM = Object.keys(CN_MOD);
+let NV = null, cnRoot = null, bpRoot = null, cnPick = [], bpPick = [], nervesLoading = null, nLabels = [], cnSel = null, bpSel = null, CNROWS = {};
+const CN_HEAD = ["CN", "Name", "Origin", "Exits via", "Fibres and function", "Test", "Clinical notes"];
+function cnTitle(n) { return `CN ${n}` + (CNROWS[n] ? ` · ${CNROWS[n][1]}` : ""); }
+function bpName(id) { const s = NV.plexus.S[id]; return s.name || `Root ${id}`; }
+function firstLine(t, n = 90) { const l = String(t || "").split("<br>")[0].replace(/^- /, "").trim(); return l.length > n ? l.slice(0, n - 1) + "…" : l; }
+function boneLook(m) {
+  for (const b of bones) {
+    const c = b.userData.c, head = c.y > 1.42, girdle = /^bone_FJ(3362|3334|3384)/.test(b.name);
+    const see = (m === "cn3d" && head) || (m === "bp3d" && girdle);
+    if (b.material.transparent !== see) b.material.needsUpdate = true;
+    b.material.transparent = see; b.material.opacity = see ? (m === "cn3d" ? 0.16 : 0.35) : 1; b.material.depthWrite = !see;
+  }
+}
+function tube(path, r, mat) {
+  const curve = new THREE.CatmullRomCurve3(path.map(v3), false, "centripetal");
+  return new THREE.Mesh(new THREE.TubeGeometry(curve, Math.max(16, path.length * 10), r, 8, false), mat);
+}
+function shape(s, mat) {
+  if (s.kind === "ellipsoid") { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), mat); m.position.copy(v3(s.c)); m.scale.set(s.r[0], s.r[2], s.r[1]); return m; }
+  const a = v3(s.a), b = v3(s.b), len = a.distanceTo(b), m = new THREE.Mesh(new THREE.CapsuleGeometry(s.r, len, 6, 16), mat);
+  m.position.copy(a).add(b).multiplyScalar(0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize()); return m;
+}
+function nlabel(text, p, cls, onclick) {
+  const e = document.createElement("div"); e.className = "nlab" + (cls ? " " + cls : ""); e.innerHTML = text; e.style.display = "none";
+  if (onclick) e.onclick = onclick; stage.appendChild(e);
+  const L = { e, p: p.clone(), view: null, call: cls === "call", key: null }; nLabels.push(L); return L;
+}
+function ensureNerves() {
+  if (nervesLoading) return nervesLoading;
+  nervesLoading = Promise.all([new GLTFLoader().loadAsync("nerves.glb"), fetch("nerves.json").then(r => r.json()), fetch("tables.json").then(r => r.json())]).then(([g, nv, tb]) => {
+    NV = nv; tb.cn.rows.forEach(r => CNROWS[r[0]] = r);
+    cnRoot = new THREE.Group(); bpRoot = new THREE.Group(); scene.add(cnRoot, bpRoot);
+    cnRoot.visible = mode === "cn3d"; bpRoot.visible = mode === "bp3d";
+    const cnMat = {}; for (const n of CN_NUM) cnMat[n] = new THREE.MeshStandardMaterial({ color: MODC[CN_MOD[n]], roughness: 0.45, emissive: 0x000000 });
+    const ctxMat = { cn: new THREE.MeshStandardMaterial({ color: 0xc9b8a8, roughness: 0.7, transparent: true, opacity: 0.35, depthWrite: false }),
+      art: new THREE.MeshStandardMaterial({ color: 0xc0392b, roughness: 0.6, transparent: true, opacity: 0.45, depthWrite: false }),
+      eye: new THREE.MeshStandardMaterial({ color: 0xf4f1ea, roughness: 0.4, transparent: true, opacity: 0.55, depthWrite: false }),
+      mus: new THREE.MeshStandardMaterial({ color: 0xc8524a, roughness: 0.7, transparent: true, opacity: 0.3, depthWrite: false }) };
+    [...g.scene.children].forEach(o => {
+      if (!o.isMesh) return;
+      if (!o.geometry.attributes.normal) o.geometry.computeVertexNormals();
+      let m = /^cn_(\w+?)_(\d+)$/.exec(o.name);
+      if (m) { o.material = cnMat[m[1]]; o.userData.cn = m[1]; cnRoot.add(o); cnPick.push(o); return; }
+      m = /^ctx_(cn|bp)_(.+)$/.exec(o.name); if (!m) return;
+      o.material = /artery|carotid|jugular/.test(m[2]) ? ctxMat.art : m[2] === "eye" ? ctxMat.eye : ctxMat.mus;
+      (m[1] === "cn" ? cnRoot : bpRoot).add(o);
+    });
+    const stemMat = new THREE.MeshStandardMaterial({ color: 0xd9c6ea, roughness: 0.8, transparent: true, opacity: 0.8 });
+    for (const s of nv.brainstem) cnRoot.add(shape(s, stemMat));
+    const bulb = shape(nv.bulb, cnMat.I); bulb.userData.cn = "I"; cnRoot.add(bulb); cnPick.push(bulb);
+    for (const [n, c] of Object.entries(nv.cn)) {
+      for (const p of c.paths) { const t = tube(p, n === "VIII" || n === "I" ? 0.0011 : 0.0014, cnMat[n]); t.userData.cn = n; cnRoot.add(t); cnPick.push(t); }
+      const mid = c.paths.length ? v3(c.paths[0][Math.min(2, c.paths[0].length - 1)]) : v3(c.exit);
+      const L = nlabel(n, n === "II" || n === "IV" ? v3(c.exit) : mid, null, () => selectCN(n)); L.view = "cn3d"; L.key = n;
+      L.e.style.borderColor = "#" + MODC[CN_MOD[n]].toString(16).padStart(6, "0"); L.e.style.color = L.e.style.borderColor;
+    }
+    const S = nv.plexus.S;
+    for (const [id, path] of Object.entries(nv.bp)) {
+      const s = S[id], minor = s.minor, r = s.t === "root" ? 0.0026 : s.t === "nerve" ? (minor ? 0.0013 : 0.0024) : 0.0031;
+      const mat = new THREE.MeshStandardMaterial({ color: minor ? 0xe6c35c : 0xf2d34f, roughness: 0.45, emissive: 0x000000, transparent: true, opacity: 1 });
+      const t = tube(path, r, mat); t.userData.bp = id; bpRoot.add(t); bpPick.push(t);
+      if (!minor) {
+        const short = s.t === "root" ? id : s.t === "nerve" ? s.name.replace(" nerve", "") : s.t === "division" ? id.slice(-1) : s.name.replace(" trunk", "").replace(" cord", " cord");
+        const L = nlabel(short, v3(path[Math.floor(path.length / 2)]), null, () => selectBP(id)); L.view = "bp3d"; L.key = id;
+        if (s.t === "division") L.small = true;
+      }
+    }
+  });
+  return nervesLoading;
+}
+let calls = [];
+function clearCalls() { calls.forEach(L => { L.e.remove(); nLabels.splice(nLabels.indexOf(L), 1); }); calls = []; }
+function callout(title, text, p, view) { const L = nlabel(`<b>${title}</b>`, p, "call"); L.e.append(text); L.view = view; calls.push(L); return L; }
+function placeNerveLabels() {
+  if (!nLabels.length) return;
+  const w = stage.clientWidth, h = stage.clientHeight, placed = [];
+  const order = [...calls, ...nLabels.filter(L => !L.call)];
+  for (const L of order) {
+    let vis = L.view === mode;
+    if (vis && !L.call && L.small && !bpSel) vis = false;
+    if (vis) {
+      tmp.copy(L.p).project(camera);
+      const x = (tmp.x + 1) / 2 * w, y = (1 - tmp.y) / 2 * h;
+      vis = tmp.z < 1 && x > 0 && x < w && y > 0 && y < h;
+      const rw = L.call ? 200 : 14 + 7 * L.e.textContent.length, rh = L.call ? 40 : 18, cx = L.call ? x + 10 + rw / 2 : x;
+      if (vis && placed.some(r => Math.abs(r[0] - cx) < (r[2] + rw) / 2 && Math.abs(r[1] - y) < (r[3] + rh) / 2)) vis = false;
+      if (vis) { placed.push([cx, y, rw, rh]); L.e.style.left = x + "px"; L.e.style.top = y + "px"; }
+    }
+    L.e.style.display = vis ? "block" : "none";
+    if (!L.call) L.e.style.opacity = (mode === "cn3d" && cnSel && L.key !== cnSel) || (mode === "bp3d" && bpLit && !bpLit[L.key]) ? 0.45 : 1;
+  }
+}
+function cellBlock(t) {
+  const dd = document.createElement("div"); dd.className = "row";
+  String(t || "").split("<br>").map(l => l.trim()).filter(Boolean).forEach(l => {
+    const sp = document.createElement("span"); sp.style.display = "block"; if (l.startsWith("- ")) { sp.style.paddingLeft = "12px"; sp.style.color = "var(--muted)"; l = l.slice(2); }
+    sp.textContent = l; dd.appendChild(sp);
+  });
+  return dd;
+}
+function cnShade(sel) {
+  for (const o of cnPick) { const on = !sel || o.userData.cn === sel; o.material.emissive.set(sel && on ? 0x2a1600 : 0); }
+  for (const n of CN_NUM) {
+    const m = cnPick.find(o => o.userData.cn === n); if (!m) continue;  // a nerve's pieces share one material
+    const dim = !!sel && n !== sel; if (m.material.transparent !== dim) m.material.needsUpdate = true;
+    m.material.transparent = dim; m.material.opacity = dim ? 0.18 : 1; m.material.depthWrite = !dim;
+  }
+}
+function showCNIntro() {
+  cnSel = null; cnShade(null); clearCalls();
+  panel.innerHTML = `<h2>Cranial nerves</h2><p class="sub">Right side. Each nerve runs from where it leaves the brainstem, through its opening in the see-through skull, to what it supplies. Tap a nerve or pick one; its table row appears on the body and below. Colour: <b style="color:#2a8fb8">sensory</b> · <b style="color:#d9822b">motor</b> · <b style="color:#8a63d2">both</b>.</p>`;
+  const d = document.createElement("div"); d.className = "st"; d.style.marginTop = "10px";
+  for (const n of CN_NUM) { const b = document.createElement("button"); b.textContent = cnTitle(n); b.onclick = () => selectCN(n); d.appendChild(b); }
+  panel.appendChild(d);
+}
+function selectCN(n) {
+  cnSel = n; cnShade(n); clearCalls();
+  const c = NV.cn[n], r = CNROWS[n] || [];
+  callout("Origin", firstLine(r[2]), v3(c.origin), "cn3d");
+  callout("Exits via", firstLine(r[3]), v3(c.exit), "cn3d");
+  callout("Fibres and function", firstLine(r[4]), v3(c.target), "cn3d");
+  const mid = v3(c.exit).add(v3(c.origin)).multiplyScalar(0.5);
+  fly = { t0: performance.now(), fromT: controls.target.clone(), toT: mid, fromP: camera.position.clone(), toP: camera.position.clone().sub(controls.target).normalize().multiplyScalar(0.3).add(mid) };
+  panel.innerHTML = "";
+  const k = document.createElement("p"); k.className = "sub"; k.textContent = MODNAME[CN_MOD[n]]; panel.appendChild(k);
+  const h = document.createElement("h2"); h.textContent = cnTitle(n); panel.appendChild(h);
+  const dl = document.createElement("dl"); dl.className = "row";
+  [[2, "Origin"], [3, "Exits via"], [4, "Fibres and function"], [5, "Test"], [6, "Clinical notes"]].forEach(([i, t]) => {
+    if (!r[i]) return; const dt = document.createElement("dt"); dt.textContent = t; const dd = document.createElement("dd"); dd.appendChild(cellBlock(r[i])); dl.append(dt, dd);
+  });
+  panel.appendChild(dl);
+  const a = document.createElement("div"); a.className = "acts";
+  const b = document.createElement("button"); b.textContent = "All cranial nerves"; b.onclick = showCNIntro; a.appendChild(b);
+  const t = document.createElement("a"); t.href = "../anatomy-tables/#cn"; t.target = "_blank"; t.rel = "noopener"; t.textContent = "Full table"; a.appendChild(t);
+  panel.appendChild(a);
+}
+/* brachial plexus: the same structures and notes as the anatomy tables' plexus tab */
+let bpLit = null;
+function rootsOf(id) {
+  const S = NV.plexus.S, s = S[id]; if (s.roots) return s.roots; if (s.t === "root") return [id];
+  const out = new Set(); s.p.forEach(q => rootsOf(q).forEach(r => out.add(r))); return NV.plexus.R.filter(r => out.has(r));
+}
+function pathUp(id, want, acc) { acc[id] = 1; NV.plexus.S[id].p.forEach(q => { if (rootsOf(q).some(r => want.includes(r))) pathUp(q, want, acc); }); return acc; }
+function pathFor(id) {
+  const S = NV.plexus.S;
+  if (S[id].t !== "root") return pathUp(id, rootsOf(id), {});
+  const acc = { [id]: 1 }; Object.keys(S).forEach(k => { if (rootsOf(k).includes(id)) Object.assign(acc, pathUp(k, [id], {})); }); return acc;
+}
+const FROM = { sup: "Superior trunk", mid: "Middle trunk", inf: "Inferior trunk", lat: "Lateral cord", post: "Posterior cord", med: "Medial cord" };
+function arisesFrom(id) { const s = NV.plexus.S[id]; if (id === "medn") return "Lateral + medial cords"; return NV.plexus.S[s.p[0]].t === "root" ? "Roots" : FROM[s.p[0]]; }
+function bpShade(lit, focus) {
+  bpLit = lit;
+  for (const o of bpPick) {
+    const id = o.userData.bp, on = !lit || lit[id];
+    o.material.opacity = on ? 1 : 0.15; o.material.depthWrite = on;
+    o.material.color.set(id === focus ? 0x5b21b6 : lit && on ? 0xa98bdc : NV.plexus.S[id].minor ? 0xe6c35c : 0xf2d34f);  // purple, never artery red
+  }
+}
+function showBPIntro() {
+  bpSel = null; bpShade(null); clearCalls();
+  panel.innerHTML = `<h2>Brachial plexus</h2><p class="sub">Right side. Roots C5–T1 leave their intervertebral foramina, pass between the scalenes as trunks, split into divisions behind the clavicle, form cords around the axillary artery and end as five nerves down the arm (Read That Damn Cadaver Book). Tap any part: its path lights back to the roots it carries.</p>`;
+  const S = NV.plexus.S;
+  for (const [title, ids] of [["Roots", NV.plexus.R], ["Trunks", ["sup", "mid", "inf"]], ["Cords", ["lat", "post", "med"]], ["Terminal nerves", ["mc", "ax", "rad", "medn", "uln"]],
+    ["Other branches", Object.keys(S).filter(k => S[k].minor)]]) {
+    const h = document.createElement("h3"); h.textContent = title; panel.appendChild(h);
+    const d = document.createElement("div"); d.className = "st";
+    for (const id of ids) { const b = document.createElement("button"); b.textContent = bpName(id); b.onclick = () => selectBP(id); d.appendChild(b); }
+    panel.appendChild(d);
+  }
+}
+function selectBP(id) {
+  bpSel = id; const S = NV.plexus.S, s = S[id], i = NV.plexus.INFO[id] || {}, path = NV.bp[id];
+  bpShade(pathFor(id), id); clearCalls();
+  const end = v3(path[path.length - 1]), start = v3(path[0]);
+  const roots = rootsOf(id).join(", ");
+  callout(bpName(id), `Roots ${roots}` + (s.t === "nerve" ? ` · from ${arisesFrom(id).toLowerCase()}` : ""), v3(path[Math.floor(path.length / 2)]), "bp3d");
+  if (i.m) callout("Motor", i.m, end, "bp3d"); else if (i.s) callout("Sensory", i.s, end, "bp3d");
+  if (i.m && i.s) callout("Sensory", i.s, v3(path[Math.max(0, path.length - 2)]), "bp3d");
+  const box = new THREE.Box3(); path.forEach(p => box.expandByPoint(v3(p)));
+  const c = box.getCenter(new THREE.Vector3()), size = Math.max(0.25, box.getSize(new THREE.Vector3()).length() * 1.3);
+  fly = { t0: performance.now(), fromT: controls.target.clone(), toT: c, fromP: camera.position.clone(), toP: camera.position.clone().sub(controls.target).normalize().multiplyScalar(size).add(c) };
+  const kind = { root: "Root", trunk: "Trunk", division: "Division", cord: "Cord", nerve: s.minor ? "Branch before the terminal five" : "Terminal branch" }[s.t];
+  panel.innerHTML = `<p class="sub"></p><h2></h2><p class="row" style="margin-top:10px"><b style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Roots carried</b></p><div class="chips2">${NV.plexus.R.map(r => `<span class="${rootsOf(id).includes(r) ? "in" : ""}">${r}</span>`).join("")}</div>`;
+  panel.querySelector(".sub").textContent = kind; panel.querySelector("h2").textContent = bpName(id);
+  const dl = document.createElement("dl"); dl.className = "row";
+  const add = (k, v) => { if (!v) return; const dt = document.createElement("dt"); dt.textContent = k; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); };
+  if (s.t === "nerve") add("Comes off", arisesFrom(id));
+  add("Formed by", i.d); add("Motor", i.m); add("Sensory", i.s); add("Note", i.c);
+  panel.appendChild(dl);
+  const a = document.createElement("div"); a.className = "acts";
+  const b = document.createElement("button"); b.textContent = "Whole plexus"; b.onclick = showBPIntro; a.appendChild(b);
+  const t = document.createElement("a"); t.href = "../anatomy-tables/#plexus"; t.target = "_blank"; t.rel = "noopener"; t.textContent = "Plexus diagram"; a.appendChild(t);
+  panel.appendChild(a);
 }
 
 /* ---------- Dermatomes view ---------- */
