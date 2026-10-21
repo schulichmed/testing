@@ -106,7 +106,8 @@ def plexus_data() -> dict:
                          capture_output=True, text=True, check=True).stdout
     data = json.loads(out)
     netter = json.loads((HERE.parent / "anatomy-tables" / "netter_upper_limb.json").read_text(encoding="utf-8"))
-    data["SUPPLY"] = netter["nerves"]  # exactly which muscles each nerve supplies, with blood supply
+    data["SUPPLY"] = netter["nerves"]  # exactly which muscles each nerve supplies, with action and blood supply
+    data["MOVES"] = netter["moves"]  # what each nerve does, in one line
     for s in data["S"].values():  # the 2D drawing's coordinates mean nothing here
         s.pop("pts", None)
         s.pop("lbl", None)

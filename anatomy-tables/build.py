@@ -402,8 +402,9 @@ def main() -> None:
             # The brachial plexus lecture opens Week 8, between the back and the shoulder.
             plexus = (HERE / "plexus.html").read_text(encoding="utf-8")
             # exactly which muscles each nerve supplies, with blood supply (Netter, kept to our curriculum)
-            supply = json.loads((HERE / "netter_upper_limb.json").read_text(encoding="utf-8"))["nerves"]
-            plexus = plexus.replace("/*SUPPLY*/{}", json.dumps(supply, ensure_ascii=False).replace("</", "<\\/"))
+            netter = json.loads((HERE / "netter_upper_limb.json").read_text(encoding="utf-8"))
+            for slot, key in (("/*SUPPLY*/{}", "nerves"), ("/*MOVES*/{}", "moves")):
+                plexus = plexus.replace(slot, json.dumps(netter[key], ensure_ascii=False).replace("</", "<\\/"))
             sections.append(("plexus", "Brachial plexus", "Brachial plexus", plexus))
     template = (HERE / "template.html").read_text(encoding="utf-8")
     tabs = "".join(

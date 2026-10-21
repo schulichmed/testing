@@ -92,7 +92,8 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 .nlab.call b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .chips2{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}.chips2 span{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.chips2 span.in{background:var(--accent);border-color:var(--accent);color:#fff}
 ul.sup{margin:2px 0 8px;padding-left:18px;font-size:14px}ul.sup li{margin:0 0 6px;line-height:1.35}
-ul.sup .bl{color:#a33;font-size:13px}ul.sup .nt{color:var(--muted);font-size:12.5px;font-style:italic}
+p.moves{background:#fff3b0;color:#222;border-radius:6px;padding:6px 8px;font-weight:600;font-size:14px;line-height:1.4;margin:8px 0}
+ul.sup .ac{font-weight:600}ul.sup .bl{color:#a33;font-size:13px}ul.sup .nt{color:var(--muted);font-size:12.5px;font-style:italic}
 :root[data-theme="dark"] ul.sup .bl{color:#ff9f9f}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) ul.sup .bl{color:#ff9f9f}}
 .good{color:#2f6b4f;font-weight:600}.bad{color:#b42318;font-weight:600}
@@ -837,8 +838,9 @@ function selectBP(id) {
   const roots = rootsOf(id).join(", ");
   callout(bpName(id), `Roots ${roots}` + (s.t === "nerve" ? ` · from ${arisesFrom(id).toLowerCase()}` : ""), v3(path[Math.floor(path.length / 2)]), "bp3d");
   const sup = NV.plexus.SUPPLY && NV.plexus.SUPPLY[id];
-  const motor = sup ? sup.map(m => m[0]).join(", ") : i.m;
-  if (motor) callout(sup ? `Supplies (${sup.length})` : "Motor", motor.length > 150 ? motor.slice(0, 148) + "…" : motor, end, "bp3d"); else if (i.s) callout("Sensory", i.s, end, "bp3d");
+  const moves = NV.plexus.MOVES && NV.plexus.MOVES[id];
+  const motor = moves ? moves.split(". Cut it")[0] : sup ? sup.map(m => m[0]).join(", ") : i.m;
+  if (motor) callout(moves ? "What it does" : sup ? `Supplies (${sup.length})` : "Motor", motor.length > 220 ? motor.slice(0, 218) + "…" : motor, end, "bp3d"); else if (i.s) callout("Sensory", i.s, end, "bp3d");
   if (i.m && i.s) callout("Sensory", i.s, v3(path[Math.max(0, path.length - 2)]), "bp3d");
   const box = new THREE.Box3(); path.forEach(p => box.expandByPoint(v3(p)));
   const c = box.getCenter(new THREE.Vector3()), size = Math.max(0.25, box.getSize(new THREE.Vector3()).length() * 1.3);
@@ -846,6 +848,7 @@ function selectBP(id) {
   const kind = { root: "Root", trunk: "Trunk", division: "Division", cord: "Cord", nerve: s.minor ? "Branch before the terminal five" : "Terminal branch" }[s.t];
   panel.innerHTML = `<p class="sub"></p><h2></h2><p class="row" style="margin-top:10px"><b style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Roots carried</b></p><div class="chips2">${NV.plexus.R.map(r => `<span class="${rootsOf(id).includes(r) ? "in" : ""}">${r}</span>`).join("")}</div>`;
   panel.querySelector(".sub").textContent = kind; panel.querySelector("h2").textContent = bpName(id);
+  if (moves) { const p = document.createElement("p"); p.className = "moves"; p.textContent = moves; panel.querySelector("h2").after(p); }
   const dl = document.createElement("dl"); dl.className = "row";
   const add = (k, v) => { if (!v) return; const dt = document.createElement("dt"); dt.textContent = k; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); };
   if (s.t === "nerve") add("Comes off", arisesFrom(id));
@@ -854,9 +857,10 @@ function selectBP(id) {
   if (sup) {
     const h3 = document.createElement("h3"); h3.textContent = `Muscles it supplies (${sup.length})`; panel.appendChild(h3);
     const ul = document.createElement("ul"); ul.className = "sup";
-    for (const [m, br, blood, note] of sup) {
+    for (const [m, br, blood, note, action] of sup) {
       const li = document.createElement("li"), b = document.createElement("b"); b.textContent = m; li.appendChild(b);
       if (br) li.append(` (${br})`);
+      if (action) { const s = document.createElement("span"); s.className = "ac"; s.textContent = action; li.append(document.createElement("br"), s); }
       if (blood.length) { const s = document.createElement("span"); s.className = "bl"; s.textContent = "Blood: " + blood.join(", "); li.append(document.createElement("br"), s); }
       if (note) { const s = document.createElement("span"); s.className = "nt"; s.textContent = note; li.append(document.createElement("br"), s); }
       ul.appendChild(li);

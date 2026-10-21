@@ -6,8 +6,10 @@ Purpose: Take the upper limb muscle tables of Netter's Atlas of Human Anatomy (T
 Author: nsimsam, with Claude Code
 Date: 2026-10-21
 Input: the Netter atlas PDF (pages 512-515 of the file, the upper limb muscle tables)
+        and our anatomy tables (vault_tables.json), for each muscle's action
 Output: anatomy-tables/netter_upper_limb.json
-        {"muscles": {our muscle name: {"blood": [...]}}, "nerves": {plexus id: [[muscle, branch, blood, note], ...]}}
+        {"muscles": {our muscle name: {"blood": [...]}}, "nerves": {plexus id: [[muscle, branch, blood, note, action], ...]},
+         "moves": {plexus id: what the nerve does, in one line}}
 Usage: python netter_tables.py "<path to Netter Anatomy.pdf>"   (needs pymupdf)
 """
 
@@ -70,6 +72,62 @@ OUR_EXTRA = [
     ("lp", "Pectoralis minor", "", "per our table; Netter lists the medial pectoral nerve only"),
 ]
 
+# What each nerve does, in one line: the movements its muscles make, from the Action column of our anatomy tables
+MOVES = {
+    "rad": "Extends the arm and the forearm (triceps), the wrist, the fingers and the thumb; supinates the forearm (supinator); "
+           "brachioradialis flexes the elbow in mid-pronation. Cut it: wrist drop",
+    "mc": "Flexes the elbow (brachialis, biceps) and supinates the forearm (biceps); flexes the arm at the shoulder (coracobrachialis)",
+    "ax": "Abducts the arm past the first 15° (deltoid); flexes, extends and rotates it (deltoid), laterally rotates it (teres minor)",
+    "medn": "Pronates the forearm; flexes the wrist and the fingers (FDS, lateral FDP, FPL); abducts and opposes the thumb; "
+            "lumbricals 1 and 2 flex the index and middle MCPs. Cut it: hand of benediction, ape hand",
+    "uln": "Flexes and adducts the wrist (FCU); flexes the ring and little fingers (medial FDP); abducts and adducts the fingers "
+           "(interossei); adducts the thumb; moves the little finger (hypothenar). Cut it: claw hand",
+    "ss": "Starts abduction of the arm, the first 15° (supraspinatus); laterally rotates the arm (infraspinatus)",
+    "td": "Adducts, extends and medially rotates the arm",
+    "ds": "Elevates and retracts the scapula",
+    "lt": "Protracts the scapula and holds it to the chest wall. Cut it: winged scapula",
+    "lp": "Adducts, flexes and medially rotates the arm (pectoralis major); draws the scapula forward and down (pectoralis minor)",
+    "mp": "Adducts, flexes and medially rotates the arm (pectoralis major); draws the scapula forward and down (pectoralis minor)",
+    "us": "Medially rotates the arm",
+    "ls": "Medially rotates and adducts the arm",
+}
+
+
+def our_actions() -> dict[str, str]:
+    """Our anatomy tables' Action column, by muscle name."""
+    actions = {}
+    for table in json.loads((HERE / "vault_tables.json").read_text(encoding="utf-8")):
+        if "Action" in table["header"]:
+            muscle, action = table["header"].index("Muscle"), table["header"].index("Action")
+            for row in table["rows"]:
+                actions.setdefault(row[muscle], row[action])
+    return actions
+
+
+# Where a nerve has only part of a muscle, its action covers only those digits
+PART_DIGITS = {"(medial part)": "4-5", "(lateral part)": "2-3", "3 and 4": "4-5", "1 and 2": "2-3"}
+
+
+def action_for(action: str, label: str, note: str) -> str:
+    """One muscle's action; where our row covers two (palmar/dorsal interossei, FPB's two heads) keep the line that fits."""
+    act = pick_action(action, label, note)
+    for part, digits in PART_DIGITS.items():
+        if label.endswith(part):
+            act = act.replace("digits 2-5", f"digits {digits}")
+    return act[:1].upper() + act[1:]
+
+
+def pick_action(action: str, label: str, note: str) -> str:
+    lines = action.split("<br>")
+    if len(lines) > 1:
+        for line in lines:
+            head = line.split(":")[0].split(" (")[0].lower()
+            if ":" in line and (head in label.lower() or head in note.lower()):
+                return line.split(":", 1)[1].strip()
+        if "Flexor pollicis brevis" == label:
+            return next(l.split(":", 1)[1].strip() for l in lines if l.startswith("Superficial head"))
+    return "; ".join(lines)
+
 
 def cell_text(page, rect) -> str:
     words = [w for w in page.get_text("words") if pymupdf.Rect(w[:4]).intersect(rect).get_area() > 0.6 * pymupdf.Rect(w[:4]).get_area()]
@@ -107,7 +165,7 @@ def our_blood(text: str) -> list[str]:
 
 
 def main(pdf: Path) -> None:
-    rows = read_rows(pdf)
+    rows, actions = read_rows(pdf), our_actions()
     log.info("Netter rows: %d", len(rows))
     muscles, nerves = {}, {}
     for name, _, _, innervation, _, blood, _ in rows:
@@ -127,14 +185,16 @@ def main(pdf: Path) -> None:
                     branch = re.search(r"\(([^)C]+)\)", text)
                     label = shown + (f" ({part.lower()} part)" if part else "")
                     note = "radial nerve supplies part of it (C7), per Netter" if name == "Brachialis" and ids == "rad" else ""
+                    act = action_for(actions.get(ours, ""), label, note)
                     for nid in ids.split("+"):
-                        nerves.setdefault(nid, []).append([label, branch.group(1) if branch else "", art, note])
+                        nerves.setdefault(nid, []).append([label, branch.group(1) if branch else "", art, note, act])
     for nid, muscle, branch, note in OUR_EXTRA:
-        nerves[nid].append([muscle, branch, muscles.get(muscle, {}).get("blood", []), note])
+        nerves[nid].append([muscle, branch, muscles.get(muscle, {}).get("blood", []), note,
+                            action_for(actions.get(muscle, ""), muscle, note)])
     for nid in nerves:
         nerves[nid].sort(key=lambda m: m[0])
     out = {"source": "Netter, Atlas of Human Anatomy, Tables 6-1 to 6-4 (upper limb muscles), filtered to our curriculum",
-           "muscles": muscles, "nerves": nerves}
+           "muscles": muscles, "nerves": nerves, "moves": MOVES}
     (HERE / "netter_upper_limb.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
     log.info("netter_upper_limb.json: %d muscles, %s", len(muscles), {k: len(v) for k, v in nerves.items()})
 
