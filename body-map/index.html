@@ -83,6 +83,10 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 .quiz b{font-size:18px}
 .dlab{position:absolute;transform:translate(-50%,-50%);font-size:11px;font-weight:600;line-height:1;padding:3px 6px;border-radius:999px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.25);border:1px solid rgba(0,0,0,.18)}
 .dlab.sel{font-size:13px;padding:4px 8px;outline:2px solid #201436}
+.layers{position:absolute;top:10px;right:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;background:var(--card);padding:6px 10px;border-radius:10px;border:1px solid var(--line);z-index:2}
+.layers span{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.layers label{display:flex;gap:5px;align-items:center;cursor:pointer;padding:2px 8px;border-radius:999px;border:1px solid var(--line)}
+.layers label:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
 .nlab{position:absolute;transform:translate(-50%,-50%);font-size:11px;font-weight:700;line-height:1.1;padding:3px 7px;border-radius:999px;cursor:pointer;white-space:nowrap;background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .nlab.call{max-width:260px;white-space:normal;border-radius:9px;font-weight:500;text-align:left;padding:5px 8px;transform:translate(10px,-50%);cursor:default;border-left:4px solid var(--accent)}
 .nlab.call b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
@@ -123,6 +127,12 @@ dialog iframe{display:block;width:100%;height:calc(100% - 54px);border:0;backgro
 <div class="app" id="app">
   <div class="stage" id="stage">
     <div class="loading" id="loading">Loading the skeleton…</div>
+    <div class="layers" id="layers" hidden>
+      <span>Show</span>
+      <label><input type="checkbox" data-layer="muscles" checked> Muscles</label>
+      <label><input type="checkbox" data-layer="cn"> Cranial nerves</label>
+      <label><input type="checkbox" data-layer="bp"> Brachial plexus</label>
+    </div>
     <div class="legend" id="legend">
       <span style="--c:#c8524a">Muscle or tendon</span>
       <span style="--c:#e8c547">Ligament or labrum</span>
@@ -410,12 +420,10 @@ async function setMode(m) {
   mode = m; document.querySelectorAll("#modes .chip").forEach(x => x.setAttribute("aria-pressed", x.dataset.mode === m ? "true" : "false"));
   setStructVisible(m === "structure");
   bones.forEach(b => b.visible = m !== "derm");
-  if (muscleRoot) muscleRoot.visible = m === "tables";
+
   if (skinRoot) skinRoot.visible = m === "derm";
   if (m !== "region" && m !== "structure") { halo.visible = false; tint(null); fly = { t0: performance.now(), fromT: controls.target.clone(), toT: home.t, fromP: camera.position.clone(), toP: home.p }; }
-  if (cnRoot) cnRoot.visible = m === "cn3d";
-  if (bpRoot) bpRoot.visible = m === "bp3d";
-  boneLook(m);
+  applyLayers();
   if (m === "cn3d" || m === "bp3d") {
     setLegend(null); panel.innerHTML = `<p class="empty">Loading the nerves…</p>`;
     document.getElementById("hint").textContent = HINT[m]; tip.style.display = "none";
@@ -442,7 +450,7 @@ function pick(e) {
   ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ptr, camera);
   const targets = mode === "structure" ? structs.concat(bones)
-    : mode === "tables" ? muscles.filter(o => o.visible).concat(bones)
+    : mode === "tables" ? (layers.muscles ? muscles.filter(o => o.visible) : []).concat(layers.cn ? cnPick : [], layers.bp ? bpPick : [], bones)
     : mode === "cn3d" ? cnPick : mode === "bp3d" ? bpPick
     : mode === "derm" ? skins : bones;
   return ray.intersectObjects(targets, false)[0];
@@ -452,6 +460,8 @@ renderer.domElement.addEventListener("pointerdown", e => { down = [e.clientX, e.
 renderer.domElement.addEventListener("pointerup", e => {
   if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) return; down = null;
   const hit = pick(e); if (!hit) return;
+  if (mode === "tables" && hit.object.userData.cn) { selectCN(hit.object.userData.cn); return; }
+  if (mode === "tables" && hit.object.userData.bp) { selectBP(hit.object.userData.bp); return; }
   if (mode === "tables") { if (hit.object.userData.mu) selectMuscle(hit.object.userData.mu); else if (isSkull(hit.object)) showCN(); return; }
   if (mode === "cn3d") { if (hit.object.userData.cn) selectCN(hit.object.userData.cn); return; }
   if (mode === "bp3d") { if (hit.object.userData.bp) selectBP(hit.object.userData.bp); return; }
@@ -466,7 +476,7 @@ renderer.domElement.addEventListener("pointermove", e => {
   if (hovered && hovered.material.emissive && hovered.userData.st) hovered.material.emissive.set(0x000000);
   hovered = null;
   if (!hit) { tip.style.display = "none"; return; }
-  if (mode === "cn3d" || mode === "bp3d") {
+  if (mode === "cn3d" || mode === "bp3d" || hit.object.userData.cn || hit.object.userData.bp) {
     const o = hit.object, t = o.userData.cn ? cnTitle(o.userData.cn) : o.userData.bp ? bpName(o.userData.bp) : "";
     tip.textContent = t; tip.style.display = t ? "block" : "none";
     tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; return;
@@ -535,7 +545,7 @@ function ensureTables() {
   tablesLoading = Promise.all([new GLTFLoader().loadAsync("muscles.glb"), fetch("tables.json").then(r => r.json())]).then(([g, tb]) => {
     TB = tb;
     for (const reg of tb.regions) for (const row of reg.rows) if (!MU[row.key]) MU[row.key] = { ...row, reg };
-    muscleRoot = g.scene; muscleRoot.visible = mode === "tables"; scene.add(muscleRoot);
+    muscleRoot = g.scene; scene.add(muscleRoot);
     muscleRoot.traverse(o => {
       if (!o.isMesh) return;
       const m = /^mu_(.+)_(\d+)$/.exec(o.name); if (!m || !MU[m[1]]) return;
@@ -544,6 +554,7 @@ function ensureTables() {
       o.material = new THREE.MeshStandardMaterial({ color: REGION_COL[MU[m[1]].reg.sid], roughness: 0.6, transparent: true, opacity: 0.92 });
       muscles.push(o);
     });
+    applyLayers();
   });
   return tablesLoading;
 }
@@ -564,7 +575,8 @@ function rowHtml(header, cells, skip) {
 function shade(sel) {
   for (const o of muscles) {
     const on = !sel || o.userData.mu === sel;
-    o.material.opacity = on ? 0.92 : 0.18; o.material.depthWrite = on;
+    const base = mode === "tables" && (layers.cn || layers.bp) ? 0.4 : 0.92;  // let the nerves show through
+    o.material.opacity = on ? base : 0.18; o.material.depthWrite = on && base > 0.5;
     o.material.emissive.set(sel && o.userData.mu === sel ? 0x3a2a00 : 0x000000);
   }
 }
@@ -575,8 +587,9 @@ function hiddenBar() {
   const b = document.createElement("button"); b.textContent = `Show the ${new Set(hid.map(o => o.userData.mu)).size} hidden muscle(s)`;
   b.onclick = () => { muscles.forEach(o => o.visible = true); picked ? selectMuscle(picked) : showTablesIntro(); }; d.appendChild(b); return d;
 }
+function clearNerveSel() { if (!NV) return; clearCalls(); cnSel = null; cnShade(null); bpSel = null; bpShade(null); }
 function showTablesIntro(sid) {
-  picked = null; shade(null);
+  picked = null; shade(null); clearNerveSel();
   panel.innerHTML = `<h2>Anatomy tables</h2><p class="sub">Tap a muscle on the body, or pick a table. Colours follow the table each muscle is in.</p>`;
   const d = document.createElement("div"); d.className = "st"; d.style.marginTop = "10px";
   const cn = document.createElement("button"); cn.textContent = "Cranial nerves"; cn.onclick = showCN; d.appendChild(cn);
@@ -599,7 +612,7 @@ function showTablesIntro(sid) {
   const hb = hiddenBar(); if (hb) panel.appendChild(hb);
 }
 function selectMuscle(key, zoom = true) {
-  const row = MU[key]; if (!row) return; picked = key;
+  const row = MU[key]; if (!row) return; picked = key; clearNerveSel();
   const objs = muscles.filter(o => o.userData.mu === key);
   objs.forEach(o => o.visible = true); shade(objs.length ? key : null);
   if (zoom && objs.length) { const bx = new THREE.Box3(); objs.forEach(o => bx.expandByObject(o)); const c = bx.getCenter(new THREE.Vector3()), sz = bx.getSize(new THREE.Vector3()).length(); flyTo(c, Math.max(0.35, sz * 1.8)); }
@@ -635,12 +648,28 @@ const CN_HEAD = ["CN", "Name", "Origin", "Exits via", "Fibres and function", "Te
 function cnTitle(n) { return `CN ${n}` + (CNROWS[n] ? ` · ${CNROWS[n][1]}` : ""); }
 function bpName(id) { const s = NV.plexus.S[id]; return s.name || `Root ${id}`; }
 function firstLine(t, n = 90) { const l = String(t || "").split("<br>")[0].replace(/^- /, "").trim(); return l.length > n ? l.slice(0, n - 1) + "…" : l; }
+/* in the Anatomy tables view the muscles, cranial nerves and plexus are layers on one skeleton, each switched on or off */
+const layers = { muscles: true, cn: false, bp: false };
+function viewOn(v) { return v === mode || (mode === "tables" && ((v === "cn3d" && layers.cn) || (v === "bp3d" && layers.bp))); }
+function applyLayers() {
+  if (muscleRoot) muscleRoot.visible = mode === "tables" && layers.muscles;
+  if (cnRoot) cnRoot.visible = viewOn("cn3d");
+  if (bpRoot) bpRoot.visible = viewOn("bp3d");
+  document.getElementById("layers").hidden = mode !== "tables";
+  boneLook(mode);
+  if (muscles.length) shade(picked);
+}
+document.querySelectorAll("#layers input").forEach(i => i.addEventListener("change", async () => {
+  layers[i.dataset.layer] = i.checked;
+  if ((layers.cn || layers.bp) && !NV) await ensureNerves();
+  applyLayers();
+}));
 function boneLook(m) {
   for (const b of bones) {
     const c = b.userData.c, head = c.y > 1.42, girdle = /^bone_FJ(3362|3334|3384)/.test(b.name);
-    const see = (m === "cn3d" && head) || (m === "bp3d" && girdle);
+    const cnOn = viewOn("cn3d"), bpOn = viewOn("bp3d"), see = (cnOn && head) || (bpOn && girdle);
     if (b.material.transparent !== see) b.material.needsUpdate = true;
-    b.material.transparent = see; b.material.opacity = see ? (m === "cn3d" ? 0.16 : 0.35) : 1; b.material.depthWrite = !see;
+    b.material.transparent = see; b.material.opacity = see ? (cnOn && head ? 0.16 : 0.35) : 1; b.material.depthWrite = !see;
   }
 }
 function tube(path, r, mat) {
@@ -662,7 +691,7 @@ function ensureNerves() {
   nervesLoading = Promise.all([new GLTFLoader().loadAsync("nerves.glb"), fetch("nerves.json").then(r => r.json()), fetch("tables.json").then(r => r.json())]).then(([g, nv, tb]) => {
     NV = nv; tb.cn.rows.forEach(r => CNROWS[r[0]] = r);
     cnRoot = new THREE.Group(); bpRoot = new THREE.Group(); scene.add(cnRoot, bpRoot);
-    cnRoot.visible = mode === "cn3d"; bpRoot.visible = mode === "bp3d";
+    applyLayers();
     const cnMat = {}; for (const n of CN_NUM) cnMat[n] = new THREE.MeshStandardMaterial({ color: MODC[CN_MOD[n]], roughness: 0.45, emissive: 0x000000 });
     const ctxMat = { cn: new THREE.MeshStandardMaterial({ color: 0xc9b8a8, roughness: 0.7, transparent: true, opacity: 0.35, depthWrite: false }),
       art: new THREE.MeshStandardMaterial({ color: 0xc0392b, roughness: 0.6, transparent: true, opacity: 0.45, depthWrite: false }),
@@ -708,7 +737,7 @@ function placeNerveLabels() {
   const w = stage.clientWidth, h = stage.clientHeight, placed = [];
   const order = [...calls, ...nLabels.filter(L => !L.call)];
   for (const L of order) {
-    let vis = L.view === mode;
+    let vis = viewOn(L.view);
     if (vis && !L.call && L.small && !bpSel) vis = false;
     if (vis) {
       tmp.copy(L.p).project(camera);
@@ -738,6 +767,10 @@ function cnShade(sel) {
     m.material.transparent = dim; m.material.opacity = dim ? 0.18 : 1; m.material.depthWrite = !dim;
   }
 }
+function backToTables(a) {
+  if (mode !== "tables") return;
+  const b = document.createElement("button"); b.textContent = "Muscle tables"; b.onclick = () => showTablesIntro(); a.prepend(b);
+}
 function showCNIntro() {
   cnSel = null; cnShade(null); clearCalls();
   panel.innerHTML = `<h2>Cranial nerves</h2><p class="sub">Right side. Each nerve runs from where it leaves the brainstem, through its opening in the see-through skull, to what it supplies. Tap a nerve or pick one; its table row appears on the body and below. Colour: <b style="color:#2a8fb8">sensory</b> · <b style="color:#d9822b">motor</b> · <b style="color:#8a63d2">both</b>.</p>`;
@@ -764,7 +797,7 @@ function selectCN(n) {
   const a = document.createElement("div"); a.className = "acts";
   const b = document.createElement("button"); b.textContent = "All cranial nerves"; b.onclick = showCNIntro; a.appendChild(b);
   const t = document.createElement("a"); t.href = "../anatomy-tables/#cn"; t.target = "_blank"; t.rel = "noopener"; t.textContent = "Full table"; a.appendChild(t);
-  panel.appendChild(a);
+  backToTables(a); panel.appendChild(a);
 }
 /* brachial plexus: the same structures and notes as the anatomy tables' plexus tab */
 let bpLit = null;
@@ -822,7 +855,7 @@ function selectBP(id) {
   const a = document.createElement("div"); a.className = "acts";
   const b = document.createElement("button"); b.textContent = "Whole plexus"; b.onclick = showBPIntro; a.appendChild(b);
   const t = document.createElement("a"); t.href = "../anatomy-tables/#plexus"; t.target = "_blank"; t.rel = "noopener"; t.textContent = "Plexus diagram"; a.appendChild(t);
-  panel.appendChild(a);
+  backToTables(a); panel.appendChild(a);
 }
 
 /* ---------- Dermatomes view ---------- */
