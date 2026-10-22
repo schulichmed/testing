@@ -638,7 +638,7 @@ function selectMuscle(key, zoom = true) {
   if (zoom && objs.length) { const bx = new THREE.Box3(); objs.forEach(o => bx.expandByObject(o)); const c = bx.getCenter(new THREE.Vector3()), sz = bx.getSize(new THREE.Vector3()).length(); flyTo(c, Math.max(0.35, sz * 1.8)); }
   panel.innerHTML = "";
   const h = document.createElement("h2"); h.textContent = row.cells[1]; panel.appendChild(h);
-  const sub = document.createElement("p"); sub.className = "sub"; sub.textContent = `${row.reg.tab} table · ${row.cells[0]}` + (objs.length ? "" : " · not in the 3D model"); panel.appendChild(sub);
+  const sub = document.createElement("p"); sub.className = "sub"; sub.textContent = `${row.reg.tab} table · ${row.cells[0]}` + (objs.length ? (row.drawn ? " · drawn approximately (not in BodyParts3D)" : "") : " · not in the 3D model"); panel.appendChild(sub);
   const dl = rowHtml(row.reg.header, row.cells, [0, 1]);
   panel.appendChild(dl);
   if (!row.cells[2] && !row.cells[3]) { const p = document.createElement("p"); p.className = "sub"; p.textContent = "Named on the slides, with no action or nerve given."; panel.appendChild(p); }
