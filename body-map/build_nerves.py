@@ -7,6 +7,8 @@ Purpose: Build the two nerve views of the body map:
          2. Brachial plexus (right side): roots from their real intervertebral foramina, trunks between
             the scalenes, divisions behind the clavicle, cords around the axillary artery and the branches
             down the arm alongside the arteries they travel with (BodyParts3D has the arteries, not the nerves).
+            In the hand, only the branches the slides name: the recurrent and palmar digital branches of the median,
+            the deep and superficial branches of the ulnar and the superficial branch of the radial, along the hand bones.
 Author: nsimsam, with Claude Code
 Date: 2026-10-21
 Input: the BodyParts3D 4.0 "is_a" OBJ archive unzipped at BP3D_DIR; dermatomes/roots.json (spinal root paths);
@@ -112,6 +114,40 @@ def plexus_data() -> dict:
         s.pop("pts", None)
         s.pop("lbl", None)
     return data
+
+
+# The branches in the hand the slides name: id -> parent, name, label, the anatomy-table branch it supplies through,
+# skin, note (with the slide). Muscles are the parent's table rows for that branch, so they stay the tables' own words.
+HAND = {
+    "medn_r": ("medn", "Recurrent branch of the median nerve", "Recurrent br.", "recurrent branch", "",
+               "Comes off just past the carpal tunnel and curls back up into the thenar eminence. Carpal tunnel "
+               "syndrome can weaken abductor pollicis brevis (Wrist and Hand, part 1, slides 53-55; part 2, slide 13)."),
+    "medn_d": ("medn", "Palmar digital branches of the median nerve", "Median digital", "digital branches",
+               "Palm side of the thumb, index and middle fingers and the thumb-side half of the ring finger, "
+               "and their fingertips on the back",
+               "Carpal tunnel syndrome: night numbness and tingling here, worse with the wrist flexed or extended; "
+               "Tinel and Phalen signs (Wrist and Hand, part 2, slide 13)."),
+    "uln_d": ("uln", "Deep branch of the ulnar nerve", "Deep br.", "deep branch", "",
+              "Leaves Guyon's canal, turns round the hook of the hamate into the deep palm and ends in adductor "
+              "pollicis. Compressed in Guyon's canal: intrinsic hand weakness (Wrist and Hand, part 2, slide 19)."),
+    "uln_s": ("uln", "Superficial branch of the ulnar nerve", "Superficial br.", None,
+              "Palm side of the little finger and the little-finger half of the ring finger",
+              "Guyon's canal syndrome: hypoesthesia of the medial 1½ digits (Wrist and Hand, part 2, slide 19)."),
+    "rad_s": ("rad", "Superficial branch of the radial nerve", "Superficial radial", None,
+              "Back of the hand lateral to the 4th digit",
+              "Sensory only. At risk in the anatomical snuffbox (Neurovascular Supply to the Distal Upper Extremity, "
+              "slide 16). It splits from the deep branch at the elbow; here it is drawn from the wrist, where the "
+              "radial nerve's line ends."),
+}
+
+
+def add_hand_branches(plexus: dict) -> None:
+    """Add the hand branches to the plexus data as nerves whose parent is the terminal nerve they come off."""
+    for k, (parent, name, short, branch, skin, note) in HAND.items():
+        plexus["S"][k] = {"t": "nerve", "name": name, "short": short, "p": [parent], "hand": True}
+        plexus["INFO"][k] = {"c": note, **({"s": skin} if skin else {})}
+        if branch:
+            plexus["SUPPLY"][k] = [m for m in plexus["SUPPLY"][parent] if m[1] == branch]
 
 
 def main(bp3d_dir: Path) -> None:
@@ -278,9 +314,57 @@ def main(bp3d_dir: Path) -> None:
         "mca": [along(A, 0.7) + off["med"], Bp(0.2, [20, 4, 0]), Bp(0.55, [22, 2, 0])],
         "mcf": [along(A, 0.8) + off["med"], Bp(0.3, [16, -4, 0]), Bp(0.8, [16, -8, 0]), along(Ua, 0.3) + [14, -10, 0], along(Ua, 0.65) + [12, -10, 0]],
     }
-    bp_out = {k: to_three(np.array(v, float)) for k, v in bp.items()}
+    # ---------------- branches in the hand (the ones the slides name) ----------------
+    # palm faces -Y; the thumb is the most negative X. A point on the palm (or back) of a bone, at its middle or its distal end
+    def palmar(fid, dx=0.0, tip=False, depth=3.0):
+        v = V(fid)
+        return np.array([v[:, 0].mean() + dx, v[:, 1].min() - depth, v[:, 2].min() + 6 if tip else v[:, 2].mean()])
 
-    data = {"cn": cn_out, "brainstem": brainstem, "bulb": bulb, "bp": bp_out, "plexus": plexus_data()}
+    def dorsal(fid, dx=0.0, tip=False):
+        v = V(fid)
+        return np.array([v[:, 0].mean() + dx, v[:, 1].max() + 3, v[:, 2].min() + 6 if tip else v[:, 2].mean()])
+
+    MC = {1: "FJ3350", 2: "FJ3352", 3: "FJ3354", 4: "FJ3356", 5: "FJ3358"}
+    PP = {1: "FJ3327", 2: "FJ3322", 3: "FJ3325", 4: "FJ3326", 5: "FJ3323"}
+    MP = {2: "FJ3303", 3: "FJ3306", 4: "FJ3292", 5: "FJ3304"}
+    DP = {1: "FJ3198", 2: "FJ3193", 3: "FJ3196", 4: "FJ3197", 5: "FJ3194"}
+
+    def digit(d, dx=0.0):
+        """Down the palm side of a digit, from the metacarpal head to the fingertip; dx moves it to one side."""
+        mid = [palmar(MP[d], dx)] if d in MP else []
+        return [palmar(MC[d], dx, tip=True), palmar(PP[d], dx), *mid, palmar(DP[d], dx, tip=True)]
+
+    E = np.array(bp["medn"][-1])  # the median nerve just out of the carpal tunnel
+    fork_m = (np.array(bp["medn"][-2]) + E) / 2
+    thenar = V("FJ1483").mean(axis=0)  # abductor pollicis brevis
+    opp = V("FJ1501").mean(axis=0)
+    U = np.array(bp["uln"][-1])
+    fork_u = (np.array(bp["uln"][-2]) + U) / 2  # leaving Guyon's canal, beside the hook of the hamate
+    hook = V("FJ3367")[np.argmin(V("FJ3367")[:, 1])]  # the hamate's most palmar point: its hook
+    adp = V("FJ1481").mean(axis=0)
+    R = np.array(bp["rad"][-2])  # at the radial styloid: the radial line itself runs on past the snuffbox
+    sca, mc1 = V("FJ3383"), V(MC[1])
+    snuff = np.array([(sca[:, 0].min() + mc1[:, 0].min()) / 2, sca[:, 1].max(), (sca[:, 2].mean() + mc1[:, 2].max()) / 2])
+    hand = {  # id: (main path, extra paths drawn as the same branch)
+        "medn_r": ([fork_m, fork_m + [-6, -8, -4], thenar + [4, -12, -10], thenar + [-4, -14, 0], opp + [-6, -10, 6]], []),
+        "medn_d": ([E, E + [-8, -6, -10], *digit(2)], [[E, E + [-12, -6, -4], palmar(PP[1], 4, depth=5), *digit(1)[1:]],
+                                                      [E, E + [-2, -6, -12], *digit(3)], [E, E + [4, -6, -12], *digit(4, -4)]]),
+        "uln_d": ([fork_u, hook + [0, -2, -4], hook + [-6, 6, -10], adp + [22, 4, 2], adp + [8, 2, 0], adp],
+                  [[fork_u, V("FJ1466").mean(axis=0) + [-2, -6, 10], V("FJ1470").mean(axis=0) + [0, -6, 0]]]),
+        "uln_s": ([fork_u, U, *digit(5)], [[fork_u, U + [-6, -2, -4], *digit(4, 4)]]),
+        "rad_s": ([R, snuff, dorsal(MC[2], tip=True), dorsal(PP[2])],
+                  [[R, snuff, dorsal(MC[1], tip=True), dorsal(PP[1])], [snuff, dorsal(MC[3], tip=True), dorsal(PP[3])],
+                   [snuff, dorsal(MC[4], -4, tip=True), dorsal(PP[4], -4)]]),
+    }
+    for k, (main, _) in hand.items():
+        bp[k] = main
+    bp_out = {k: to_three(np.array(v, float)) for k, v in bp.items()}
+    bpx = {k: [to_three(np.array(p, float)) for p in extra] for k, (_, extra) in hand.items() if extra}
+    log.info("hand: median end %s, ulnar end %s, radial end %s, snuffbox %s", E.round(), U.round(), R.round(), snuff.round())
+
+    plexus = plexus_data()
+    add_hand_branches(plexus)
+    data = {"cn": cn_out, "brainstem": brainstem, "bulb": bulb, "bp": bp_out, "bpx": bpx, "plexus": plexus}
     (HERE / "nerves.json").write_text(json.dumps(data))
     log.info("nerves.json: %d cranial nerves, %d plexus parts", len(cn_out), len(bp_out))
 
