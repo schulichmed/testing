@@ -594,8 +594,8 @@ function rowHtml(header, cells, skip) {
 function shade(sel) {
   for (const o of muscles) {
     const on = !sel || o.userData.mu === sel;
-    const base = mode === "tables" && (layers.cn || layers.bp || layers.ar) ? 0.4 : 0.92;  // let the nerves and arteries show through
-    o.material.opacity = on ? base : 0.18; o.material.depthWrite = on && base > 0.5;
+    const base = mode === "tables" && (layers.cn || layers.bp || layers.ar) ? 0.75 : 0.92;  // solid enough to read; the plexus is drawn on top (bpShade)
+    o.material.opacity = on ? base : 0.18; o.material.depthWrite = on;
     o.material.emissive.set(sel && o.userData.mu === sel ? 0x3a2a00 : 0x000000);
   }
 }
@@ -854,7 +854,7 @@ function bpShade(lit, focus) {
   bpLit = lit;
   for (const o of bpPick) {
     const id = o.userData.bp, on = !lit || lit[id];
-    o.material.opacity = on ? 1 : 0.15; o.material.depthWrite = on; o.material.depthTest = true; o.renderOrder = 0;
+    o.material.opacity = on ? 1 : 0.15; o.material.depthWrite = on; o.material.depthTest = !on; o.renderOrder = on ? 10 : 0;  // lit nerves show through the muscles
     o.material.color.set(id === focus ? 0x5b21b6 : lit && on ? 0xa98bdc : NV.plexus.S[id].minor ? 0xe6c35c : 0xf2d34f);  // purple, never artery red
   }
 }
