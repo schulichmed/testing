@@ -89,10 +89,84 @@ TESTS = {
     "Anterior drawer (ankle)": ("Ligaments (sprain)", "ankle-anterior-drawer.jpg"),
     "Talar tilt": ("Ligaments (sprain)", None),
     "Passive external rotation": ("Ligaments (sprain)", None),
+    "Lateral ankle ligament stress": ("Ligaments (sprain)", None),
     "Thompson test": ("Achilles rupture", "thompson-simmonds-test.jpg"),
     "Homan's sign": ("Deep vein thrombosis", None),
     "Metatarsal squeeze": ("Morton's neuroma", None),
 }
+
+# test name -> MSK Medicine video page slug (mskmedicine.com/clinical_skills/<slug>/)
+VIDEO = {
+    "Spurling's maneuver": "spurlings-test", "Cervical distraction": "cervical-distraction-test",
+    "Straight leg raise (Lasègue)": "straight-leg-raise", "Bragard's sign": "braggards-sign",
+    "Bowstring sign": "bowstring-sign", "Crossed straight leg raise": "crossed-straight-leg-raise",
+    "Femoral stretch test": "femoral-stretch-test", "Modified Schober's test": "modified-schobers-test",
+    "Painful arc": "painful-arc-rotator-cuff-impingement", "Neer's test": "neers-test",
+    "Hawkins test": "hawkins-test", "Empty can test": "empty-can-test",
+    "Resisted external rotation": "external-rotation-test-infraspinatus-teres-minor",
+    "Lift-off test": "lift-off-test", "Belly press test": "belly-press-test", "Speed's test": "speeds-test",
+    "Yergason's test": "yergusons-test", "Apprehension test": "apprehension-test-shoulder",
+    "Relocation test (Fowler's sign)": "fowlers-sign-relocation-test", "Scarf test (cross-arm)": "scarf-test",
+    "Valgus and varus stress": "elbow-valgus-varus-stress-tests",
+    'Lateral epicondylitis ("tennis elbow")': "lateral-epicondylitis-tests",
+    'Medial epicondylitis ("golfer\'s elbow")': "medial-epicondylitis-tests",
+    "Tinel's sign (elbow)": "tinels-sign-elbow", "Tinel's sign (wrist)": "tinels-sign-median-nerve-carpal-tunnel",
+    "Phalen's test": "phalens-sign", "1st CMC grind test": "1st-cmc-grind-test",
+    "Finkelstein's test": "finkelsteins-test", "Thomas test": "thomas-flexion-contracture-test",
+    "Trendelenburg sign": "trendelenberg-sign", "Stinchfield test": "stinchfields-test",
+    "FABER test (Flexion, ABduction, External Rotation)": "faber-test", "Ober's test": "obers-test",
+    "True and apparent leg length": "true-leg-length-measurement",
+    "Valgus / varus stress": "knee-valgus-and-varus-stress-tests", "Lachman test": "lachman-maneuvers",
+    "Anterior drawer": "anterior-drawer-knee", "Posterior drawer": "posterior-drawer-sign-pcl",
+    "Posterior sag sign": "pcl-sulcus-sag-signs", "McMurray's test": "mcmurrays-test",
+    "Thessaly's test": "thessalys-test", "Crouch compression (duck walk)": "crouch-compression-test-knee",
+    "Patellar apprehension": "patellar-apprehension-test", "Patellar grind (Osmond-Clarke)": "patellar-grind-test",
+    "Anterior drawer (ankle)": "anterior-drawer-ankle-atfl", "Talar tilt": "talar-tilt-test-cfl",
+    "Lateral ankle ligament stress": "lateral-ankle-ligament-tests", "Thompson test": "thompson-test",
+    "Homan's sign": "homans-sign-dvt", "Metatarsal squeeze": "metatarsal-squeeze-test-mortons-neuroma",
+    "Ottawa ankle and foot rules": "ottawa-ankle-rules",
+}
+# region key or general card -> its videos
+REGION_VIDEO = {
+    "cspine": ["cervical-spine-look-feel-move"], "lspine": ["lumbar-spine-look-feel-move"],
+    "shoulder": ["shoulder-look-feel-move"], "elbow": ["elbow-exam-look-feel-move"],
+    "wrist": ["hand-wrist-look-feel-move"], "hip": ["hip-exam-look-feel-move"],
+    "knee": ["knee-exam-look-feel-move"], "ankle": ["ankle-exam-look-feel-move"],
+    "Gait": ["gait-assessment", "gait-cycle", "antalgic-gait", "trendelenberg-gait",
+             "steppage-foot-slap-gait-patterns-foot-drop", "ataxic-gait-pattern"],
+    "Neuro screen: sensation, muscle strength, reflexes": [
+        "sensory-dermatomal-screen-upper", "sensory-dermatomal-screen-lower", "myotomal-motor-screen-upper",
+        "myotomal-motor-screen-lower", "manual-muscle-testing-mmt-mrc-scale", "upper-extremity-reflexes",
+        "lower-extermity-reflexes"],
+}
+VIDEOS = json.loads((HERE / "videos.json").read_text(encoding="utf-8"))
+
+
+def video(slug: str, thumb: bool = False) -> str:
+    """Render a click-to-play MSK Medicine video (YouTube loads only when tapped).
+
+    Parameters
+    ----------
+    slug : str
+        The video's page slug on mskmedicine.com.
+    thumb : bool
+        Show the video's thumbnail as the button, for the look-feel-move cards.
+
+    Returns
+    -------
+    str
+        HTML for the button, or a plain link when the page has no video.
+    """
+    v = VIDEOS[slug]
+    page = f"https://mskmedicine.com/clinical_skills/{slug}/"
+    title = html.escape(v["title"])
+    if not v["id"]:
+        return f'<a class="vid link" href="{page}" target="_blank" rel="noopener">{title} (page)</a>'
+    img = (f'<img src="https://i.ytimg.com/vi/{v["id"]}/hqdefault.jpg" alt="" loading="lazy">'
+           if thumb else "")
+    return (f'<button class="vid{" big" if thumb else ""}" data-yt="{v["id"]}" data-page="{page}">{img}'
+            f'<span>▶ {title}</span></button>')
+
 
 # fracture rules the note gives as prose: one card, no picture
 OTTAWA = {
@@ -311,15 +385,27 @@ def card(t: dict) -> str:
             f'<h4>{html.escape(t["name"])}</h4><p class="for">{t["for"]}</p>{img}'
             f'<div class="hide h1"><span class="lbl">Steps</span><ol>{steps}</ol></div>'
             f'<div class="hide h2 pos"><span class="lbl">Positive</span><p>{t["pos"]}</p></div>'
+            f'{f"""<div class="hide h2 vids">{video(VIDEO[t["name"]])}</div>""" if t["name"] in VIDEO else ""}'
             f'<span class="pill">Tap to reveal</span></article>')
 
 
-def wide_card(title: str, body: str) -> str:
-    """Render a full-width card of prose (an exam routine, gait, pearls)."""
+def wide_card(title: str, body: str, slugs: list[str] | None = None, side: str = "") -> str:
+    """Render a full-width card of prose (an exam routine, gait, pearls), with its
+    videos and a picture (side) beside the text when given."""
     words = (title + " " + re.sub(r"<[^>]+>", " ", body)).lower()
     return (f'<article class="test wide" tabindex="0" data-words="{html.escape(words)}">'
-            f'<h4>{html.escape(title)}</h4><div class="hide h1 prose">{body}</div>'
+            f'<h4>{html.escape(title)}</h4><div class="hide h1 split"><div class="prose">{body}</div>'
+            f'{f"""<div class="aside">{side}{"".join(video(v, thumb=i == 0 and not side) for i, v in enumerate(slugs or []))}</div>""" if slugs or side else ""}</div>'
             f'<span class="pill">Tap to reveal</span></article>')
+
+
+def landmarks(key: str) -> str:
+    """Render the region's labelled landmark diagram, when there is one."""
+    name = f"{key}-landmarks.jpg"
+    if not (HERE / "img" / name).exists():
+        return ""
+    return (f'<figure class="lm"><img src="img/{name}" alt="Landmarks to feel: {key}" loading="lazy">'
+            f'<figcaption>Landmarks to feel</figcaption></figure>')
 
 
 def render(regions: list[dict], credits: list[dict]) -> str:
@@ -328,11 +414,12 @@ def render(regions: list[dict], credits: list[dict]) -> str:
                     f'<b>{r["title"]}</b><span>{r["week"]}</span></a>' for r in regions)
     bands = []
     for r in regions:
-        wides = [("", t, b) for t, b in r["wide"]]
+        wides = [("", t, b, REGION_VIDEO.get(t), "") for t, b in r["wide"]]
         if r["exam"]:
-            wides.insert(0, ("General exam", "Look · Feel · Move", r["exam"]))
+            wides.insert(0, ("General exam", "Look · Feel · Move", r["exam"], REGION_VIDEO[r["key"]],
+                             landmarks(r["key"])))
         top = "".join(f'<div class="prob">{f"<h3>{html.escape(h)}</h3>" if h else ""}'
-                      f'<div class="tests">{wide_card(t, b)}</div></div>' for h, t, b in wides)
+                      f'<div class="tests">{wide_card(t, b, v, side)}</div></div>' for h, t, b, v, side in wides)
         probs = "".join(f'<div class="prob"><h3>{html.escape(p["name"])}</h3>'
                         f'<div class="tests">{"".join(card(t) for t in p["tests"])}</div></div>'
                         for p in r["problems"])
@@ -401,6 +488,18 @@ a{color:var(--accent)}
 .pos{background:var(--ok-bg);border-radius:8px;padding:2px 8px 6px;margin-top:8px}
 .pos .lbl{color:var(--ok)}.pos p{margin:2px 0 0;font-size:13.5px}
 .pill{display:none}
+.vids{margin-top:8px}
+.vid{display:flex;align-items:center;gap:6px;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 8px;font:500 13px Inter,sans-serif;cursor:pointer;margin-top:6px;text-decoration:none}
+.vid:hover{border-color:var(--c)}
+.vid.big{flex-direction:column;align-items:stretch;padding:0;overflow:hidden}
+.vid.big img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.vid.big span{padding:6px 8px}
+.player{position:relative;aspect-ratio:16/9;margin-top:6px;border-radius:8px;overflow:hidden;background:#000}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.aside .lm{margin:0}.aside .lm img{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
+.aside figcaption{font-size:12px;color:var(--muted);margin-top:2px}
 .test.wide{grid-column:1/-1}
 .prose{font-size:13.5px}.prose ul{margin:4px 0;padding-left:20px}.prose li{margin:2px 0}.prose p{margin:6px 0}
 .tw{overflow-x:auto;margin:6px 0}.prose table{border-collapse:collapse;width:100%;font-size:13px}
@@ -433,7 +532,7 @@ body.quiz.hideimg .test img{display:none}
 <nav class="fan">{{CHIPS}}</nav>
 </div>
 {{BANDS}}
-<section class="credits"><h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{{CREDITS}}</ul></section>
+<section class="credits"><h3>Videos</h3><p>Videos by <a href="https://mskmedicine.com">MSK Medicine</a>, played from their YouTube channel; each opens only when you tap it.</p><h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{{CREDITS}}</ul></section>
 </div>
 <script>
 (function(){
@@ -454,6 +553,12 @@ body.quiz.hideimg .test img{display:none}
     t.addEventListener('click',function(){step(t)});
     t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();step(t)}});
   });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.vid[data-yt]'); if(!b)return; e.stopPropagation();
+    var d=document.createElement('div'); d.className='player';
+    d.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+b.dataset.yt+'?autoplay=1&rel=0" title="'+b.textContent.replace(/"/g,'')+'" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    b.replaceWith(d);
+  },true);
   document.getElementById('q').addEventListener('input',function(e){
     var q=e.target.value.trim().toLowerCase();
     document.querySelectorAll('.prob').forEach(function(p){
