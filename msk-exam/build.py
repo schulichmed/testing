@@ -129,6 +129,101 @@ def plain(md: str) -> str:
     return re.sub(r"<[^>]+>", "", html.unescape(inline(md))).strip()
 
 
+def read_sections(path: Path) -> dict[int, list[str]]:
+    """Split the note into its numbered sections.
+
+    Parameters
+    ----------
+    path : Path
+        The summary note.
+
+    Returns
+    -------
+    dict
+        Section number -> the lines under its heading (heading excluded).
+    """
+    sections: dict[int, list[str]] = {}
+    current = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        head = re.match(r"## (\d+)\. ", line)
+        if head:
+            current = int(head.group(1))
+            sections[current] = []
+        elif line.startswith("**High-yield") or line.startswith("**Image credits"):
+            current = None
+        elif current is not None:
+            sections[current].append(line)
+    return sections
+
+
+def md_block(lines: list[str]) -> str:
+    """Render the note's prose (paragraphs, nested bullets, tables) as HTML.
+
+    Image embeds are dropped: the page shows only openly licensed pictures.
+
+    Parameters
+    ----------
+    lines : list of str
+        Markdown lines from one part of a section.
+
+    Returns
+    -------
+    str
+        HTML.
+    """
+    out, depth, table = [], 0, []
+
+    def close_lists(to: int) -> None:
+        nonlocal depth
+        while depth > to:
+            out.append("</li></ul>")
+            depth -= 1
+
+    def flush_table() -> None:
+        if not table:
+            return
+        rows = [[inline(c.strip()).replace("&lt;br&gt;", "<br>") for c in re.split(r"(?<!\\)\|", r)[1:-1]]
+                for r in table if not r.startswith("| ---")]
+        head = "".join(f"<th>{c}</th>" for c in rows[0])
+        body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows[1:])
+        out.append(f'<div class="tw"><table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>')
+        table.clear()
+
+    for line in lines:
+        if line.startswith("|"):
+            close_lists(0)
+            table.append(line)
+            continue
+        flush_table()
+        if not line.strip() or line.strip().startswith("![[") or line.strip() == "---":
+            continue
+        bullet = re.match(r"( *)- (.*)", line)
+        if bullet:
+            level = len(bullet.group(1)) // 2 + 1
+            if level > depth:
+                while depth < level:
+                    out.append("<ul><li>")
+                    depth += 1
+            else:
+                close_lists(level)
+                out.append("</li><li>")
+            out.append(inline(bullet.group(2)))
+        else:
+            close_lists(0)
+            out.append(f"<p>{inline(line)}</p>")
+    close_lists(0)
+    flush_table()
+    return "".join(out)
+
+
+def split_region(lines: list[str]) -> tuple[list[str], list[str]]:
+    """Split a region section into the look/feel/move lines before its test table
+    and the pearls after it."""
+    first = next(i for i, l in enumerate(lines) if l.startswith("|"))
+    last = max(i for i, l in enumerate(lines) if l.startswith("|"))
+    return lines[:first], lines[last + 1:]
+
+
 def read_note(path: Path) -> list[dict]:
     """Read every special-test row of the note, with its section number.
 
@@ -159,33 +254,51 @@ def read_note(path: Path) -> list[dict]:
     return rows
 
 
-def build_regions(rows: list[dict]) -> list[dict]:
+def build_regions(rows: list[dict], sections: dict[int, list[str]]) -> list[dict]:
     """Group the note's rows into regions and, inside each, problem headings.
 
     Parameters
     ----------
     rows : list of dict
         Output of read_note.
+    sections : dict
+        Output of read_sections, for each region's look/feel/move and pearls.
 
     Returns
     -------
     list of dict
-        Regions in note order, each with its problems in first-seen order.
+        The general-exam band, then the regions in note order, each with its
+        problems in first-seen order.
     """
     missing = [r["name"] for r in rows if r["name"] not in TESTS]
     if missing:
         sys.exit(f"tests not mapped in TESTS: {missing}")
-    regions = []
+    regions = [{"key": "general", "title": "General exam", "week": "Week 1 · every joint",
+                "color": "#4a4f63", "exam": None, "pearls": None,
+                "wide": [(title, md_block(sections[num])) for num, title in GENERAL],
+                "problems": []}]
     for num, (key, title, week, color) in REGIONS.items():
-        problems: dict[str, list] = {}
-        for r in (r for r in rows if r["section"] == num):
-            problem, img = TESTS[r["name"]]
-            problems.setdefault(problem, []).append({**r, "img": img})
-        if key == "ankle":
-            problems.setdefault(OTTAWA["problem"], []).append(OTTAWA)
+        before, after = split_region(sections[num])
         regions.append({"key": key, "title": title, "week": week, "color": color,
-                        "problems": [{"name": k, "tests": v} for k, v in problems.items()]})
+                        "exam": md_block(before), "pearls": md_block(after), "wide": []})
+        regions[-1]["problems"] = problems_for(rows, num, key)
     return regions
+
+
+# the note's opening sections, shown as the first band
+GENERAL = [(1, "Approach to every joint"), (2, "Gait"),
+           (3, "Neuro screen: sensation, muscle strength, reflexes")]
+
+
+def problems_for(rows: list[dict], num: int, key: str) -> list[dict]:
+    """Group one region's tests under their problem headings."""
+    problems: dict[str, list] = {}
+    for r in (r for r in rows if r["section"] == num):
+        problem, img = TESTS[r["name"]]
+        problems.setdefault(problem, []).append({**r, "img": img})
+    if key == "ankle":
+        problems.setdefault(OTTAWA["problem"], []).append(OTTAWA)
+    return [{"name": k, "tests": v} for k, v in problems.items()]
 
 
 def card(t: dict) -> str:
@@ -201,19 +314,35 @@ def card(t: dict) -> str:
             f'<span class="pill">Tap to reveal</span></article>')
 
 
+def wide_card(title: str, body: str) -> str:
+    """Render a full-width card of prose (an exam routine, gait, pearls)."""
+    words = (title + " " + re.sub(r"<[^>]+>", " ", body)).lower()
+    return (f'<article class="test wide" tabindex="0" data-words="{html.escape(words)}">'
+            f'<h4>{html.escape(title)}</h4><div class="hide h1 prose">{body}</div>'
+            f'<span class="pill">Tap to reveal</span></article>')
+
+
 def render(regions: list[dict], credits: list[dict]) -> str:
     """Render the whole page."""
     chips = "".join(f'<a class="rchip" href="#{r["key"]}" style="--c:{r["color"]}">'
                     f'<b>{r["title"]}</b><span>{r["week"]}</span></a>' for r in regions)
     bands = []
     for r in regions:
+        wides = [("", t, b) for t, b in r["wide"]]
+        if r["exam"]:
+            wides.insert(0, ("General exam", "Look · Feel · Move", r["exam"]))
+        top = "".join(f'<div class="prob">{f"<h3>{html.escape(h)}</h3>" if h else ""}'
+                      f'<div class="tests">{wide_card(t, b)}</div></div>' for h, t, b in wides)
         probs = "".join(f'<div class="prob"><h3>{html.escape(p["name"])}</h3>'
                         f'<div class="tests">{"".join(card(t) for t in p["tests"])}</div></div>'
                         for p in r["problems"])
+        foot = (f'<div class="prob"><h3>Pearls and X-rays</h3><div class="tests">'
+                f'{wide_card("Remember", r["pearls"])}</div></div>' if r["pearls"] else "")
         n = sum(len(p["tests"]) for p in r["problems"])
+        count = f" · {n} special tests" if n else ""
         bands.append(f'<section class="band" id="{r["key"]}" style="--c:{r["color"]}">'
-                     f'<header class="bandhead"><h2>{r["title"]}</h2><span>{r["week"]} · {n} tests</span></header>'
-                     f'{probs}</section>')
+                     f'<header class="bandhead"><h2>{r["title"]}</h2><span>{r["week"]}{count}</span></header>'
+                     f'{top}{probs}{foot}</section>')
     cred = "".join(
         f'<li>{html.escape(c["test"])}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
         f'<a href="{html.escape(c["source_page_url"])}">source</a></li>' for c in credits)
@@ -222,7 +351,7 @@ def render(regions: list[dict], credits: list[dict]) -> str:
 
 PAGE = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MSK special tests</title>
+<title>MSK exam by region</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f7f5fa;--card:#fff;--ink:#201436;--muted:#5f5670;--line:#ddd5ea;--accent:#7a3fb0;--ok:#2f6b4f;--ok-bg:#e9f4ee;--rail:#6b6380}
@@ -247,13 +376,13 @@ h1{font-size:clamp(28px,5vw,40px);line-height:1.1}
 .root b{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:600}
 .root p{margin:4px 0 0;color:#d8cfe8;font-size:14px}
 .stem{width:2px;height:18px;background:var(--rail);margin:0 auto}
-.fan{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;position:relative;padding-top:18px}
-.fan::before{content:"";position:absolute;top:0;left:6.25%;right:6.25%;height:2px;background:var(--rail)}
+.fan{display:grid;grid-template-columns:repeat(9,1fr);gap:8px;position:relative;padding-top:18px}
+.fan::before{content:"";position:absolute;top:0;left:5.6%;right:5.6%;height:2px;background:var(--rail)}
 .rchip{position:relative;display:block;text-align:center;text-decoration:none;color:#fff;background:var(--c);border-radius:10px;padding:8px 6px}
 .rchip::before{content:"";position:absolute;top:-18px;left:50%;width:2px;height:12px;background:var(--rail)}
 .rchip::after{content:"";position:absolute;top:-7px;left:calc(50% - 5px);border:5px solid transparent;border-top:6px solid var(--rail)}
 .rchip b{display:block;font-size:14px}.rchip span{font-size:12px;opacity:.9}
-@media (max-width:820px){.fan{grid-template-columns:repeat(4,1fr);padding-top:12px}.fan::before,.rchip::before,.rchip::after{display:none}.stem{display:none}}
+@media (max-width:980px){.fan{grid-template-columns:repeat(5,1fr);padding-top:12px}.fan::before,.rchip::before,.rchip::after{display:none}.stem{display:none}}
 a{color:var(--accent)}
 @media (max-width:420px){.fan{grid-template-columns:repeat(2,1fr)}}
 /* region bands */
@@ -272,6 +401,11 @@ a{color:var(--accent)}
 .pos{background:var(--ok-bg);border-radius:8px;padding:2px 8px 6px;margin-top:8px}
 .pos .lbl{color:var(--ok)}.pos p{margin:2px 0 0;font-size:13.5px}
 .pill{display:none}
+.test.wide{grid-column:1/-1}
+.prose{font-size:13.5px}.prose ul{margin:4px 0;padding-left:20px}.prose li{margin:2px 0}.prose p{margin:6px 0}
+.tw{overflow-x:auto;margin:6px 0}.prose table{border-collapse:collapse;width:100%;font-size:13px}
+.prose th,.prose td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.prose th{background:color-mix(in srgb,var(--c) 14%,var(--card))}
 .test.gone{display:none}.prob.gone,.band.gone{display:none}
 /* test mode: reveal steps, then the positive */
 body.quiz .test{cursor:pointer}
@@ -285,8 +419,8 @@ body.quiz.hideimg .test img{display:none}
 </style></head>
 <body><div class="wrap">
 <p class="eyebrow">PoM 2 · MSK clinical skills</p>
-<h1>MSK special tests, by region</h1>
-<p class="lead">Every test from the suggested-videos list, grouped under the problem you suspect, with the steps and what counts as positive. Built from the course objectives; videos for each test are at <a href="https://mskmedicine.com">mskmedicine.com</a>. The neuro screen (dermatomes, myotomes, reflexes) is in the <a href="../body-map/">body map</a>.</p>
+<h1>MSK exam, by region</h1>
+<p class="lead">Every exam from the suggested-videos list: the general exam first (approach, gait, neuro screen), then each region's look, feel and move, its special tests grouped under the problem you suspect, and its pearls. Built from the course objectives; videos for each test are at <a href="https://mskmedicine.com">mskmedicine.com</a>. For the dermatomes and myotomes drawn on a body, see the <a href="../body-map/">body map</a>.</p>
 <div class="bar">
 <div class="mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button><button data-m="blind" aria-pressed="false">Test, no pictures</button></div>
 <input type="search" id="q" placeholder="Find a test or a problem (e.g. meniscus, ulnar)">
@@ -339,7 +473,7 @@ body.quiz.hideimg .test img{display:none}
 def main() -> None:
     """Build msk-exam/index.html."""
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-    regions = build_regions(read_note(NOTE))
+    regions = build_regions(read_note(NOTE), read_sections(NOTE))
     credits = json.loads((HERE / "img/credits.json").read_text(encoding="utf-8"))
     used = {t["img"] for r in regions for p in r["problems"] for t in p["tests"] if t.get("img")}
     for name in used:
