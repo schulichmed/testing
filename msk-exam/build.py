@@ -359,6 +359,10 @@ def build_regions(rows: list[dict], sections: dict[int, list[str]]) -> list[dict
     return regions
 
 
+LANDMARK_NAMES = {f"Landmarks: {k}": f"{t} landmarks diagram" for k, (_, t, _w, _c) in
+                  {v[0]: v for v in REGIONS.values()}.items()}
+
+
 # the note's opening sections, shown as the first band
 GENERAL = [(1, "Approach to every joint"), (2, "Gait"),
            (3, "Neuro screen: sensation, muscle strength, reflexes")]
@@ -404,8 +408,9 @@ def landmarks(key: str) -> str:
     name = f"{key}-landmarks.jpg"
     if not (HERE / "img" / name).exists():
         return ""
-    return (f'<figure class="lm"><img src="img/{name}" alt="Landmarks to feel: {key}" loading="lazy">'
-            f'<figcaption>Landmarks to feel</figcaption></figure>')
+    return (f'<figure class="lm"><a href="img/{name}" target="_blank" rel="noopener">'
+            f'<img src="img/{name}" alt="Landmarks to feel: {key}" loading="lazy"></a>'
+            f'<figcaption>Landmarks to feel · tap to enlarge</figcaption></figure>')
 
 
 def render(regions: list[dict], credits: list[dict]) -> str:
@@ -431,7 +436,7 @@ def render(regions: list[dict], credits: list[dict]) -> str:
                      f'<header class="bandhead"><h2>{r["title"]}</h2><span>{r["week"]}{count}</span></header>'
                      f'{top}{probs}{foot}</section>')
     cred = "".join(
-        f'<li>{html.escape(c["test"])}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
+        f'<li>{html.escape(LANDMARK_NAMES.get(c["test"], c["test"]))}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
         f'<a href="{html.escape(c["source_page_url"])}">source</a></li>' for c in credits)
     return PAGE.replace("{{CHIPS}}", chips).replace("{{BANDS}}", "".join(bands)).replace("{{CREDITS}}", cred)
 
@@ -496,7 +501,7 @@ a{color:var(--accent)}
 .vid.big span{padding:6px 8px}
 .player{position:relative;aspect-ratio:16/9;margin-top:6px;border-radius:8px;overflow:hidden;background:#000}
 .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.split{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px}
 @media (max-width:760px){.split{grid-template-columns:1fr}}
 .aside .lm{margin:0}.aside .lm img{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
 .aside figcaption{font-size:12px;color:var(--muted);margin-top:2px}
@@ -581,6 +586,7 @@ def main() -> None:
     regions = build_regions(read_note(NOTE), read_sections(NOTE))
     credits = json.loads((HERE / "img/credits.json").read_text(encoding="utf-8"))
     used = {t["img"] for r in regions for p in r["problems"] for t in p["tests"] if t.get("img")}
+    used |= {f"{r['key']}-landmarks.jpg" for r in regions if (HERE / "img" / f"{r['key']}-landmarks.jpg").exists()}
     for name in used:
         if not (HERE / "img" / name).exists():
             sys.exit(f"missing picture img/{name}")

@@ -277,5 +277,77 @@
   "licence": "CC BY 4.0",
   "what_it_shows": "Feet hanging free over the table edge; gloved hand squeezes the calf. Plantarflexion absent or reduced if the Achilles is ruptured.",
   "slug": "thompson-simmonds-test.jpg"
+ },
+ {
+  "test": "Landmarks: cspine",
+  "file": "cspine-landmarks.jpg",
+  "slug": "cspine-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:723_Cervical_Vertebrae.jpg",
+  "author": "OpenStax College",
+  "licence": "CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)",
+  "what_it_shows": "Cervical spine column (posterolateral view): C1 atlas, C2 axis, C3, bifid spinous processes, transverse processes, C7 vertebra prominens (top-right panel of the OpenStax figure, cropped)"
+ },
+ {
+  "test": "Landmarks: lspine",
+  "file": "lspine-landmarks.jpg",
+  "slug": "lspine-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:817_Ligaments_of_Pelvis.jpg",
+  "author": "OpenStax College",
+  "licence": "CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)",
+  "what_it_shows": "Pelvis from behind: sacrum, posterior superior iliac spine, ilium, posterior sacroiliac ligament, ischial tuberosity, ischial spine, sacrotuberous and sacrospinous ligaments"
+ },
+ {
+  "test": "Landmarks: shoulder",
+  "file": "shoulder-landmarks.jpg",
+  "slug": "shoulder-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:Shoulder_joint.svg",
+  "author": "National Institute Of Arthritis And Musculoskeletal And Skin Diseases (NIAMS); SVG version by Angelito7",
+  "licence": "Public domain",
+  "what_it_shows": "Shoulder from the front: clavicle, acromioclavicular (AC) joint, acromion, coracoid process, glenohumeral joint, humerus, scapula, rotator cuff tendons, bursa, biceps"
+ },
+ {
+  "test": "Landmarks: elbow",
+  "file": "elbow-landmarks.jpg",
+  "slug": "elbow-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:804_Humerus_and_Elbow.jpg",
+  "author": "OpenStax College",
+  "licence": "CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)",
+  "what_it_shows": "Distal humerus/elbow, anterior and posterior views: medial and lateral epicondyles, olecranon of ulna, head of radius, capitulum, trochlea, olecranon fossa (lower part of the OpenStax humerus figure, cropped)"
+ },
+ {
+  "test": "Landmarks: wrist",
+  "file": "wrist-landmarks.jpg",
+  "slug": "wrist-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:806_Hand_and_Wrist.jpg",
+  "author": "OpenStax College",
+  "licence": "CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)",
+  "what_it_shows": "Bones of the hand and wrist, anterior view: scaphoid, lunate, triquetrum, pisiform, trapezium, trapezoid, capitate, hamate, metacarpals 1-5, phalanges, distal radius and ulna (anterior-view half of the OpenStax figure, cropped)"
+ },
+ {
+  "test": "Landmarks: hip",
+  "file": "hip-landmarks.jpg",
+  "slug": "hip-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:808_Hip_Bone.jpg",
+  "author": "OpenStax College",
+  "licence": "CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)",
+  "what_it_shows": "Right hip bone, lateral view: iliac crest, anterior superior and anterior inferior iliac spines, posterior superior iliac spine, acetabulum, pubis, ischial tuberosity (lateral-view half of the OpenStax figure, cropped); four medial-view labels whose leader lines pointed off the crop (arcuate line, superior ramus of pubis, pubic tubercle, articular surface of pubis) and leader-line stubs at the right edge were whited out"
+ },
+ {
+  "test": "Landmarks: knee",
+  "file": "knee-landmarks.jpg",
+  "slug": "knee-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:Knee_diagram.svg",
+  "author": "Mysid",
+  "licence": "Public domain",
+  "what_it_shows": "Knee from the front/side: patella, quadriceps and patellar tendons, femur, lateral condyle, medial and lateral collateral ligaments, meniscus (joint line), cruciate ligaments, tibia, fibula"
+ },
+ {
+  "test": "Landmarks: ankle",
+  "file": "ankle-landmarks.jpg",
+  "slug": "ankle-landmarks.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:Lateral_collateral_ligament_of_ankle_joint.png",
+  "author": "Laboratoires Servier",
+  "licence": "CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)",
+  "what_it_shows": "Ankle and foot, lateral view: anterior talofibular, calcaneofibular and posterior talofibular ligaments; tibia, fibula (its tip is the lateral malleolus, not labelled), talus, calcaneus; metatarsals visible but unlabelled"
  }
 ]
