@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#ffffff">
+<title>Breast - Clinical skills</title>
+<script>
+(function(){
+  var root=document.documentElement,KEY="pc-theme",stored=null,mq=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  if(stored!=="dark"&&stored!=="light")stored=null;
+  if(window.matchMedia)mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function os(){return mq&&mq.matches?"dark":"light";}
+  function apply(t){
+    root.setAttribute("data-theme",t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute("content",t==="dark"?"#140c22":"#ffffff");
+    var b=document.getElementById("theme-btn");
+    if(!b)return;
+    b.setAttribute("aria-pressed",t==="dark"?"true":"false");
+    b.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" mode");
+    b.title=b.getAttribute("aria-label");
+  }
+  function follow(){if(!stored)apply(os());}
+  apply(stored||os());
+  if(mq&&mq.addEventListener)mq.addEventListener("change",follow);
+  else if(mq&&mq.addListener)mq.addListener(follow);
+  document.addEventListener("DOMContentLoaded",function(){apply(root.getAttribute("data-theme"));});
+  document.addEventListener("click",function(e){
+    var s=e.target&&e.target.closest?e.target.closest(".skip"):null;
+    if(s){
+      var c=document.getElementById("content");
+      if(c){e.preventDefault();c.focus();c.scrollIntoView();}
+      return;
+    }
+    /* Still gets one tab, reused, so a second click brings the music
+       forward rather than restarting it (see STILL_BTN) */
+    var m=e.target&&e.target.closest?e.target.closest(".still-btn,.still-strip"):null;
+    if(m){
+      if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      var w=null;
+      try{w=window.open("","still-music");}catch(e3){}
+      if(!w)return;
+      e.preventDefault();
+      try{if(w.location.href==="about:blank")w.location.replace(m.href);}catch(e4){}
+      try{w.focus();}catch(e5){}
+      return;
+    }
+    var b=e.target&&e.target.closest?e.target.closest("#theme-btn"):null;
+    if(!b)return;
+    stored=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    try{localStorage.setItem(KEY,stored);}catch(e2){}
+    /* a crossfade between the themes where the browser can draw one and the
+       reader has not asked for less motion; otherwise the switch is instant */
+    var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(document.startViewTransition&&!calm)document.startViewTransition(function(){apply(stored);});
+    else apply(stored);
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
+<style>
+/* topic cards: a block card led by its icon, drawn in the section's hue */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
+</style>
+<style>
+.cs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px;position:sticky;top:0;z-index:5;
+  padding:10px 0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.cs-mode{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--card-bg)}
+.cs-mode button{border:0;background:none;color:var(--text);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.cs-mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.cs-tools input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)}
+.cs-hint{width:100%;margin:0;font-size:.8rem;color:var(--muted)}
+.cs-sec{margin-top:30px;scroll-margin-top:80px}
+.cs-sec>h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.cs-sec>h2 .n{color:var(--q-accent-ink,var(--accent))}
+.cs-sec>h2 small{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cs-steps{margin-top:12px;padding:16px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.6}
+.cs-steps ul{margin:0;padding-left:1.1em}.cs-steps ul ul{margin-top:2px;color:var(--muted)}
+.cs-steps li{margin:3px 0}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.cs-card{background:var(--card-bg);border:1px solid var(--border);border-top:3px solid var(--q-accent,var(--accent));border-radius:8px;padding:14px 16px;font-size:.88rem;line-height:1.55}
+.cs-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.cs-card .for{color:var(--muted);margin:0 0 8px}
+.cs-card .lbl{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.cs-card ol{margin:0;padding-left:1.2em}
+.cs-card .ans{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--q-accent-soft,var(--accent-soft))}
+.cs-pearls{margin-top:12px;padding:12px 18px;border-left:3px solid var(--q-accent,var(--accent));background:var(--card-bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.cs-pearls ul{margin:0;padding-left:1.1em}
+mark{background:color-mix(in srgb,#ffd84d 55%,transparent);color:inherit;padding:0 2px;border-radius:2px}
+body.quiz .cs-card{cursor:pointer}
+body.quiz .cs-card .hide1,body.quiz .cs-card .hide2{display:none}
+body.quiz .cs-card.s1 .hide1,body.quiz .cs-card.s2 .hide1,body.quiz .cs-card.s2 .hide2{display:block}
+body.quiz .cs-card:not(.s2)::after{content:"tap to reveal";display:block;margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic}
+.cs-hidden{display:none!important}
+.cs-empty{color:var(--muted);margin-top:24px}
+.tag{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:.7rem;font-weight:600;white-space:nowrap;vertical-align:1px}
+.tag.adv{background:var(--q-accent-soft,var(--accent-soft));color:var(--q-accent-ink,var(--accent))}
+.tag.extra{border:1px solid var(--border);color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="pom2-page">
+<style>
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
+</style>
+<nav class="csn" aria-label="Physical exam">
+<a class="home" href="landing.html">All courses</a>
+<a class="home" href="exam.html">Physical exam &rsaquo;</a>
+<span class="soon" title="Coming soon">Vitals</span>
+<span class="soon" title="Coming soon">Respiratory</span>
+<a href="abdo.html">Abdominal</a>
+<span class="soon" title="Coming soon">Cardiovascular</span>
+<span class="here" aria-current="page">Breast</span>
+<a href="hn.html">Head and neck</a>
+<a href="neuro.html">Neuro</a>
+<a href="../msk-exam/">MSK</a>
+<a href="gu.html">Male GU</a>
+<a href="gyne.html">Pelvic</a>
+</nav>
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
+<p class="eyebrow">Schulich Clinical Skills &middot; Physical exam &middot; FoM</p>
+<h1>Breast exam</h1>
+<p class="lead">The breast exam runs <b>Inspect (sitting, four arm positions) → Palpate the breast (lying down, vertical strips) → Palpate the nipple → Axillary nodes</b>, comparing one side with the other. Two rules run through it: be <b>systematic</b> (the same pattern every time, covering the whole rectangle of breast tissue), and protect <b>modesty and comfort</b>: a chaperone, a gentle explanation of each step, and only one breast uncovered while you palpate.</p>
+</div>
+</header>
+
+<main>
+<div class="cs-tools">
+<div class="cs-mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button></div>
+<input type="search" id="cs-q" placeholder="Find a step or a test" autocomplete="off">
+<p class="cs-hint" id="cs-hint">Look: everything shown.</p>
+</div>
+<section class="cs-sec" id="s1"><h2><span class="n">1</span> The general approach</h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE)</b>: "Hello, I'm ___, a medical student. Can I check your name and date of birth? I'd like to examine your breasts, which means first looking at them while you sit up, then feeling them while you lie down, and feeling the lymph nodes under your arms. Would you like a chaperone in the room? You can ask me to stop at any time. Have you noticed any lumps or other changes?" Then wash your hands.</li><li><b>Chaperone</b>: <mark><b>offer or bring one</b></mark></li><li><b>Be reassuring and gentle</b>: many people feel apprehensive about this exam; tell the patient what you are about to do before each step, using <mark><b>appropriate terminology</b></mark> (plain, respectful words)</li><li><b>Draping</b>: <mark>full exposure of the chest for <b>inspection</b> only; during palpation, <b>cover one breast while you examine the other</b></mark> (<mark><b>draping, modesty and comfort</b></mark> are part of the objective)</li><li><b>Timing</b>: breasts swell and become more nodular before a period; the best time is <b>5-7 days after the period starts</b>. A lump found just before a period should be <b>re-checked after it</b></li><li><b>Inspect</b>: sitting, undressed to the waist, both breasts at once</li><li><b>Palpate</b>: lying down (supine), one breast at a time, then the nipple, then the axilla</li><li><b>Breast self-examination</b>: ask whether she examines her own breasts; if not, you can show her the technique and watch her repeat it</li></ul></div></section><section class="cs-sec" id="s2"><h2><span class="n">2</span> Inspection<small>FoM · Breast Exam session</small></h2><div class="cs-steps"><ul><li>Patient <b>sitting</b>, undressed to the waist. In each position, look at:<ul><li><b>skin</b>: colour (<b>redness</b> → infection or inflammatory breast cancer); <b>thickening with prominent pores</b> (like orange peel) → blocked lymph drainage, suggests cancer</li><li><b>size and symmetry</b>: some difference in size, including the areolae, is common and usually normal</li><li><b>contour</b>: masses, <b>dimpling</b>, <b>flattening</b> of the normally rounded (convex) breast → suggests cancer</li><li><b>nipples</b>: size and shape, <b>the direction they point</b>, rash or ulceration, discharge</li><ul><li>asymmetry in direction → an underlying cancer · rash or ulcer → Paget's disease of the breast</li><li>a nipple that has <b>always</b> been inverted is usually a normal variant · a <b>recent</b> or fixed flattening or pulling in (<b>retraction</b>) → suggests cancer</li></ul></li></ul></ul></div><div class="cs-grid"><article class="cs-card"><h3>Arms at sides</h3><p class="for">Skin, size and symmetry, contour, nipples</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient sits, arms relaxed at her sides</li><li>Compare the two sides</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Redness, skin thickening, flattening, a mass, nipple asymmetry or retraction</b> (normal: mild size difference)</div></div></article><article class="cs-card"><h3>Arms over head</h3><p class="for"><b>Dimpling or retraction</b> that is otherwise hidden</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient <b>raises both arms over her head</b></li><li>Look at the contours again</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Dimpling or a skin pull-in</b> → suggests a cancer tethered to the skin and chest-wall tissue</div></div></article><article class="cs-card"><h3>Hands pressed on hips</h3><p class="for">Dimpling (tightens the pectoral muscles)</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient <b>presses her hands firmly against her hips</b></li><li>Look at the contours again</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Dimpling or retraction</b> · occasionally benign (fat necrosis after injury, duct ectasia), but <b>always investigate</b></div></div></article><article class="cs-card"><h3>Leaning forward</h3><p class="for">Asymmetry of the breast or nipple</p><div class="hide1"><span class="lbl">Steps</span><ol><li>For large breasts: patient <b>stands and leans forward</b>, supported by a chair back or your hands</li><li>Look at both breasts and nipples</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Asymmetry, or retraction of the nipple and areola</b> → suggests a cancer</div></div></article></div></section><section class="cs-sec" id="s3"><h2><span class="n">3</span> Palpating the breast<small>FoM · Breast Exam session</small></h2><div class="cs-steps"><ul><li><b>Patient lying down (supine)</b>: palpation works best when the breast tissue is flattened</li><li><b>The area to cover</b> is a rectangle: <mark>from the <b>collarbone (clavicle) to the bra line (inframammary fold)</b>, and from the <b>middle of the breastbone (midsternal line) to the posterior axillary line</b></mark>, well into the armpit for the <b>tail of the breast</b> (tail of Spence)</li><li><b>Technique</b><ul><li><mark><b>pads of the 2nd, 3rd and 4th fingers</b></mark>, fingers slightly bent</li><li><b>small circles</b> at each spot, at <b>light, medium and deep pressure</b></li><li>the <mark><b>vertical strip pattern</b></mark> is the best-tested way to find a lump (better than circles or wedges)</li><li>about <b>3 minutes per breast</b></li></ul></li><li><b>What you are feeling for</b><ul><li><b>consistency</b>: varies a lot from person to person (firm gland tissue, soft fat); some lumpiness (nodularity) is normal, more before a period. A firm ridge along the lower edge of a large breast is the normal <b>inframammary ridge</b>, not a tumour</li><li><b>tenderness</b>: for example, the normal fullness before a period</li><li><b>nodules</b>: any lump that feels different from, or larger than, the rest of the breast</li></ul></li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Lateral (outer) half</h3><p class="for">Lumps in the outer breast</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient <b>rolls onto the opposite hip</b>, hand on her forehead, <b>shoulders kept flat</b> on the table</li><li>Start <b>in the armpit</b>; palpate in a straight line <b>down to the bra line</b></li><li>Move the fingers inward, palpate <b>up</b> to the collarbone</li><li>Keep going in <b>overlapping vertical strips</b> until you reach the nipple</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span>A <b>lump</b> that feels different from the tissue around it</div></div></article><article class="cs-card"><h3>Medial (inner) half</h3><p class="for">Lumps in the inner breast</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient lies with <b>shoulders flat</b>, hand at her neck, elbow lifted level with the shoulder</li><li>Palpate <b>down from the nipple</b> to the bra line, then back up to the collarbone</li><li>Continue in overlapping vertical strips <b>to the midsternal line</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span>A <b>lump</b> that feels different from the tissue around it</div></div></article><article class="cs-card"><h3>Nipple</h3><p class="for">Changes under the nipple</p><div class="hide1"><span class="lbl">Steps</span><p>1. <b>Palpate each nipple</b>, noting its elasticity</p></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Thickening and loss of elasticity</b> → suggests an underlying cancer</div></div></article><article class="cs-card"><h3>Mobility of a mass</h3><p class="for">What the lump is attached to</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Gently move the breast near the mass and <b>watch for dimpling</b></li><li>Try to <b>move the mass</b> with the arm relaxed</li><li>Try again with her <b>hand pressed on her hip</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Fixed with the arm relaxed</b> → attached to the ribs and chest muscles between them · <b>fixed only with the hand on the hip</b> → attached to the pectoral fascia (the layer over the chest muscle)</div></div></article></div><div class="cs-pearls"><ul><li><b>If you find a lump, describe it</b><ul><li><b>location</b>: by quadrant or clock face, with the distance from the nipple in cm</li><li><b>size</b> (cm), <b>shape</b> (round or irregular), <b>consistency</b> (soft, firm, hard)</li><li><b>delimitation</b> (clear edge or not), <b>tenderness</b>, <b>mobility</b></li></ul></li><li>⚠ A <mark><b>hard, irregular, poorly defined lump, fixed to the skin or the tissue underneath</b></mark> strongly suggests cancer</li><li>⚠ Pressing deeply, you may mistake a <b>normal rib</b> for a hard breast mass</li><li><b>Tender cords</b> suggest <b>mammary duct ectasia</b> (benign, dilated ducts)</li><li><b>Cysts</b> and inflamed areas are often tender; <b>some cancers are tender too</b></li><li>A <b>lump in the tail</b> of the breast can be mistaken for an enlarged axillary node, and the reverse <i>Say: "Breasts symmetric, no skin or nipple changes in any position; no masses on palpation of either breast or the axillary tails; nipples normal."</i></li></ul></div></section><section class="cs-sec" id="s4"><h2><span class="n">4</span> Axillary lymph nodes<small>FoM · Breast Exam session</small></h2><div class="cs-steps"><ul><li><mark><b>Palpate the axillary nodes</b></mark> on both sides; <b>sitting is preferable</b>, though it can be done lying down</li><li>The node groups to cover: <b>central</b> (high in the armpit, against the chest wall), <b>pectoral</b> (front fold), <b>subscapular</b> (back fold), <b>lateral</b> (along the upper arm), then <b>infraclavicular</b> and <b>supraclavicular</b> (below and above the collarbone)</li><li>The OneNote guide stops at this point; practise the hand technique for the armpit in session</li></ul></div></section><section class="cs-sec" id="s5"><h2><span class="n">5</span> The male breast<small>FoM · Breast Exam session</small></h2><div class="cs-steps"><ul><li>Brief but important</li><li><b>Inspect</b> the nipple and areola for nodules, swelling or ulcers</li><li><b>Palpate</b> the areola and breast tissue for nodules</li><li>An enlarged breast: tell apart <b>soft fatty enlargement</b> (obesity) from a <b>firm disc of gland tissue</b> (<b>gynecomastia</b>: a hormone imbalance between estrogen and androgens, sometimes from a drug)</li><li>⚠ A <b>hard, irregular, off-centre or ulcerated</b> lump is <b>not</b> gynecomastia: it suggests <b>breast cancer</b></li></ul></div></section>
+</main>
+<script>
+(function(){
+  var body=document.body,hint=document.getElementById("cs-hint");
+  document.querySelectorAll(".cs-mode button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".cs-mode button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+      body.classList.toggle("quiz",b.dataset.m==="quiz");
+      document.querySelectorAll(".cs-card").forEach(function(c){c.classList.remove("s1","s2");});
+      hint.textContent=b.dataset.m==="quiz"?"Test: tap a card to show its steps, then tap again for the answer.":"Look: everything shown.";
+    });
+  });
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest(".cs-card");
+    if(!c||!body.classList.contains("quiz"))return;
+    if(c.classList.contains("s1"))c.classList.replace("s1","s2");else if(!c.classList.contains("s2"))c.classList.add("s1");
+  });
+  var q=document.getElementById("cs-q");
+  q.addEventListener("input",function(){
+    var words=q.value.toLowerCase().split(/\s+/).filter(Boolean),shown=0;
+    document.querySelectorAll(".cs-card").forEach(function(c){
+      var t=c.textContent.toLowerCase(),ok=words.every(function(w){return t.indexOf(w)>-1;});
+      c.classList.toggle("cs-hidden",!ok);if(ok)shown++;
+    });
+    document.querySelectorAll(".cs-sec").forEach(function(s){
+      var cards=s.querySelectorAll(".cs-card"),any=!words.length||s.textContent.toLowerCase().indexOf(words[0])>-1;
+      if(cards.length&&words.length)any=Array.prototype.some.call(cards,function(c){return !c.classList.contains("cs-hidden");});
+      s.classList.toggle("cs-hidden",words.length>0&&!any);
+    });
+  });
+})();
+</script>
+
+<footer>
+<p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
+</footer>
+</div>
+</body>
+</html>

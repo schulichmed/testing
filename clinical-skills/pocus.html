@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#ffffff">
+<title>Heart and abdomen - Clinical skills</title>
+<script>
+(function(){
+  var root=document.documentElement,KEY="pc-theme",stored=null,mq=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  if(stored!=="dark"&&stored!=="light")stored=null;
+  if(window.matchMedia)mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function os(){return mq&&mq.matches?"dark":"light";}
+  function apply(t){
+    root.setAttribute("data-theme",t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute("content",t==="dark"?"#140c22":"#ffffff");
+    var b=document.getElementById("theme-btn");
+    if(!b)return;
+    b.setAttribute("aria-pressed",t==="dark"?"true":"false");
+    b.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" mode");
+    b.title=b.getAttribute("aria-label");
+  }
+  function follow(){if(!stored)apply(os());}
+  apply(stored||os());
+  if(mq&&mq.addEventListener)mq.addEventListener("change",follow);
+  else if(mq&&mq.addListener)mq.addListener(follow);
+  document.addEventListener("DOMContentLoaded",function(){apply(root.getAttribute("data-theme"));});
+  document.addEventListener("click",function(e){
+    var s=e.target&&e.target.closest?e.target.closest(".skip"):null;
+    if(s){
+      var c=document.getElementById("content");
+      if(c){e.preventDefault();c.focus();c.scrollIntoView();}
+      return;
+    }
+    /* Still gets one tab, reused, so a second click brings the music
+       forward rather than restarting it (see STILL_BTN) */
+    var m=e.target&&e.target.closest?e.target.closest(".still-btn,.still-strip"):null;
+    if(m){
+      if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      var w=null;
+      try{w=window.open("","still-music");}catch(e3){}
+      if(!w)return;
+      e.preventDefault();
+      try{if(w.location.href==="about:blank")w.location.replace(m.href);}catch(e4){}
+      try{w.focus();}catch(e5){}
+      return;
+    }
+    var b=e.target&&e.target.closest?e.target.closest("#theme-btn"):null;
+    if(!b)return;
+    stored=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    try{localStorage.setItem(KEY,stored);}catch(e2){}
+    /* a crossfade between the themes where the browser can draw one and the
+       reader has not asked for less motion; otherwise the switch is instant */
+    var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(document.startViewTransition&&!calm)document.startViewTransition(function(){apply(stored);});
+    else apply(stored);
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
+<style>
+/* topic cards: a block card led by its icon, drawn in the section's hue */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
+</style>
+<style>
+.cs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px;position:sticky;top:0;z-index:5;
+  padding:10px 0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.cs-mode{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--card-bg)}
+.cs-mode button{border:0;background:none;color:var(--text);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.cs-mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.cs-tools input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)}
+.cs-hint{width:100%;margin:0;font-size:.8rem;color:var(--muted)}
+.cs-sec{margin-top:30px;scroll-margin-top:80px}
+.cs-sec>h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.cs-sec>h2 .n{color:var(--q-accent-ink,var(--accent))}
+.cs-sec>h2 small{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cs-steps{margin-top:12px;padding:16px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.6}
+.cs-steps ul{margin:0;padding-left:1.1em}.cs-steps ul ul{margin-top:2px;color:var(--muted)}
+.cs-steps li{margin:3px 0}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.cs-card{background:var(--card-bg);border:1px solid var(--border);border-top:3px solid var(--q-accent,var(--accent));border-radius:8px;padding:14px 16px;font-size:.88rem;line-height:1.55}
+.cs-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.cs-card .for{color:var(--muted);margin:0 0 8px}
+.cs-card .lbl{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.cs-card ol{margin:0;padding-left:1.2em}
+.cs-card .ans{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--q-accent-soft,var(--accent-soft))}
+.cs-pearls{margin-top:12px;padding:12px 18px;border-left:3px solid var(--q-accent,var(--accent));background:var(--card-bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.cs-pearls ul{margin:0;padding-left:1.1em}
+mark{background:color-mix(in srgb,#ffd84d 55%,transparent);color:inherit;padding:0 2px;border-radius:2px}
+body.quiz .cs-card{cursor:pointer}
+body.quiz .cs-card .hide1,body.quiz .cs-card .hide2{display:none}
+body.quiz .cs-card.s1 .hide1,body.quiz .cs-card.s2 .hide1,body.quiz .cs-card.s2 .hide2{display:block}
+body.quiz .cs-card:not(.s2)::after{content:"tap to reveal";display:block;margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic}
+.cs-hidden{display:none!important}
+.cs-empty{color:var(--muted);margin-top:24px}
+.tag{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:.7rem;font-weight:600;white-space:nowrap;vertical-align:1px}
+.tag.adv{background:var(--q-accent-soft,var(--accent-soft));color:var(--q-accent-ink,var(--accent))}
+.tag.extra{border:1px solid var(--border);color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="pom2-page">
+<style>
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
+</style>
+<nav class="csn" aria-label="Ultrasound">
+<a class="home" href="landing.html">All courses</a>
+<a class="home" href="ultrasound.html">Ultrasound &rsaquo;</a>
+<span class="here" aria-current="page">Heart and abdomen</span>
+</nav>
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
+<p class="eyebrow">Schulich Clinical Skills &middot; Ultrasound &middot; PoM 1 &rarr; T2C</p>
+<h1>Point-of-care ultrasound (POCUS) exam</h1>
+<p class="lead">Every point-of-care ultrasound (POCUS) view is found the same way: <b>choose the probe → position the patient → place the probe with its marker pointing the right way → sweep and tilt until the view appears → name each structure on the screen</b>. Two rules run through it: <b>the probe marker points to the patient's head</b> (or to their right, in a cross-section), and you <b>name structures by how bright they look</b>: fluid is black, solid organs are grey, bone and the diaphragm are bright white.</p>
+</div>
+</header>
+
+<main>
+<div class="cs-tools">
+<div class="cs-mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button></div>
+<input type="search" id="cs-q" placeholder="Find a step or a test" autocomplete="off">
+<p class="cs-hint" id="cs-hint">Look: everything shown.</p>
+</div>
+<section class="cs-sec" id="s1"><h2><span class="n">1</span> The general approach</h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE)</b>: "Hello, I'm ___, a medical student. Can I check your name and date of birth? I'd like to do a quick bedside ultrasound of your [heart / abdomen]. I'll put some cool gel on your skin and press gently with the probe. It doesn't hurt and uses no radiation. Is that alright?" Then wash your hands, lie the patient flat on their back (supine), and uncover only the area you are scanning.</li><li><b>Choose the probe</b>: the <b>curved (curvilinear)</b> probe, or the small flat-faced <b>phased array</b> probe, for the heart and abdomen: they use lower-frequency sound that <b>reaches deeper</b></li><li><b>Probe marker</b>: the ridge or dot on one side of the probe; it matches a dot on the screen<ul><li>for a lengthwise view (<b>sagittal</b> front-to-back slice, or <b>coronal</b> side-on slice) the marker points to the <b>patient's head</b></li><li>for a cross-section (<b>transverse / axial</b>) it points to the <b>patient's right</b></li></ul></li><li><b>Reading the screen</b>: the top of the screen is the skin under the probe (<b>near field</b>); the bottom is deepest (<b>far field</b>)</li><li><b>Words for brightness (echogenicity)</b><ul><li><b>anechoic</b> = black: fluid (blood, bile, urine)</li><li><b>hypoechoic</b> = darker grey than the tissue around it</li><li><b>isoechoic</b> = the same grey as the tissue around it (liver, spleen, kidney cortex)</li><li><b>hyperechoic</b> = bright white: bone, the diaphragm, fat around the kidney</li></ul></li><li><b>Acoustic window</b>: sound travels well through solid organs and fluid, badly through air and bone. So you look <b>through</b> the liver (to the heart, the kidney), or <b>through</b> a full bladder (to the pelvis)</li></ul></div></section><section class="cs-sec" id="s2"><h2><span class="n">2</span> Heart: the subxiphoid view<small>PoM 1 · POCUS session</small></h2><div class="cs-steps"><ul><li>The probe sits <b>just below the breastbone (under the xiphoid process)</b> and looks <b>up through the liver</b> at the heart; the liver is the window, lying directly under the probe</li><li><mark><b>Name the structures</b></mark>: <mark><b>right ventricle, left ventricle, right atrium, left atrium, interventricular septum (the wall between the ventricles), pericardium (the sac around the heart)</b></mark></li><li><mark><b>Show the cardiac cycle</b></mark>: <mark><b>systole</b></mark> (the ventricles squeeze and get smaller) and <mark><b>diastole</b></mark> (they relax and fill)</li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Subxiphoid (heart)</h3><p class="for"><mark><b>All four chambers, the septum and the pericardium</b></mark>, beating</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient supine; curved or phased array probe</li><li>Start with the probe <b>flat on the umbilicus</b> and <b>slide it up to the xiphoid</b></li><li>Look up through the liver at the heart</li><li>Can't see the heart? <b>Inspiratory hold</b> (a deep breath held pushes the diaphragm down and brings the heart closer) · <b>bend the knees</b> (relaxes the abdominal muscles)</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Good view</b> = liver nearest the probe, then the heart, with <b>right and left ventricles, right and left atria and the septum</b> visible, the pericardium around them, moving through <b>systole and diastole</b></div></div></article></div></section><section class="cs-sec" id="s3"><h2><span class="n">3</span> Upper abdomen: right upper quadrant, gallbladder, left upper quadrant<small>PoM 1 · POCUS session</small></h2><div class="cs-steps"><ul><li><b>Right upper quadrant (RUQ)</b>: <mark><b>liver, right kidney, diaphragm</b></mark><ul><li><b>liver</b> = isoechoic (even grey)</li><li><b>kidney</b> = a "<b>double density</b>": grey outer cortex, <b>bright white centre</b> (the renal sinus: collecting system with the calyces and renal pelvis, fat and the main blood vessels)</li><li>the slit between liver and kidney is the <b>hepatorenal space (Morison's pouch)</b></li><li><b>diaphragm</b> = a bright white curved line above the liver</li><li>the <b>spine</b> shows deep in the far field as a bright "railroad track"</li></ul></li><li><b>Gallbladder</b>: <mark><b>the gallbladder and the portal triad</b></mark> (portal vein, hepatic artery, common bile duct)<ul><li><b>gallbladder</b> = <b>anechoic</b> (black, full of bile)</li><li>the <b>exclamation-point sign</b>: the gallbladder is the <b>line</b>, the <b>portal triad</b> is the <b>dot</b> (shaped like a Mickey Mouse head), and the <b>main lobar fissure</b> (a thin bright line in the liver) joins them</li></ul></li><li><b>Left upper quadrant (LUQ)</b>: <mark><b>spleen, left kidney, diaphragm</b></mark><ul><li><b>spleen</b> = isoechoic · <b>left kidney</b> = double density · <b>diaphragm</b> = bright white · the <b>lung</b> sits above the diaphragm</li></ul></li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Right upper quadrant</h3><p class="for"><mark><b>Liver, right kidney, diaphragm</b></mark></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient supine; curved probe</li><li>Probe on the <b>right side, mid-axillary line, level with the xiphoid</b>, in a <b>coronal</b> (side-on) plane</li><li><b>Marker to the patient's head</b></li><li>Slide toward the feet or the head until the kidney appears</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Good view</b> = liver above, kidney below, <b>Morison's pouch</b> between them, the <b>diaphragm</b> as a bright line, the spine deep</div></div></article><article class="cs-card"><h3>Gallbladder</h3><p class="for"><mark><b>Gallbladder and portal triad</b></mark></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Probe <b>under the right costal margin</b> (edge of the ribs), <b>midclavicular line</b></li><li><b>Sagittal</b> plane, <b>marker to the patient's head</b></li><li>Fan slowly until a black, bag-shaped structure appears</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Good view</b> = the <b>exclamation point</b>: black gallbladder (line), <b>main lobar fissure</b>, portal triad (dot)</div></div></article><article class="cs-card"><h3>Left upper quadrant</h3><p class="for"><mark><b>Spleen, left kidney, diaphragm</b></mark></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Same set-up as the RUQ, on the <b>left</b> side, <b>marker to the head</b></li><li>Slide toward the feet or the head until the kidney appears</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Good view</b> = spleen, left kidney below it, the diaphragm as a bright line, lung above</div></div></article></div></section><section class="cs-sec" id="s4"><h2><span class="n">4</span> Pelvis: bladder, uterus or prostate, rectum<small>PoM 1 · POCUS session</small></h2><div class="cs-steps"><ul><li><mark><b>Name the structures</b></mark>: <mark><b>bladder, uterus or prostate, rectum</b></mark></li><li>The bladder <b>must be full</b>: urine is the acoustic window into the pelvis</li><li><b>Male</b>: bladder (anechoic) → <b>prostate</b> below it → <b>rectum</b> below that; note the <b>rectovesical space</b> (between bladder and rectum)</li><li><b>Female</b>: bladder (anechoic) → <b>uterus</b> (isoechoic) in the far field, with a <b>bright line in its centre (the endometrium, the uterine lining)</b> → <b>rectum</b> below; note the <b>vesicouterine space</b> (between bladder and uterus) and the <b>rectouterine pouch (pouch of Douglas)</b> behind the uterus<ul><li>in the sagittal view you also see the <b>vagina</b> as a darker (hypoechoic) band behind the bladder</li></ul></li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Pelvis, transverse</h3><p class="for"><mark><b>Bladder, uterus or prostate, rectum</b></mark></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient supine with a <b>full bladder</b>; curved probe</li><li>Probe across the lower abdomen (<b>transverse</b>), <b>marker to the patient's right</b></li><li>Slide down to the <b>pubic symphysis</b> (pubic bone), then <b>tilt the probe down</b> into the pelvis</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Good view</b> = black bladder at the top, uterus or prostate behind it, rectum deepest</div></div></article><article class="cs-card"><h3>Pelvis, sagittal</h3><p class="for">The same structures, lengthwise</p><div class="hide1"><span class="lbl">Steps</span><p>1. From the transverse view, <b>rotate the probe</b> to sagittal, <b>marker to the head</b></p></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Good view</b> = bladder, uterus (with endometrium) or prostate, vagina, rectum in a line</div></div></article></div></section><section class="cs-sec" id="s5"><h2><span class="n">5</span> Vessels: aorta, inferior vena cava, carotid artery and internal jugular vein<small>advanced: T2C POCUS</small></h2><div class="cs-steps"><ul><li>The Year 2 POCUS page in OneNote is <b>empty</b>, and the upper-year notes do not cover these views: only the objectives are given here; learn the probe positions in session</li><li><mark><b>Abdominal aorta view</b></mark>: identify the <mark><b>abdominal aorta</b></mark> and the <mark><b>inferior vena cava (IVC)</b></mark></li><li><mark><b>Carotid sheath view</b></mark> (the bundle in the side of the neck): identify the <mark><b>carotid artery</b></mark> and the <mark><b>internal jugular vein (IJV)</b></mark><ul><li><mark><b>Valsalva</b></mark> (bearing down against a closed throat): <mark><b>show its effect on the internal jugular vein</b></mark></li><li><mark><b>Compression</b></mark> with the probe: <mark><b>show its effect on the internal jugular vein and the carotid artery</b></mark></li></ul></li></ul></div></section><section class="cs-sec" id="s6"><h2><span class="n">6</span> Musculoskeletal structures<small>advanced: T2C POCUS</small></h2><div class="cs-steps"><ul><li>Not in OneNote or the upper-year notes: only the objectives are given here</li><li><mark><b>Achilles tendon</b></mark>: show the view and <mark><b>identify the linear (fibre-like) pattern of its collagen fibres</b></mark></li><li><mark><b>Arm</b></mark>: show the view and identify <mark><b>bone, muscle and nerve</b></mark></li><li><mark><b>Posterior shoulder joint</b></mark>: show the view and identify the <mark><b>humeral head, the glenoid and the infraspinatus tendon</b></mark></li></ul></div></section>
+</main>
+<script>
+(function(){
+  var body=document.body,hint=document.getElementById("cs-hint");
+  document.querySelectorAll(".cs-mode button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".cs-mode button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+      body.classList.toggle("quiz",b.dataset.m==="quiz");
+      document.querySelectorAll(".cs-card").forEach(function(c){c.classList.remove("s1","s2");});
+      hint.textContent=b.dataset.m==="quiz"?"Test: tap a card to show its steps, then tap again for the answer.":"Look: everything shown.";
+    });
+  });
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest(".cs-card");
+    if(!c||!body.classList.contains("quiz"))return;
+    if(c.classList.contains("s1"))c.classList.replace("s1","s2");else if(!c.classList.contains("s2"))c.classList.add("s1");
+  });
+  var q=document.getElementById("cs-q");
+  q.addEventListener("input",function(){
+    var words=q.value.toLowerCase().split(/\s+/).filter(Boolean),shown=0;
+    document.querySelectorAll(".cs-card").forEach(function(c){
+      var t=c.textContent.toLowerCase(),ok=words.every(function(w){return t.indexOf(w)>-1;});
+      c.classList.toggle("cs-hidden",!ok);if(ok)shown++;
+    });
+    document.querySelectorAll(".cs-sec").forEach(function(s){
+      var cards=s.querySelectorAll(".cs-card"),any=!words.length||s.textContent.toLowerCase().indexOf(words[0])>-1;
+      if(cards.length&&words.length)any=Array.prototype.some.call(cards,function(c){return !c.classList.contains("cs-hidden");});
+      s.classList.toggle("cs-hidden",words.length>0&&!any);
+    });
+  });
+})();
+</script>
+
+<footer>
+<p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
+</footer>
+</div>
+</body>
+</html>

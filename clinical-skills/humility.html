@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#ffffff">
+<title>Cultural humility - Clinical skills</title>
+<script>
+(function(){
+  var root=document.documentElement,KEY="pc-theme",stored=null,mq=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  if(stored!=="dark"&&stored!=="light")stored=null;
+  if(window.matchMedia)mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function os(){return mq&&mq.matches?"dark":"light";}
+  function apply(t){
+    root.setAttribute("data-theme",t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute("content",t==="dark"?"#140c22":"#ffffff");
+    var b=document.getElementById("theme-btn");
+    if(!b)return;
+    b.setAttribute("aria-pressed",t==="dark"?"true":"false");
+    b.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" mode");
+    b.title=b.getAttribute("aria-label");
+  }
+  function follow(){if(!stored)apply(os());}
+  apply(stored||os());
+  if(mq&&mq.addEventListener)mq.addEventListener("change",follow);
+  else if(mq&&mq.addListener)mq.addListener(follow);
+  document.addEventListener("DOMContentLoaded",function(){apply(root.getAttribute("data-theme"));});
+  document.addEventListener("click",function(e){
+    var s=e.target&&e.target.closest?e.target.closest(".skip"):null;
+    if(s){
+      var c=document.getElementById("content");
+      if(c){e.preventDefault();c.focus();c.scrollIntoView();}
+      return;
+    }
+    /* Still gets one tab, reused, so a second click brings the music
+       forward rather than restarting it (see STILL_BTN) */
+    var m=e.target&&e.target.closest?e.target.closest(".still-btn,.still-strip"):null;
+    if(m){
+      if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      var w=null;
+      try{w=window.open("","still-music");}catch(e3){}
+      if(!w)return;
+      e.preventDefault();
+      try{if(w.location.href==="about:blank")w.location.replace(m.href);}catch(e4){}
+      try{w.focus();}catch(e5){}
+      return;
+    }
+    var b=e.target&&e.target.closest?e.target.closest("#theme-btn"):null;
+    if(!b)return;
+    stored=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    try{localStorage.setItem(KEY,stored);}catch(e2){}
+    /* a crossfade between the themes where the browser can draw one and the
+       reader has not asked for less motion; otherwise the switch is instant */
+    var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(document.startViewTransition&&!calm)document.startViewTransition(function(){apply(stored);});
+    else apply(stored);
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
+<style>
+/* topic cards: a block card led by its icon, drawn in the section's hue */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
+</style>
+<style>
+.cs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px;position:sticky;top:0;z-index:5;
+  padding:10px 0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.cs-mode{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--card-bg)}
+.cs-mode button{border:0;background:none;color:var(--text);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.cs-mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.cs-tools input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)}
+.cs-hint{width:100%;margin:0;font-size:.8rem;color:var(--muted)}
+.cs-sec{margin-top:30px;scroll-margin-top:80px}
+.cs-sec>h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.cs-sec>h2 .n{color:var(--q-accent-ink,var(--accent))}
+.cs-sec>h2 small{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cs-steps{margin-top:12px;padding:16px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.6}
+.cs-steps ul{margin:0;padding-left:1.1em}.cs-steps ul ul{margin-top:2px;color:var(--muted)}
+.cs-steps li{margin:3px 0}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.cs-card{background:var(--card-bg);border:1px solid var(--border);border-top:3px solid var(--q-accent,var(--accent));border-radius:8px;padding:14px 16px;font-size:.88rem;line-height:1.55}
+.cs-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.cs-card .for{color:var(--muted);margin:0 0 8px}
+.cs-card .lbl{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.cs-card ol{margin:0;padding-left:1.2em}
+.cs-card .ans{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--q-accent-soft,var(--accent-soft))}
+.cs-pearls{margin-top:12px;padding:12px 18px;border-left:3px solid var(--q-accent,var(--accent));background:var(--card-bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.cs-pearls ul{margin:0;padding-left:1.1em}
+mark{background:color-mix(in srgb,#ffd84d 55%,transparent);color:inherit;padding:0 2px;border-radius:2px}
+body.quiz .cs-card{cursor:pointer}
+body.quiz .cs-card .hide1,body.quiz .cs-card .hide2{display:none}
+body.quiz .cs-card.s1 .hide1,body.quiz .cs-card.s2 .hide1,body.quiz .cs-card.s2 .hide2{display:block}
+body.quiz .cs-card:not(.s2)::after{content:"tap to reveal";display:block;margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic}
+.cs-hidden{display:none!important}
+.cs-empty{color:var(--muted);margin-top:24px}
+.tag{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:.7rem;font-weight:600;white-space:nowrap;vertical-align:1px}
+.tag.adv{background:var(--q-accent-soft,var(--accent-soft));color:var(--q-accent-ink,var(--accent))}
+.tag.extra{border:1px solid var(--border);color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="pom2-page">
+<style>
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
+</style>
+<nav class="csn" aria-label="History taking">
+<a class="home" href="landing.html">All courses</a>
+<a class="home" href="history.html">History taking &rsaquo;</a>
+<a href="interview.html">Interview</a>
+<span class="here" aria-current="page">Cultural humility</span>
+<span class="soon" title="Coming soon">Presenting</span>
+<a href="obhx.html">OB/Gyn history</a>
+<span class="soon" title="Coming soon">Psychiatric</span>
+<span class="soon" title="Coming soon">Paediatric</span>
+<span class="soon" title="Coming soon">Geriatric</span>
+</nav>
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
+<p class="eyebrow">Schulich Clinical Skills &middot; History taking &middot; PoM 1</p>
+<h1>Cultural Humility</h1>
+<p class="lead">The interview is the <b>same patient-centred spine</b> as always (introduction → chief complaint → HPI with FIFE → past history → medications → habits → social → family → review of systems → closing summary), with two adaptations taught in this block: <b>gender-expansive care</b>, where you <mark><b>use the patient's correct pronouns and respectful language</b>, <b>acknowledge past negative experiences in health care</b>, and <b>validate their identity</b></mark>; and <b>interviews in a language other than English</b>, where you <mark><b>communicate through a family member translator</b> and <b>make sure the patient's own concerns are accurately conveyed and understood</b></mark>. One rule runs through both: <b>humility means the patient is the expert on their own identity, culture and story</b>, so you <b>ask rather than assume</b>, and you <mark><b>recognize and address your own implicit biases</b></mark>. Built from the Clinical Skills objectives for the Cultural Humility Communication Block and Advanced Interviewing, on top of the faculty Interviewing Template. The OneNote page "Gender Expansive Care &amp; Language Other than English (LOE)" is empty (title only), so no faculty handout backs the detail here; points marked <i><span class="tag extra">extra</span></i> are kept to the few a beginner needs.</p>
+</div>
+</header>
+
+<main>
+<div class="cs-tools">
+<div class="cs-mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button></div>
+<input type="search" id="cs-q" placeholder="Find a step or a test" autocomplete="off">
+<p class="cs-hint" id="cs-hint">Look: everything shown.</p>
+</div>
+<section class="cs-sec" id="s1"><h2><span class="n">1</span> The general approach</h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE, Teaching Objective Structured Clinical Exam)</b>: "Hello, my name is [name], I'm a medical student working with Dr. [X]. What name would you like me to use, and what pronouns do you use?"</li><li><b>Build on the basics</b>: <mark>apply the <b>patient-centred interview</b> from Introduction to Interviewing (effective communication, <b>rapport</b>, <b>active listening</b>) with a specific focus on <b>equity, diversity and inclusion (EDI)</b> and cultural competence</mark></li><li><b>Respect difference</b>: <mark>show <b>awareness, understanding and respect for cultural differences</b> and how they shape a person's view of <b>health care, health promotion and disease management</b></mark></li><li><b>Communicate inclusively</b>: <mark>use <b>inclusive and sensitive</b> communication so patients from every background <b>feel respected and understood</b></mark><ul><li>ask open questions; don't assume a person's gender, partners, family structure, beliefs or language from how they look</li><li>use FIFE: the <b>Ideas</b> and <b>Expectations</b> questions are where cultural beliefs about illness come out</li></ul></li><li><b>Check yourself</b>: <mark><b>recognize and address implicit bias</b>, in yourself and in others, during the interaction</mark></li><li><b>Stay professional</b>: <mark>respect, reliability, honesty and clarity</mark> throughout</li></ul></div></section><section class="cs-sec" id="s2"><h2><span class="n">2</span> Gender-expansive care<small>PoM 1 · Cultural Humility</small></h2><div class="cs-steps"><ul><li><mark><b>Build rapport with a transgender patient</b>, including <b>acknowledging past negative experiences in the healthcare system</b></mark></li><li><mark>Ensure <b>correct use of pronouns</b> and <b>respectful language</b></mark></li><li><mark>Engage in conversation that <b>validates the patient's identity and experiences</b>, creating a <b>safe and inclusive environment</b></mark></li><li><mark>Conduct a respectful interview with a member of the <b>LGBTQ+</b> (lesbian, gay, bisexual, transgender, queer and more) community, using <b>appropriate terminology</b> and a <b>non-judgmental approach</b></mark> <span class="tag adv">later: PoM 1 Advanced Interviewing</span></li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Name</b></h3><p class="for">The name the patient uses</p><div class="hide1"><span class="lbl">Example question</span><p><i>"What name would you like me to use?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span>The name to use <b>every time</b>, and in what you tell the team</div></div></article><article class="cs-card"><h3><b>Pronouns</b></h3><p class="for">How to refer to the patient</p><div class="hide1"><span class="lbl">Example question</span><p><i>"What pronouns do you use?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span><b>she/her, he/him, they/them</b> or others; use them consistently</div></div></article><article class="cs-card"><h3><b>Past experiences of care</b></h3><p class="for">Trust and barriers</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Some people have had difficult experiences in health care. Is there anything that would make today more comfortable for you?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span><b>Being misgendered, dismissed or refused care before</b> · what helps now</div></div></article><article class="cs-card"><h3><b>Gender-affirming care</b></h3><p class="for">Part of the medication and surgical history</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Are you taking any hormones, or have you had any surgeries, as part of your care?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span><b>Hormones</b> (dose, who prescribes) · <b>surgeries</b> · asked like any other medication or operation</div></div></article><article class="cs-card"><h3><b>Sexual history</b></h3><p class="for">Partners and practices, without assumptions</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Are you currently sexually active? Tell me about your partners."</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span>The patient's own words for partners and practices · <b>contraception, safer sex, previous infections</b></div></div></article><article class="cs-card"><h3><b>Support and safety</b></h3><p class="for">Social context</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Who do you have in your corner? Do you feel safe at home?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span><b>Supportive people</b> or <b>isolation, rejection, unsafe home</b></div></div></article></div><div class="cs-pearls"><ul><li>Ask about gender identity and bodies <b>only where it matters for the visit</b>, and say why you are asking <i><span class="tag extra">extra</span></i>.</li><li>If you use the wrong name or pronoun, <b>apologize briefly, correct yourself, and carry on</b> <i><span class="tag extra">extra</span></i>.</li><li>In the review of systems, the template's "partners: men, women or both" becomes an <b>open question about partners</b>, so no answer is assumed.</li></ul></div></section><section class="cs-sec" id="s3"><h2><span class="n">3</span> Interviews in a language other than English<small>PoM 1 · Cultural Humility</small></h2><div class="cs-steps"><ul><li><mark><b>Conduct effective communication through a family member translator</b>, ensuring the <b>patient's concerns are accurately conveyed and understood</b></mark></li><li><mark>Show <b>respect for the patient's cultural background</b>, understand the <b>context of their immigration experience</b>, and address any <b>unique health challenges</b> they face</mark></li><li>Use the same communication skills as always: <mark><b>plain language</b>, <b>avoid ambiguity and clarify</b>, <b>summarize periodically</b> so the patient can confirm</mark></li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Language</b></h3><p class="for">The language the patient is most comfortable in</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Which language would you like to use today?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span>Their preferred language, and how much English they're comfortable with</div></div></article><article class="cs-card"><h3><b>The patient's own words</b></h3><p class="for">Whether the message got through</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Can you ask her to tell me, in her own words, what worries her most?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span>An answer that <b>matches the question</b>, not a summary from the family member</div></div></article><article class="cs-card"><h3><b>Immigration experience</b></h3><p class="for">Context for health</p><div class="hide1"><span class="lbl">Example question</span><p><i>"How long have you been in Canada? How has the move been for you?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span><b>How recently they arrived</b>, separation from family, stress</div></div></article><article class="cs-card"><h3><b>Unique health challenges</b></h3><p class="for">Barriers to care</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Is it easy for you to see a doctor or get your medications here?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span><b>No family doctor, cost, transportation, language barriers</b></div></div></article><article class="cs-card"><h3><b>Beliefs about the illness</b></h3><p class="for">FIFE Ideas and Expectations</p><div class="hide1"><span class="lbl">Example question</span><p><i>"What do you think is causing this? What would you hope we can do?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span><b>Cultural or family explanations</b>, traditional remedies, what a good outcome looks like</div></div></article><article class="cs-card"><h3><b>Understanding at the end</b></h3><p class="for">Agreement on the plan</p><div class="hide1"><span class="lbl">Example question</span><p><i>"Could you ask him to tell me back what we've decided?"</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Listen for =</span>The plan <b>said back correctly</b> in the patient's words</div></div></article></div><div class="cs-pearls"><ul><li><b>Speak to the patient</b>, not the translator: look at the patient and use "you" <i><span class="tag extra">extra</span></i>.</li><li>Keep sentences <b>short</b>, one question at a time, so less is lost in translation <i><span class="tag extra">extra</span></i>.</li><li>⚠ A family member may <b>soften, filter or answer for</b> the patient, and some topics (safety at home, sexual history, mood) are hard to discuss in front of family: if the answers sound filtered, find a way to ask privately or offer a professional interpreter <i><span class="tag extra">extra</span></i>.</li></ul></div></section><section class="cs-sec" id="s4"><h2><span class="n">4</span> Culture across the whole interview<small>advanced: PoM 1 Advanced Interviewing</small></h2><div class="cs-steps"><ul><li><mark>Discuss <b>cultural competency</b>, including the <b>CHAT tool</b></mark> (named in the objectives; not in OneNote)</li><li><mark>Demonstrate the ability to <b>adapt medical care to cultural expectations</b></mark></li><li><mark>Show <b>respect for cultural diversity</b> and differences in <b>shared decision-making</b></mark>: who the patient wants involved in decisions is part of their culture</li><li><mark>Work towards <b>understanding and supporting Indigenous patients</b></mark> (objective only; not in OneNote)</li><li><mark>Conduct a <b>gynecological history</b> in a sensitive and professional manner</mark>: see the Obstetric and Gynecologic History summary note</li></ul></div></section><section class="cs-sec" id="s5"><h2><span class="n">5</span> Closing and reflecting<small>PoM 1 · Cultural Humility</small></h2><div class="cs-steps"><ul><li><b>Close as always</b>: summarize, ask "Is there anything else that feels important for me to know?", and check the patient (through the translator, if one is used) agrees with the plan</li><li><mark><b>Reflect</b> on the encounter with a focus on cultural humility, using <b>feedback from peers, standardized patients (SPs) and facilitators</b>, and plan how to improve</mark></li><li><mark><b>Give and receive constructive feedback</b> on cultural competence and inclusive communication</mark>, and learn collaboratively in a diverse group</li><li>Ask yourself afterwards: <b>what did I assume</b>, and <b>where did that assumption come from</b>?</li></ul></div></section>
+</main>
+<script>
+(function(){
+  var body=document.body,hint=document.getElementById("cs-hint");
+  document.querySelectorAll(".cs-mode button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".cs-mode button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+      body.classList.toggle("quiz",b.dataset.m==="quiz");
+      document.querySelectorAll(".cs-card").forEach(function(c){c.classList.remove("s1","s2");});
+      hint.textContent=b.dataset.m==="quiz"?"Test: tap a card to show its steps, then tap again for the answer.":"Look: everything shown.";
+    });
+  });
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest(".cs-card");
+    if(!c||!body.classList.contains("quiz"))return;
+    if(c.classList.contains("s1"))c.classList.replace("s1","s2");else if(!c.classList.contains("s2"))c.classList.add("s1");
+  });
+  var q=document.getElementById("cs-q");
+  q.addEventListener("input",function(){
+    var words=q.value.toLowerCase().split(/\s+/).filter(Boolean),shown=0;
+    document.querySelectorAll(".cs-card").forEach(function(c){
+      var t=c.textContent.toLowerCase(),ok=words.every(function(w){return t.indexOf(w)>-1;});
+      c.classList.toggle("cs-hidden",!ok);if(ok)shown++;
+    });
+    document.querySelectorAll(".cs-sec").forEach(function(s){
+      var cards=s.querySelectorAll(".cs-card"),any=!words.length||s.textContent.toLowerCase().indexOf(words[0])>-1;
+      if(cards.length&&words.length)any=Array.prototype.some.call(cards,function(c){return !c.classList.contains("cs-hidden");});
+      s.classList.toggle("cs-hidden",words.length>0&&!any);
+    });
+  });
+})();
+</script>
+
+<footer>
+<p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
+</footer>
+</div>
+</body>
+</html>
