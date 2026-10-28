@@ -4,57 +4,78 @@
 <title>Clinical skills</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f7f5fa;--card:#fff;--ink:#201436;--muted:#6b6380;--line:#e6dfef;--accent:#7a3fb0;--soft:#efe7f8}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#a89fbb;--line:#2f283c;--accent:#c39bea;--soft:#2a2238}}
-:root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#a89fbb;--line:#2f283c;--accent:#c39bea;--soft:#2a2238}
+:root{--bg:#f7f5fa;--card:#fff;--ink:#201436;--muted:#6b6380;--line:#e6dfef;--accent:#7a3fb0;--soft:#efe7f8;--shadow:0 8px 24px rgba(79,38,131,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#a89fbb;--line:#2f283c;--accent:#c39bea;--soft:#2a2238;--shadow:0 8px 24px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#a89fbb;--line:#2f283c;--accent:#c39bea;--soft:#2a2238;--shadow:0 8px 24px rgba(0,0,0,.4)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,-apple-system,BlinkMacSystemFont,sans-serif}
-.wrap{max-width:680px;margin:0 auto;padding:24px 16px 64px}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 16px 64px}
 h1,h2{font-family:Fraunces,Georgia,serif;font-weight:600;margin:0}
-h1{font-size:clamp(28px,6vw,36px)}
-h2{font-size:15px;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:32px 0 6px}
+h1{font-size:clamp(30px,6vw,40px)}
 a{color:var(--accent);text-decoration:none}
-.back{display:inline-block;font-weight:500;margin-bottom:14px}
-.lead{color:var(--muted);margin:8px 0 0}
-.here{margin-top:22px;background:var(--soft);border-radius:12px;padding:12px 16px}
-.here p{margin:0 0 2px;font-size:14px;color:var(--muted)}
-.here .name{display:inline-block;margin-right:16px}
-.here span.name{color:var(--muted)}
-.here a.name{font-weight:600}
-.here a.name::after{content:" →"}
-ul{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:12px}
-li{display:flex;justify-content:space-between;gap:12px;padding:11px 16px;border-top:1px solid var(--line)}
-li:first-child{border-top:0}
+.up{display:inline-block;font-weight:500;margin-bottom:18px}
+.lead{color:var(--muted);margin:10px 0 0;max-width:62ch}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;max-width:820px}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+.block{display:block;padding:24px;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--hue);border-radius:8px;color:var(--ink);transition:transform .2s,box-shadow .2s,border-color .2s}
+.block:hover{transform:translateY(-3px);border-color:var(--hue);box-shadow:var(--shadow)}
+.bmeta{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--hue);margin:0 0 10px}
+.block h2{font-size:21px;margin-bottom:8px}
+.block p{color:var(--muted);font-size:14px;margin:0}
+.tally{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.tally b{color:var(--ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bmeta{color:color-mix(in srgb,var(--hue) 45%,#fff)}}
+.here{margin-top:22px;font-size:15px;color:var(--muted)}
+.here a{font-weight:600}
+ul{list-style:none;margin:28px 0 0;padding:0;max-width:640px}
+li{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+li:last-child{border-bottom:1px solid var(--line)}
 li .name{color:var(--muted)}
-li a.name{color:var(--ink);font-weight:500}
+li a.name{color:var(--ink);font-weight:600}
 li a.name::after{content:" →";color:var(--accent)}
 li .when{color:var(--muted);font-size:14px;white-space:nowrap}
-.demo{margin-top:48px;font-size:13px;color:var(--muted)}
+[hidden]{display:none!important}
+.demo{margin-top:56px;font-size:13px;color:var(--muted)}
 .demo a{margin-left:8px}
-.demo a[aria-current="true"]{font-weight:600;text-decoration:underline}
 </style></head>
 <body><div class="wrap">
 
-<a class="back" id="back" hidden href="../"></a>
-<h1>Clinical skills</h1>
-<p class="lead">Every history and exam from Years 1 and 2, one page each. Where an exam is taught twice, its page holds both.</p>
+<a class="up" id="up" href="../"></a>
 
-<div class="here" id="here" hidden><p id="here-title"></p><div id="here-links"></div></div>
+<div id="home">
+  <h1>Clinical skills.</h1>
+  <p class="lead">Every history and exam from Years 1 and 2. Where something is taught twice, its page holds both.</p>
+  <p class="here" id="here" hidden></p>
+  <div class="grid" id="grid"></div>
+</div>
 
-<div id="lists"></div>
+<div id="section" hidden>
+  <h1 id="s-title"></h1>
+  <p class="lead" id="s-lead"></p>
+  <ul id="s-list"></ul>
+</div>
 
 <p class="demo">Prototype, preview as if opened from:
-  <a href="?">landing page</a><a href="?from=fom">FoM</a><a href="?from=pom1">PoM 1</a><a href="?from=pom2&amp;block=msk">PoM 2 MSK</a><a href="?from=t2c">T2C</a>
+  <a href="?">landing page</a><a href="?from=fom">FoM</a><a href="?from=pom2&amp;block=msk">PoM 2 MSK</a><a href="?from=t2c">T2C</a>
 </p>
 </div>
 
 <script>
 const COURSES = {fom: "FoM", pom1: "PoM 1", pom2: "PoM 2", t2c: "T2C"};
 const BLOCKS = {msk: "MSK", neuro: "Neuro", psych: "Psych", repro: "Repro"};
-const GROUPS = [["history", "History taking"], ["exam", "Physical exam"], ["pocus", "Ultrasound"], ["osce", "OSCE prep"]];
 
-// taught: the courses it is taught in, first time first; page: set once the exam is built;
-// blocks: PoM 2 blocks whose sessions teach it
+const SECTIONS = [
+  {id: "history", name: "History taking", hue: "#8c3566", meta: "FoM to T2C",
+   what: "The interview every history is built on, then the special histories: obstetric, psychiatric, paediatric, geriatric."},
+  {id: "exam", name: "Physical exam", hue: "#2f5d7c", meta: "FoM to T2C",
+   what: "One page per system, from vital signs to the pelvic exam, with the special tests and a test-yourself mode."},
+  {id: "pocus", name: "Ultrasound", hue: "#0d6154", meta: "PoM 1 and T2C",
+   what: "Point-of-care views of the heart and the abdomen."},
+  {id: "osce", name: "OSCE prep", hue: "#4b3f96", meta: "Every TOSCE and the OSCE",
+   what: "How a station runs, what is marked, and putting a whole encounter together."},
+];
+
+// taught: courses in teaching order; page: set once built; blocks: PoM 2 blocks that teach it
 const SKILLS = [
   {group: "history", name: "The patient-centred interview", taught: ["fom", "pom1"]},
   {group: "history", name: "Cultural humility", taught: ["pom1"]},
@@ -81,6 +102,7 @@ const SKILLS = [
 const params = new URLSearchParams(location.search);
 const from = COURSES[params.get("from")] ? params.get("from") : null;
 const block = from === "pom2" && BLOCKS[params.get("block")] ? params.get("block") : null;
+const course = from ? (block ? `${COURSES[from]} ${BLOCKS[block]}` : COURSES[from]) : null;
 
 function nameEl(s) {
   const el = document.createElement(s.page ? "a" : "span");
@@ -90,39 +112,59 @@ function nameEl(s) {
   return el;
 }
 
-const lists = document.getElementById("lists");
-for (const [key, title] of GROUPS) {
-  const h = document.createElement("h2");
-  h.textContent = title;
-  const ul = document.createElement("ul");
-  for (const s of SKILLS.filter(s => s.group === key)) {
-    const li = document.createElement("li");
-    const when = document.createElement("span");
-    when.className = "when";
-    when.textContent = s.taught.map(c => COURSES[c]).join(" → ");
-    li.append(nameEl(s), when);
-    ul.appendChild(li);
-  }
-  lists.append(h, ul);
+// the four block cards
+const grid = document.getElementById("grid");
+for (const sec of SECTIONS) {
+  const items = SKILLS.filter(s => s.group === sec.id);
+  const ready = items.filter(s => s.page).length;
+  const a = document.createElement("a");
+  a.className = "block";
+  a.href = `#${sec.id}`;
+  a.style.setProperty("--hue", sec.hue);
+  a.innerHTML = `<p class="bmeta">${sec.meta}</p><h2>${sec.name}</h2><p>${sec.what}</p>
+    <div class="tally"><b>${items.length}</b> ${sec.id === "exam" ? "exams" : "topic"}${sec.id !== "exam" && items.length !== 1 ? "s" : ""} · <b>${ready}</b> ready</div>`;
+  grid.appendChild(a);
 }
 
-// opened from a course: a way back, and this block's skills on top
-document.querySelectorAll(".demo a").forEach(a => {
-  const p = new URLSearchParams(a.getAttribute("href").slice(1));
-  a.setAttribute("aria-current", String(p.get("from") === from && p.get("block") === block));
-});
+// from a course: one line pointing at what that block teaches
 if (from) {
-  const here = block ? `${COURSES[from]} ${BLOCKS[block]}` : COURSES[from];
-  const back = document.getElementById("back");
-  back.hidden = false;
-  back.textContent = `← Back to ${here}`;
-  const now = SKILLS.filter(s => block ? (s.blocks || []).includes(block) : s.taught.includes(from));
+  const now = SKILLS.filter(s => s.page && (block ? (s.blocks || []).includes(block) : s.taught.includes(from)));
   if (now.length) {
-    document.getElementById("here").hidden = false;
-    document.getElementById("here-title").textContent = `In ${here}`;
-    const links = document.getElementById("here-links");
-    now.forEach(s => links.appendChild(nameEl(s)));
+    const here = document.getElementById("here");
+    here.hidden = false;
+    here.append(`In ${course}: `);
+    now.forEach((s, i) => { if (i) here.append(", "); const a = nameEl(s); a.textContent += " exam →"; here.appendChild(a); });
   }
 }
+
+function show() {
+  const sec = SECTIONS.find(s => `#${s.id}` === location.hash);
+  const up = document.getElementById("up");
+  document.getElementById("home").hidden = !!sec;
+  document.getElementById("section").hidden = !sec;
+  if (sec) {
+    up.textContent = "← Clinical skills";
+    up.href = location.search || "?";
+    document.getElementById("s-title").textContent = sec.name + ".";
+    document.getElementById("s-lead").textContent = sec.what;
+    const ul = document.getElementById("s-list");
+    ul.replaceChildren();
+    for (const s of SKILLS.filter(s => s.group === sec.id)) {
+      const li = document.createElement("li");
+      const when = document.createElement("span");
+      when.className = "when";
+      when.textContent = s.taught.map(c => COURSES[c]).join(" → ");
+      li.append(nameEl(s), when);
+      ul.appendChild(li);
+    }
+  } else {
+    // on the portal this goes back to ../<course>/<block>.html
+    up.textContent = from ? `← Back to ${course}` : "← All courses";
+    up.href = "../";
+  }
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", show);
+show();
 </script>
 </body></html>
