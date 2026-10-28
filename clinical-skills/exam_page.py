@@ -62,6 +62,8 @@ class Exam:
         Heading and card title of the spine card each region opens on.
     pearls_heading : str
         Heading of the card that closes each region.
+    count_noun : str
+        What a region's band header counts ("special tests", "manoeuvres").
     video : dict
         Test name -> slug in the main channel's videos.json.
     video_page : str
@@ -95,6 +97,7 @@ class Exam:
     spine_heading: str = "General exam"
     spine_title: str = "Look · Feel · Move"
     pearls_heading: str = "Pearls"
+    count_noun: str = "special tests"
     video: dict = field(default_factory=dict)
     video_page: str = ""
     region_video: dict = field(default_factory=dict)
@@ -407,14 +410,15 @@ def render(exam: Exam, regions: list[dict], credits: list[dict]) -> str:
         foot = (f'<div class="prob"><h3>{html.escape(exam.pearls_heading)}</h3><div class="tests">'
                 f'{wide_card(exam, "Remember", r["pearls"])}</div></div>' if r["pearls"] else "")
         n = sum(len(p["tests"]) for p in r["problems"])
-        count = f" · {n} special tests" if n else ""
+        count = f" · {n} {exam.count_noun}" if n else ""
         bands.append(f'<section class="band" id="{r["key"]}" style="--c:{r["color"]}">'
                      f'<header class="bandhead"><h2>{r["title"]}</h2><span>{r["week"]}{count}</span></header>'
                      f'{top}{probs}{foot}</section>')
     landmark_names = {f"Landmarks: {key}": f"{title} landmarks diagram" for key, title, _w, _c in exam.regions.values()}
-    cred = "".join(
+    items = "".join(
         f'<li>{html.escape(landmark_names.get(c["test"], c["test"]))}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
         f'<a href="{html.escape(c["source_page_url"])}">source</a></li>' for c in credits)
+    cred = f'<h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{items}</ul>' if credits else ""
     fill = {"NAV": clinical_skills.exam_nav(exam.key), "TITLE": exam.title, "EYEBROW": exam.eyebrow,
             "H1": exam.h1, "LEAD": exam.lead, "FIND": exam.find, "ROOT": exam.root, "ROOT_NOTE": exam.root_note,
             "VIDEO_CREDIT": exam.video_credit, "COLS": str(len(regions)), "EDGE": f"{50 / len(regions):.1f}",
@@ -526,7 +530,7 @@ mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 2px}
 <nav class="fan">{{CHIPS}}</nav>
 </div>
 {{BANDS}}
-<section class="credits"><h3>Videos</h3><p>{{VIDEO_CREDIT}}</p><h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{{CREDITS}}</ul></section>
+<section class="credits"><h3>Videos</h3><p>{{VIDEO_CREDIT}}</p>{{CREDITS}}</section>
 </div>
 <script>
 (function(){

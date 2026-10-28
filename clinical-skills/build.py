@@ -61,7 +61,7 @@ SKILLS = [
      "Inspection, palpation and the lymph nodes."),
     ("exam", "hn", "Head and neck, eye, ear", ["pom1", "t2c"], None,
      "Eye, ear, mouth, face and neck, then the eye in depth."),
-    ("exam", "neuro", "Neurological", ["pom1", "pom2"], None,
+    ("exam", "neuro", "Neurological", ["pom1", "pom2"], "../neuro-exam/",
      "Cranial nerves, strength, sensation, reflexes, coordination and gait."),
     ("exam", "msk", "Musculoskeletal", ["pom1", "pom2"], "../msk-exam/",
      "Look, feel and move for every joint, then the special tests, spine to ankle."),
