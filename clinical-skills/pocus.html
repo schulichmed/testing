@@ -67,9 +67,14 @@
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
 <style>
-/* prototype only: an exam that has no page yet is listed but dimmed */
-.deck-lecs .todo .lc-n{color:var(--muted);}
-.deck-lecs a.lc-n{font-weight:600;}
+/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .pic{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}
+.topic-card .pic img{max-height:130px;max-width:85%;object-fit:contain;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -91,20 +96,19 @@
 <h1>Ultrasound</h1>
 <p class="lead">Point-of-care views of the heart and the abdomen.</p>
 </div>
-<div class="scoreboard">
-<div class="score"><b><span>0</span><span class="of">/1</span></b><span>Pages ready</span></div>
-</div>
 </header>
 
 <main>
-<div class="deck-weeks">
-<section class="deck-week">
-<p class="panel-h">Ultrasound <span class="tc">1</span></p>
-<ul class="deck-lecs">
-<li class="todo"><span class="lc-n">Heart and abdomen</span><span class="lc-c">PoM 1 &rarr; T2C</span></li>
-</ul>
-</section>
+<div class="block-grid topic-grid">
+<div class="block-card topic-card is-empty" style="--hue:#0d6154">
+<span class="pic"><img src="img/pocus.png" alt="" loading="lazy"></span>
+<p class="bmeta">PoM 1 &rarr; T2C</p>
+<h2>Heart and abdomen</h2>
+<p>The view of the heart from under the ribs, and the right upper quadrant.</p>
+<span class="go">Coming soon</span>
 </div>
+</div>
+<p class="credits">Illustrations: Laboratoires Servier, Servier Medical Art (smart.servier.com), CC BY-SA 3.0, via Wikimedia Commons.</p>
 </main>
 
 <footer>

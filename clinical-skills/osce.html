@@ -67,9 +67,14 @@
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
 <style>
-/* prototype only: an exam that has no page yet is listed but dimmed */
-.deck-lecs .todo .lc-n{color:var(--muted);}
-.deck-lecs a.lc-n{font-weight:600;}
+/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .pic{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}
+.topic-card .pic img{max-height:130px;max-width:85%;object-fit:contain;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -91,21 +96,26 @@
 <h1>OSCE prep</h1>
 <p class="lead">How a station runs, what is marked, and putting a whole encounter together.</p>
 </div>
-<div class="scoreboard">
-<div class="score"><b><span>0</span><span class="of">/2</span></b><span>Pages ready</span></div>
-</div>
 </header>
 
 <main>
-<div class="deck-weeks">
-<section class="deck-week">
-<p class="panel-h">OSCE prep <span class="tc">2</span></p>
-<ul class="deck-lecs">
-<li class="todo"><span class="lc-n">How a station runs</span><span class="lc-c">FoM &rarr; T2C</span></li>
-<li class="todo"><span class="lc-n">Putting it together</span><span class="lc-c">T2C</span></li>
-</ul>
-</section>
+<div class="block-grid topic-grid">
+<div class="block-card topic-card is-empty" style="--hue:#4b3f96">
+<span class="pic"><img src="img/station.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM &rarr; T2C</p>
+<h2>How a station runs</h2>
+<p>What is marked, and the opening lines to say for each exam.</p>
+<span class="go">Coming soon</span>
 </div>
+<div class="block-card topic-card is-empty" style="--hue:#4b3f96">
+<span class="pic"><img src="img/consol.png" alt="" loading="lazy"></span>
+<p class="bmeta">T2C</p>
+<h2>Putting it together</h2>
+<p>A full history and focused exam, then a problem list and a differential.</p>
+<span class="go">Coming soon</span>
+</div>
+</div>
+<p class="credits">Illustrations: Laboratoires Servier, Servier Medical Art (smart.servier.com), CC BY-SA 3.0, via Wikimedia Commons.</p>
 </main>
 
 <footer>

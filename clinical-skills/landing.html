@@ -67,9 +67,14 @@
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
 <style>
-/* prototype only: an exam that has no page yet is listed but dimmed */
-.deck-lecs .todo .lc-n{color:var(--muted);}
-.deck-lecs a.lc-n{font-weight:600;}
+/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .pic{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}
+.topic-card .pic img{max-height:130px;max-width:85%;object-fit:contain;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
 </style>
 </head>
 <body>

@@ -11,6 +11,7 @@ Output: the five pages above, styled by the live portal's base.css and portal.cs
 """
 
 import html
+import json
 import logging
 from pathlib import Path
 
@@ -31,28 +32,48 @@ SECTIONS = [
      "How a station runs, what is marked, and putting a whole encounter together."),
 ]
 
-# (section, name, courses in teaching order, page once built)
+# (section, picture key in img/, name, courses in teaching order, page once built, what it holds)
 SKILLS = [
-    ("history", "The patient-centred interview", ["fom", "pom1"], None),
-    ("history", "Cultural humility", ["pom1"], None),
-    ("history", "Presenting a case", ["fom", "t2c"], None),
-    ("history", "Obstetric and gynecologic history", ["pom2"], None),
-    ("history", "Psychiatric interview", ["pom2"], None),
-    ("history", "Paediatric history", ["t2c"], None),
-    ("history", "Geriatric assessment", ["t2c"], None),
-    ("exam", "Vital signs", ["fom"], None),
-    ("exam", "Respiratory", ["fom", "pom1"], None),
-    ("exam", "Abdominal", ["fom", "pom1"], None),
-    ("exam", "Cardiovascular", ["fom", "pom1"], None),
-    ("exam", "Breast", ["fom"], None),
-    ("exam", "Head and neck, eye, ear", ["pom1", "t2c"], None),
-    ("exam", "Neurological", ["pom1", "pom2"], None),
-    ("exam", "Musculoskeletal", ["pom1", "pom2"], "../msk-exam/"),
-    ("exam", "Male genital and rectal", ["t2c"], None),
-    ("exam", "Pelvic", ["t2c"], None),
-    ("pocus", "Heart and abdomen", ["pom1", "t2c"], None),
-    ("osce", "How a station runs", ["fom", "t2c"], None),
-    ("osce", "Putting it together", ["t2c"], None),
+    ("history", "interview", "The patient-centred interview", ["fom", "pom1"], None,
+     "The template every history follows: opening, the presenting illness, past history, medications, family and social history, closing."),
+    ("history", "humility", "Cultural humility", ["pom1"], None,
+     "Gender-expansive care, and interviews in a language other than English."),
+    ("history", "present", "Presenting a case", ["fom", "t2c"], None,
+     "Presenting to a preceptor, and the problem-oriented write-up."),
+    ("history", "obhx", "Obstetric and gynecologic history", ["pom2"], None,
+     "Built on the Ontario Prenatal Record."),
+    ("history", "psychhx", "Psychiatric interview", ["pom2"], None,
+     "The psychiatric history and the mental status exam."),
+    ("history", "pedshx", "Paediatric history", ["t2c"], None,
+     "Birth, development, growth, nutrition and immunizations; talking with children and families."),
+    ("history", "gerihx", "Geriatric assessment", ["t2c"], None,
+     "Collateral history, function (daily activities) and gait in an older adult."),
+    ("exam", "vitals", "Vital signs", ["fom"], None,
+     "Blood pressure, pulse, breathing rate, and the first look at the patient."),
+    ("exam", "resp", "Respiratory", ["fom", "pom1"], None,
+     "Inspect, palpate, percuss and listen, front and back."),
+    ("exam", "abdo", "Abdominal", ["fom", "pom1"], None,
+     "Inspect, listen, percuss, palpate: liver, spleen, kidneys, aorta and fluid."),
+    ("exam", "cardio", "Cardiovascular", ["fom", "pom1"], None,
+     "Neck veins, the chest wall, the four listening areas, pulses and swelling; the four classic murmurs."),
+    ("exam", "breast", "Breast", ["fom"], None,
+     "Inspection, palpation and the lymph nodes."),
+    ("exam", "hn", "Head and neck, eye, ear", ["pom1", "t2c"], None,
+     "Eye, ear, mouth, face and neck, then the eye in depth."),
+    ("exam", "neuro", "Neurological", ["pom1", "pom2"], None,
+     "Cranial nerves, strength, sensation, reflexes, coordination and gait."),
+    ("exam", "msk", "Musculoskeletal", ["pom1", "pom2"], "../msk-exam/",
+     "Look, feel and move for every joint, then the special tests, spine to ankle."),
+    ("exam", "gu", "Male genital and rectal", ["t2c"], None,
+     "Penis, scrotum, hernia and the rectal exam."),
+    ("exam", "gyne", "Pelvic", ["t2c"], None,
+     "Speculum and bimanual exam."),
+    ("pocus", "pocus", "Heart and abdomen", ["pom1", "t2c"], None,
+     "The view of the heart from under the ribs, and the right upper quadrant."),
+    ("osce", "station", "How a station runs", ["fom", "t2c"], None,
+     "What is marked, and the opening lines to say for each exam."),
+    ("osce", "consol", "Putting it together", ["t2c"], None,
+     "A full history and focused exam, then a problem list and a differential."),
 ]
 
 THEME = (HERE / "portal_theme.html").read_text(encoding="utf-8")
@@ -73,9 +94,14 @@ HEAD = """<!DOCTYPE html>
 <link rel="stylesheet" href="{portal}base.css">
 <link rel="stylesheet" href="{portal}portal.css">
 <style>
-/* prototype only: an exam that has no page yet is listed but dimmed */
-.deck-lecs .todo .lc-n{{color:var(--muted);}}
-.deck-lecs a.lc-n{{font-weight:600;}}
+/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+.topic-grid{{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}}
+.topic-card .pic{{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}}
+.topic-card .pic img{{max-height:130px;max-width:85%;object-fit:contain;}}
+.topic-card h2{{font-size:1.15rem;}}
+.topic-card .go{{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}}
+.block-card.is-empty .go{{font-weight:500;font-style:italic;color:var(--muted);}}
+.credits{{margin-top:40px;font-size:.75rem;color:var(--muted);}}
 </style>
 </head>
 <body>
@@ -106,7 +132,7 @@ def head(title: str) -> str:
 def tally(slug: str) -> tuple[int, int]:
     """Return (topics, pages built) for one section."""
     rows = [s for s in SKILLS if s[0] == slug]
-    return len(rows), sum(1 for s in rows if s[3])
+    return len(rows), sum(1 for s in rows if s[4])
 
 
 def noun(slug: str, n: int) -> str:
@@ -165,14 +191,26 @@ def blocknav(current: str) -> str:
     return '<nav class="blocknav" aria-label="Sections">\n' + "\n".join(links) + f"\n{THEME_BTN}\n</nav>"
 
 
+CREDITS = {c["skill"]: c for c in json.loads((HERE / "img" / "credits.json").read_text(encoding="utf-8"))}
+
+
+def topic_card(pic: str, name: str, taught: list[str], page: str | None, what: str, hue: str) -> str:
+    """Return one topic as a block card with its picture; a topic with no page yet is dimmed."""
+    when = " &rarr; ".join(COURSES[c] for c in taught)
+    body = f"""<span class="pic"><img src="img/{pic}.png" alt="" loading="lazy"></span>
+<p class="bmeta">{when}</p>
+<h2>{esc(name)}</h2>
+<p>{esc(what)}</p>"""
+    if page:
+        return f'<a class="block-card topic-card" href="{page}" style="--hue:{hue}">\n{body}\n<span class="go">Open &rarr;</span>\n</a>'
+    return f'<div class="block-card topic-card is-empty" style="--hue:{hue}">\n{body}\n<span class="go">Coming soon</span>\n</div>'
+
+
 def section_page(number: int, slug: str, name: str, when: str, hue: str, what: str) -> str:
-    """Return one section's block page: masthead, scoreboard and its list of topics."""
-    total, built = tally(slug)
-    rows = []
-    for _sec, skill, taught, page in (s for s in SKILLS if s[0] == slug):
-        label = f'<a class="lc-n" href="{page}">{esc(skill)} &rarr;</a>' if page else f'<span class="lc-n">{esc(skill)}</span>'
-        when_taught = " &rarr; ".join(COURSES[c] for c in taught)
-        rows.append(f'<li{"" if page else " class=\"todo\""}>{label}<span class="lc-c">{when_taught}</span></li>')
+    """Return one section's block page: the section bar, masthead and a card per topic."""
+    rows = [s for s in SKILLS if s[0] == slug]
+    cards = "\n".join(topic_card(*s[1:], hue=hue) for s in rows)
+    authors = sorted({CREDITS[s[1]]["author"] for s in rows})
     return head(f"{name} - Clinical skills") + blocknav(slug) + f"""
 
 <header class="q-masthead" id="content" tabindex="-1">
@@ -181,20 +219,13 @@ def section_page(number: int, slug: str, name: str, when: str, hue: str, what: s
 <h1>{esc(name)}</h1>
 <p class="lead">{esc(what)}</p>
 </div>
-<div class="scoreboard">
-<div class="score"><b><span>{built}</span><span class="of">/{total}</span></b><span>Pages ready</span></div>
-</div>
 </header>
 
 <main>
-<div class="deck-weeks">
-<section class="deck-week">
-<p class="panel-h">{esc(name)} <span class="tc">{total}</span></p>
-<ul class="deck-lecs">
-{chr(10).join(rows)}
-</ul>
-</section>
+<div class="block-grid topic-grid">
+{cards}
 </div>
+<p class="credits">Illustrations: {esc(", ".join(authors))}, Servier Medical Art (smart.servier.com), CC BY-SA 3.0, via Wikimedia Commons.</p>
 </main>
 """ + FOOT
 

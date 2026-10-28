@@ -67,9 +67,14 @@
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
 <style>
-/* prototype only: an exam that has no page yet is listed but dimmed */
-.deck-lecs .todo .lc-n{color:var(--muted);}
-.deck-lecs a.lc-n{font-weight:600;}
+/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .pic{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}
+.topic-card .pic img{max-height:130px;max-width:85%;object-fit:contain;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -91,29 +96,82 @@
 <h1>Physical exam</h1>
 <p class="lead">One page per system, from vital signs to the pelvic exam: each region&#x27;s look, feel and move, its special tests, and a test-yourself mode.</p>
 </div>
-<div class="scoreboard">
-<div class="score"><b><span>1</span><span class="of">/10</span></b><span>Pages ready</span></div>
-</div>
 </header>
 
 <main>
-<div class="deck-weeks">
-<section class="deck-week">
-<p class="panel-h">Physical exam <span class="tc">10</span></p>
-<ul class="deck-lecs">
-<li class="todo"><span class="lc-n">Vital signs</span><span class="lc-c">FoM</span></li>
-<li class="todo"><span class="lc-n">Respiratory</span><span class="lc-c">FoM &rarr; PoM 1</span></li>
-<li class="todo"><span class="lc-n">Abdominal</span><span class="lc-c">FoM &rarr; PoM 1</span></li>
-<li class="todo"><span class="lc-n">Cardiovascular</span><span class="lc-c">FoM &rarr; PoM 1</span></li>
-<li class="todo"><span class="lc-n">Breast</span><span class="lc-c">FoM</span></li>
-<li class="todo"><span class="lc-n">Head and neck, eye, ear</span><span class="lc-c">PoM 1 &rarr; T2C</span></li>
-<li class="todo"><span class="lc-n">Neurological</span><span class="lc-c">PoM 1 &rarr; PoM 2</span></li>
-<li><a class="lc-n" href="../msk-exam/">Musculoskeletal &rarr;</a><span class="lc-c">PoM 1 &rarr; PoM 2</span></li>
-<li class="todo"><span class="lc-n">Male genital and rectal</span><span class="lc-c">T2C</span></li>
-<li class="todo"><span class="lc-n">Pelvic</span><span class="lc-c">T2C</span></li>
-</ul>
-</section>
+<div class="block-grid topic-grid">
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/vitals.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM</p>
+<h2>Vital signs</h2>
+<p>Blood pressure, pulse, breathing rate, and the first look at the patient.</p>
+<span class="go">Coming soon</span>
 </div>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/resp.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM &rarr; PoM 1</p>
+<h2>Respiratory</h2>
+<p>Inspect, palpate, percuss and listen, front and back.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/abdo.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM &rarr; PoM 1</p>
+<h2>Abdominal</h2>
+<p>Inspect, listen, percuss, palpate: liver, spleen, kidneys, aorta and fluid.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/cardio.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM &rarr; PoM 1</p>
+<h2>Cardiovascular</h2>
+<p>Neck veins, the chest wall, the four listening areas, pulses and swelling; the four classic murmurs.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/breast.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM</p>
+<h2>Breast</h2>
+<p>Inspection, palpation and the lymph nodes.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/hn.png" alt="" loading="lazy"></span>
+<p class="bmeta">PoM 1 &rarr; T2C</p>
+<h2>Head and neck, eye, ear</h2>
+<p>Eye, ear, mouth, face and neck, then the eye in depth.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/neuro.png" alt="" loading="lazy"></span>
+<p class="bmeta">PoM 1 &rarr; PoM 2</p>
+<h2>Neurological</h2>
+<p>Cranial nerves, strength, sensation, reflexes, coordination and gait.</p>
+<span class="go">Coming soon</span>
+</div>
+<a class="block-card topic-card" href="../msk-exam/" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/msk.png" alt="" loading="lazy"></span>
+<p class="bmeta">PoM 1 &rarr; PoM 2</p>
+<h2>Musculoskeletal</h2>
+<p>Look, feel and move for every joint, then the special tests, spine to ankle.</p>
+<span class="go">Open &rarr;</span>
+</a>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/gu.png" alt="" loading="lazy"></span>
+<p class="bmeta">T2C</p>
+<h2>Male genital and rectal</h2>
+<p>Penis, scrotum, hernia and the rectal exam.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#2f5d7c">
+<span class="pic"><img src="img/gyne.png" alt="" loading="lazy"></span>
+<p class="bmeta">T2C</p>
+<h2>Pelvic</h2>
+<p>Speculum and bimanual exam.</p>
+<span class="go">Coming soon</span>
+</div>
+</div>
+<p class="credits">Illustrations: Laboratoires Servier, Servier Medical Art (smart.servier.com), CC BY-SA 3.0, via Wikimedia Commons.</p>
 </main>
 
 <footer>

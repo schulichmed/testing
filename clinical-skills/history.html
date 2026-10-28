@@ -67,9 +67,14 @@
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
 <style>
-/* prototype only: an exam that has no page yet is listed but dimmed */
-.deck-lecs .todo .lc-n{color:var(--muted);}
-.deck-lecs a.lc-n{font-weight:600;}
+/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .pic{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}
+.topic-card .pic img{max-height:130px;max-width:85%;object-fit:contain;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -91,26 +96,61 @@
 <h1>History taking</h1>
 <p class="lead">The interview every history is built on, then the special histories: obstetric, psychiatric, paediatric and geriatric.</p>
 </div>
-<div class="scoreboard">
-<div class="score"><b><span>0</span><span class="of">/7</span></b><span>Pages ready</span></div>
-</div>
 </header>
 
 <main>
-<div class="deck-weeks">
-<section class="deck-week">
-<p class="panel-h">History taking <span class="tc">7</span></p>
-<ul class="deck-lecs">
-<li class="todo"><span class="lc-n">The patient-centred interview</span><span class="lc-c">FoM &rarr; PoM 1</span></li>
-<li class="todo"><span class="lc-n">Cultural humility</span><span class="lc-c">PoM 1</span></li>
-<li class="todo"><span class="lc-n">Presenting a case</span><span class="lc-c">FoM &rarr; T2C</span></li>
-<li class="todo"><span class="lc-n">Obstetric and gynecologic history</span><span class="lc-c">PoM 2</span></li>
-<li class="todo"><span class="lc-n">Psychiatric interview</span><span class="lc-c">PoM 2</span></li>
-<li class="todo"><span class="lc-n">Paediatric history</span><span class="lc-c">T2C</span></li>
-<li class="todo"><span class="lc-n">Geriatric assessment</span><span class="lc-c">T2C</span></li>
-</ul>
-</section>
+<div class="block-grid topic-grid">
+<div class="block-card topic-card is-empty" style="--hue:#8c3566">
+<span class="pic"><img src="img/interview.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM &rarr; PoM 1</p>
+<h2>The patient-centred interview</h2>
+<p>The template every history follows: opening, the presenting illness, past history, medications, family and social history, closing.</p>
+<span class="go">Coming soon</span>
 </div>
+<div class="block-card topic-card is-empty" style="--hue:#8c3566">
+<span class="pic"><img src="img/humility.png" alt="" loading="lazy"></span>
+<p class="bmeta">PoM 1</p>
+<h2>Cultural humility</h2>
+<p>Gender-expansive care, and interviews in a language other than English.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#8c3566">
+<span class="pic"><img src="img/present.png" alt="" loading="lazy"></span>
+<p class="bmeta">FoM &rarr; T2C</p>
+<h2>Presenting a case</h2>
+<p>Presenting to a preceptor, and the problem-oriented write-up.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#8c3566">
+<span class="pic"><img src="img/obhx.png" alt="" loading="lazy"></span>
+<p class="bmeta">PoM 2</p>
+<h2>Obstetric and gynecologic history</h2>
+<p>Built on the Ontario Prenatal Record.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#8c3566">
+<span class="pic"><img src="img/psychhx.png" alt="" loading="lazy"></span>
+<p class="bmeta">PoM 2</p>
+<h2>Psychiatric interview</h2>
+<p>The psychiatric history and the mental status exam.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#8c3566">
+<span class="pic"><img src="img/pedshx.png" alt="" loading="lazy"></span>
+<p class="bmeta">T2C</p>
+<h2>Paediatric history</h2>
+<p>Birth, development, growth, nutrition and immunizations; talking with children and families.</p>
+<span class="go">Coming soon</span>
+</div>
+<div class="block-card topic-card is-empty" style="--hue:#8c3566">
+<span class="pic"><img src="img/gerihx.png" alt="" loading="lazy"></span>
+<p class="bmeta">T2C</p>
+<h2>Geriatric assessment</h2>
+<p>Collateral history, function (daily activities) and gait in an older adult.</p>
+<span class="go">Coming soon</span>
+</div>
+</div>
+<p class="credits">Illustrations: Laboratoires Servier, Servier Medical Art (smart.servier.com), CC BY-SA 3.0, via Wikimedia Commons.</p>
 </main>
 
 <footer>
