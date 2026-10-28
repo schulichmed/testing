@@ -270,14 +270,16 @@ def exam_nav(current: str, base: str = "../clinical-skills/") -> str:
 </nav>"""
 
 
+# each course card opens the course's first block, as clinical skills opens its first section:
+# the block bar there reaches every other block and the question bank
 LANDING_CARDS = [
-    ("fom/index.html", "#4f2683", "Year 1 &middot; 4 blocks", "Foundations of Medicine",
+    ("fom/b1.html", "#4f2683", "Year 1 &middot; 4 blocks", "Foundations of Medicine",
      "The first fifteen weeks: what a physician does, then the body from cells up, then blood, then infection and immunity."),
-    ("pom1/index.html", "#6b3fb8", "Year 1 &middot; 5 blocks", "Principles of Medicine 1",
+    ("pom1/cardio.html", "#6b3fb8", "Year 1 &middot; 5 blocks", "Principles of Medicine 1",
      "The second half of first year, system by system."),
-    ("pom2/index.html", "#7a3fb0", "Year 2 &middot; 5 blocks", "Principles of Medicine 2",
+    ("pom2/endo.html", "#7a3fb0", "Year 2 &middot; 5 blocks", "Principles of Medicine 2",
      "The five blocks of second year, with a written note for every lecture that has one and a coverage map for the rest."),
-    ("t2c/index.html", "#3a2a6e", "Year 2 &middot; 6 blocks", "Transition to Clerkship",
+    ("t2c/peds.html", "#3a2a6e", "Year 2 &middot; 6 blocks", "Transition to Clerkship",
      "The bridge into clerkship at the end of second year."),
 ]
 
