@@ -3,8 +3,8 @@ Purpose: Build the neurological clinical skills page (neuro-exam/index.html) fro
          manoeuvre tables in the medwiki note "Summary Notes - Neurological Clinical Skills".
 Author: Noor Simsam
 Date: 2026-10-28
-Input: the vault note (POM2_VAULT or the default vault path); img/credits.json, videos.json and
-       videos_other.json once the page has pictures and videos
+Input: the vault note (POM2_VAULT or the default vault path); img/credits.json; clips.json
+       (the Health Education Media Library's neurology videos, by test, region or card)
 Output: neuro-exam/index.html
 
 The note is the single source of the steps and positive findings: edit the note,
@@ -14,6 +14,7 @@ shared by every exam page.
 """
 
 import importlib.util
+import json
 import os
 from pathlib import Path
 
@@ -89,7 +90,6 @@ TESTS = {
 
 EXAM = exam_page.Exam(
     key="neuro", folder=HERE, note=NOTE, regions=REGIONS, general=GENERAL, tests=TESTS, opening={},
-    title="Neurological exam", eyebrow="Clinical skills · Physical exam · PoM 1 → PoM 2",
     h1="Neurological exam, top down",
     lead="The general approach first, then each part of the exam in the order you do it: what to look for, "
          "each manoeuvre grouped under what it tests (numbered steps and what counts as positive), and its pearls. "
@@ -99,7 +99,10 @@ EXAM = exam_page.Exam(
     root="Mental status → Cranial nerves → Motor → Sensory → Reflexes → Coordination → Gait",
     root_note="Compare left with right, and near the trunk with far. Every finding answers one question: where is "
               "the lesion, and is it an upper or a lower motor neuron problem?",
-    video_credit="No videos yet.",
+    video_credit='Videos from the <a href="https://rsc.lib.uwo.ca/s/healthedu/item-set">Health Education Media Library</a> '
+                 "(Western Libraries; Clinical Neurological Sciences, Schulich School of Medicine and Dentistry), "
+                 "CC BY-NC 4.0, played from the library's own server. Each opens only when you tap it.",
+    clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
     general_title="General approach", general_week="Every neuro exam",
     spine_heading="What to look for", spine_title="Before the manoeuvres", pearls_heading="Pearls", count_noun="manoeuvres",
 )

@@ -173,7 +173,6 @@ OTTAWA = {
 
 EXAM = exam_page.Exam(
     key="msk", folder=HERE, note=NOTE, regions=REGIONS, general=GENERAL, tests=TESTS, opening=OPENING,
-    title="MSK exam by region", eyebrow="Clinical skills · Physical exam · PoM 1 → PoM 2",
     h1="MSK exam, by region",
     lead='Every exam from the suggested-videos list: the general exam first (approach, gait, neuro screen), then each region\'s look, feel and move, its special tests grouped under the problem you suspect, and its pearls. Built from the course objectives; videos for each test are at <a href="https://mskmedicine.com">mskmedicine.com</a>. For the dermatomes and myotomes drawn on a body, see the <a href="../body-map/">body map</a>.',
     find='Find a test or a problem (e.g. meniscus, ulnar)',

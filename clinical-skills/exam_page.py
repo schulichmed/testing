@@ -12,6 +12,10 @@ Output: <system>-exam/index.html
 
 Every exam page looks like this one: an exam's build.py holds only what is particular to that
 exam, and anything about how a page looks or reads its note changes here, for all of them.
+The page sits in the same portal shell as the topic pages topic.py builds (clinical-skills/build.py's
+head, block bar, masthead and footer, styled by the portal's base.css and portal.css), so moving
+between an exam and any other clinical skills page is seamless; its tab title and the eyebrow
+come from the exam's row in SKILLS.
 """
 
 import html
@@ -52,8 +56,8 @@ class Exam:
         Test name as the note's table shows it -> (problem heading, picture in img/ or None).
     opening : dict
         Region key -> the TOSCE sentence said before that region's exam.
-    title, eyebrow, h1, lead, find, root, root_note, video_credit : str
-        Page text: the tab title, the line over the heading, the heading, the lead paragraph (HTML),
+    h1, lead, find, root, root_note, video_credit : str
+        Page text: the heading, the lead paragraph (HTML),
         the search placeholder, the spine shown at the root of the fan and its note (HTML), and who
         the videos are by (HTML).
     general_title, general_week, general_color : str
@@ -72,6 +76,10 @@ class Exam:
         Region key or general card title -> slugs of its videos.
     other_video : dict
         Test name -> {id, start, title, channel}: a YouTube video from another channel.
+    clips : dict
+        Test name, region key or general card title -> list of {mp4, title, page, secs}: video
+        files played straight from their host (a course library such as Western's Health
+        Education Media Library), each in a <video> made only when tapped.
     extra_cards : dict
         Region key -> test cards the note gives as prose, not table rows (MSK's Ottawa rules).
     """
@@ -83,8 +91,6 @@ class Exam:
     general: list
     tests: dict
     opening: dict
-    title: str
-    eyebrow: str
     h1: str
     lead: str
     find: str
@@ -102,6 +108,7 @@ class Exam:
     video_page: str = ""
     region_video: dict = field(default_factory=dict)
     other_video: dict = field(default_factory=dict)
+    clips: dict = field(default_factory=dict)
     extra_cards: dict = field(default_factory=dict)
     videos: dict = field(default_factory=dict, init=False)
 
@@ -120,6 +127,16 @@ def other_video(exam: Exam, name: str) -> str:
     page = f"https://www.youtube.com/watch?v={v['id']}{start.replace('&start=', '&t=')}"
     return (f'<button class="vid" data-yt="{v["id"]}" data-start="{v.get("start", 0)}" data-page="{page}">'
             f'<span>▶ {html.escape(v["title"])} ({html.escape(v["channel"])})</span></button>')
+
+
+def clips(exam: Exam, key: str) -> str:
+    """Render the tap-to-play buttons for the video files filed under a test, region or card."""
+    out = []
+    for v in exam.clips.get(key, []):
+        secs = f" ({v['secs'] // 60}:{v['secs'] % 60:02d})" if v.get("secs") else ""
+        out.append(f'<button class="vid" data-mp4="{html.escape(v["mp4"])}" data-page="{html.escape(v["page"])}">'
+                   f'<span>▶ {html.escape(v["title"])}{secs}</span></button>')
+    return "".join(out)
 
 
 def video(exam: Exam, slug: str, thumb: bool = False) -> str:
@@ -161,14 +178,14 @@ def inline(md: str) -> str:
     Returns
     -------
     str
-        Escaped HTML: <b> for bold, <mark> for ==highlights==, and a tag for
+        Escaped HTML: <b> for bold, ==highlights== dropped, and a tag for
         "(advanced: <session>)" and "(extra: ...)".
     """
     md = re.sub(r"\[\[[^\]|\\]*\\?\|([^\]]*)\]\]", r"\1", md)
     md = re.sub(r"\[\[([^\]]*)\]\]", r"\1", md)
     out = html.escape(md, quote=False)
     out = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", out)
-    out = re.sub(r"==(.+?)==", r"<mark>\1</mark>", out)
+    out = re.sub(r"==(.+?)==", r"\1", out)  # the note's objective highlights stay in the vault, off the page
     out = re.sub(r"\(advanced:\s*([^()]+)\)", r'<span class="tag">later: \1</span>', out)
     return re.sub(r"\(extra:\s*([^()]+)\)", r'<span class="tag" title="\1">extra</span>', out)
 
@@ -368,15 +385,18 @@ def card(exam: Exam, t: dict) -> str:
             f'<div class="hide h2 pos"><span class="lbl">Positive</span><p>{t["pos"]}</p></div>'
             f'{f"""<div class="hide h2 vids">{video(exam, exam.video[t["name"]])}</div>""" if t["name"] in exam.video else ""}'
             f'{f"""<div class="hide h2 vids">{other_video(exam, t["name"])}</div>""" if t["name"] in exam.other_video else ""}'
+            f'{f"""<div class="hide h2 vids">{clips(exam, t["name"])}</div>""" if t["name"] in exam.clips else ""}'
             f'<span class="pill">Tap to reveal</span></article>')
 
 
-def wide_card(exam: Exam, title: str, body: str, slugs: list[str] | None = None, side: str = "") -> str:
+def wide_card(exam: Exam, title: str, body: str, slugs: list[str] | None = None, side: str = "",
+              clip_key: str = "") -> str:
     """Render a full-width card of prose (a spine routine, gait, pearls), with its
-    videos and a picture (side) beside the text when given."""
+    videos and a picture (side) beside the text when given; clip_key names its video files."""
     words = (title + " " + re.sub(r"<[^>]+>", " ", body)).lower()
+    side += clips(exam, clip_key) if clip_key else ""
     return (f'<article class="test wide" tabindex="0" data-words="{html.escape(words)}">'
-            f'<h4>{html.escape(title)}</h4><div class="hide h1 split"><div class="prose">{body}</div>'
+            f'<h4>{html.escape(title)}</h4><div class="hide h1 split"><div class="xprose">{body}</div>'
             f'{f"""<div class="aside">{side}{"".join(video(exam, v, thumb=i == 0 and not side) for i, v in enumerate(slugs or []))}</div>""" if slugs or side else ""}</div>'
             f'<span class="pill">Tap to reveal</span></article>')
 
@@ -397,12 +417,12 @@ def render(exam: Exam, regions: list[dict], credits: list[dict]) -> str:
                     f'<b>{r["title"]}</b><span>{r["week"]}</span></a>' for r in regions)
     bands = []
     for r in regions:
-        wides = [("", t, b, exam.region_video.get(t), "") for t, b in r["wide"]]
+        wides = [("", t, b, exam.region_video.get(t), "", t) for t, b in r["wide"]]
         if r["exam"]:
             wides.insert(0, (exam.spine_heading, exam.spine_title, opening(exam, r["key"]) + r["exam"],
-                             exam.region_video.get(r["key"]), landmarks(exam, r["key"])))
+                             exam.region_video.get(r["key"]), landmarks(exam, r["key"]), r["key"]))
         top = "".join(f'<div class="prob">{f"<h3>{html.escape(h)}</h3>" if h else ""}'
-                      f'<div class="tests">{wide_card(exam, t, b, v, side)}</div></div>' for h, t, b, v, side in wides)
+                      f'<div class="tests">{wide_card(exam, t, b, v, side, k)}</div></div>' for h, t, b, v, side, k in wides)
         probs = "".join(f'<div class="prob" style="--n:{min(len(p["tests"]), 4)}"><h3>{html.escape(p["name"])}</h3>'
                         f'<div class="tests">{"".join(card(exam, t) for t in p["tests"])}</div></div>'
                         for p in r["problems"])
@@ -419,38 +439,35 @@ def render(exam: Exam, regions: list[dict], credits: list[dict]) -> str:
         f'<li>{html.escape(landmark_names.get(c["test"], c["test"]))}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
         f'<a href="{html.escape(c["source_page_url"])}">source</a></li>' for c in credits)
     cred = f'<h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{items}</ul>' if credits else ""
-    fill = {"NAV": clinical_skills.exam_nav(exam.key), "TITLE": exam.title, "EYEBROW": exam.eyebrow,
+    cs = clinical_skills
+    sec, _key, name, taught, _page, _what = next(s for s in cs.SKILLS if s[1] == exam.key)
+    sec_name = next(s[1] for s in cs.SECTIONS if s[0] == sec)
+    eyebrow = f"Schulich Clinical Skills &middot; {html.escape(sec_name)} &middot; " + " &rarr; ".join(cs.COURSES[c] for c in taught)
+    fill = {"HEAD": cs.head(f"{name} - Clinical skills"), "NAV": cs.exam_nav(exam.key), "FOOT": cs.FOOT,
+            "EYEBROW": eyebrow,
             "H1": exam.h1, "LEAD": exam.lead, "FIND": exam.find, "ROOT": exam.root, "ROOT_NOTE": exam.root_note,
             "VIDEO_CREDIT": exam.video_credit, "COLS": str(len(regions)), "EDGE": f"{50 / len(regions):.1f}",
             "CHIPS": chips, "BANDS": "".join(bands), "CREDITS": cred}
     return re.sub(r"\{\{([A-Z0-9_]+)\}\}", lambda m: fill[m.group(1)], PAGE)
 
 
-PAGE = """<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{{TITLE}}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f7f5fa;--card:#fff;--ink:#201436;--muted:#5f5670;--line:#ddd5ea;--accent:#7a3fb0;--ok:#2f6b4f;--ok-bg:#e9f4ee;--rail:#6b6380}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--ok:#7fd1a6;--ok-bg:#16291f;--rail:#a89fbb}}
-:root[data-theme="dark"]{--bg:#15111c;--card:#1f1a29;--ink:#f1ecf8;--muted:#b3a9c4;--line:#3a3149;--accent:#c39bea;--ok:#7fd1a6;--ok-bg:#16291f;--rail:#a89fbb}
-*{box-sizing:border-box}html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,sans-serif}
-.wrap{max-width:1240px;margin:0 auto;padding:28px 16px 80px}
-h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;margin:0;letter-spacing:-.01em}
-h1{font-size:clamp(28px,5vw,40px);line-height:1.1}
-.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:600;color:var(--accent);margin:0 0 8px}
-.lead{color:var(--muted);max-width:74ch;margin:10px 0 0}
-.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);padding:10px 0;margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+PAGE = """{{HEAD}}<style>
+/* the exam's own pieces, in the portal's tokens (base.css): --card-bg, --text, --border, --accent */
+.xm{--card:var(--card-bg);--ink:var(--text);--line:var(--border);--ok:#2f6b4f;--ok-bg:#e9f4ee;--rail:#6b6380;font-size:15px;line-height:1.5}
+:root[data-theme="dark"] .xm{--ok:#7fd1a6;--ok-bg:#16291f;--rail:#a89fbb}
+html{scroll-behavior:smooth}
+.q-masthead .lead a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.xm h2,.xm h3{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:-.01em}
+.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);padding:10px 0;margin:4px 0 6px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
 .mode{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
-.mode button{border:0;background:none;color:var(--ink);font:500 14px Inter,sans-serif;padding:7px 14px;cursor:pointer}
-.mode button[aria-pressed="true"]{background:var(--accent);color:var(--card)}
-.bar input{flex:1;min-width:180px;font:14px Inter,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
-.hint{font-size:13px;color:var(--muted);width:100%;margin:0}
+.mode button{border:0;background:none;color:var(--ink);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.bar input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.hint{font-size:.8rem;color:var(--muted);width:100%;margin:0}
 /* the tree: root fans out to every region */
 .tree{margin-top:22px}
 .root{background:#201436;color:#fff;border-radius:12px;padding:12px 16px;text-align:center;max-width:760px;margin:0 auto}
-.root b{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:600}
+.root b{font-family:var(--serif);font-size:18px;font-weight:600}
 .root p{margin:4px 0 0;color:#d8cfe8;font-size:14px}
 .stem{width:2px;height:18px;background:var(--rail);margin:0 auto}
 .fan{display:grid;grid-template-columns:repeat({{COLS}},1fr);gap:8px;position:relative;padding-top:18px}
@@ -460,7 +477,6 @@ h1{font-size:clamp(28px,5vw,40px);line-height:1.1}
 .rchip::after{content:"";position:absolute;top:-7px;left:calc(50% - 5px);border:5px solid transparent;border-top:6px solid var(--rail)}
 .rchip b{display:block;font-size:14px}.rchip span{font-size:12px;opacity:.9}
 @media (max-width:980px){.fan{grid-template-columns:repeat(5,1fr);padding-top:12px}.fan::before,.rchip::before,.rchip::after{display:none}.stem{display:none}}
-a{color:var(--accent)}
 @media (max-width:420px){.fan{grid-template-columns:repeat(2,1fr)}}
 /* region bands */
 .band{margin-top:28px;border-radius:14px;padding:10px;background:color-mix(in srgb,var(--c) 9%,transparent);scroll-margin-top:110px}
@@ -482,22 +498,22 @@ a{color:var(--accent)}
 .pos .lbl{color:var(--ok)}.pos p{margin:2px 0 0;font-size:13.5px}
 .pill{display:none}
 .vids{margin-top:8px}
-.vid{display:flex;align-items:center;gap:6px;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 8px;font:500 13px Inter,sans-serif;cursor:pointer;margin-top:6px;text-decoration:none}
+.vid{display:flex;align-items:center;gap:6px;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 8px;font:500 13px var(--sans);cursor:pointer;margin-top:6px;text-decoration:none}
 .vid:hover{border-color:var(--c)}
 .vid.big{flex-direction:column;align-items:stretch;padding:0;overflow:hidden}
 .vid.big img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
 .vid.big span{padding:6px 8px}
 .player{position:relative;aspect-ratio:16/9;margin-top:6px;border-radius:8px;overflow:hidden;background:#000}
-.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.player iframe,.player video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
 .split{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px}
 @media (max-width:760px){.split{grid-template-columns:1fr}}
 .aside .lm{margin:0}.aside .lm img{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
 .aside figcaption{font-size:12px;color:var(--muted);margin-top:2px}
 .test.wide{grid-column:1/-1}
-.prose{font-size:13.5px}.prose ul{margin:4px 0;padding-left:20px}.prose li{margin:2px 0}.prose p{margin:6px 0}
-.tw{overflow-x:auto;margin:6px 0}.prose table{border-collapse:collapse;width:100%;font-size:13px}
-.prose th,.prose td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
-.prose th{background:color-mix(in srgb,var(--c) 14%,var(--card))}
+.xprose{font-size:13.5px}.xprose ul{margin:4px 0;padding-left:20px}.xprose li{margin:2px 0}.xprose p{margin:6px 0}
+.tw{overflow-x:auto;margin:6px 0}.xprose table{border-collapse:collapse;width:100%;font-size:13px}
+.xprose th,.xprose td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.xprose th{background:color-mix(in srgb,var(--c) 14%,var(--card))}
 .test.gone{display:none}.prob.gone,.band.gone{display:none}
 /* test mode: reveal steps, then the positive */
 body.quiz .test{cursor:pointer}
@@ -505,19 +521,21 @@ body.quiz .test .hide{display:none}
 body.quiz .test[data-s="1"] .h1,body.quiz .test[data-s="2"] .h1,body.quiz .test[data-s="2"] .h2{display:block}
 body.quiz .test:not([data-s="2"]) .pill{display:inline-block;margin-top:8px;font-size:12px;font-weight:600;color:var(--c);border:1px solid var(--c);border-radius:999px;padding:2px 10px}
 body.quiz.hideimg .test img{display:none}
-mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 2px}
 .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 7px;margin-left:2px;vertical-align:1px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) mark{background:#6b5a1e}}
-:root[data-theme="dark"] mark{background:#6b5a1e}
-.credits{margin-top:40px;font-size:12.5px;color:var(--muted)}.credits a{color:var(--accent)}
-.credits ul{padding-left:18px}
+.credits{margin-top:40px;font-size:12.5px;color:var(--muted)}.credits .credits ul{padding-left:18px}
 :focus-visible{outline:3px solid var(--accent)}
-</style></head>
-<body><div class="wrap">
+</style>
 {{NAV}}
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
 <p class="eyebrow">{{EYEBROW}}</p>
 <h1>{{H1}}</h1>
 <p class="lead">{{LEAD}}</p>
+</div>
+</header>
+
+<main class="xm">
 <div class="bar">
 <div class="mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button><button data-m="blind" aria-pressed="false">Test, no pictures</button></div>
 <input type="search" id="q" placeholder="{{FIND}}">
@@ -531,7 +549,7 @@ mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 2px}
 </div>
 {{BANDS}}
 <section class="credits"><h3>Videos</h3><p>{{VIDEO_CREDIT}}</p>{{CREDITS}}</section>
-</div>
+</main>
 <script>
 (function(){
   var body=document.body, hint=document.getElementById('hint');
@@ -552,8 +570,10 @@ mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 2px}
     t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();step(t)}});
   });
   document.addEventListener('click',function(e){
-    var b=e.target.closest('.vid[data-yt]'); if(!b)return; e.stopPropagation();
+    var b=e.target.closest('.vid[data-yt],.vid[data-mp4]'); if(!b)return; e.stopPropagation();
     var d=document.createElement('div'); d.className='player';
+    if(b.dataset.mp4){var v=document.createElement('video');v.src=b.dataset.mp4;v.controls=true;v.autoplay=true;v.playsInline=true;v.preload='metadata';
+      d.appendChild(v);b.replaceWith(d);return;}
     d.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+b.dataset.yt+'?autoplay=1&rel=0'+(+b.dataset.start?'&start='+b.dataset.start:'')+'" title="'+b.textContent.replace(/"/g,'')+'" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
     b.replaceWith(d);
   },true);
@@ -569,8 +589,7 @@ mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 2px}
   });
 })();
 </script>
-</body></html>
-"""
+{{FOOT}}"""
 
 
 def build(exam: Exam) -> None:
