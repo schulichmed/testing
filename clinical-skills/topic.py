@@ -1,6 +1,7 @@
 """
-Purpose: Build one page per clinical skills topic (every topic but MSK, which has its own
-         msk-exam/build.py) from its vault note "Summary Notes - <Name> Clinical Skills.md",
+Purpose: Build one page per clinical skills topic (every topic without its own exam page:
+         a physical exam with a <system>-exam/ folder, built by exam_page.py the way MSK is,
+         is left to that) from its vault note "Summary Notes - <Name> Clinical Skills.md",
          in the portal's structure: the clinical skills block bar, a masthead, then each
          section's steps and its table of manoeuvres as cards, with Look and Test modes.
 Author: Noor Simsam
@@ -248,6 +249,10 @@ def main() -> None:
         path = note["path"]
         if not note["key"] or not any(s[1] == note["key"] for s in cs.SKILLS):
             LOG.warning("skipped %s: no known cs_key", path.name)
+            continue
+        page = next(s[4] for s in cs.SKILLS if s[1] == note["key"])
+        if page and page.endswith("-exam/"):
+            LOG.info("skipped %s: it has its own exam page, %s", note["key"], page)
             continue
         (HERE / f"{note['key']}.html").write_text(render(note), encoding="utf-8")
         built.add(note["key"])
