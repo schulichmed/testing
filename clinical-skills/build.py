@@ -27,7 +27,7 @@ SECTIONS = [
      "The interview every history is built on, then the special histories: obstetric, psychiatric, paediatric and geriatric."),
     ("exam", "Physical exam", "FoM to T2C", "#2f5d7c",
      "One page per system, from vital signs to the pelvic exam: each region's look, feel and move, its special tests, and a test-yourself mode."),
-    ("pocus", "Ultrasound", "PoM 1 and T2C", "#0d6154",
+    ("ultrasound", "Ultrasound", "PoM 1 and T2C", "#0d6154",
      "Point-of-care views of the heart and the abdomen."),
     ("osce", "OSCE prep", "Every TOSCE and the OSCE", "#4b3f96",
      "How a station runs, what is marked, and putting a whole encounter together."),
@@ -69,13 +69,31 @@ SKILLS = [
      "Penis, scrotum, hernia and the rectal exam."),
     ("exam", "gyne", "Pelvic", ["t2c"], None,
      "Speculum and bimanual exam."),
-    ("pocus", "pocus", "Heart and abdomen", ["pom1", "t2c"], None,
+    ("ultrasound", "pocus", "Heart and abdomen", ["pom1", "t2c"], None,
      "The view of the heart from under the ribs, and the right upper quadrant."),
     ("osce", "station", "How a station runs", ["fom", "t2c"], None,
      "What is marked, and the opening lines to say for each exam."),
     ("osce", "consol", "Putting it together", ["t2c"], None,
      "A full history and focused exam, then a problem list and a differential."),
 ]
+
+# shorter names for the block bar, so a section's topics fit on one line
+SHORT = {"interview": "Interview", "humility": "Cultural humility", "present": "Presenting",
+         "obhx": "OB/Gyn history", "psychhx": "Psychiatric", "pedshx": "Paediatric",
+         "gerihx": "Geriatric", "vitals": "Vitals", "resp": "Respiratory", "abdo": "Abdominal",
+         "cardio": "Cardiovascular", "breast": "Breast", "hn": "Head and neck", "neuro": "Neuro",
+         "msk": "MSK", "gu": "Male GU", "gyne": "Pelvic", "pocus": "Heart and abdomen",
+         "station": "How a station runs", "consol": "Putting it together"}
+
+
+def set_pages(keys: set[str]) -> None:
+    """Give every topic in keys its built page (<key>.html beside this file)."""
+    for i, (sec, key, name, taught, page, what) in enumerate(SKILLS):
+        if key in keys and not page:
+            SKILLS[i] = (sec, key, name, taught, f"{key}.html", what)
+
+
+set_pages({s[1] for s in SKILLS if (HERE / f"{s[1]}.html").exists()})
 
 THEME = (HERE / "portal_theme.html").read_text(encoding="utf-8")
 THEME_BTN = (HERE / "portal_theme_btn.html").read_text(encoding="utf-8")
@@ -234,42 +252,39 @@ def section_page(number: int, slug: str, name: str, when: str, hue: str, what: s
 
 
 EXAM_NAV_CSS = """<style>
-/* clinical skills strip on an exam page: back to the course, and every exam in the section */
-.csn{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
-.csn-top{display:flex;gap:6px 14px;flex-wrap:wrap;align-items:baseline;font-size:14px}
-.csn-top a{font-weight:600;text-decoration:none}
-.csn-top span{color:var(--muted)}
-.csn-row{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:thin}
-.csn-row>*{flex:none;display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 8px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:13.5px;color:var(--ink);text-decoration:none;white-space:nowrap}
-.csn-row svg{width:22px;height:22px;color:var(--accent)}
-.csn-row a:hover{border-color:var(--accent)}
-.csn-row .now{background:var(--accent);border-color:var(--accent);color:var(--card);font-weight:600}
-.csn-row .now svg{color:var(--card)}
-.csn-row .soon{color:var(--muted);opacity:.6}
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
 </style>"""
 
 
 def exam_nav(current: str, base: str = "../clinical-skills/") -> str:
-    """Return the strip an exam page opens on: a way back to clinical skills and its section,
-    then every topic in the current topic's section, built ones as links and this one lit.
-    An exam page's build.py imports this, so every exam carries the same strip."""
+    """Return the bar an exam page opens on, built like the portal's block bar: CLINICAL SKILLS
+    and the section on the left, then every topic in the section, this one shaded and the
+    ones without a page yet faded. Every exam page carries the same bar."""
     sec = next(s for s in SKILLS if s[1] == current)[0]
     sec_name = next(s[1] for s in SECTIONS if s[0] == sec)
-    chips = []
+    items = [f'<a class="home" href="{base}index.html">Clinical skills</a>',
+             f'<a class="home" href="{base}{sec}.html">{esc(sec_name)} &rsaquo;</a>']
     for _sec, key, name, _taught, page, _what in (s for s in SKILLS if s[0] == sec):
-        label = f"{icon(key)}{esc(name)}"
         if key == current:
-            chips.append(f'<span class="now" aria-current="page">{label}</span>')
+            items.append(f'<span class="here" aria-current="page">{esc(SHORT[key])}</span>')
         elif page:
-            chips.append(f'<a href="{base}{page}">{label}</a>')
+            items.append(f'<a href="{base}{page}">{esc(SHORT[key])}</a>')
         else:
-            chips.append(f'<span class="soon" title="Coming soon">{label}</span>')
+            items.append(f'<span class="soon" title="Coming soon">{esc(SHORT[key])}</span>')
     return f"""{EXAM_NAV_CSS}
-<nav class="csn" aria-label="Clinical skills">
-<div class="csn-top"><a href="{base}index.html">&larr; Clinical skills</a><span>/</span><a href="{base}{sec}.html">{esc(sec_name)}</a></div>
-<div class="csn-row">{"".join(chips)}</div>
-</nav>
-<script>(function(){{var r=document.querySelector(".csn-row"),n=r&&r.querySelector(".now");if(n)r.scrollLeft=n.offsetLeft-(r.clientWidth-n.offsetWidth)/2;}})();</script>"""
+<nav class="csn" aria-label="{esc(sec_name)}">
+{chr(10).join(items)}
+</nav>"""
 
 
 LANDING_CARDS = [
