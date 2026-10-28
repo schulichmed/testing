@@ -67,10 +67,10 @@
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
 <link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
 <style>
-/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+/* topic cards: a block card led by its icon, drawn in the section's hue */
 .topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
-.topic-card .pic{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}
-.topic-card .pic img{max-height:130px;max-width:85%;object-fit:contain;}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
 .topic-card h2{font-size:1.15rem;}
 .topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
 .block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}

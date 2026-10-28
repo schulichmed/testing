@@ -13,6 +13,7 @@ picture, are set here.
 """
 
 import html
+import importlib.util
 import json
 import logging
 import os
@@ -21,6 +22,11 @@ import sys
 from pathlib import Path
 
 LOG = logging.getLogger("msk_exam")
+
+# the clinical skills hub's build: its exam_nav() strip opens this page, as it opens every exam
+_spec = importlib.util.spec_from_file_location("clinical_skills", Path(__file__).resolve().parents[1] / "clinical-skills/build.py")
+clinical_skills = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(clinical_skills)
 HERE = Path(__file__).resolve().parent
 VAULT = Path(os.environ.get("POM2_VAULT", "/mnt/c/Users/nsims/medwiki"))
 NOTE = VAULT / "01 - Lectures/99 - PoM 2/03 - MSK/Summary Notes - MSK Clinical Skills.md"
@@ -470,7 +476,7 @@ def render(regions: list[dict], credits: list[dict]) -> str:
     cred = "".join(
         f'<li>{html.escape(LANDMARK_NAMES.get(c["test"], c["test"]))}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
         f'<a href="{html.escape(c["source_page_url"])}">source</a></li>' for c in credits)
-    return PAGE.replace("{{CHIPS}}", chips).replace("{{BANDS}}", "".join(bands)).replace("{{CREDITS}}", cred)
+    return PAGE.replace("{{NAV}}", clinical_skills.exam_nav("msk")).replace("{{CHIPS}}", chips).replace("{{BANDS}}", "".join(bands)).replace("{{CREDITS}}", cred)
 
 
 PAGE = """<!doctype html>
@@ -557,7 +563,8 @@ body.quiz.hideimg .test img{display:none}
 :focus-visible{outline:3px solid var(--accent)}
 </style></head>
 <body><div class="wrap">
-<p class="eyebrow">PoM 2 · MSK clinical skills</p>
+{{NAV}}
+<p class="eyebrow">Clinical skills · Physical exam · PoM 1 → PoM 2</p>
 <h1>MSK exam, by region</h1>
 <p class="lead">Every exam from the suggested-videos list: the general exam first (approach, gait, neuro screen), then each region's look, feel and move, its special tests grouped under the problem you suspect, and its pearls. Built from the course objectives; videos for each test are at <a href="https://mskmedicine.com">mskmedicine.com</a>. For the dermatomes and myotomes drawn on a body, see the <a href="../body-map/">body map</a>.</p>
 <div class="bar">

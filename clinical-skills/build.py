@@ -12,6 +12,7 @@ Output: the five pages above, styled by the live portal's base.css and portal.cs
 
 import html
 import json
+import re
 import logging
 from pathlib import Path
 
@@ -94,10 +95,10 @@ HEAD = """<!DOCTYPE html>
 <link rel="stylesheet" href="{portal}base.css">
 <link rel="stylesheet" href="{portal}portal.css">
 <style>
-/* topic cards: a block card with its picture on a white plate, so the art reads in dark mode too */
+/* topic cards: a block card led by its icon, drawn in the section's hue */
 .topic-grid{{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}}
-.topic-card .pic{{display:flex;align-items:center;justify-content:center;height:150px;margin:-8px -8px 16px;background:#fff;border-radius:6px;}}
-.topic-card .pic img{{max-height:130px;max-width:85%;object-fit:contain;}}
+.topic-card .ico{{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}}
+.topic-card .ico svg{{width:100%;height:100%;}}
 .topic-card h2{{font-size:1.15rem;}}
 .topic-card .go{{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}}
 .block-card.is-empty .go{{font-weight:500;font-style:italic;color:var(--muted);}}
@@ -191,13 +192,16 @@ def blocknav(current: str) -> str:
     return '<nav class="blocknav" aria-label="Sections">\n' + "\n".join(links) + f"\n{THEME_BTN}\n</nav>"
 
 
-CREDITS = {c["skill"]: c for c in json.loads((HERE / "img" / "credits.json").read_text(encoding="utf-8"))}
+def icon(key: str) -> str:
+    """Return a topic's Healthicons outline icon (CC0) as inline SVG, so it takes the text colour."""
+    svg = (HERE / "icons" / f"{key}.svg").read_text(encoding="utf-8")
+    return re.sub(r'<svg width="\d+" height="\d+"', '<svg aria-hidden="true" focusable="false"', svg, count=1)
 
 
 def topic_card(pic: str, name: str, taught: list[str], page: str | None, what: str, hue: str) -> str:
-    """Return one topic as a block card with its picture; a topic with no page yet is dimmed."""
+    """Return one topic as a block card led by its icon; a topic with no page yet is dimmed."""
     when = " &rarr; ".join(COURSES[c] for c in taught)
-    body = f"""<span class="pic"><img src="img/{pic}.png" alt="" loading="lazy"></span>
+    body = f"""<span class="ico">{icon(pic)}</span>
 <p class="bmeta">{when}</p>
 <h2>{esc(name)}</h2>
 <p>{esc(what)}</p>"""
@@ -210,7 +214,6 @@ def section_page(number: int, slug: str, name: str, when: str, hue: str, what: s
     """Return one section's block page: the section bar, masthead and a card per topic."""
     rows = [s for s in SKILLS if s[0] == slug]
     cards = "\n".join(topic_card(*s[1:], hue=hue) for s in rows)
-    authors = sorted({CREDITS[s[1]]["author"] for s in rows})
     return head(f"{name} - Clinical skills") + blocknav(slug) + f"""
 
 <header class="q-masthead" id="content" tabindex="-1">
@@ -225,9 +228,48 @@ def section_page(number: int, slug: str, name: str, when: str, hue: str, what: s
 <div class="block-grid topic-grid">
 {cards}
 </div>
-<p class="credits">Illustrations: {esc(", ".join(authors))}, Servier Medical Art (smart.servier.com), CC BY-SA 3.0, via Wikimedia Commons.</p>
+<p class="credits">Icons: <a href="https://healthicons.org">Healthicons</a> (CC0).</p>
 </main>
 """ + FOOT
+
+
+EXAM_NAV_CSS = """<style>
+/* clinical skills strip on an exam page: back to the course, and every exam in the section */
+.csn{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.csn-top{display:flex;gap:6px 14px;flex-wrap:wrap;align-items:baseline;font-size:14px}
+.csn-top a{font-weight:600;text-decoration:none}
+.csn-top span{color:var(--muted)}
+.csn-row{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:thin}
+.csn-row>*{flex:none;display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 8px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:13.5px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.csn-row svg{width:22px;height:22px;color:var(--accent)}
+.csn-row a:hover{border-color:var(--accent)}
+.csn-row .now{background:var(--accent);border-color:var(--accent);color:var(--card);font-weight:600}
+.csn-row .now svg{color:var(--card)}
+.csn-row .soon{color:var(--muted);opacity:.6}
+</style>"""
+
+
+def exam_nav(current: str, base: str = "../clinical-skills/") -> str:
+    """Return the strip an exam page opens on: a way back to clinical skills and its section,
+    then every topic in the current topic's section, built ones as links and this one lit.
+    An exam page's build.py imports this, so every exam carries the same strip."""
+    sec = next(s for s in SKILLS if s[1] == current)[0]
+    sec_name = next(s[1] for s in SECTIONS if s[0] == sec)
+    chips = []
+    for _sec, key, name, _taught, page, _what in (s for s in SKILLS if s[0] == sec):
+        label = f"{icon(key)}{esc(name)}"
+        if key == current:
+            chips.append(f'<span class="now" aria-current="page">{label}</span>')
+        elif page:
+            chips.append(f'<a href="{base}{page}">{label}</a>')
+        else:
+            chips.append(f'<span class="soon" title="Coming soon">{label}</span>')
+    return f"""{EXAM_NAV_CSS}
+<nav class="csn" aria-label="Clinical skills">
+<div class="csn-top"><a href="{base}index.html">&larr; Clinical skills</a><span>/</span><a href="{base}{sec}.html">{esc(sec_name)}</a></div>
+<div class="csn-row">{"".join(chips)}</div>
+</nav>
+<script>(function(){{var r=document.querySelector(".csn-row"),n=r&&r.querySelector(".now");if(n)r.scrollLeft=n.offsetLeft-(r.clientWidth-n.offsetWidth)/2;}})();</script>"""
 
 
 LANDING_CARDS = [
