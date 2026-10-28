@@ -1,6 +1,6 @@
 """
-Purpose: Build the clinical skills course prototype in the portal's own structure: a course
-         page of block cards (index.html), one block page per section (history.html,
+Purpose: Build the clinical skills course prototype in the portal's own structure: one block
+         page per section, the course opening straight on the first (index.html redirects to history.html,
          exam.html, pocus.html, osce.html), and a copy of the portal landing with the
          clinical skills card beside the four courses (landing.html).
 Author: Noor Simsam
@@ -174,32 +174,15 @@ def block_card(slug: str, name: str, when: str, hue: str, what: str, number: int
 
 
 def course_page() -> str:
-    """Return the course page: hero and the four section cards, as pom2/index.html."""
-    cards = "\n".join(block_card(*s, number=i) for i, s in enumerate(SECTIONS, 1))
-    return head("Clinical skills") + f"""
-<header class="topline">
-<a class="uplink" href="landing.html">&larr; All courses</a>
-{THEME_BTN}
-</header>
-
-<main id="content" tabindex="-1">
-
-<div class="page-hero compact">
-<h1>Clinical skills.</h1>
-<p>
-Every <strong>history</strong> and <strong>exam</strong> from Years 1 and 2, one page each.
-Most exams are taught twice, a basic version first and the full one later; their page holds
-both, and says which course teaches each.
-</p>
-</div>
-
-<div class="block-grid hub-grid">
-{cards}
-</div>
-
-</main>
-""" + FOOT
-
+    """Return index.html as a redirect: the course opens straight on its first section, so a
+    student reaches topics in one tap, and the section bar moves between the four sections."""
+    first = SECTIONS[0][0]
+    return f"""<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex, nofollow, noarchive">
+<meta http-equiv="refresh" content="0; url={first}.html"><link rel="canonical" href="{first}.html">
+<title>Clinical skills</title></head>
+<body><p><a href="{first}.html">Clinical skills</a></p></body></html>
+"""
 
 def blocknav(current: str) -> str:
     """Return the section bar every block page opens on, as the PoM 2 block pages."""
@@ -272,7 +255,7 @@ def exam_nav(current: str, base: str = "../clinical-skills/") -> str:
     ones without a page yet faded. Every exam page carries the same bar."""
     sec = next(s for s in SKILLS if s[1] == current)[0]
     sec_name = next(s[1] for s in SECTIONS if s[0] == sec)
-    items = [f'<a class="home" href="{base}index.html">Clinical skills</a>',
+    items = [f'<a class="home" href="{base}landing.html">All courses</a>',
              f'<a class="home" href="{base}{sec}.html">{esc(sec_name)} &rsaquo;</a>']
     for _sec, key, name, _taught, page, _what in (s for s in SKILLS if s[0] == sec):
         if key == current:
@@ -307,7 +290,7 @@ def landing_page() -> str:
 <p>{what}</p>
 </a>""" for href, hue, meta, name, what in LANDING_CARDS]
     exams = sum(1 for s in SKILLS if s[0] == "exam")
-    cards.append(f"""<a class="block-card" href="index.html" style="--hue:#2f5d7c">
+    cards.append(f"""<a class="block-card" href="{SECTIONS[0][0]}.html" style="--hue:#2f5d7c">
 <p class="bmeta">Years 1 and 2 &middot; alongside every course</p>
 <h2>Clinical Skills</h2>
 <p>Every history and exam, one page each, arranged by skill rather than by semester.</p>

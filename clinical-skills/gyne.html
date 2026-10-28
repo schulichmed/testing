@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#ffffff">
+<title>Pelvic - Clinical skills</title>
+<script>
+(function(){
+  var root=document.documentElement,KEY="pc-theme",stored=null,mq=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  if(stored!=="dark"&&stored!=="light")stored=null;
+  if(window.matchMedia)mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function os(){return mq&&mq.matches?"dark":"light";}
+  function apply(t){
+    root.setAttribute("data-theme",t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute("content",t==="dark"?"#140c22":"#ffffff");
+    var b=document.getElementById("theme-btn");
+    if(!b)return;
+    b.setAttribute("aria-pressed",t==="dark"?"true":"false");
+    b.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" mode");
+    b.title=b.getAttribute("aria-label");
+  }
+  function follow(){if(!stored)apply(os());}
+  apply(stored||os());
+  if(mq&&mq.addEventListener)mq.addEventListener("change",follow);
+  else if(mq&&mq.addListener)mq.addListener(follow);
+  document.addEventListener("DOMContentLoaded",function(){apply(root.getAttribute("data-theme"));});
+  document.addEventListener("click",function(e){
+    var s=e.target&&e.target.closest?e.target.closest(".skip"):null;
+    if(s){
+      var c=document.getElementById("content");
+      if(c){e.preventDefault();c.focus();c.scrollIntoView();}
+      return;
+    }
+    /* Still gets one tab, reused, so a second click brings the music
+       forward rather than restarting it (see STILL_BTN) */
+    var m=e.target&&e.target.closest?e.target.closest(".still-btn,.still-strip"):null;
+    if(m){
+      if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      var w=null;
+      try{w=window.open("","still-music");}catch(e3){}
+      if(!w)return;
+      e.preventDefault();
+      try{if(w.location.href==="about:blank")w.location.replace(m.href);}catch(e4){}
+      try{w.focus();}catch(e5){}
+      return;
+    }
+    var b=e.target&&e.target.closest?e.target.closest("#theme-btn"):null;
+    if(!b)return;
+    stored=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    try{localStorage.setItem(KEY,stored);}catch(e2){}
+    /* a crossfade between the themes where the browser can draw one and the
+       reader has not asked for less motion; otherwise the switch is instant */
+    var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(document.startViewTransition&&!calm)document.startViewTransition(function(){apply(stored);});
+    else apply(stored);
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
+<style>
+/* topic cards: a block card led by its icon, drawn in the section's hue */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
+</style>
+<style>
+.cs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px;position:sticky;top:0;z-index:5;
+  padding:10px 0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.cs-mode{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--card-bg)}
+.cs-mode button{border:0;background:none;color:var(--text);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.cs-mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.cs-tools input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)}
+.cs-hint{width:100%;margin:0;font-size:.8rem;color:var(--muted)}
+.cs-sec{margin-top:30px;scroll-margin-top:80px}
+.cs-sec>h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.cs-sec>h2 .n{color:var(--q-accent-ink,var(--accent))}
+.cs-sec>h2 small{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cs-steps{margin-top:12px;padding:16px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.6}
+.cs-steps ul{margin:0;padding-left:1.1em}.cs-steps ul ul{margin-top:2px;color:var(--muted)}
+.cs-steps li{margin:3px 0}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.cs-card{background:var(--card-bg);border:1px solid var(--border);border-top:3px solid var(--q-accent,var(--accent));border-radius:8px;padding:14px 16px;font-size:.88rem;line-height:1.55}
+.cs-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.cs-card .for{color:var(--muted);margin:0 0 8px}
+.cs-card .lbl{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.cs-card ol{margin:0;padding-left:1.2em}
+.cs-card .ans{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--q-accent-soft,var(--accent-soft))}
+.cs-pearls{margin-top:12px;padding:12px 18px;border-left:3px solid var(--q-accent,var(--accent));background:var(--card-bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.cs-pearls ul{margin:0;padding-left:1.1em}
+mark{background:color-mix(in srgb,#ffd84d 55%,transparent);color:inherit;padding:0 2px;border-radius:2px}
+body.quiz .cs-card{cursor:pointer}
+body.quiz .cs-card .hide1,body.quiz .cs-card .hide2{display:none}
+body.quiz .cs-card.s1 .hide1,body.quiz .cs-card.s2 .hide1,body.quiz .cs-card.s2 .hide2{display:block}
+body.quiz .cs-card:not(.s2)::after{content:"tap to reveal";display:block;margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic}
+.cs-hidden{display:none!important}
+.cs-empty{color:var(--muted);margin-top:24px}
+.tag{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:.7rem;font-weight:600;white-space:nowrap;vertical-align:1px}
+.tag.adv{background:var(--q-accent-soft,var(--accent-soft));color:var(--q-accent-ink,var(--accent))}
+.tag.extra{border:1px solid var(--border);color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="pom2-page">
+<style>
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
+</style>
+<nav class="csn" aria-label="Physical exam">
+<a class="home" href="landing.html">All courses</a>
+<a class="home" href="exam.html">Physical exam &rsaquo;</a>
+<span class="soon" title="Coming soon">Vitals</span>
+<span class="soon" title="Coming soon">Respiratory</span>
+<span class="soon" title="Coming soon">Abdominal</span>
+<span class="soon" title="Coming soon">Cardiovascular</span>
+<span class="soon" title="Coming soon">Breast</span>
+<span class="soon" title="Coming soon">Head and neck</span>
+<span class="soon" title="Coming soon">Neuro</span>
+<a href="../msk-exam/">MSK</a>
+<a href="gu.html">Male GU</a>
+<span class="here" aria-current="page">Pelvic</span>
+</nav>
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
+<p class="eyebrow">Schulich Clinical Skills &middot; Physical exam &middot; T2C</p>
+<h1>Pelvic Exam</h1>
+<p class="lead">The exam runs <b>consent and chaperone → position and drape → look at the vulva → speculum (view the cervix, take any samples) → bimanual exam → help the patient up, then explain the findings</b>. Two rules run through every step: <b>say what you are about to do before you do it, and the patient can stop the exam at any time</b>. A pregnant patient gets the <b>obstetrical abdominal exam</b> (Leopold's maneuvers, symphysis-fundal height, fetal heart) instead of, or before, a pelvic exam. There is no faculty material in OneNote for this session yet, and the upper-year notes do not cover the pelvic exam technique, so this note is written to the course objectives at a beginner level. The obstetrical exam steps in section 6 draw on upper-year notes.</p>
+</div>
+</header>
+
+<main>
+<div class="cs-tools">
+<div class="cs-mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button></div>
+<input type="search" id="cs-q" placeholder="Find a step or a test" autocomplete="off">
+<p class="cs-hint" id="cs-hint">Look: everything shown.</p>
+</div>
+<section class="cs-sec" id="s1"><h2><span class="n">1</span> The general approach</h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE, Teaching Objective Structured Clinical Exam)</b>: "Before we start, I'll explain each step before I do it. You can ask me to pause or stop at any point, and I will."</li><li><b>Consent</b>: explain <b>why</b> the exam is needed and <b>what it involves</b> (a speculum to look at the cervix, then a gloved exam with two fingers), and get the patient's agreement<ul><li>ask whether they have had a pelvic exam before, and whether anything would make it easier (some patients have had painful or traumatic experiences)</li><li>offer to let them have a support person present</li></ul></li><li><b>Chaperone</b>: offer a chaperone (many settings require one) and introduce them</li><li><b>Prepare</b>: ask the patient to <b>empty their bladder</b> · leave the room while they undress from the waist down · gather the speculum, lubricant, gloves, light and any sample kits <b>before</b> they lie down</li><li><b>Explain, then touch</b>: name each step before doing it, use neutral words ("I'm going to touch your thigh now"), and keep checking in: "How are you doing?"</li><li><b>Stop means stop</b>: if the patient asks you to stop, stop straight away, remove the instrument gently, and talk about it</li></ul></div></section><section class="cs-sec" id="s2"><h2><span class="n">2</span> Positioning and draping<small>T2C · Gynecological Exam</small></h2><div class="cs-steps"><ul><li><mark><b>Position and drape</b> the patient for a pelvic exam</mark>:<ul><li>patient lies on their back with the head slightly raised</li><li><b>heels in the footrests (stirrups)</b>, knees bent and allowed to fall apart (<b>dorsal lithotomy position</b>)</li><li>ask them to <b>slide down until the buttocks reach the edge of the table</b></li><li><b>drape</b> from the abdomen over the knees; <b>press the drape down between the knees</b> so you can <b>see the patient's face</b> and they can see you</li></ul></li><li><b>Light</b>: position the lamp before you start, so you are not adjusting it mid-exam</li><li><b>Look first</b>: inspect the <b>vulva</b> (labia, clitoris, urethral opening, vaginal opening) for redness, swelling, discharge, lesions or skin changes before inserting anything</li></ul></div></section><section class="cs-sec" id="s3"><h2><span class="n">3</span> Speculum exam</h2><div class="cs-steps"><ul><li><mark><b>Place a speculum</b> into the vagina to <b>view the cervix</b> and <b>perform any tests needed</b>, <b>without causing undue discomfort</b></mark></li><li><b>Warm and lubricate</b>: use <b>lukewarm water</b> on the speculum; if gel is needed, use <b>a little water-based gel</b> (more can spoil a cervical screening sample)</li><li>Check the speculum opens and locks before you begin; show it to the patient if they would like</li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Speculum insertion</b></h3><p class="for">Getting a view with the least discomfort</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Tell the patient, then <b>touch the inner thigh</b> first with the back of your hand</li><li>Gently separate the labia</li><li>Insert the <b>closed</b> blades slowly, angled slightly <b>downward (toward the back)</b>, pressing on the back wall, not the front (where the urethra is)</li><li>Rotate the blades level as you go in</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Pain or distress</b>: pause, check in, and stop if asked (normal: pressure, not pain)</div></div></article><article class="cs-card"><h3><b>Viewing the cervix</b></h3><p class="for">Cervix and its opening (os)</p><div class="hide1"><span class="lbl">Steps</span><ol><li><b>Open the blades slowly</b></li><li>Tilt or re-angle until the <b>cervix sits between the blades</b></li><li>Lock the speculum</li><li>Look at colour, the os, discharge, bleeding and any growths</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Lesions, ulcers, a mass, abnormal discharge or bleeding</b> (normal: smooth pink cervix; small round os if never given birth vaginally, slit-shaped if they have)</div></div></article><article class="cs-card"><h3><b>Cervical screening sample (HPV test)</b></h3><p class="for">Human papillomavirus (HPV) and abnormal cervical cells</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Place the brush or broom in the <b>opening of the cervix</b></li><li><b>Rotate</b> it so it samples the <b>transformation zone</b> (where cervical cancer starts)</li><li>Rinse it into the vial as the kit directs; label it with the patient's full name, date of birth and collection date</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>High-risk HPV positive</b>: the lab then checks the cells (normal: HPV negative)</div></div></article><article class="cs-card"><h3><b>Other swabs</b></h3><p class="for">Infection</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Swab the cervix for <b>chlamydia and gonorrhea</b> when indicated</li><li>Swab the vaginal walls for discharge (yeast, bacterial vaginosis) when indicated</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Positive culture or test</b></div></div></article><article class="cs-card"><h3><b>Speculum removal</b></h3><p class="for">Vaginal walls</p><div class="hide1"><span class="lbl">Steps</span><ol><li><b>Unlock</b> and draw back until the blades clear the cervix</li><li>Let the blades <b>close as you withdraw</b>, never pinching the cervix or walls</li><li><b>Look at the vaginal walls</b> on the way out</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Redness, lesions, discharge</b> (normal: pink, moist folds)</div></div></article></div><div class="cs-pearls"><ul><li>Ontario screens with an <b>HPV test</b> from about <b>age 25</b> in anyone with a cervix who has ever been sexually active; a negative test means <b>rescreening in 5 years</b> (PoM 2 cervical screening lecture). A sample can also be <b>self-collected</b>, which suits some patients better.</li></ul></div></section><section class="cs-sec" id="s4"><h2><span class="n">4</span> Bimanual exam</h2><div class="cs-steps"><ul><li><mark><b>Perform a bimanual exam</b></mark>: two <b>lubricated gloved fingers</b> (index and middle) of one hand in the vagina, the <b>other hand flat on the lower abdomen</b>; you feel the organs between your two hands.</li><li>Tell the patient: "You'll feel my fingers now, and my other hand pressing on your tummy."</li><li>Structures you may feel: the <b>cervix</b>, the <b>uterus</b>, the <b>ischial spines</b> (to each side), the <b>sacral promontory</b> (at the back), and sometimes the pulse of the <b>uterine artery</b>. Normal <b>ovaries usually can't be felt</b>.</li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Cervix</b></h3><p class="for">Consistency, tenderness</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Find the cervix with your fingertips</li><li>Feel its consistency</li><li><b>Gently move it side to side</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span>⚠ <b>Cervical motion tenderness</b> (sharp pain when the cervix moves): pelvic inflammatory disease (PID) or ectopic pregnancy (normal: firm like the tip of the nose, moves without pain)</div></div></article><article class="cs-card"><h3><b>Uterus</b></h3><p class="for">Size, shape, position, tenderness</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Fingers <b>below the cervix</b>, lift it upward</li><li>Abdominal hand presses down <b>just above the pubic bone</b></li><li>Feel the uterus between your hands</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Enlarged</b> (pregnancy, fibroids) · <b>irregular or lumpy</b> (fibroids) · <b>fixed</b> or <b>tender</b> (normal: pear-sized, smooth, mobile, non-tender; tilted forward = <b>anteverted</b>, tilted back = <b>retroverted</b>, both normal)</div></div></article><article class="cs-card"><h3><b>Adnexa</b> (ovaries and tubes)</h3><p class="for">Masses, tenderness</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Move the vaginal fingers to <b>one side of the cervix</b> (lateral fornix)</li><li>Abdominal hand sweeps <b>down and inward from the hip bone</b> on that side</li><li>Repeat on the other side</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>A mass</b> (ovarian cyst or tumour, ectopic pregnancy) or <b>tenderness</b> (normal: nothing felt, or a small mobile ovary that is mildly tender)</div></div></article></div><div class="cs-pearls"><ul><li>Withdraw slowly and check the glove for blood or discharge.</li></ul></div></section><section class="cs-sec" id="s5"><h2><span class="n">5</span> Feedback during and after the exam</h2><div class="cs-steps"><ul><li><mark><b>Give effective and compassionate feedback to the patient during and after the exam</b></mark></li><li><b>During</b>: say what you are doing and what you see in plain words ("Everything looks healthy so far"); praise their effort ("You're doing well; we're almost done"); watch their face and pause if they tense up</li><li><b>After</b>:<ul><li>tell them the exam is finished, help them <b>slide back up and sit up</b>, offer tissues</li><li>give them <b>privacy to dress</b> before you talk about findings, ideally face to face, sitting down</li><li>explain what you found, what the samples are for, <b>when and how results come back</b>, and what happens next</li><li>ask how the exam felt for them and whether they have questions</li></ul></li></ul></div></section><section class="cs-sec" id="s6"><h2><span class="n">6</span> The obstetrical abdominal exam<small>Obstetrics &amp; Gynaecology physical exam objectives</small></h2><div class="cs-steps"><ul><li><mark><b>Position and drape</b> for an obstetrical exam</mark>: patient lies on their back with the head raised (or tilted slightly to the left, so the uterus does not press on the large veins), <b>abdomen uncovered from the bottom of the ribs to the pubic bone</b>, a drape over the pelvis and legs, and the bladder emptied</li><li>Each prenatal visit records weight, blood pressure, urine protein, <b>symphysis-fundal height, presentation, fetal heart rate and fetal movement</b> on the Ontario Perinatal Record</li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Symphysis-fundal height (SFH)</b></h3><p class="for"><mark><b>Fetal growth</b></mark></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Find the <b>top of the uterus (fundus)</b>: lay the side of your hand across the abdomen high up and walk it down until you meet the uterus</li><li>Tape from the <b>top of the pubic bone (symphysis pubis) to the fundus</b></li><li>Record it in centimetres and plot it against gestational age</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>More than 2-3 cm less than the weeks of pregnancy</b>: the baby may be <b>growing too slowly</b> (intrauterine growth restriction) (normal: after <b>20 weeks</b>, <b>SFH in cm ≈ weeks of pregnancy</b>)</div></div></article><article class="cs-card"><h3><b>Leopold's 1: fundal grip</b></h3><p class="for"><mark><b>Fetal lie</b></mark> and presentation: what is at the top</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Face the patient's head</li><li>Both hands feel the <b>top of the uterus</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Round, hard, movable = head</b> (breech baby) · <b>soft, irregular = bottom</b> (usual, head-down baby)</div></div></article><article class="cs-card"><h3><b>Leopold's 2: lateral grip</b></h3><p class="for">Where the baby's <b>back</b> is</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Hands on <b>each side</b> of the abdomen</li><li>Hold one hand steady while the other presses; then switch</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Firm, smooth = back</b> · small knobbly parts = <b>limbs</b> · back running up and down = <b>longitudinal lie</b>; across = <b>transverse lie</b></div></div></article><article class="cs-card"><h3><b>Leopold's 3: pelvic grip (Pawlik's)</b></h3><p class="for">What is <b>presenting</b> above the pelvis</p><div class="hide1"><span class="lbl">Steps</span><p>1. Grasp the lower abdomen <b>just above the pubic bone</b> between thumb and fingers of one hand</p></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span>Should be the <b>opposite of grip 1</b> · head that moves easily = <b>not yet engaged</b> in the pelvis</div></div></article><article class="cs-card"><h3><b>Leopold's 4: deep pelvic grip</b></h3><p class="for">Whether the head is flexed, and how far it has descended</p><div class="hide1"><span class="lbl">Steps</span><ol><li><b>Turn to face the patient's feet</b></li><li>Slide the fingers of both hands <b>down the sides of the uterus toward the pubic bone</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span>The side where the fingers meet resistance = the <b>brow</b> · brow opposite the back = <b>flexed head</b> (normal)</div></div></article><article class="cs-card"><h3><b>Fetal heart rate</b></h3><p class="for"><mark><b>Fetal well-being</b></mark> (discuss)</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Use the lie and back from Leopold's to place a <b>handheld Doppler</b> over the <b>baby's back</b></li><li>Check you are hearing the <b>baby, not the mother's pulse</b> (feel her wrist at the same time)</li><li>Count the rate</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Outside 110-160 beats per minute</b> (normal: <b>110-160</b>)</div></div></article></div><div class="cs-pearls"><ul><li>Feel <b>gently, with flat hands</b>, and stop between contractions if the patient is in labour.</li></ul></div></section>
+</main>
+<script>
+(function(){
+  var body=document.body,hint=document.getElementById("cs-hint");
+  document.querySelectorAll(".cs-mode button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".cs-mode button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+      body.classList.toggle("quiz",b.dataset.m==="quiz");
+      document.querySelectorAll(".cs-card").forEach(function(c){c.classList.remove("s1","s2");});
+      hint.textContent=b.dataset.m==="quiz"?"Test: tap a card to show its steps, then tap again for the answer.":"Look: everything shown.";
+    });
+  });
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest(".cs-card");
+    if(!c||!body.classList.contains("quiz"))return;
+    if(c.classList.contains("s1"))c.classList.replace("s1","s2");else if(!c.classList.contains("s2"))c.classList.add("s1");
+  });
+  var q=document.getElementById("cs-q");
+  q.addEventListener("input",function(){
+    var words=q.value.toLowerCase().split(/\s+/).filter(Boolean),shown=0;
+    document.querySelectorAll(".cs-card").forEach(function(c){
+      var t=c.textContent.toLowerCase(),ok=words.every(function(w){return t.indexOf(w)>-1;});
+      c.classList.toggle("cs-hidden",!ok);if(ok)shown++;
+    });
+    document.querySelectorAll(".cs-sec").forEach(function(s){
+      var cards=s.querySelectorAll(".cs-card"),any=!words.length||s.textContent.toLowerCase().indexOf(words[0])>-1;
+      if(cards.length&&words.length)any=Array.prototype.some.call(cards,function(c){return !c.classList.contains("cs-hidden");});
+      s.classList.toggle("cs-hidden",words.length>0&&!any);
+    });
+  });
+})();
+</script>
+
+<footer>
+<p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
+</footer>
+</div>
+</body>
+</html>
