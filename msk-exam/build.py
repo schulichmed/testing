@@ -3,7 +3,8 @@ Purpose: Build the MSK clinical skills chart page (msk-exam/index.html) from the
          special-test tables in the medwiki note "Summary Notes - MSK Clinical Skills".
 Author: Noor Simsam
 Date: 2026-10-26
-Input: the vault note (POM2_VAULT or the default vault path); img/credits.json
+Input: the vault note (POM2_VAULT or the default vault path); img/credits.json; videos_other.json
+       (videos from other channels for tests MSK Medicine has none for)
 Output: msk-exam/index.html
 
 The note is the single source of the steps and positive findings: edit the note,
@@ -54,6 +55,9 @@ TESTS = {
     "Resisted external rotation": ("Rotator cuff tendon", None),
     "Lift-off test": ("Rotator cuff tendon", "lift-off-gerber-test.jpg"),
     "Belly press test": ("Rotator cuff tendon", "belly-press-test.jpg"),
+    "Bear hug test": ("Rotator cuff tendon", None),
+    "Drop arm test": ("Rotator cuff tendon", None),
+    "External rotation lag sign": ("Rotator cuff tendon", None),
     "Speed's test": ("Biceps tendon", "speed-s-test.jpg"),
     "Yergason's test": ("Biceps tendon", "yergason-s-test.jpg"),
     "Apprehension test": ("Anterior instability", "shoulder-apprehension-and-relocation-test.jpg"),
@@ -140,6 +144,32 @@ REGION_VIDEO = {
         "lower-extermity-reflexes"],
 }
 VIDEOS = json.loads((HERE / "videos.json").read_text(encoding="utf-8"))
+# test name -> a video from another teaching channel, for tests MSK Medicine has none for
+OTHER_VIDEO = json.loads((HERE / "videos_other.json").read_text(encoding="utf-8"))
+
+# region -> (the complaint, the joints above and below), for the line to say at the start of a TOSCE
+OPENING = {
+    "cspine": ("neck", "the shoulder and thoracic spine"), "lspine": ("low back", "the hip and thoracic spine"),
+    "shoulder": ("shoulder", "the neck and elbow"), "elbow": ("elbow", "the shoulder and wrist"),
+    "wrist": ("wrist and hand", "the elbow and neck"), "hip": ("hip", "the low back and knee"),
+    "knee": ("knee", "the hip and ankle"), "ankle": ("ankle and foot", "the knee and low back"),
+}
+
+
+def opening(key: str) -> str:
+    """The sentence that opens a region's exam in a TOSCE."""
+    complaint, joints = OPENING[key]
+    return (f'<p class="say"><b>Say first:</b> "I would normally inspect the other side and examine the joint '
+            f'above and below ({joints}), but in the interest of time I will focus on the {complaint} complaint."</p>')
+
+
+def other_video(name: str) -> str:
+    """Render a click-to-play video from another channel (YouTube loads only when tapped)."""
+    v = OTHER_VIDEO[name]
+    start = f"&start={v['start']}" if v.get("start") else ""
+    page = f"https://www.youtube.com/watch?v={v['id']}{start.replace('&start=', '&t=')}"
+    return (f'<button class="vid" data-yt="{v["id"]}" data-start="{v.get("start", 0)}" data-page="{page}">'
+            f'<span>▶ {html.escape(v["title"])} ({html.escape(v["channel"])})</span></button>')
 
 
 def video(slug: str, thumb: bool = False) -> str:
@@ -390,6 +420,7 @@ def card(t: dict) -> str:
             f'<div class="hide h1"><span class="lbl">Steps</span><ol>{steps}</ol></div>'
             f'<div class="hide h2 pos"><span class="lbl">Positive</span><p>{t["pos"]}</p></div>'
             f'{f"""<div class="hide h2 vids">{video(VIDEO[t["name"]])}</div>""" if t["name"] in VIDEO else ""}'
+            f'{f"""<div class="hide h2 vids">{other_video(t["name"])}</div>""" if t["name"] in OTHER_VIDEO else ""}'
             f'<span class="pill">Tap to reveal</span></article>')
 
 
@@ -421,13 +452,14 @@ def render(regions: list[dict], credits: list[dict]) -> str:
     for r in regions:
         wides = [("", t, b, REGION_VIDEO.get(t), "") for t, b in r["wide"]]
         if r["exam"]:
-            wides.insert(0, ("General exam", "Look · Feel · Move", r["exam"], REGION_VIDEO[r["key"]],
+            wides.insert(0, ("General exam", "Look · Feel · Move", opening(r["key"]) + r["exam"], REGION_VIDEO[r["key"]],
                              landmarks(r["key"])))
         top = "".join(f'<div class="prob">{f"<h3>{html.escape(h)}</h3>" if h else ""}'
                       f'<div class="tests">{wide_card(t, b, v, side)}</div></div>' for h, t, b, v, side in wides)
-        probs = "".join(f'<div class="prob"><h3>{html.escape(p["name"])}</h3>'
+        probs = "".join(f'<div class="prob" style="--n:{min(len(p["tests"]), 4)}"><h3>{html.escape(p["name"])}</h3>'
                         f'<div class="tests">{"".join(card(t) for t in p["tests"])}</div></div>'
                         for p in r["problems"])
+        probs = f'<div class="probs">{probs}</div>'
         foot = (f'<div class="prob"><h3>Pearls and X-rays</h3><div class="tests">'
                 f'{wide_card("Remember", r["pearls"])}</div></div>' if r["pearls"] else "")
         n = sum(len(p["tests"]) for p in r["problems"])
@@ -483,7 +515,10 @@ a{color:var(--accent)}
 .bandhead h2{font-size:22px}.bandhead span{font-size:13px;opacity:.9}
 .prob{margin-top:12px}
 .prob h3{font-size:16px;color:color-mix(in srgb,var(--c) 80%,var(--ink));margin:0 4px 6px}
-.tests{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.probs{display:flex;flex-wrap:wrap;gap:0 14px}
+.probs>.prob{flex:var(--n) 1 calc(var(--n) * 250px + (var(--n) - 1) * 10px);min-width:0}
+.say{margin:0 0 8px;padding:8px 10px;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--card));border-radius:6px}
+.tests{display:grid;align-items:start;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .test{background:var(--card);border:1.5px solid color-mix(in srgb,var(--c) 45%,var(--line));border-radius:10px;padding:10px 12px;position:relative;outline-offset:2px}
 .test h4{margin:0;font-size:15px}
 .test .for{margin:2px 0 6px;color:var(--muted);font-size:13px}
@@ -537,7 +572,7 @@ body.quiz.hideimg .test img{display:none}
 <nav class="fan">{{CHIPS}}</nav>
 </div>
 {{BANDS}}
-<section class="credits"><h3>Videos</h3><p>Videos by <a href="https://mskmedicine.com">MSK Medicine</a>, played from their YouTube channel; each opens only when you tap it.</p><h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{{CREDITS}}</ul></section>
+<section class="credits"><h3>Videos</h3><p>Videos by <a href="https://mskmedicine.com">MSK Medicine</a>, played from their YouTube channel; where they have none, a video from another teaching channel, named on its button. Each opens only when you tap it.</p><h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{{CREDITS}}</ul></section>
 </div>
 <script>
 (function(){
@@ -561,7 +596,7 @@ body.quiz.hideimg .test img{display:none}
   document.addEventListener('click',function(e){
     var b=e.target.closest('.vid[data-yt]'); if(!b)return; e.stopPropagation();
     var d=document.createElement('div'); d.className='player';
-    d.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+b.dataset.yt+'?autoplay=1&rel=0" title="'+b.textContent.replace(/"/g,'')+'" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    d.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+b.dataset.yt+'?autoplay=1&rel=0'+(+b.dataset.start?'&start='+b.dataset.start:'')+'" title="'+b.textContent.replace(/"/g,'')+'" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
     b.replaceWith(d);
   },true);
   document.getElementById('q').addEventListener('input',function(e){
