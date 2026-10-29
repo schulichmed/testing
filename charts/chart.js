@@ -1,12 +1,19 @@
 /* Interactive overview chart: the content spec of a drawn chart, laid out as an HTML grid
    with Look / Walk / Test modes. D = {spec, walk?} is set by the page. */
 (function () {
-if (/[?&]embed=1/.test(location.search)) document.documentElement.classList.add("embed");
+/* ?embed: the chart inside a lecture note (portal.js frames it). No page header, the note's
+   theme, and the height reported up so the note scrolls rather than the frame. */
+var Q = new URLSearchParams(location.search), EMBED = Q.has("embed"), ROOT = document.documentElement;
+function theme(t) { if (t === "dark" || t === "light") ROOT.setAttribute("data-theme", t); }
+if (EMBED) {
+  ROOT.classList.add("embed"); theme(Q.get("theme"));
+  window.addEventListener("message", function (e) { if (e.source === window.parent && e.data && e.data.chartTheme) theme(e.data.chartTheme); });
+}
 var S = D.spec;
 var COL = {"teal": "#1f6f8b", "purple": "#6a4aa8", "orange": "#b5600f", "blue": "#1f5f9e", "magenta": "#a3336b", "brown": "#8a5a2b", "olive": "#4f6d1f", "slate": "#46607a"};
 var ROWS = S.sections.filter(function (k) { return k !== "head"; }).map(function (k) { return [k, (S.row_names || {})[k] || k]; });
 var DASHED = S.dashed_sections || [];
-var GROUPS = S.groups || [], TIERS = S.tiers || [], PRES = S.pres || [], PANELS = S.panels || [];
+var GROUPS = S.groups || [], TIERS = S.tiers || [], PRES = S.pres || [], PANELS = S.panels || [], SPANS = S.spans || [];
 var colById = {}; S.columns.forEach(function (c, i) { c.i = i; colById[c.id] = c; });
 
 /* who feeds whom, exactly as column_pathway.py draws it */
@@ -80,6 +87,15 @@ function buildMap(host) {
     });
     g.appendChild(col);
   });
+  /* a section shared by adjacent columns (column_pathway.py "spans"): one block below them */
+  if (SPANS.length) row++;
+  SPANS.forEach(function (sp, i) {
+    var b = el("div", "spanblk"); b.dataset.span = String(i);
+    var sec = el("div", "sec"); sec.dataset.row = sp.section;
+    sec.appendChild(el("div", "rowlabel", (S.row_names || {})[sp.section] || sp.section));
+    var wrap = el("div", "stagewrap"); stages(wrap, { colour: "slate", s: sp.rows }, "s", false); sec.appendChild(wrap);
+    b.appendChild(sec); put(b, sp.cols);
+  });
   host.appendChild(g);
   if (PANELS.length) {
     var p = el("div", "panels"); p.style.minWidth = g.style.minWidth;
@@ -122,6 +138,15 @@ function drawLinks() {
       var b = box(to), mid = (a.b + b.t) / 2;
       path("M" + a.x + " " + a.b + "V" + mid + "H" + b.x + "V" + (b.t - 1), k, true);
     }
+  });
+  SPANS.forEach(function (sp, i) {
+    var first = g.querySelector('[data-span="' + i + '"] .stage'); if (!first) return;
+    var t = box(first).t;
+    S.columns.slice(sp.cols[0], sp.cols[1] + 1).forEach(function (c) {
+      var col = q("c:" + c.id), st = col && col.querySelectorAll(".stage"); if (!st || !st.length) return;
+      var x = box(col.querySelector(".colhead")).x;
+      path("M" + x + " " + box(st[st.length - 1]).b + "V" + (t - 1), "c:" + c.id, true);
+    });
   });
   g.appendChild(svg);
   if (map.classList.contains("walking")) light();
@@ -208,7 +233,11 @@ function testStart() {
   map.querySelectorAll(".col").forEach(function (col) {
     col.querySelectorAll(".sec").forEach(function (s, i) { s.classList.add("hidden"); if (i === 0) s.classList.add("next"); });
   });
+  map.querySelectorAll(".spanblk .sec").forEach(function (s) { s.classList.add("hidden", "next"); });
 }
+map.querySelectorAll(".spanblk").forEach(function (b) {
+  b.addEventListener("click", function () { if (mode === "test") b.querySelectorAll(".sec").forEach(function (s) { s.classList.remove("hidden", "next"); }); });
+});
 map.querySelectorAll(".col").forEach(function (col) {
   col.addEventListener("click", function () {
     if (mode !== "test") return;
@@ -230,6 +259,10 @@ map.classList.add("is-look"); lookStart();
 drawLinks();
 if (window.ResizeObserver) new ResizeObserver(function () { drawLinks(); }).observe(map.querySelector(".grid"));
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLinks);
+if (EMBED && window.parent !== window) {
+  var tell = function () { window.parent.postMessage({ chartHeight: document.querySelector(".wrap").getBoundingClientRect().height }, "*"); };
+  tell(); if (window.ResizeObserver) new ResizeObserver(tell).observe(document.querySelector(".wrap"));
+}
 
 /* #col=<column id> opens the chart with that diagnosis focused (the body map links straight to one) */
 function focusFromHash() {

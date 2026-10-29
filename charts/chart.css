@@ -87,6 +87,9 @@ button{font-family:inherit}
 .walking .links path{opacity:var(--dim)}
 .walking .links path.on{opacity:1}
 .col .stagewrap{display:flex;flex-direction:column;gap:6px;transition:filter .2s,opacity .2s}
+.spanblk{margin-top:26px;padding:6px}.spanblk .sec{display:flex;flex-direction:column;gap:6px}
+.spanblk .stagewrap{display:flex;flex-direction:column;gap:6px;transition:filter .2s,opacity .2s}
+.map.is-test .spanblk{cursor:pointer}.walking .spanblk{opacity:var(--dim)}
 .map .sec.hidden{position:relative}
 .map.is-test .col{cursor:pointer}
 .map .sec.hidden .stagewrap{filter:blur(7px);opacity:.4;user-select:none}
@@ -120,10 +123,27 @@ h2{margin-top:28px}
 .list a{color:var(--accent);font-weight:500}
 .list span{display:block;color:var(--muted);font-size:13px}
 
-/* ?embed=1: shown inside the body map pop-up, so its own header and the original drawing are left out */
-html.embed .eyebrow,html.embed details.orig{display:none}
-html.embed .wrap{padding-top:12px}
+/* inside a lecture note (?embed) */
+.embed body{background:transparent}
+.embed .wrap{max-width:none;padding:0 0 8px}
+.embed header,.embed footer{display:none}
+.embed #chart{margin-top:0!important}
+.embed .walkbar{position:static;max-height:none}
+/* the frame's colour-scheme must match the note's, or the browser paints an opaque light backdrop behind it */
+.embed[data-theme="dark"]{color-scheme:dark}
+.embed[data-theme="light"]{color-scheme:light}
 
+/* a drawn chart with the modes laid over it (flow.js) */
+.fmap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}
+.fmap>svg{display:block;width:100%;height:auto;min-width:var(--mw,0)}
+.fl-hits rect{fill:transparent}
+.fmap.is-look .fl-hits rect,.fmap.is-test .fl-hits rect{cursor:pointer}
+.fl-veil{opacity:.82;pointer-events:none}
+.fl-ring rect{fill:none;stroke:var(--accent);stroke-width:3;pointer-events:none}
+.fl-cover{fill:#eceff4;stroke:#c9d0db;stroke-width:1.5;stroke-dasharray:6 5;pointer-events:none}
+.fl-cover.next{fill:#f3eff8;stroke:#7a3fb0}
+.fl-pill{font:600 13px Inter,sans-serif;fill:#7a3fb0;pointer-events:none}
+.fl-covers{pointer-events:none}
 /* a picture under each diagnosis (charts/figures.json) */
 .colfig{margin:0;background:#fff;border:1px solid var(--line);border-radius:9px;padding:5px;text-align:center}
 .colfig img{display:block;cursor:zoom-in;width:100%;height:120px;object-fit:contain;border-radius:5px}
