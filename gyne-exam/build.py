@@ -39,23 +39,23 @@ GENERAL = [(1, "The general approach"), (5, "Feedback during and after the exam"
 
 # manoeuvre name as the note shows it -> (problem heading, picture in img/)
 TESTS = {
-    "Position and drape": ("Before you touch", "position-and-drape.jpg"),
+    "Position and drape": ("Before you touch", None),
     "Inspect the vulva": ("The outside first", "inspect-the-vulva.jpg"),
     "Speculum insertion": ("Getting a view", "speculum-insertion.jpg"),
-    "Viewing the cervix": ("Getting a view", "viewing-the-cervix.jpg"),
-    "Speculum removal": ("Getting a view", "speculum-removal.jpg"),
-    "Cervical screening sample (HPV test)": ("Samples", "cervical-screening-sample.jpg"),
-    "Other swabs": ("Samples", "other-swabs.jpg"),
-    "Cervix": ("Pelvic infection or ectopic pregnancy", "bimanual-cervix.jpg"),
-    "Uterus": ("Enlarged or fixed uterus", "bimanual-uterus.jpg"),
-    "Adnexa (ovaries and tubes)": ("An ovarian or tubal mass", "bimanual-adnexa.jpg"),
-    "Position and drape (obstetrical)": ("Before you touch", "obstetrical-position-and-drape.jpg"),
-    "Symphysis-fundal height (SFH)": ("Is the baby growing?", "symphysis-fundal-height.jpg"),
+    "Viewing the cervix": ("Getting a view", None),
+    "Speculum removal": ("Getting a view", None),
+    "Cervical screening sample (HPV test)": ("Samples", None),
+    "Other swabs": ("Samples", None),
+    "Cervix": ("Pelvic infection or ectopic pregnancy", None),
+    "Uterus": ("Enlarged or fixed uterus", None),
+    "Adnexa (ovaries and tubes)": ("An ovarian or tubal mass", None),
+    "Position and drape (obstetrical)": ("Before you touch", None),
+    "Symphysis-fundal height (SFH)": ("Is the baby growing?", None),
     "Leopold's 1: fundal grip": ("How is the baby lying?", "leopolds-1-fundal-grip.jpg"),
     "Leopold's 2: lateral grip": ("How is the baby lying?", "leopolds-2-lateral-grip.jpg"),
     "Leopold's 3: pelvic grip (Pawlik's)": ("How is the baby lying?", "leopolds-3-pelvic-grip.jpg"),
     "Leopold's 4: deep pelvic grip": ("How is the baby lying?", "leopolds-4-deep-pelvic-grip.jpg"),
-    "Fetal heart rate": ("Is the baby well?", "fetal-heart-rate.jpg"),
+    "Fetal heart rate": ("Is the baby well?", None),
 }
 
 # Geeky Medics videos (slug = YouTube id), on each region's spine card

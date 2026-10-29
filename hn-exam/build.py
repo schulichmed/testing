@@ -43,7 +43,7 @@ GENERAL = [(1, "The general approach")]
 
 # manoeuvre name as the note shows it -> (problem heading, picture in img/)
 TESTS = {
-    "Inspect the eyes and eyelids": ("Look first", "inspect-the-eyes-and-eyelids.jpg"),
+    "Inspect the eyes and eyelids": ("Look first", None),
     "Pupils and light reflex": ("Pupils and movement (II, III, IV, VI)", "pupils-and-light-reflex.jpg"),
     "Eye movements": ("Pupils and movement (II, III, IV, VI)", "eye-movements.jpg"),
     "Visual fields by confrontation": ("Vision (II)", "visual-fields-by-confrontation.jpg"),
@@ -57,7 +57,7 @@ TESTS = {
     "Whisper or finger-rub test": ("Is there hearing loss? (VIII)", None),
     "Weber test": ("Which kind of hearing loss?", "weber-test.jpg"),
     "Rinne test": ("Which kind of hearing loss?", "rinne-test.jpg"),
-    "Nostril patency": ("Airflow", "nostril-patency.jpg"),
+    "Nostril patency": ("Airflow", None),
     "Septum and turbinates": ("Inside the nose", "septum-and-turbinates.jpg"),
     "Lips, tongue, teeth, gums and throat": ("Look first", "lips-tongue-teeth-gums-and-throat.jpg"),
     "Palate rise": ("Movement (IX, X, XII)", "palate-rise.jpg"),
@@ -69,7 +69,7 @@ TESTS = {
     "Lymph node palpation": ("Lumps and nodes", "lymph-node-palpation.jpg"),
     "Salivary glands": ("Lumps and nodes", "salivary-glands.jpg"),
     "Thyroid inspection": ("Thyroid", "thyroid-inspection.jpg"),
-    "Thyroid palpation": ("Thyroid", "thyroid-palpation.jpg"),
+    "Thyroid palpation": ("Thyroid", None),
 }
 
 # YouTube, Geeky Medics (ids checked with oEmbed on 2026-10-29)

@@ -36,16 +36,16 @@ REGIONS = {
 GENERAL = [(1, "The general approach")]
 
 TESTS = {
-    "Central cyanosis": ("Colour of the skin", "central-cyanosis.jpg"),
+    "Central cyanosis": ("Colour of the skin", None),
     "Peripheral cyanosis": ("Colour of the skin", "peripheral-cyanosis.jpg"),
     "Pallor": ("Colour of the skin", "pallor.jpg"),
-    "Plethora": ("Colour of the skin", "plethora.jpg"),
+    "Plethora": ("Colour of the skin", None),
     "Jaundice": ("Colour of the skin", "jaundice.jpg"),
     "Radial pulse": ("Rate, rhythm, amplitude, contour", "radial-pulse.jpg"),
     "Counting the respiratory rate": ("Rate and distress", "respiratory-rate.jpg"),
     "Palpated systolic estimate": ("Before the reading", "palpated-systolic-estimate.jpg"),
     "Auscultated blood pressure": ("The reading", "auscultated-bp.jpg"),
-    "Orthostatic blood pressure": ("Lying to standing", "orthostatic-bp.jpg"),
+    "Orthostatic blood pressure": ("Lying to standing", None),
 }
 
 OPENING = {

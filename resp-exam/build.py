@@ -42,15 +42,15 @@ GENERAL = [(1, "The general approach"), (2, "Before you examine: the respiratory
 
 # manoeuvre name as the note shows it -> (problem heading, picture in img/)
 TESTS = {
-    "Clubbing (Schamroth sign)": ("Hands: chronic lung disease", "clubbing-schamroth-sign.jpg"),
+    "Clubbing (Schamroth sign)": ("Hands: chronic lung disease", "schamroth-sign.jpg"),
     "Asterixis": ("Hands: chronic lung disease", None),
-    "Capillary refill": ("Hands: chronic lung disease", "capillary-refill.jpg"),
-    "Tracheal position": ("Neck: what is pushing or pulling", "tracheal-position.jpg"),
+    "Capillary refill": ("Hands: chronic lung disease", None),
+    "Tracheal position": ("Neck: what is pushing or pulling", None),
     "Cervical and supraclavicular lymph nodes": ("Neck: what is pushing or pulling", None),
-    "Chest shape and skin (SEADS)": ("Shape and movement", "chest-shape-and-skin-seads.jpg"),
-    "Respiratory movement and accessory muscles": ("Shape and movement", "respiratory-movement-and-accessory-muscles.jpg"),
+    "Chest shape and skin (SEADS)": ("Shape and movement", None),
+    "Respiratory movement and accessory muscles": ("Shape and movement", None),
     "Spine and renal angle tenderness": ("Tenderness", None),
-    "Chest expansion": ("Movement and vibration", "chest-expansion.jpg"),
+    "Chest expansion": ("Movement and vibration", None),
     "Tactile fremitus": ("Movement and vibration", None),
     "Percussing a lung field": ("Air, fluid or solid?", "posterior-ladder.jpg"),
     "Diaphragmatic excursion": ("Diaphragm", None),
@@ -60,8 +60,8 @@ TESTS = {
     "Anterior percussion": ("Front lung fields", "posterior-ladder.jpg"),
     "Anterior auscultation": ("Front lung fields", "anterior-auscultation.jpg"),
     "Right middle lobe": ("Front lung fields", "right-middle-lobe.jpg"),
-    "Clubbing (upper limb)": ("Hands and legs", "clubbing-schamroth-sign.jpg"),
-    "Pitting edema (lower limbs)": ("Hands and legs", "pitting-edema-lower-limbs.jpg"),
+    "Clubbing (upper limb)": ("Hands and legs", "clubbing.jpg"),
+    "Pitting edema (lower limbs)": ("Hands and legs", None),
 }
 
 EXAM = exam_page.Exam(

@@ -1,92 +1,92 @@
 [
- {
-  "test": "Radial pulse",
-  "file": "radial-pulse.jpg",
-  "slug": "radial-pulse.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2284",
-  "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-  "licence": "CC BY-NC 4.0",
-  "what_it_shows": "Assessing pulse"
- },
- {
-  "test": "Counting the respiratory rate",
-  "file": "respiratory-rate.jpg",
-  "slug": "respiratory-rate.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2284",
-  "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-  "licence": "CC BY-NC 4.0",
-  "what_it_shows": "Assessing pulse (fingers stay on the wrist while breathing is counted)"
- },
- {
-  "test": "Palpated systolic estimate",
-  "file": "palpated-systolic-estimate.jpg",
-  "slug": "palpated-systolic-estimate.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2312",
-  "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-  "licence": "CC BY-NC 4.0",
-  "what_it_shows": "Pulses (cuff on, radial pulse felt)"
- },
- {
-  "test": "Auscultated blood pressure",
-  "file": "auscultated-bp.jpg",
-  "slug": "auscultated-bp.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2250",
-  "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-  "licence": "CC BY-NC 4.0",
-  "what_it_shows": "BP assessment with results visible"
- },
- {
-  "test": "Central cyanosis",
-  "file": "central-cyanosis.jpg",
-  "slug": "central-cyanosis.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-  "author": "Drawn for this page by Noor Simsam",
-  "licence": "Original drawing (CC0)",
-  "what_it_shows": "blue lips (drawn diagram)"
- },
- {
-  "test": "Peripheral cyanosis",
-  "file": "peripheral-cyanosis.jpg",
-  "slug": "peripheral-cyanosis.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-  "author": "Drawn for this page by Noor Simsam",
-  "licence": "Original drawing (CC0)",
-  "what_it_shows": "blue fingertips (drawn diagram)"
- },
- {
-  "test": "Pallor",
-  "file": "pallor.jpg",
-  "slug": "pallor.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-  "author": "Drawn for this page by Noor Simsam",
-  "licence": "Original drawing (CC0)",
-  "what_it_shows": "pale lower-lid rim (drawn diagram)"
- },
- {
-  "test": "Plethora",
-  "file": "plethora.jpg",
-  "slug": "plethora.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-  "author": "Drawn for this page by Noor Simsam",
-  "licence": "Original drawing (CC0)",
-  "what_it_shows": "red skin (drawn diagram)"
- },
- {
-  "test": "Jaundice",
-  "file": "jaundice.jpg",
-  "slug": "jaundice.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-  "author": "Drawn for this page by Noor Simsam",
-  "licence": "Original drawing (CC0)",
-  "what_it_shows": "yellow sclera (drawn diagram)"
- },
- {
-  "test": "Orthostatic blood pressure",
-  "file": "orthostatic-bp.jpg",
-  "slug": "orthostatic-bp.jpg",
-  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-  "author": "Drawn for this page by Noor Simsam",
-  "licence": "Original drawing (CC0)",
-  "what_it_shows": "lying then standing (drawn diagram)"
- }
+  {
+    "test": "Radial pulse",
+    "file": "radial-pulse.jpg",
+    "slug": "radial-pulse.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2284",
+    "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "Assessing pulse"
+  },
+  {
+    "test": "Counting the respiratory rate",
+    "file": "respiratory-rate.jpg",
+    "slug": "respiratory-rate.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2284",
+    "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "Assessing pulse (fingers stay on the wrist while breathing is counted)"
+  },
+  {
+    "test": "Palpated systolic estimate",
+    "file": "palpated-systolic-estimate.jpg",
+    "slug": "palpated-systolic-estimate.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2312",
+    "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "Pulses (cuff on, radial pulse felt)"
+  },
+  {
+    "test": "Auscultated blood pressure",
+    "file": "auscultated-bp.jpg",
+    "slug": "auscultated-bp.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2250",
+    "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "BP assessment with results visible"
+  },
+  {
+    "test": "Central cyanosis",
+    "file": "central-cyanosis.jpg",
+    "slug": "central-cyanosis.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
+    "author": "Drawn for this page by Noor Simsam",
+    "licence": "Original drawing (CC0)",
+    "what_it_shows": "blue lips (drawn diagram)"
+  },
+  {
+    "test": "Plethora",
+    "file": "plethora.jpg",
+    "slug": "plethora.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
+    "author": "Drawn for this page by Noor Simsam",
+    "licence": "Original drawing (CC0)",
+    "what_it_shows": "red skin (drawn diagram)"
+  },
+  {
+    "test": "Orthostatic blood pressure",
+    "file": "orthostatic-bp.jpg",
+    "slug": "orthostatic-bp.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
+    "author": "Drawn for this page by Noor Simsam",
+    "licence": "Original drawing (CC0)",
+    "what_it_shows": "lying then standing (drawn diagram)"
+  },
+  {
+    "test": "Peripheral cyanosis",
+    "file": "peripheral-cyanosis.jpg",
+    "slug": "peripheral-cyanosis.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Cyanosis-adult_fingertips.PNG",
+    "author": "7mike5000 (derivative of a Wikimedia Commons photo)",
+    "licence": "CC BY-SA 3.0",
+    "what_it_shows": "Blue fingertips (peripheral cyanosis, here in Raynaud's phenomenon)"
+  },
+  {
+    "test": "Jaundice",
+    "file": "jaundice.jpg",
+    "slug": "jaundice.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Jaundice_of_the_sclerotic_(cropped).JPG",
+    "author": "Bobjgalindo",
+    "licence": "CC BY-SA 4.0",
+    "what_it_shows": "Yellow whites of the eyes (scleral icterus)"
+  },
+  {
+    "test": "Pallor",
+    "file": "pallor.jpg",
+    "slug": "pallor.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:PallorSkinTones.jpg",
+    "author": "Chidiebere Ibe",
+    "licence": "CC BY-SA 4.0, cropped",
+    "what_it_shows": "Pale tongue and pale inner lower eyelid beside normal (illustration)"
+  }
 ]
