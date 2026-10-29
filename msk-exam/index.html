@@ -170,8 +170,8 @@ body.quiz.hideimg .test img{display:none}
 <nav class="csn" aria-label="Physical exam">
 <a class="home" href="../clinical-skills/landing.html">All courses</a>
 <a class="home" href="../clinical-skills/exam.html">Physical exam &rsaquo;</a>
-<span class="soon" title="Coming soon">Vitals</span>
-<span class="soon" title="Coming soon">Respiratory</span>
+<a href="../clinical-skills/vitals.html">Vitals</a>
+<a href="../clinical-skills/resp.html">Respiratory</a>
 <a href="../clinical-skills/abdo.html">Abdominal</a>
 <span class="soon" title="Coming soon">Cardiovascular</span>
 <a href="../clinical-skills/breast.html">Breast</a>
@@ -235,9 +235,10 @@ body.quiz.hideimg .test img{display:none}
   document.getElementById('q').addEventListener('input',function(e){
     var q=e.target.value.trim().toLowerCase();
     document.querySelectorAll('.prob').forEach(function(p){
-      var ph=p.querySelector('h3').textContent.toLowerCase(), any=false;
+      var h=p.querySelector('h3'), ph=h?h.textContent.toLowerCase():'', any=false;
       p.querySelectorAll('.test').forEach(function(t){
-        var hit=!q||ph.indexOf(q)>-1||t.dataset.words.indexOf(q)>-1; t.classList.toggle('gone',!hit); any=any||hit;});
+        var words=t.dataset.words||t.textContent.toLowerCase();
+        var hit=!q||ph.indexOf(q)>-1||words.indexOf(q)>-1; t.classList.toggle('gone',!hit); any=any||hit;});
       p.classList.toggle('gone',!any);
     });
     document.querySelectorAll('.band').forEach(function(b){b.classList.toggle('gone',!b.querySelector('.prob:not(.gone)'))});

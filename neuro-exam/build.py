@@ -34,7 +34,7 @@ REGIONS = {
     6: ("reflexes", "Reflexes", "PPES 2 · Weeks 8–9", "#b4501f"),
     7: ("coordination", "Coordination", "PPES 2 · Weeks 8–9", "#7d6413"),
     8: ("gait", "Gait and balance", "PPES 2 · Weeks 8–9", "#2f6b4f"),
-    9: ("lesion", "Where is the lesion?", "PoM 2 · Neurology", "#4d5590"),
+    9: ("lesion", "Where is the lesion?", "PoM 2 · Neurology block", "#4d5590"),
 }
 
 # the note's opening section, shown as the first band
@@ -42,27 +42,31 @@ GENERAL = [(1, "The general approach")]
 
 # manoeuvre name as the note shows it -> (problem heading, picture in img/)
 TESTS = {
-    "CN I, olfactory: smell": ("Smell and hearing (I, VIII)", None),
-    "CN VIII, vestibulocochlear: hearing": ("Smell and hearing (I, VIII)", None),
+    "Language (aphasia screen)": ("Language", "language-aphasia-screen.jpg"),
+    "CN I, olfactory: smell": ("Smell and hearing (I, VIII)", "cn-i-olfactory-smell.jpg"),
+    "CN VIII, vestibulocochlear: hearing": ("Smell and hearing (I, VIII)", "cn-viii-vestibulocochlear-hearing.jpg"),
     "CN II, optic: visual acuity": ("The eye (II, III, IV, VI)", "cn-ii-optic-visual-acuity.jpg"),
     "CN II: visual fields by confrontation": ("The eye (II, III, IV, VI)", "cn-ii-visual-fields-by-confrontation.jpg"),
     "CN II and III: pupillary light reflex": ("The eye (II, III, IV, VI)", "cn-ii-and-iii-pupillary-light-reflex.jpg"),
-    "CN II: fundoscopy": ("The eye (II, III, IV, VI)", None),
+    "CN II: swinging light test": ("The eye (II, III, IV, VI)", "cn-ii-swinging-light-test.jpg"),
+    "CN II: fundoscopy": ("The eye (II, III, IV, VI)", "cn-ii-fundoscopy.jpg"),
     "CN III, IV, VI: eye movements": ("The eye (II, III, IV, VI)", "cn-iii-iv-vi-eye-movements.jpg"),
     "CN V, trigeminal: sensation": ("The face (V, VII)", "cn-v-trigeminal-sensation.jpg"),
     "CN V: motor": ("The face (V, VII)", None),
-    "CN V and VII: corneal reflex": ("The face (V, VII)", None),
+    "CN V and VII: corneal reflex": ("The face (V, VII)", "cn-v-and-vii-corneal-reflex.jpg"),
     "CN VII, facial: motor": ("The face (V, VII)", "cn-vii-facial-motor.jpg"),
     "CN VII: sensory": ("The face (V, VII)", None),
     "CN IX and X: palate": ("Throat, neck and tongue (IX–XII)", "cn-ix-and-x-palate.jpg"),
     "CN IX and X: gag reflex": ("Throat, neck and tongue (IX–XII)", None),
     "CN XI, spinal accessory": ("Throat, neck and tongue (IX–XII)", "cn-xi-spinal-accessory.jpg"),
     "CN XII, hypoglossal": ("Throat, neck and tongue (IX–XII)", "cn-xii-hypoglossal.jpg"),
+    "Pronator drift": ("Arm power (C5–T1)", "pronator-drift.jpg"),
     "Shoulder abduction": ("Arm power (C5–T1)", "shoulder-abduction.jpg"),
     "Elbow flexion": ("Arm power (C5–T1)", "elbow-flexion.jpg"),
     "Elbow extension": ("Arm power (C5–T1)", "elbow-extension.jpg"),
+    "Wrist extension": ("Arm power (C5–T1)", "wrist-extension.jpg"),
     "Finger abduction": ("Arm power (C5–T1)", "finger-abduction.jpg"),
-    "Grip strength": ("Arm power (C5–T1)", None),
+    "Grip strength": ("Arm power (C5–T1)", "grip-strength.jpg"),
     "Hip flexion": ("Leg power (L2–S1)", "hip-flexion.jpg"),
     "Knee extension": ("Leg power (L2–S1)", "knee-extension.jpg"),
     "Knee flexion": ("Leg power (L2–S1)", "knee-flexion.jpg"),
@@ -75,17 +79,32 @@ TESTS = {
     "Proprioception (joint position)": ("Vibration and position (dorsal columns)", "proprioception-joint-position.jpg"),
     "Stereognosis": ("Cortical sensation", None),
     "Graphesthesia": ("Cortical sensation", None),
+    "Extinction (both sides at once)": ("Cortical sensation", "extinction-both-sides-at-once.jpg"),
+    "Two-point discrimination": ("Cortical sensation", None),
+    # section 9: levels of the nervous system, not manoeuvres, so no picture; the region diagram stands in
+    "Cortex": ("Brain", None),
+    "Subcortex (white matter, internal capsule)": ("Brain", None),
+    "Brainstem": ("Brain", None),
+    "Cerebellum": ("Brain", None),
+    "Spinal cord": ("Spinal cord", None),
+    "Anterior horn cell": ("Spinal cord", None),
+    "Nerve root": ("Peripheral (lower motor neuron)", None),
+    "Plexus": ("Peripheral (lower motor neuron)", None),
+    "Peripheral nerve": ("Peripheral (lower motor neuron)", None),
+    "Neuromuscular junction": ("Peripheral (lower motor neuron)", None),
+    "Muscle": ("Peripheral (lower motor neuron)", None),
     "Biceps": ("Arm reflexes", "biceps.jpg"),
     "Brachioradialis": ("Arm reflexes", "brachioradialis.jpg"),
     "Triceps": ("Arm reflexes", "triceps.jpg"),
     "Knee (patellar)": ("Leg reflexes", "knee-patellar.jpg"),
     "Ankle (Achilles)": ("Leg reflexes", "ankle-achilles.jpg"),
     "Plantar response": ("Upper motor neuron sign", "plantar-response.jpg"),
+    "Ankle clonus": ("Upper motor neuron sign", None),
     "Rapid alternating movements": ("Arms", "rapid-alternating-movements.jpg"),
     "Finger-nose": ("Arms", "finger-nose.jpg"),
     "Heel-shin": ("Legs", "heel-shin.jpg"),
-    "Tandem gait": ("Walking", None),
-    "Romberg test": ("Balance", None),
+    "Tandem gait": ("Walking", "tandem-gait.jpg"),
+    "Romberg test": ("Balance", "romberg-test.jpg"),
 }
 
 EXAM = exam_page.Exam(
@@ -93,7 +112,7 @@ EXAM = exam_page.Exam(
     h1="Neurological exam, top down",
     lead="The general approach first, then each part of the exam in the order you do it: what to look for, "
          "each manoeuvre grouped under what it tests (numbered steps and what counts as positive), and its pearls. "
-         "Built from the course objectives; anything only the PoM 2 Neurology session teaches is tagged "
+         "Built from the course objectives and the PoM 2 Neurology lectures; anything only the PoM 2 Neurology session teaches is tagged "
          "<i>later</i>. For the dermatomes and myotomes drawn on a body, see the <a href=\"../body-map/\">body map</a>.",
     find="Find a manoeuvre or a level (e.g. C7, cerebellum)",
     root="Mental status → Cranial nerves → Motor → Sensory → Reflexes → Coordination → Gait",
@@ -105,6 +124,8 @@ EXAM = exam_page.Exam(
     clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
     general_title="General approach", general_week="Every neuro exam",
     spine_heading="What to look for", spine_title="Before the manoeuvres", pearls_heading="Pearls", count_noun="manoeuvres",
+    region_text={"lesion": {"count_noun": "levels", "spine_title": "The approach",
+                            "landmark_caption": "The approach to a neurological problem · tap to enlarge"}},
 )
 
 

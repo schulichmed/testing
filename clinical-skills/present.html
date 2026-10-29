@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#ffffff">
+<title>Presenting a case - Clinical skills</title>
+<script>
+(function(){
+  var root=document.documentElement,KEY="pc-theme",stored=null,mq=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  if(stored!=="dark"&&stored!=="light")stored=null;
+  if(window.matchMedia)mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function os(){return mq&&mq.matches?"dark":"light";}
+  function apply(t){
+    root.setAttribute("data-theme",t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute("content",t==="dark"?"#140c22":"#ffffff");
+    var b=document.getElementById("theme-btn");
+    if(!b)return;
+    b.setAttribute("aria-pressed",t==="dark"?"true":"false");
+    b.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" mode");
+    b.title=b.getAttribute("aria-label");
+  }
+  function follow(){if(!stored)apply(os());}
+  apply(stored||os());
+  if(mq&&mq.addEventListener)mq.addEventListener("change",follow);
+  else if(mq&&mq.addListener)mq.addListener(follow);
+  document.addEventListener("DOMContentLoaded",function(){apply(root.getAttribute("data-theme"));});
+  document.addEventListener("click",function(e){
+    var s=e.target&&e.target.closest?e.target.closest(".skip"):null;
+    if(s){
+      var c=document.getElementById("content");
+      if(c){e.preventDefault();c.focus();c.scrollIntoView();}
+      return;
+    }
+    /* Still gets one tab, reused, so a second click brings the music
+       forward rather than restarting it (see STILL_BTN) */
+    var m=e.target&&e.target.closest?e.target.closest(".still-btn,.still-strip"):null;
+    if(m){
+      if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      var w=null;
+      try{w=window.open("","still-music");}catch(e3){}
+      if(!w)return;
+      e.preventDefault();
+      try{if(w.location.href==="about:blank")w.location.replace(m.href);}catch(e4){}
+      try{w.focus();}catch(e5){}
+      return;
+    }
+    var b=e.target&&e.target.closest?e.target.closest("#theme-btn"):null;
+    if(!b)return;
+    stored=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    try{localStorage.setItem(KEY,stored);}catch(e2){}
+    /* a crossfade between the themes where the browser can draw one and the
+       reader has not asked for less motion; otherwise the switch is instant */
+    var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(document.startViewTransition&&!calm)document.startViewTransition(function(){apply(stored);});
+    else apply(stored);
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
+<style>
+/* topic cards: a block card led by its icon, drawn in the section's hue */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
+</style>
+<style>
+.cs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px;position:sticky;top:0;z-index:5;
+  padding:10px 0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.cs-mode{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--card-bg)}
+.cs-mode button{border:0;background:none;color:var(--text);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.cs-mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.cs-tools input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)}
+.cs-hint{width:100%;margin:0;font-size:.8rem;color:var(--muted)}
+.cs-sec{margin-top:30px;scroll-margin-top:80px}
+.cs-sec>h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.cs-sec>h2 .n{color:var(--q-accent-ink,var(--accent))}
+.cs-sec>h2 small{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cs-steps{margin-top:12px;padding:16px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.6}
+.cs-steps ul{margin:0;padding-left:1.1em}.cs-steps ul ul{margin-top:2px;color:var(--muted)}
+.cs-steps li{margin:3px 0}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.cs-card{background:var(--card-bg);border:1px solid var(--border);border-top:3px solid var(--q-accent,var(--accent));border-radius:8px;padding:14px 16px;font-size:.88rem;line-height:1.55}
+.cs-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.cs-card .for{color:var(--muted);margin:0 0 8px}
+.cs-card .lbl{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.cs-card ol{margin:0;padding-left:1.2em}
+.cs-card .ans{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--q-accent-soft,var(--accent-soft))}
+.cs-pearls{margin-top:12px;padding:12px 18px;border-left:3px solid var(--q-accent,var(--accent));background:var(--card-bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.cs-pearls ul{margin:0;padding-left:1.1em}
+mark{background:color-mix(in srgb,#ffd84d 55%,transparent);color:inherit;padding:0 2px;border-radius:2px}
+body.quiz .cs-card{cursor:pointer}
+body.quiz .cs-card .hide1,body.quiz .cs-card .hide2{display:none}
+body.quiz .cs-card.s1 .hide1,body.quiz .cs-card.s2 .hide1,body.quiz .cs-card.s2 .hide2{display:block}
+body.quiz .cs-card:not(.s2)::after{content:"tap to reveal";display:block;margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic}
+.cs-hidden{display:none!important}
+.cs-empty{color:var(--muted);margin-top:24px}
+.tag{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:.7rem;font-weight:600;white-space:nowrap;vertical-align:1px}
+.tag.adv{background:var(--q-accent-soft,var(--accent-soft));color:var(--q-accent-ink,var(--accent))}
+.tag.extra{border:1px solid var(--border);color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="pom2-page">
+<style>
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
+</style>
+<nav class="csn" aria-label="History taking">
+<a class="home" href="landing.html">All courses</a>
+<a class="home" href="history.html">History taking &rsaquo;</a>
+<a href="interview.html">Interview</a>
+<a href="humility.html">Cultural humility</a>
+<span class="here" aria-current="page">Presenting</span>
+<a href="obhx.html">OB/Gyn history</a>
+<a href="psychhx.html">Psychiatric</a>
+<span class="soon" title="Coming soon">Paediatric</span>
+<span class="soon" title="Coming soon">Geriatric</span>
+</nav>
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
+<p class="eyebrow">Schulich Clinical Skills &middot; History taking &middot; FoM &rarr; T2C</p>
+<h1>Presenting a Case</h1>
+<p class="lead">A case is presented in <b>the same order the history was taken</b>: <b>identification and chief complaint → history of presenting illness (HPI) with FIFE (Feelings, Ideas, Function, Expectations) → past history, medications, allergies → habits and social history → family history → pertinent review of systems → physical exam findings → one-line summary → problem list and differential diagnosis → plan</b>. Two rules run through it: <mark><b>present clearly and concisely, using the framework provided</b></mark> (the interviewing template), and <b>say what matters for this problem</b>, the findings that are present <i>and</i> the ones that are absent. In Year 2 the same structure becomes the written <mark><b>Problem-Oriented Clinical Record</b></mark>. Built from the Clinical Skills objectives (Introduction to Interviewing, Surgery, Consolidation), the faculty Interviewing Template, and the "Recording findings" example in the Primary Physical Exam Skills notes. The OneNote Surgery page is empty and there is no Consolidation page, so points marked <i>(upper-year notes)</i> come from upper-year templates, and <i><span class="tag extra">extra</span></i> marks the few points from neither.</p>
+</div>
+</header>
+
+<main>
+<div class="cs-tools">
+<div class="cs-mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button></div>
+<input type="search" id="cs-q" placeholder="Find a step or a test" autocomplete="off">
+<p class="cs-hint" id="cs-hint">Look: everything shown.</p>
+</div>
+<section class="cs-sec" id="s1"><h2><span class="n">1</span> The general approach</h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE, Teaching Objective Structured Clinical Exam)</b>: "[Name] is a [age]-year-old [occupation] who presents with [chief complaint] for [how long]."</li><li><b>Who you present to</b>: <mark>present the case to <b>peers and faculty</b> (your group and facilitator) in a <b>clear, concise</b> manner, <b>using the framework provided</b></mark>; in Surgery, <mark>to the <b>consultant</b></mark></li><li><b>Keep the order</b>: the order of the interviewing template, every time, so the listener knows where you are</li><li><b>Tell a story</b>: the HPI in <b>time order</b>, from the first symptom to today</li><li><b>Be selective</b>: give the <b>pertinent positives and negatives</b> for the chief complaint; "non-contributory" covers the rest <i><span class="tag extra">extra</span></i></li><li><b>End with your thinking</b>: summary → what you think is going on → what you would do next</li><li><b>Then ask for feedback</b>: <mark>reflect on the encounter and use <b>feedback from peers, standardized patients (SPs) and facilitators</b> to improve</mark>; <mark><b>give constructive feedback</b> on your peers' encounters</mark></li></ul></div></section><section class="cs-sec" id="s2"><h2><span class="n">2</span> The oral presentation, part by part<small>FoM · Introduction to Interviewing</small></h2><div class="cs-grid"><article class="cs-card"><h3><b>Identification and chief complaint</b></h3><p class="for">Who the patient is and why they came</p><div class="hide1"><span class="lbl">What to say</span><p><i>"Ms. A is a 54-year-old teacher who presents with three days of chest pain."</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Leaving out how long</b> the problem has gone on</div></div></article><article class="cs-card"><h3><b>History of presenting illness</b></h3><p class="for">The story of the main problem</p><div class="hide1"><span class="lbl">What to say</span><p><i>"It began suddenly while she was walking. It is a pressure-like pain in the centre of the chest…"</i>: site, onset, character, radiation, associated symptoms, timeline, what makes it worse or better, severity</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Jumping around in time</b> · <b>forgetting what the patient has already tried</b></div></div></article><article class="cs-card"><h3><b>The patient's illness experience (FIFE)</b></h3><p class="for">The person, not just the disease</p><div class="hide1"><span class="lbl">What to say</span><p><i>"She is frightened because her father had a heart attack at her age, and she hopes to find out whether this is her heart."</i></p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Dropping FIFE</b> from the presentation</div></div></article><article class="cs-card"><h3><b>Past medical history</b></h3><p class="for">Conditions that change the picture</p><div class="hide1"><span class="lbl">What to say</span><p>Chronic illnesses, hospitalizations, surgeries, mental health history, vaccines and screening</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span>Listing every childhood illness instead of <b>what is relevant</b></div></div></article><article class="cs-card"><h3><b>Medications and allergies</b></h3><p class="for">Safety</p><div class="hide1"><span class="lbl">What to say</span><p>Each medication with <b>dose and frequency</b> · adherence · <b>allergies with the reaction</b></p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span>Saying "on a blood pressure pill" with <b>no name or dose</b> · "allergic to penicillin" with <b>no reaction</b></div></div></article><article class="cs-card"><h3><b>Habits and social history</b></h3><p class="for">Risk factors and context</p><div class="hide1"><span class="lbl">What to say</span><p>Smoking (<b>pack-years</b>), alcohol, drugs · work, living situation, supports · ADLs and IADLs (activities of daily living and instrumental activities of daily living) when function matters</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Skipping</b> social history, or giving it <b>without the impact on the illness</b></div></div></article><article class="cs-card"><h3><b>Family history</b></h3><p class="for">Inherited risk</p><div class="hide1"><span class="lbl">What to say</span><p>Conditions in parents, siblings and children <b>relevant to the complaint</b>, with ages</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span>"Family history negative" without <b>saying for what</b></div></div></article><article class="cs-card"><h3><b>Review of systems</b></h3><p class="for">Anything else found</p><div class="hide1"><span class="lbl">What to say</span><p><b>Only the positives</b> and the <b>negatives that matter</b> for this complaint</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Reading the whole review of systems aloud</b></div></div></article><article class="cs-card"><h3><b>Physical exam</b></h3><p class="for">The findings</p><div class="hide1"><span class="lbl">What to say</span><p>General appearance and vital signs first (section 3), then the system examined</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Interpreting</b> ("looks like heart failure") instead of <b>describing what you found</b></div></div></article></div></section><section class="cs-sec" id="s3"><h2><span class="n">3</span> Reporting the physical exam<small>FoM · Primary Physical Exam Skills</small></h2><div class="cs-steps"><ul><li><b>General inspection, as one sentence</b>: "[Name] is a [age]-year-old [woman/man], well-groomed, well-oriented. Calm affect. Stable mood. No cyanosis, plethora, pallor, jaundice, or skin signs. No involuntary movements or abnormal odours."</li><li><b>Vital signs, with their quality</b>: "Heart rate is [X], regular rhythm, normal amplitude and contour; respiratory rate is [X]; blood pressure is [X] (right and left arms); temperature is [X]."</li><li>When findings are abnormal, <b>describe what you see</b>: distress, how many words they can say per breath, position, muscle use, which arm the blood pressure was taken in</li><li>Then the <b>system you examined</b>, in its usual order (inspection, palpation, percussion, auscultation, or look, feel, move)</li></ul></div></section><section class="cs-sec" id="s4"><h2><span class="n">4</span> Summary, differential diagnosis and plan<small>advanced: T2C Surgery, Consolidation</small></h2><div class="cs-steps"><ul><li><b>One-line summary</b>: age, key background, the main problem and the <b>key findings</b> from history and exam</li><li><b>Differential diagnosis</b>: <mark><b>formulate and prioritize</b> a differential diagnosis from the history and physical exam, <b>most urgent conditions first</b></mark><ul><li>run the <b>VITAMIN C&amp;D</b> checklist so nothing is missed: <b>V</b>ascular · <b>I</b>nfection/inflammation · <b>T</b>rauma · <b>A</b>utoimmune, acquired, allergic · <b>M</b>etabolic, mental health · <b>I</b>atrogenic (caused by treatment) · <b>N</b>eoplasm · <b>C</b>ongenital, cyst · <b>D</b>egenerative <i>(upper-year notes)</i></li></ul></li><li><b>Plan</b>: <mark>a <b>preliminary diagnostic and therapeutic plan</b></mark>: what tests, what treatment, what follow-up<ul><li><mark><b>research the necessary investigations</b> for the most likely diagnoses and develop a <b>management plan</b>, including evidence-based <b>lifestyle factors: nutrition, stress management, restorative sleep and physical activity</b></mark></li><li><mark>appreciate the <b>roles of other health care professionals</b> in the patient's care</mark></li></ul></li><li><b>Common ground</b>: <mark><b>establish common ground</b> in the doctor–patient encounter</mark>: the plan you present is the one <b>the patient agreed to</b>, and you say what they expect</li></ul></div></section><section class="cs-sec" id="s5"><h2><span class="n">5</span> The write-up: Problem-Oriented Clinical Record<small>advanced: T2C Consolidation</small></h2><div class="cs-steps"><ul><li><mark><b>Document the history, physical exam and problem list</b> in a <b>Problem-Oriented Clinical Record</b></mark>, and <mark>use it to <b>document a complete clinical encounter</b></mark></li><li><mark>Create the written record of the encounter in an <b>organized, concise</b> manner</mark></li><li>To pass Consolidation: <mark><b>one observed history and physical exam</b></mark> and <mark><b>two written patient record assessments</b></mark>, submitted by your facilitator's due date</li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>History</b></h3><p class="for">The full database</p><div class="hide1"><span class="lbl">What to write</span><p>Every part of the interviewing template, in order, in full sentences or clear notes</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span>Writing it as a <b>transcript of the conversation</b> instead of under the template's headings</div></div></article><article class="cs-card"><h3><b>Physical exam</b></h3><p class="for">Findings</p><div class="hide1"><span class="lbl">What to write</span><p>General appearance, vital signs, then each system examined</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Leaving out normal findings</b> that matter for the complaint</div></div></article><article class="cs-card"><h3><b>Problem list</b></h3><p class="for">Every active issue</p><div class="hide1"><span class="lbl">What to write</span><p>Each problem on its own line: the <b>chief complaint first</b>, then the others found (e.g. high blood pressure, smoking, food insecurity)</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span>Listing <b>only the chief complaint</b></div></div></article><article class="cs-card"><h3><b>Assessment and plan, per problem</b></h3><p class="for">Your reasoning</p><div class="hide1"><span class="lbl">What to write</span><p>For each problem: <b>prioritized differential</b>, then <b>investigations, treatment and follow-up</b>, including lifestyle advice</p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>One plan for everything</b> instead of a plan <b>for each problem</b> <i><span class="tag extra">extra</span></i></div></div></article><article class="cs-card"><h3><b>Learning issues</b></h3><p class="for">What you need to read</p><div class="hide1"><span class="lbl">What to write</span><p><mark><b>Personal learning issues and goals</b> raised by this patient</mark></p></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span>Leaving it blank</div></div></article></div></section><section class="cs-sec" id="s6"><h2><span class="n">6</span> Presenting a surgical patient<small>advanced: T2C Surgery</small></h2><div class="cs-steps"><ul><li><mark>Conduct a <b>focused history and physical exam</b> of a patient with a <b>potential surgical condition</b>, using <b>surgical principles</b></mark></li><li><mark>Perform at least one surgical history and physical and <b>synthesize it into a diagnosis and plan</b></mark></li><li><mark><b>Summarize</b> one surgical history and physical for <b>presentation to the consultant</b>, using the <b>Problem-Oriented Medical Record</b> as the framework</mark></li><li><mark>Create a <b>preliminary differential diagnosis</b>, and a <b>diagnostic and therapeutic plan</b></mark></li><li><mark>Explain <b>how the surgical process affects the patient</b> (patient-centred care)</mark>: use FIFE: their <b>feelings</b> about an operation, what they <b>think</b> will be done, how recovery will affect <b>work and home</b>, and what they <b>expect</b> afterwards</li><li>For an urgent surgical problem, the history adds <b>SAMPLE</b> <i>(upper-year notes)</i>:<ul><li><b>S</b>igns and symptoms · <b>A</b>llergies · <b>M</b>edications · <b>P</b>ast medical history, including <b>past surgeries and any reactions to anaesthesia</b> · <b>L</b>ast meal · <b>E</b>vents leading up to the problem</li></ul></li></ul></div></section><section class="cs-sec" id="s7"><h2><span class="n">7</span> After the presentation<small>advanced: T2C Consolidation</small></h2><div class="cs-steps"><ul><li><mark>Identify <b>personal learning issues and goals</b> from the patient encounter</mark></li><li><mark>Build on <b>self-reflection and faculty feedback</b> to keep improving communication, clinical skills and <b>clinical reasoning</b></mark></li></ul></div></section>
+</main>
+<script>
+(function(){
+  var body=document.body,hint=document.getElementById("cs-hint");
+  document.querySelectorAll(".cs-mode button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".cs-mode button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+      body.classList.toggle("quiz",b.dataset.m==="quiz");
+      document.querySelectorAll(".cs-card").forEach(function(c){c.classList.remove("s1","s2");});
+      hint.textContent=b.dataset.m==="quiz"?"Test: tap a card to show its steps, then tap again for the answer.":"Look: everything shown.";
+    });
+  });
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest(".cs-card");
+    if(!c||!body.classList.contains("quiz"))return;
+    if(c.classList.contains("s1"))c.classList.replace("s1","s2");else if(!c.classList.contains("s2"))c.classList.add("s1");
+  });
+  var q=document.getElementById("cs-q");
+  q.addEventListener("input",function(){
+    var words=q.value.toLowerCase().split(/\s+/).filter(Boolean),shown=0;
+    document.querySelectorAll(".cs-card").forEach(function(c){
+      var t=c.textContent.toLowerCase(),ok=words.every(function(w){return t.indexOf(w)>-1;});
+      c.classList.toggle("cs-hidden",!ok);if(ok)shown++;
+    });
+    document.querySelectorAll(".cs-sec").forEach(function(s){
+      var cards=s.querySelectorAll(".cs-card"),any=!words.length||s.textContent.toLowerCase().indexOf(words[0])>-1;
+      if(cards.length&&words.length)any=Array.prototype.some.call(cards,function(c){return !c.classList.contains("cs-hidden");});
+      s.classList.toggle("cs-hidden",words.length>0&&!any);
+    });
+  });
+})();
+</script>
+
+<footer>
+<p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
+</footer>
+</div>
+</body>
+</html>

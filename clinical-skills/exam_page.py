@@ -68,6 +68,9 @@ class Exam:
         Heading of the card that closes each region.
     count_noun : str
         What a region's band header counts ("special tests", "manoeuvres").
+    region_text : dict
+        Region key -> {count_noun, spine_title, landmark_caption}, any of which overrides the
+        exam-wide wording for that one region (neuro's "levels" and "The approach").
     video : dict
         Test name -> slug in the main channel's videos.json.
     video_page : str
@@ -104,6 +107,7 @@ class Exam:
     spine_title: str = "Look · Feel · Move"
     pearls_heading: str = "Pearls"
     count_noun: str = "special tests"
+    region_text: dict = field(default_factory=dict)
     video: dict = field(default_factory=dict)
     video_page: str = ""
     region_video: dict = field(default_factory=dict)
@@ -406,9 +410,11 @@ def landmarks(exam: Exam, key: str) -> str:
     name = f"{key}-landmarks.jpg"
     if not (exam.folder / "img" / name).exists():
         return ""
+    caption = exam.region_text.get(key, {}).get("landmark_caption")
+    alt = f"{html.escape(next(r[1] for r in exam.regions.values() if r[0] == key))} diagram" if caption else f"Landmarks to feel: {key}"
     return (f'<figure class="lm"><a href="img/{name}" target="_blank" rel="noopener">'
-            f'<img src="img/{name}" alt="Landmarks to feel: {key}" loading="lazy"></a>'
-            f'<figcaption>Landmarks to feel · tap to enlarge</figcaption></figure>')
+            f'<img src="img/{name}" alt="{alt}" loading="lazy"></a>'
+            f'<figcaption>{html.escape(caption) if caption else "Landmarks to feel · tap to enlarge"}</figcaption></figure>')
 
 
 def render(exam: Exam, regions: list[dict], credits: list[dict]) -> str:
@@ -419,7 +425,7 @@ def render(exam: Exam, regions: list[dict], credits: list[dict]) -> str:
     for r in regions:
         wides = [("", t, b, exam.region_video.get(t), "", t) for t, b in r["wide"]]
         if r["exam"]:
-            wides.insert(0, (exam.spine_heading, exam.spine_title, opening(exam, r["key"]) + r["exam"],
+            wides.insert(0, (exam.spine_heading, exam.region_text.get(r["key"], {}).get("spine_title", exam.spine_title), opening(exam, r["key"]) + r["exam"],
                              exam.region_video.get(r["key"]), landmarks(exam, r["key"]), r["key"]))
         top = "".join(f'<div class="prob">{f"<h3>{html.escape(h)}</h3>" if h else ""}'
                       f'<div class="tests">{wide_card(exam, t, b, v, side, k)}</div></div>' for h, t, b, v, side, k in wides)
@@ -430,11 +436,14 @@ def render(exam: Exam, regions: list[dict], credits: list[dict]) -> str:
         foot = (f'<div class="prob"><h3>{html.escape(exam.pearls_heading)}</h3><div class="tests">'
                 f'{wide_card(exam, "Remember", r["pearls"])}</div></div>' if r["pearls"] else "")
         n = sum(len(p["tests"]) for p in r["problems"])
-        count = f" · {n} {exam.count_noun}" if n else ""
+        noun = exam.region_text.get(r["key"], {}).get("count_noun", exam.count_noun)
+        count = f" · {n} {noun}" if n else ""
         bands.append(f'<section class="band" id="{r["key"]}" style="--c:{r["color"]}">'
                      f'<header class="bandhead"><h2>{r["title"]}</h2><span>{r["week"]}{count}</span></header>'
                      f'{top}{probs}{foot}</section>')
-    landmark_names = {f"Landmarks: {key}": f"{title} landmarks diagram" for key, title, _w, _c in exam.regions.values()}
+    landmark_names = {f"Landmarks: {key}": (f"{title} diagram" if "landmark_caption" in exam.region_text.get(key, {})
+                                            else f"{title} landmarks diagram")
+                      for key, title, _w, _c in exam.regions.values()}
     items = "".join(
         f'<li>{html.escape(landmark_names.get(c["test"], c["test"]))}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
         f'<a href="{html.escape(c["source_page_url"])}">source</a></li>' for c in credits)
@@ -580,9 +589,10 @@ body.quiz.hideimg .test img{display:none}
   document.getElementById('q').addEventListener('input',function(e){
     var q=e.target.value.trim().toLowerCase();
     document.querySelectorAll('.prob').forEach(function(p){
-      var ph=p.querySelector('h3').textContent.toLowerCase(), any=false;
+      var h=p.querySelector('h3'), ph=h?h.textContent.toLowerCase():'', any=false;
       p.querySelectorAll('.test').forEach(function(t){
-        var hit=!q||ph.indexOf(q)>-1||t.dataset.words.indexOf(q)>-1; t.classList.toggle('gone',!hit); any=any||hit;});
+        var words=t.dataset.words||t.textContent.toLowerCase();
+        var hit=!q||ph.indexOf(q)>-1||words.indexOf(q)>-1; t.classList.toggle('gone',!hit); any=any||hit;});
       p.classList.toggle('gone',!any);
     });
     document.querySelectorAll('.band').forEach(function(b){b.classList.toggle('gone',!b.querySelector('.prob:not(.gone)'))});

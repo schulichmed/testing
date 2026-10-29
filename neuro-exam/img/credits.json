@@ -268,5 +268,123 @@
   "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
   "licence": "CC BY-NC 4.0",
   "what_it_shows": "Coordination: heel to shin"
+ },
+ {
+  "test": "CN I, olfactory: smell",
+  "file": "cn-i-olfactory-smell.jpg",
+  "slug": "cn-i-olfactory-smell.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:Sniffin%E2%80%99_Sticks_test.jpg",
+  "author": "Kosmider (Wikimedia Commons)",
+  "licence": "Public domain (cropped, date stamp removed, lower face blurred)",
+  "what_it_shows": "A blindfolded person sniffs an odour pen that the examiner holds under one nostril, with the rest of the pen set in front; it is a formal Sniffin' Sticks kit rather than coffee, and the other nostril is not shown blocked."
+ },
+ {
+  "test": "CN II: fundoscopy",
+  "file": "cn-ii-fundoscopy.jpg",
+  "slug": "cn-ii-fundoscopy.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC13571928",
+  "author": "Shiokawa A, Monteiro MLR, Massuda R, et al., Clinics (Sao Paulo) 2026, Fig. 2B",
+  "licence": "CC BY 4.0 (cropped to panel B, examiner's face and name badge blurred; patient's eyes barred in the original)",
+  "what_it_shows": "The examiner, seated beside the patient, brings a direct ophthalmoscope close to her right eye from the side with his other hand steadying her forehead."
+ },
+ {
+  "test": "CN VIII, vestibulocochlear: hearing",
+  "file": "cn-viii-vestibulocochlear-hearing.jpg",
+  "slug": "cn-viii-vestibulocochlear-hearing.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:Weberversuch.png",
+  "source_page_url_2": "https://commons.wikimedia.org/wiki/File:Rinneversuch.png",
+  "author": "Ziyun518 (Wikimedia Commons)",
+  "licence": "CC0 (two drawings placed side by side)",
+  "what_it_shows": "Two unlabelled pencil drawings: left, a tuning fork stem on the top of the head (Weber); right, a tuning fork stem on the mastoid behind the ear (Rinne)."
+ },
+ {
+  "test": "Grip strength",
+  "file": "grip-strength.jpg",
+  "slug": "grip-strength.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:Hand_dynamometer.jpg",
+  "author": "Ashashyou (Wikimedia Commons)",
+  "licence": "CC0 (resized)",
+  "what_it_shows": "A hand squeezing a dial hand-grip dynamometer, the device version of the grip test, not the two-finger squeeze."
+ },
+ {
+  "test": "Tandem gait",
+  "file": "tandem-gait.jpg",
+  "slug": "tandem-gait.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC11678946",
+  "author": "Wahlquist VE, Buckley TA, Caccese JB, Glutting JJ, Royer TD, Kaminski TW, Sports (Basel) 2024, Fig. 4",
+  "licence": "CC BY 4.0 (resized)",
+  "what_it_shows": "Legs from the knee down walking heel to toe along a straight tape line on the floor, the front heel touching the back toes."
+ },
+ {
+  "test": "Romberg test",
+  "file": "romberg-test.jpg",
+  "slug": "romberg-test.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC12308617",
+  "author": "Caricato F, Noto AM, Sanzone E, Donati P, Parchi PD, Cureus 2025, Fig. 2",
+  "licence": "CC BY 4.0 (resized)",
+  "what_it_shows": "A drawing of a person standing with feet together, front (A) and side (B) views, with dotted outlines and arrows showing side-to-side and front-to-back sway; it shows no closed eyes or examiner."
+ },
+ {
+  "test": "Landmarks: lesion",
+  "file": "lesion-landmarks.jpg",
+  "slug": "lesion-landmarks.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for medwiki (own work)",
+  "licence": "CC0",
+  "what_it_shows": "Approach to a neurological problem: describe, localize, differential"
+ },
+ {
+  "test": "Language (aphasia screen)",
+  "file": "language-aphasia-screen.jpg",
+  "slug": "language-aphasia-screen.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1780",
+  "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Language testing stroke card: patient names the pictured objects."
+ },
+ {
+  "test": "Pronator drift",
+  "file": "pronator-drift.jpg",
+  "slug": "pronator-drift.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1616",
+  "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Sitting power exam: pronator drift. Arms held out, palms up, eyes closed, watching for a drift."
+ },
+ {
+  "test": "Wrist extension",
+  "file": "wrist-extension.jpg",
+  "slug": "wrist-extension.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1594",
+  "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Motor testing: wrist extension held against resistance, compared side to side."
+ },
+ {
+  "test": "Extinction (both sides at once)",
+  "file": "extinction-both-sides-at-once.jpg",
+  "slug": "extinction-both-sides-at-once.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1828",
+  "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "NIHSS item 11: sensory extinction, both legs touched at once."
+ },
+ {
+  "test": "CN II: swinging light test",
+  "file": "cn-ii-swinging-light-test.jpg",
+  "slug": "cn-ii-swinging-light-test.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2483",
+  "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0 (frame from video)",
+  "what_it_shows": "Penlight on one eye with the other eye in view (frame at 1:04 of Pupillary Light Response and RAPD)."
+ },
+ {
+  "test": "CN V and VII: corneal reflex",
+  "file": "cn-v-and-vii-corneal-reflex.jpg",
+  "slug": "cn-v-and-vii-corneal-reflex.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (medwiki)",
+  "licence": "CC0",
+  "what_it_shows": "Cotton wisp approaching the cornea from the side while the patient looks up and away."
  }
 ]

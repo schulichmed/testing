@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#ffffff">
+<title>Vital signs - Clinical skills</title>
+<script>
+(function(){
+  var root=document.documentElement,KEY="pc-theme",stored=null,mq=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  if(stored!=="dark"&&stored!=="light")stored=null;
+  if(window.matchMedia)mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function os(){return mq&&mq.matches?"dark":"light";}
+  function apply(t){
+    root.setAttribute("data-theme",t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute("content",t==="dark"?"#140c22":"#ffffff");
+    var b=document.getElementById("theme-btn");
+    if(!b)return;
+    b.setAttribute("aria-pressed",t==="dark"?"true":"false");
+    b.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" mode");
+    b.title=b.getAttribute("aria-label");
+  }
+  function follow(){if(!stored)apply(os());}
+  apply(stored||os());
+  if(mq&&mq.addEventListener)mq.addEventListener("change",follow);
+  else if(mq&&mq.addListener)mq.addListener(follow);
+  document.addEventListener("DOMContentLoaded",function(){apply(root.getAttribute("data-theme"));});
+  document.addEventListener("click",function(e){
+    var s=e.target&&e.target.closest?e.target.closest(".skip"):null;
+    if(s){
+      var c=document.getElementById("content");
+      if(c){e.preventDefault();c.focus();c.scrollIntoView();}
+      return;
+    }
+    /* Still gets one tab, reused, so a second click brings the music
+       forward rather than restarting it (see STILL_BTN) */
+    var m=e.target&&e.target.closest?e.target.closest(".still-btn,.still-strip"):null;
+    if(m){
+      if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      var w=null;
+      try{w=window.open("","still-music");}catch(e3){}
+      if(!w)return;
+      e.preventDefault();
+      try{if(w.location.href==="about:blank")w.location.replace(m.href);}catch(e4){}
+      try{w.focus();}catch(e5){}
+      return;
+    }
+    var b=e.target&&e.target.closest?e.target.closest("#theme-btn"):null;
+    if(!b)return;
+    stored=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    try{localStorage.setItem(KEY,stored);}catch(e2){}
+    /* a crossfade between the themes where the browser can draw one and the
+       reader has not asked for less motion; otherwise the switch is instant */
+    var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(document.startViewTransition&&!calm)document.startViewTransition(function(){apply(stored);});
+    else apply(stored);
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
+<style>
+/* topic cards: a block card led by its icon, drawn in the section's hue */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
+</style>
+<style>
+.cs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px;position:sticky;top:0;z-index:5;
+  padding:10px 0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.cs-mode{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--card-bg)}
+.cs-mode button{border:0;background:none;color:var(--text);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.cs-mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.cs-tools input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)}
+.cs-hint{width:100%;margin:0;font-size:.8rem;color:var(--muted)}
+.cs-sec{margin-top:30px;scroll-margin-top:80px}
+.cs-sec>h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.cs-sec>h2 .n{color:var(--q-accent-ink,var(--accent))}
+.cs-sec>h2 small{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cs-steps{margin-top:12px;padding:16px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.6}
+.cs-steps ul{margin:0;padding-left:1.1em}.cs-steps ul ul{margin-top:2px;color:var(--muted)}
+.cs-steps li{margin:3px 0}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.cs-card{background:var(--card-bg);border:1px solid var(--border);border-top:3px solid var(--q-accent,var(--accent));border-radius:8px;padding:14px 16px;font-size:.88rem;line-height:1.55}
+.cs-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.cs-card .for{color:var(--muted);margin:0 0 8px}
+.cs-card .lbl{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.cs-card ol{margin:0;padding-left:1.2em}
+.cs-card .ans{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--q-accent-soft,var(--accent-soft))}
+.cs-pearls{margin-top:12px;padding:12px 18px;border-left:3px solid var(--q-accent,var(--accent));background:var(--card-bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.cs-pearls ul{margin:0;padding-left:1.1em}
+mark{background:color-mix(in srgb,#ffd84d 55%,transparent);color:inherit;padding:0 2px;border-radius:2px}
+body.quiz .cs-card{cursor:pointer}
+body.quiz .cs-card .hide1,body.quiz .cs-card .hide2{display:none}
+body.quiz .cs-card.s1 .hide1,body.quiz .cs-card.s2 .hide1,body.quiz .cs-card.s2 .hide2{display:block}
+body.quiz .cs-card:not(.s2)::after{content:"tap to reveal";display:block;margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic}
+.cs-hidden{display:none!important}
+.cs-empty{color:var(--muted);margin-top:24px}
+.tag{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:.7rem;font-weight:600;white-space:nowrap;vertical-align:1px}
+.tag.adv{background:var(--q-accent-soft,var(--accent-soft));color:var(--q-accent-ink,var(--accent))}
+.tag.extra{border:1px solid var(--border);color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="pom2-page">
+<style>
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
+</style>
+<nav class="csn" aria-label="Physical exam">
+<a class="home" href="landing.html">All courses</a>
+<a class="home" href="exam.html">Physical exam &rsaquo;</a>
+<span class="here" aria-current="page">Vitals</span>
+<a href="resp.html">Respiratory</a>
+<a href="abdo.html">Abdominal</a>
+<span class="soon" title="Coming soon">Cardiovascular</span>
+<a href="breast.html">Breast</a>
+<a href="hn.html">Head and neck</a>
+<a href="../neuro-exam/">Neuro</a>
+<a href="../msk-exam/">MSK</a>
+<a href="gu.html">Male GU</a>
+<a href="gyne.html">Pelvic</a>
+</nav>
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
+<p class="eyebrow">Schulich Clinical Skills &middot; Physical exam &middot; FoM</p>
+<h1>Vital signs and general inspection</h1>
+<p class="lead">Every exam opens the same way: <b>General inspection → Pulse → Respiratory rate → Blood pressure → (Temperature, oxygen saturation)</b>. Two rules run through it: the <b>general survey starts the moment you meet the patient</b> (build, mood and behaviour first, refined as you go), and <b>anything paired is checked on both sides and compared</b> (radial pulses, blood pressure in both arms).</p>
+</div>
+</header>
+
+<main>
+<div class="cs-tools">
+<div class="cs-mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button></div>
+<input type="search" id="cs-q" placeholder="Find a step or a test" autocomplete="off">
+<p class="cs-hint" id="cs-hint">Look: everything shown.</p>
+</div>
+<section class="cs-sec" id="s1"><h2><span class="n">1</span> The general approach</h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE)</b>: "Hello, I'm ___, a medical student. Can I check your name against your wristband? I'd like to check your vital signs, which means feeling your pulse and taking your blood pressure in both arms. Is that alright?" Then wash your hands (15 seconds), clean the stethoscope, and put on any protective equipment needed.</li><li><b>Set up</b>: <mark>comfort, modesty and confidentiality</mark>: draw the curtain, drape properly, adjust the room to suit the patient and you, and <mark>watch for signs of discomfort</mark> throughout<ul><li>explain each step in plain words ("I'm going to feel your pulse"), with clear, respectful instructions</li><li>warm your hands and instruments; patient relaxed, sitting or lying</li></ul></li><li><b>Inspect</b> (general survey): appearance and manner, mental state, affect, build, skin colour, movements, odours</li><li><b>Pulse</b>: radial, counted and described, then the other side</li><li><b>Respiratory rate</b>: counted while you still seem to be taking the pulse</li><li><b>Blood pressure</b>: both arms, then an orthostatic (lying-to-standing) check</li><li><b>Temperature</b>: know the normal values by site (understand the technique; it is not performed in the session)</li></ul></div></section><section class="cs-sec" id="s2"><h2><span class="n">2</span> General inspection<small>FoM · PPES 1 Week 1</small></h2><div class="cs-steps"><ul><li><b>A. <mark>General appearance and manner</mark></b>: <mark>awareness, dress, speech, posture, gait, greeting and shaking hands, facial expression, relationship with accompanying relatives</mark><ul><li><b>Ill or well?</b> Any acute distress:</li><ul><li><b>cardiac or respiratory</b>: shortness of breath (dyspnea), laboured breathing, wheezing, chest pain, pallor, sweating (diaphoresis), cough</li><li><b>pain</b>: sweating, wincing, guarding the painful area</li><li><b>anxiety</b>: anxious face, fidgety, cold or moist palms</li><li><b>depression</b>: flat affect, poor eye contact, slowed movement (psychomotor slowing)</li></ul></li><li><b>dress, grooming, hygiene</b>: right for the weather, and for age and circumstances?</li><li><b>scan the room</b> for hints: bedside items, walking aid, oxygen tank, IV line</li></ul><li><b>B. <mark>Mental state and behaviour</mark></b>: <mark>mood, orientation, memory, attention, concentration, intelligence, insight and judgment</mark><ul><li>level of consciousness: awake, alert, responding to you?</li><li>facial expression, eye contact, speech (articulation, fluency, hoarseness)</li></ul></li><li><b>C. <mark>Affect</mark></b>: <mark>e.g. calm, nervous, depressed</mark></li><li><b>D. <mark>Body habitus</mark></b>: <mark>body structure and proportions, including nutritional status</mark><ul><li>short or tall; slender, muscular or stocky; emaciated, slender, plump, obese</li><li>if overweight, the fat distribution: <b>gynoid (pear, hips)</b> or <b>android (apple, belly)</b></li><li>symmetry, posture, position, deformities</li></ul></li><li><b>E. <mark>Complexion and skin colour</mark></b>: <mark>degree of pigmentation, and pallor, plethora, cyanosis or jaundice</mark> (where to look is in the table)<ul><li>other skin signs: dry skin, hair loss or excess hair (hirsutism), rashes, bruising</li></ul></li><li><b>F. <mark>Involuntary movements</mark></b>: <mark>twitching of the face, tremor of the hands, or limited movement (e.g. paralysis)</mark></li><li><b>G. <mark>Abnormal odours</mark></b>: <mark>body odour, alcohol or drugs</mark><ul><li><b>fruity (acetone) breath</b> → a clue to diabetes</li></ul></li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Central cyanosis</h3><p class="for">Low blood oxygen from <b>lung or heart disease</b></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Look at the <b>lips</b></li><li>Look <b>inside the mouth and under the tongue</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Blue lips and tongue</b></div></div></article><article class="cs-card"><h3>Peripheral cyanosis</h3><p class="for">Poor blood flow to the hands and feet</p><div class="hide1"><span class="lbl">Steps</span><p>1. Look at the <b>fingers and toes</b></p></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Blue fingers and toes</b></div></div></article><article class="cs-card"><h3>Pallor</h3><p class="for"><b>Anemia</b></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Gently pull down the lower lid and look at the <b>conjunctiva</b></li><li>Look inside the mouth, at the <b>nail beds</b> and the <b>palm creases</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Pale</b> (the inner rim of the lower lid is not red)</div></div></article><article class="cs-card"><h3>Plethora</h3><p class="for">Redness, e.g. from inflammation</p><div class="hide1"><span class="lbl">Steps</span><p>1. Look at the skin wherever it shows</p></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Red skin</b></div></div></article><article class="cs-card"><h3>Jaundice</h3><p class="for">Yellowing from bilirubin (e.g. liver disease)</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Ask the patient to <b>look up</b></li><li><b>Gently pull down the lower lid</b></li><li>Look at the whites of the eyes</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Yellow whites of the eyes (scleral icterus)</b></div></div></article></div></section><section class="cs-sec" id="s3"><h2><span class="n">3</span> Pulse<small>FoM · PPES 1 Week 1</small></h2><div class="cs-steps"><ul><li>Use the <b>radial pulse</b> (wrist, thumb side): press with the <b>pads of your index and middle fingers</b> until you feel it</li><li>Describe <mark><b>rate, rhythm, amplitude and contour</b></mark>, then <b>symmetry</b></li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Radial pulse</h3><p class="for"><mark>Rate, rhythm, amplitude, contour</mark>, symmetry</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Index and middle finger pads on the radial artery</li><li><b>Count for 15-30 seconds</b> (×4 or ×2 = beats per minute)</li><li><b>Rhythm</b>: regular, regularly irregular, or irregularly irregular?</li><li><b>Amplitude</b> (strength): normal, decreased or increased?</li><li><b>Contour</b> (shape): upstroke and downstroke, single or double peak?</li><li><b>Feel the other wrist</b> and compare</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Under 60 = bradycardia · over 100 = tachycardia</b> · irregular · weak or bounding · unequal sides (normal: <b>60-100</b>, regular, normal amplitude, single peak, equal)</div></div></article></div><div class="cs-pearls"><ul><li><i>"Heart rate is 80 beats per minute, regular rhythm, normal amplitude. Radial pulses are symmetrical."</i></li></ul></div></section><section class="cs-sec" id="s4"><h2><span class="n">4</span> Respiratory rate and distress<small>FoM · PPES 1 Week 1</small></h2><div class="cs-steps"><ul><li><mark><b>Always look for signs of respiratory distress</b></mark>: the one thing never to skip<ul><li><b>can't speak in full sentences</b>, fast breathing (tachypnea)</li><li><b>pursed-lip breathing</b>, <b>nasal flaring</b></li><li><b>tripod position</b> (leaning forward, hands on knees)</li><li><b>accessory muscle use</b> (neck muscles working to breathe), <b>intercostal retractions</b> (skin sucked in between the ribs)</li><li><b>cyanosis</b>, central or peripheral</li></ul></li><li>First <b>look at the trachea</b>: is it in the midline?</li><li>Describe <b>rate, rhythm, depth and effort</b></li><li>Abnormal patterns to recognise: wheezing, stridor, <b>Cheyne-Stokes breathing</b> (breaths grow deeper then shallower, with pauses between), <b>Kussmaul breathing</b> (deep, laboured breathing from acidosis)</li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Counting the respiratory rate</h3><p class="for">Rate, rhythm, depth, effort</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Keep your fingers on the radial pulse</li><li><b>Watch the chest rise without telling the patient</b> (breathing changes when people know they're being watched)</li><li>Count for 15-30 seconds and multiply up</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Too slow = bradypnea · too fast = tachypnea</b> · irregular, shallow or laboured (normal adult: <b>14-20 breaths per minute</b>, regular, effortless)</div></div></article></div><div class="cs-pearls"><ul><li><i>"Respiratory rate is 16, with regular rhythm, depth and effort. No signs of respiratory distress such as tripod positioning or accessory muscle use."</i></li></ul></div></section><section class="cs-sec" id="s5"><h2><span class="n">5</span> Blood pressure<small>FoM · PPES 1 Week 1</small></h2><div class="cs-steps"><ul><li><mark><b>Measure in both arms</b></mark> and <mark><b>assess for an orthostatic change</b></mark></li><li><b>Set up</b>: patient relaxed, <b>sitting or lying</b>, legs uncrossed, <b>arm supported at the level of the heart, not above it</b> (a pillow under the arm)</li><li><b>Cuff size matters</b>: a cuff that is <b>too short or too narrow reads falsely high</b>, and a regular adult cuff on a large arm can wrongly diagnose high blood pressure<ul><li>centre the cuff's artery line over the <b>brachial artery</b>, lower edge about <b>2.5 cm (two fingers) above the elbow crease</b></li><li>feel the brachial pulse first (inner elbow, <b>just inside the biceps tendon</b>) to confirm it is there</li></ul></li></ul></div><div class="cs-grid"><article class="cs-card"><h3>Palpated systolic estimate</h3><p class="for">Where to pump the cuff to</p><div class="hide1"><span class="lbl">Steps</span><ol><li>Feel the <b>radial pulse</b></li><li>Inflate quickly until the <b>pulse disappears</b></li><li><b>Add 30 mmHg</b>: this is your target pressure</li><li>Deflate fully</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span>Sets the target, so you don't pump <b>painfully high</b> and don't miss the <b>auscultatory gap</b> (a silent stretch heard in some patients with high blood pressure or aortic stenosis)</div></div></article><article class="cs-card"><h3>Auscultated blood pressure</h3><p class="for"><mark><b>Systolic and diastolic</b> pressure</mark></p><div class="hide1"><span class="lbl">Steps</span><ol><li><b>Bell</b> lightly over the brachial artery (Korotkoff sounds are <b>low-pitched</b>)</li><li>Inflate quickly to the target</li><li>Deflate about <b>2-3 mmHg per second</b></li><li><b>First Korotkoff sound = systolic</b></li><li>Keep going: <b>sounds disappear = diastolic</b>; listen a little lower to be sure</li><li>Deflate to zero; report to the nearest 2 mmHg</li><li><b>Repeat on the other arm</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Office reading 130/80 or more → confirm outside the office</b> (home or ambulatory monitoring) before calling it hypertension (normal: about <b>120/80</b>; <b>5-10 mmHg difference between arms can be normal</b>)</div></div></article><article class="cs-card"><h3>Orthostatic blood pressure</h3><p class="for"><mark>Orthostatic hypotension</mark></p><div class="hide1"><span class="lbl">Steps</span><ol><li>Patient <b>lying down for at least 5 minutes</b>, then measure</li><li>Patient <b>stands</b>; measure again after <b>1-3 minutes</b> (support the arm at heart level)</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Positive =</span><b>Systolic drops 20 mmHg or more, or diastolic drops 10 mmHg or more</b>, from lying to standing</div></div></article></div><div class="cs-pearls"><ul><li><i>"Blood pressure is 118/76 in the right arm and 120/78 in the left, with no orthostatic drop."</i></li><li>Blood pressure normally varies with age, sex, time of day, weight, exercise, stress and substances such as smoking.</li><li>A <b>heart rate rise of 30 or more on standing</b> suggests orthostatic tachycardia <span class="tag extra">extra</span>.</li></ul></div></section><section class="cs-sec" id="s6"><h2><span class="n">6</span> Temperature and oxygen saturation<small>FoM · PPES 1 Week 1</small></h2><div class="cs-steps"><ul><li><mark><b>Temperature</b>: understand the technique</mark> (it is not performed in the session). The normal value depends on the site:<ul><li><b>oral 37.0 °C</b> · <b>rectal 37.4-37.5 °C</b> · <b>axillary (armpit) 36.5 °C</b></li><li>oral temperature swings through the day: as low as <b>35.8 °C in the early morning</b>, up to <b>37.3 °C in the late afternoon or evening</b></li></ul></li><li><b>Oxygen saturation (SpO2)</b> is listed with the vital signs but not measured in the session; normal is <b>above 94%</b> <span class="tag extra">extra</span></li></ul></div></section><section class="cs-sec" id="s7"><h2><span class="n">7</span> Normal adult values<small>FoM · PPES 1 Week 1</small></h2><div class="cs-steps"><ul><li><b>Pulse</b>: average 80, range <b>60-100 beats per minute</b></li><li><b>Blood pressure</b>: average <b>120/80 mmHg</b></li><li><b>Respiratory rate</b>: <b>14-20 breaths per minute</b></li><li><b>Temperature</b>: <b>37.0 °C</b> oral, range <b>35.8-37.3 °C</b></li><li>⚠ Never finish the vitals without a word on <b>respiratory distress</b>, even when the answer is "none".</li></ul></div></section>
+</main>
+<script>
+(function(){
+  var body=document.body,hint=document.getElementById("cs-hint");
+  document.querySelectorAll(".cs-mode button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".cs-mode button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+      body.classList.toggle("quiz",b.dataset.m==="quiz");
+      document.querySelectorAll(".cs-card").forEach(function(c){c.classList.remove("s1","s2");});
+      hint.textContent=b.dataset.m==="quiz"?"Test: tap a card to show its steps, then tap again for the answer.":"Look: everything shown.";
+    });
+  });
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest(".cs-card");
+    if(!c||!body.classList.contains("quiz"))return;
+    if(c.classList.contains("s1"))c.classList.replace("s1","s2");else if(!c.classList.contains("s2"))c.classList.add("s1");
+  });
+  var q=document.getElementById("cs-q");
+  q.addEventListener("input",function(){
+    var words=q.value.toLowerCase().split(/\s+/).filter(Boolean),shown=0;
+    document.querySelectorAll(".cs-card").forEach(function(c){
+      var t=c.textContent.toLowerCase(),ok=words.every(function(w){return t.indexOf(w)>-1;});
+      c.classList.toggle("cs-hidden",!ok);if(ok)shown++;
+    });
+    document.querySelectorAll(".cs-sec").forEach(function(s){
+      var cards=s.querySelectorAll(".cs-card"),any=!words.length||s.textContent.toLowerCase().indexOf(words[0])>-1;
+      if(cards.length&&words.length)any=Array.prototype.some.call(cards,function(c){return !c.classList.contains("cs-hidden");});
+      s.classList.toggle("cs-hidden",words.length>0&&!any);
+    });
+  });
+})();
+</script>
+
+<footer>
+<p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
+</footer>
+</div>
+</body>
+</html>

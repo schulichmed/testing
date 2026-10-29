@@ -42,7 +42,7 @@ SKILLS = [
     ("history", "present", "Presenting a case", ["fom", "t2c"], None,
      "Presenting to a preceptor, and the problem-oriented write-up."),
     ("history", "obhx", "Obstetric and gynecologic history", ["pom2"], None,
-     "Built on the Ontario Prenatal Record."),
+     "Built on the faculty OB/Gyne history reference and the Ontario Perinatal Record."),
     ("history", "psychhx", "Psychiatric interview", ["pom2"], None,
      "The psychiatric history and the mental status exam."),
     ("history", "pedshx", "Paediatric history", ["t2c"], None,

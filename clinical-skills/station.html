@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#ffffff">
+<title>How a station runs - Clinical skills</title>
+<script>
+(function(){
+  var root=document.documentElement,KEY="pc-theme",stored=null,mq=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  if(stored!=="dark"&&stored!=="light")stored=null;
+  if(window.matchMedia)mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function os(){return mq&&mq.matches?"dark":"light";}
+  function apply(t){
+    root.setAttribute("data-theme",t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute("content",t==="dark"?"#140c22":"#ffffff");
+    var b=document.getElementById("theme-btn");
+    if(!b)return;
+    b.setAttribute("aria-pressed",t==="dark"?"true":"false");
+    b.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" mode");
+    b.title=b.getAttribute("aria-label");
+  }
+  function follow(){if(!stored)apply(os());}
+  apply(stored||os());
+  if(mq&&mq.addEventListener)mq.addEventListener("change",follow);
+  else if(mq&&mq.addListener)mq.addListener(follow);
+  document.addEventListener("DOMContentLoaded",function(){apply(root.getAttribute("data-theme"));});
+  document.addEventListener("click",function(e){
+    var s=e.target&&e.target.closest?e.target.closest(".skip"):null;
+    if(s){
+      var c=document.getElementById("content");
+      if(c){e.preventDefault();c.focus();c.scrollIntoView();}
+      return;
+    }
+    /* Still gets one tab, reused, so a second click brings the music
+       forward rather than restarting it (see STILL_BTN) */
+    var m=e.target&&e.target.closest?e.target.closest(".still-btn,.still-strip"):null;
+    if(m){
+      if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      var w=null;
+      try{w=window.open("","still-music");}catch(e3){}
+      if(!w)return;
+      e.preventDefault();
+      try{if(w.location.href==="about:blank")w.location.replace(m.href);}catch(e4){}
+      try{w.focus();}catch(e5){}
+      return;
+    }
+    var b=e.target&&e.target.closest?e.target.closest("#theme-btn"):null;
+    if(!b)return;
+    stored=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    try{localStorage.setItem(KEY,stored);}catch(e2){}
+    /* a crossfade between the themes where the browser can draw one and the
+       reader has not asked for less motion; otherwise the switch is instant */
+    var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(document.startViewTransition&&!calm)document.startViewTransition(function(){apply(stored);});
+    else apply(stored);
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/base.css">
+<link rel="stylesheet" href="https://schulichmed.github.io/preclerkship/portal.css">
+<style>
+/* topic cards: a block card led by its icon, drawn in the section's hue */
+.topic-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+.topic-card .ico{display:block;width:44px;height:44px;margin-bottom:14px;color:var(--hue);}
+.topic-card .ico svg{width:100%;height:100%;}
+.topic-card h2{font-size:1.15rem;}
+.topic-card .go{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--hue);}
+.block-card.is-empty .go{font-weight:500;font-style:italic;color:var(--muted);}
+.credits{margin-top:40px;font-size:.75rem;color:var(--muted);}
+</style>
+<style>
+.cs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px;position:sticky;top:0;z-index:5;
+  padding:10px 0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.cs-mode{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--card-bg)}
+.cs-mode button{border:0;background:none;color:var(--text);font:500 .85rem var(--sans);padding:7px 14px;cursor:pointer}
+.cs-mode button[aria-pressed="true"]{background:var(--q-accent,var(--accent));color:#fff}
+.cs-tools input{flex:1;min-width:180px;font:.88rem var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)}
+.cs-hint{width:100%;margin:0;font-size:.8rem;color:var(--muted)}
+.cs-sec{margin-top:30px;scroll-margin-top:80px}
+.cs-sec>h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.cs-sec>h2 .n{color:var(--q-accent-ink,var(--accent))}
+.cs-sec>h2 small{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cs-steps{margin-top:12px;padding:16px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.6}
+.cs-steps ul{margin:0;padding-left:1.1em}.cs-steps ul ul{margin-top:2px;color:var(--muted)}
+.cs-steps li{margin:3px 0}
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.cs-card{background:var(--card-bg);border:1px solid var(--border);border-top:3px solid var(--q-accent,var(--accent));border-radius:8px;padding:14px 16px;font-size:.88rem;line-height:1.55}
+.cs-card h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.cs-card .for{color:var(--muted);margin:0 0 8px}
+.cs-card .lbl{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.cs-card ol{margin:0;padding-left:1.2em}
+.cs-card .ans{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--q-accent-soft,var(--accent-soft))}
+.cs-pearls{margin-top:12px;padding:12px 18px;border-left:3px solid var(--q-accent,var(--accent));background:var(--card-bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.cs-pearls ul{margin:0;padding-left:1.1em}
+mark{background:color-mix(in srgb,#ffd84d 55%,transparent);color:inherit;padding:0 2px;border-radius:2px}
+body.quiz .cs-card{cursor:pointer}
+body.quiz .cs-card .hide1,body.quiz .cs-card .hide2{display:none}
+body.quiz .cs-card.s1 .hide1,body.quiz .cs-card.s2 .hide1,body.quiz .cs-card.s2 .hide2{display:block}
+body.quiz .cs-card:not(.s2)::after{content:"tap to reveal";display:block;margin-top:8px;font-size:.75rem;color:var(--muted);font-style:italic}
+.cs-hidden{display:none!important}
+.cs-empty{color:var(--muted);margin-top:24px}
+.tag{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:.7rem;font-weight:600;white-space:nowrap;vertical-align:1px}
+.tag.adv{background:var(--q-accent-soft,var(--accent-soft));color:var(--q-accent-ink,var(--accent))}
+.tag.extra{border:1px solid var(--border);color:var(--muted)}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="pom2-page">
+<style>
+/* the portal's block bar (.blocknav in portal.css), rebuilt for pages that carry their own
+   stylesheet; on a page that loads portal.css the two agree */
+.csn{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:5px;margin:0 0 22px;
+  background:var(--card-bg,var(--card));border:1px solid var(--border,var(--line));border-radius:8px}
+.csn a,.csn span{padding:6px 12px;border-radius:4px;font-size:.82rem;font-weight:500;
+  color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .15s,background .15s}
+.csn a:hover{color:var(--text,var(--ink))}
+.csn .here{background:var(--q-accent-soft,color-mix(in srgb,var(--accent) 14%,transparent));
+  color:var(--q-accent-ink,var(--accent));font-weight:600}
+.csn .home{margin-right:6px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.csn .soon{opacity:.45;cursor:default}
+</style>
+<nav class="csn" aria-label="OSCE prep">
+<a class="home" href="landing.html">All courses</a>
+<a class="home" href="osce.html">OSCE prep &rsaquo;</a>
+<span class="here" aria-current="page">How a station runs</span>
+<a href="consol.html">Putting it together</a>
+</nav>
+
+<header class="q-masthead" id="content" tabindex="-1">
+<div>
+<p class="eyebrow">Schulich Clinical Skills &middot; OSCE prep &middot; FoM &rarr; T2C</p>
+<h1>How a Station Runs</h1>
+<p class="lead">Every station runs the same way: <b>read the door → knock, enter and introduce yourself → do the task (history, exam, or both) out loud → close, thank the patient and report what you found</b>. Two rules run through all of it: <b>the patient's comfort and dignity come first</b> (hand hygiene, consent, positioning, draping, warm hands, plain words), and <b>say what you are doing and what you find as you go</b>, because the examiner can only mark what they see and hear. The Teaching Objective Structured Clinical Examination (<b>TOSCE</b>) is a practice run with coaching after each station; the Objective Structured Clinical Examination (<b>OSCE</b>) near the end of Year 2 is the real exam. TOSCEs run from the first Primary Physical Exam Skills (PPES) block in Foundations of Medicine (FoM) through Principles of Medicine 1 and 2 (PoM 1, PoM 2); the OSCE falls in Transition to Clerkship (T2C). Built from the OneNote Clinical Skills notebook (the vitals final paper, the interviewing template, the exam-history pages and the clinical skills demo checklists) and the course syllabi for what is marked. Station timing and the exam openings for cardio, abdomen, neuro and head and neck draw on upper-year notes, because OneNote does not cover them.</p>
+</div>
+</header>
+
+<main>
+<div class="cs-tools">
+<div class="cs-mode" role="group" aria-label="Mode"><button data-m="look" aria-pressed="true">Look</button><button data-m="quiz" aria-pressed="false">Test</button></div>
+<input type="search" id="cs-q" placeholder="Find a step or a test" autocomplete="off">
+<p class="cs-hint" id="cs-hint">Look: everything shown.</p>
+</div>
+<section class="cs-sec" id="s1"><h2><span class="n">1</span> The general approach</h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE)</b>: "Hello, my name is ___, I'm a medical student. Could you tell me your full name and date of birth? Today I've been asked to ___. Is that okay with you? Please let me know at any point if anything is uncomfortable."</li><li><b>Read the door</b>: the instructions posted outside the room tell you the <b>task</b>, the <b>patient</b> and what you must <b>report or answer</b><ul><li>read the whole thing, twice; then plan your first three steps before you knock</li></ul></li><li><b>Enter and introduce</b>: knock (an upper-year student was told by a facilitator this earns a mark) · introduce yourself and your role · <b>confirm the patient's identity</b> (full name and date of birth) · explain what you will do · <b>ask for consent</b></li><li><b>Prepare</b>: <b>wash your hands and clean your stethoscope</b> (yes, even in a history-only station) · warm your hands and instruments · check comfort: "Are you comfortable? How is the lighting and temperature in the room?"<ul><li>position and drape for the exam you are about to do (section 4)</li></ul></li><li><b>The task</b>: work in a fixed order so nothing is missed and the patient is not sat up and laid down repeatedly<ul><li>explain each step in plain words before you do it and <b>watch the patient's face</b> for pain</li><li><b>say your findings out loud</b> as you go: "No signs of respiratory distress."</li><li>choose words with care: say <b>"table"</b> not "bed", and <b>"examine", "press" or "tap"</b> rather than "touch"</li></ul></li><li><b>Close and report</b>: thank the patient, help them sit up or cover up, wash your hands, then give the examiner a short summary of your findings and answer any follow-up questions</li><li><b>Leave the phone outside</b>: phones and smart watches are not allowed in the stations</li></ul></div></section><section class="cs-sec" id="s2"><h2><span class="n">2</span> Reading the door<small>TOSCE · FoM, PoM 1, PoM 2, T2C; OSCE · T2C</small></h2><div class="cs-steps"><ul><li><mark><b>Integrate communication and clinical skills</b> to demonstrate an approach to a clinical scenario, using clinical reasoning to <b>formulate and prioritize a differential diagnosis and management plan, if required</b></mark></li><li>A station asks for one of three things: <b>a history</b>, <b>a physical exam</b>, or <b>a history and exam together</b>; some add <b>follow-up questions</b> from the examiner at the end</li><li><b>What to pull from the door, in the first 30 seconds</b>:<ul><li><b>who</b>: the patient's name and age, so you can greet them and confirm identity</li><li><b>what</b>: the verb ("take a history", "examine", "perform a focused exam"); a <b>focused</b> exam means only the parts that answer the question, not a head-to-toe exam</li><li><b>which system</b>: decides your position, draping and equipment before you go in</li><li><b>what to finish with</b>: report findings, give a differential, or explain a plan to the patient</li></ul></li><li><b>Time</b>: each station is timed and a signal warns you near the end (an upper-year package described stations of about 7 minutes with a warning at 5; check the instructions on the day)<ul><li>at the warning, move to the steps that carry the most marks and leave time to close</li></ul></li><li>If you finish early, it is fine to <b>summarize back to the patient</b> and ask whether there is anything else; do not invent extra steps</li></ul></div></section><section class="cs-sec" id="s3"><h2><span class="n">3</span> What is marked<small>TOSCE and OSCE</small></h2><div class="cs-steps"><ul><li><mark>The TOSCE assesses <b>communication skills, physical exam technique, organization, professionalism</b> and the <b>ability to accept constructive feedback</b></mark></li><li><mark>The OSCE assesses <b>communication, physical exam technique, organization and professionalism</b>, along with taking a <b>relevant history</b>, a <b>focused exam</b>, giving a <b>differential diagnosis</b>, and <b>clinical reasoning and judgement</b></mark></li><li><b>Two kinds of mark per station</b>:<ul><li>a <b>task-specific checklist</b> of steps (most of the mark): did you do each step, and do it correctly?</li><li>a <b>global rating</b>: the examiner's overall judgement of your <b>verbal and nonverbal communication</b>, <b>organization and logic</b>, and <b>patient-centred approach</b></li></ul></li><li><b>TOSCE</b>: a formative (practice) assessment; after each station you get <b>feedback and coaching</b> on what you just did</li><li><b>OSCE</b>: covers the clinical skills sessions from <b>both years</b>; you are expected to perform without prompting</li><li>The faculty assessment form for the primary physical exam skills rates you against the course's <b>Entrustable Professional Activities (EPAs, the tasks a graduate must be trusted to do)</b> and competencies as meeting or not meeting expectations, with written comments</li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Communication</b></h3><p class="for">Rapport, plain language, listening, nonverbal cues (eye contact, open posture)</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Introduce yourself and your role, confirm identity</li><li>Explain before each step, in words the patient knows</li><li>Check in: "Is that okay?" "Any pain?"</li><li>Pick up on cues (a wince, a worried look) and respond</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Talking to the examiner instead of the patient</b>, or using jargon with the patient</div></div></article><article class="cs-card"><h3><b>Physical exam technique</b></h3><p class="for">Correct steps, done properly, on the correct landmarks</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Follow the system's order (for most: look → feel → tap → listen)</li><li>Compare left with right</li><li>Use the instrument correctly (bell versus diaphragm, cuff size)</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Listening through the gown</b>, or skipping a step and saying "I would" without doing it</div></div></article><article class="cs-card"><h3><b>Organization</b></h3><p class="for">A logical sequence with no doubling back</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Do everything you need with the patient sitting, then everything lying</li><li>Finish one region before moving on</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Sitting the patient up and down repeatedly</b>, or jumping between systems</div></div></article><article class="cs-card"><h3><b>Professionalism</b></h3><p class="for">Respect, privacy, consent, safety</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Wash hands and clean the stethoscope before and after</li><li>Drape so only the area being examined is exposed</li><li>Stop if the patient asks</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Forgetting hand hygiene</b> or <b>leaving the patient uncovered</b> (draping is a marked point)</div></div></article><article class="cs-card"><h3><b>Clinical reasoning</b> (OSCE, some TOSCE stations)</h3><p class="for">Linking findings to a likely diagnosis</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Summarize the key positives and negatives</li><li>Give the most likely diagnosis first, then the dangerous ones not to miss</li><li>Suggest a next step if asked</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Listing every possible diagnosis</b> with no order or reason</div></div></article><article class="cs-card"><h3><b>Accepting feedback</b> (TOSCE)</h3><p class="for">Openness to coaching</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Listen to the feedback without arguing</li><li>Say what you will do differently next time</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Defending or explaining away</b> a missed step</div></div></article></div><div class="cs-pearls"><ul><li>The examiner cannot read your mind: <b>name each step and each finding out loud</b>, or as the upper-year package put it, "vocalize what you are doing"</li><li>When time is short, it is acceptable to <b>say what you would normally add</b> ("I would normally also check orthostatic blood pressure, but I'm mindful of time"), but do the core steps</li></ul></div></section><section class="cs-sec" id="s4"><h2><span class="n">4</span> Opening lines for each exam<small>PPES · FoM and PoM 1</small></h2><div class="cs-steps"><ul><li><b>The common opener, from the OneNote final paper</b>: introduce yourself → confirm name and date of birth → check comfort (lighting, temperature) → ask them to sit on the table → <b>sanitize your hands and stethoscope</b> → explain what today's exam involves → ask for consent</li><li>Then adapt <b>what you say you will do</b>, <b>how the patient sits or lies</b>, and <b>what you uncover</b> to the exam</li><li>Ask for the <b>vital signs</b> at the start of a system exam: heart rate (HR), blood pressure (BP), respiratory rate (RR), temperature and oxygen saturation (as on the OneNote respiratory and abdominal pages)</li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Vital signs and general inspection</b> (PPES Week 1)</h3><p class="for">A calm, comfortable patient, sitting correctly for blood pressure</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Say: "Today I'll take a general look at you and check your vital signs: your pulse, breathing rate and blood pressure."</li><li>Seat them with <b>legs uncrossed, feet on the floor</b>, arm resting <b>on a pillow at heart level</b></li><li>Ask: "Would you like me to take your temperature?"</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Not offering the other arm</b> ("Would you like me to do it on the other side?") or forgetting to mention orthostatic BP</div></div></article><article class="cs-card"><h3><b>Respiratory</b> (PPES Week 2)</h3><p class="for">Back exposed for the posterior chest, then front, with draping</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Say: "I've been asked to examine your breathing. I'll look at, feel, tap on and listen to your chest, back first, then front."</li><li>Patient <b>sits on the edge of the table</b>, gown open at the back</li><li>Ask for the vital signs</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Not draping</b> the front of the chest while examining the back</div></div></article><article class="cs-card"><h3><b>Abdomen</b> (PPES Week 3)</h3><p class="for">Patient lying flat and relaxed, abdomen exposed</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Say: "I'll be examining your abdomen: looking, listening, tapping and pressing gently. Is there any pain? I'll start away from that spot."</li><li>Patient <b>lies flat</b> (supine), one pillow, <b>arms by the sides</b></li><li>Expose from <b>just below the chest to the hip bones</b>, drape the rest</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Pressing on the painful area first</b>, or not watching the face while palpating</div></div></article><article class="cs-card"><h3><b>Cardiovascular</b> (PPES Week 4)</h3><p class="for">Head of the table raised, standing on the patient's right</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Say: "I'll be examining your heart and circulation: looking at your neck, feeling your pulses and listening to your chest."</li><li>Raise the <b>head of the table to about 30-45°</b> (the angle for seeing the jugular venous pressure, JVP)</li><li>Stand on the patient's <b>right</b></li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Patient lying flat or sitting bolt upright</b>, so the neck veins cannot be seen</div></div></article><article class="cs-card"><h3><b>Head and neck</b> (PPES Week 7)</h3><p class="for">Patient sitting at your eye level, equipment ready</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Say: "I'll be examining your head and neck: your eyes, ears, nose, mouth and throat, and feeling your neck and thyroid."</li><li>Patient <b>sits</b>, your eyes level with theirs</li><li>Have the penlight, otoscope, ophthalmoscope and a cup of water (for the thyroid swallow) ready</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Fetching equipment mid-exam</b>, or not cleaning the otoscope tip</div></div></article><article class="cs-card"><h3><b>Neurological</b> (PPES Weeks 8 and 9)</h3><p class="for">Patient sitting on the edge of the table, able to stand for gait</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Say: "I'll be checking your nerves: how your eyes and face move, your strength, feeling, reflexes and balance. Some parts mean following my instructions, and I'll show you each one."</li><li>Patient <b>sits on the edge of the table</b>, legs hanging free for reflexes</li><li>Reflex hammer and tuning fork ready</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Not demonstrating</b> an instruction, or <b>not comparing left with right</b></div></div></article><article class="cs-card"><h3><b>Musculoskeletal</b> (PPES Week 10)</h3><p class="for">Screening questions first, both sides exposed</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Ask the three <b>GALS</b> (Gait, Arms, Legs, Spine) screening questions: "Any pain or stiffness in your muscles, joints or back? Can you dress yourself without difficulty? Can you walk up and down stairs without difficulty?"</li><li>Say: "Let me know if anything hurts and I'll stop."</li><li>Examine <b>standing, then sitting, then lying</b>, with both sides uncovered to compare</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Moving a painful joint</b> without asking about pain first</div></div></article></div><div class="cs-pearls"><ul><li>Openings for vital signs, respiratory and musculoskeletal come from OneNote; the cardiovascular, abdomen, head and neck and neurological positions and equipment are filled from upper-year notes and the standard textbook approach</li></ul></div></section><section class="cs-sec" id="s5"><h2><span class="n">5</span> History stations<small>Interviewing · FoM to T2C</small></h2><div class="cs-steps"><ul><li><b>Say it first (TOSCE)</b>: "Hello, my name is ___, I'm a medical student working with Dr. ___. I'd like to hear about what's been going on. Is it okay if I ask you some questions today? I'll take a few notes as we talk."</li><li><b>Still wash your hands</b> at the start, even though you will not examine (an upper-year student flagged this as a marked step)</li><li><b>Open with an open question</b>: "What brings you in today? Is there anything else you'd like to make sure we cover?"</li><li><b>History of presenting illness (HPI)</b>: site, onset, character, radiation, associated symptoms, timeline, what makes it worse or better, what they have tried, severity</li><li><b>The patient's perspective (FIFE)</b>: <b>F</b>eelings about it · <b>I</b>deas about the cause · effect on <b>F</b>unction (work, sleep, relationships) · <b>E</b>xpectations for today</li><li><b>Signpost</b> each change of topic: "I'd now like to ask about your past health."</li><li>Then past medical history, medications (dose and frequency, including over-the-counter and herbal), allergies (with the reaction), habits, social history, family history and a review of the relevant systems</li><li><b>Close</b>: "Thank you for helping me understand what you've been going through. Before we finish, is there anything else important for me to know?" Summarize the key concerns back to the patient</li></ul></div></section><section class="cs-sec" id="s6"><h2><span class="n">6</span> Closing and reporting<small>TOSCE · OSCE</small></h2><div class="cs-steps"><ul><li><b>With the patient</b>: thank them, help them sit up or dress, offer the gown back, wash your hands</li><li><b>To the examiner</b>: a short, ordered summary in the same sequence you examined<ul><li><b>general inspection first</b>: "Ms. ___ is a ___-year-old woman who looks well, is well-groomed and oriented, calm, in no distress."</li><li><b>then the numbers</b>: "Heart rate ___, regular; respiratory rate ___; blood pressure ___ in both arms; temperature ___."</li><li><b>then the system findings</b>, positives and the important negatives: "No cyanosis, pallor, jaundice or abnormal odours."</li></ul></li><li><b>Follow-up questions</b>: answer the question asked, briefly; if a differential is asked for, give the <b>most likely first</b>, then the <b>dangerous ones you must not miss</b></li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>The warning signal</b></h3><p class="for">Priorities under time pressure</p><div class="hide1"><span class="lbl">What to do</span><ol><li>Finish the step you are on</li><li>Jump to the highest-yield remaining steps (for an exam, usually listening)</li><li>Leave time to thank the patient</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Running out of time mid-exam</b> with no closing at all</div></div></article><article class="cs-card"><h3><b>Thanking and covering the patient</b></h3><p class="for">Professionalism to the end</p><div class="hide1"><span class="lbl">What to do</span><ol><li>"Thank you, that's everything. Let me help you sit up."</li><li>Replace the drape or gown</li><li>Wash your hands</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Turning straight to the examiner</b> while the patient is still uncovered</div></div></article><article class="cs-card"><h3><b>The summary</b></h3><p class="for">Organized, accurate reporting</p><div class="hide1"><span class="lbl">What to do</span><ol><li>General inspection</li><li>Vital signs</li><li>System findings in exam order, with key negatives</li></ol></div><div class="hide2"><div class="ans"><span class="lbl">Common slip =</span><b>Reporting findings you did not elicit</b> (examiners know what the standardized patient shows)</div></div></article></div><div class="cs-pearls"><ul><li>⚠ Never fake a finding: if you could not hear or feel something, say so ("I could not feel the apex beat; I would try the left lateral position")</li><li>A standardized patient may have <b>no abnormal findings</b>; a careful normal report earns the marks</li></ul></div></section><section class="cs-sec" id="s7"><h2><span class="n">7</span> TOSCE versus OSCE<small>FoM to T2C</small></h2><div class="cs-steps"><ul><li><b>TOSCEs</b> run after each block of physical exam teaching in Year 1 (after PPES Part 1 and Part 2, plus an end-of-year TOSCE) and twice in Year 2<ul><li>each tests the skills taught in the sessions just before it</li><li>feedback is given <b>straight after each station</b>, so treat it as coaching</li></ul></li><li><b>The OSCE</b> comes near the end of Year 2, before the Consolidation of Skills block, and covers content from <b>both years</b>: histories, focused exams, differentials and plans</li><li><b>Same habits for both</b>: the same opener, the same order, the same close; practise them until they are automatic so your attention goes to the patient and the findings</li></ul></div><div class="cs-grid"><article class="cs-card"><h3><b>Purpose</b></h3><p class="for">Practice: check progress, find gaps, support learning</p><div class="hide1"></div><div class="hide2"><div class="ans"><span class="lbl">OSCE</span>Final assessment of competence across Year 1 and Year 2</div></div></article><article class="cs-card"><h3><b>Content</b></h3><p class="for">The skills taught in the preceding sessions</p><div class="hide1"></div><div class="hide2"><div class="ans"><span class="lbl">OSCE</span>Everything from Clinical Skills: history, focused exam, differential diagnosis, plan</div></div></article><article class="cs-card"><h3><b>Feedback</b></h3><p class="for">Coaching right after each station</p><div class="hide1"></div><div class="hide2"><div class="ans"><span class="lbl">OSCE</span>Results afterwards</div></div></article><article class="cs-card"><h3><b>Marking</b></h3><p class="for">Task checklist plus a global rating</p><div class="hide1"></div><div class="hide2"><div class="ans"><span class="lbl">OSCE</span>Task checklist plus a global rating</div></div></article></div><div class="cs-pearls"><ul><li>Phones, smart watches, earbuds and any recording devices stay out of the stations at both</li></ul></div></section>
+</main>
+<script>
+(function(){
+  var body=document.body,hint=document.getElementById("cs-hint");
+  document.querySelectorAll(".cs-mode button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".cs-mode button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+      body.classList.toggle("quiz",b.dataset.m==="quiz");
+      document.querySelectorAll(".cs-card").forEach(function(c){c.classList.remove("s1","s2");});
+      hint.textContent=b.dataset.m==="quiz"?"Test: tap a card to show its steps, then tap again for the answer.":"Look: everything shown.";
+    });
+  });
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest(".cs-card");
+    if(!c||!body.classList.contains("quiz"))return;
+    if(c.classList.contains("s1"))c.classList.replace("s1","s2");else if(!c.classList.contains("s2"))c.classList.add("s1");
+  });
+  var q=document.getElementById("cs-q");
+  q.addEventListener("input",function(){
+    var words=q.value.toLowerCase().split(/\s+/).filter(Boolean),shown=0;
+    document.querySelectorAll(".cs-card").forEach(function(c){
+      var t=c.textContent.toLowerCase(),ok=words.every(function(w){return t.indexOf(w)>-1;});
+      c.classList.toggle("cs-hidden",!ok);if(ok)shown++;
+    });
+    document.querySelectorAll(".cs-sec").forEach(function(s){
+      var cards=s.querySelectorAll(".cs-card"),any=!words.length||s.textContent.toLowerCase().indexOf(words[0])>-1;
+      if(cards.length&&words.length)any=Array.prototype.some.call(cards,function(c){return !c.classList.contains("cs-hidden");});
+      s.classList.toggle("cs-hidden",words.length>0&&!any);
+    });
+  });
+})();
+</script>
+
+<footer>
+<p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
+</footer>
+</div>
+</body>
+</html>
