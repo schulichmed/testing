@@ -1,0 +1,164 @@
+[
+ {
+  "test": "General inspection",
+  "file": "general-inspection.jpg",
+  "slug": "general-inspection.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2234",
+  "author": "Labatt Family School of Nursing, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Patient resting in bed, reclined, before the exam starts"
+ },
+ {
+  "test": "Hands",
+  "file": "hands.jpg",
+  "slug": "hands.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1304",
+  "author": "Labatt Family School of Nursing, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Looking at the colour and warmth of the hands"
+ },
+ {
+  "test": "Chest wall inspection",
+  "file": "chest-wall-inspection.jpg",
+  "slug": "chest-wall-inspection.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2254",
+  "author": "Labatt Family School of Nursing, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Looking at the bare, reclined chest for scars and the apical impulse"
+ },
+ {
+  "test": "Listening areas",
+  "file": "listening-areas.jpg",
+  "slug": "listening-areas.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1306",
+  "author": "Labatt Family School of Nursing, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Stethoscope on the chest, listening over the heart"
+ },
+ {
+  "test": "Radial pulse",
+  "file": "radial-pulse.jpg",
+  "slug": "radial-pulse.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2284",
+  "author": "Labatt Family School of Nursing, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Feeling the radial pulse at the wrist"
+ },
+ {
+  "test": "Capillary refill",
+  "file": "capillary-refill.jpg",
+  "slug": "capillary-refill.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1418",
+  "author": "Labatt Family School of Nursing, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Capillary refill check at the fingertips"
+ },
+ {
+  "test": "Peripheral edema",
+  "file": "peripheral-edema.jpg",
+  "slug": "peripheral-edema.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2280",
+  "author": "Labatt Family School of Nursing, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Pressing on the lower leg to feel for swelling and pitting"
+ },
+ {
+  "test": "Carotid pulse",
+  "file": "carotid-pulse.jpg",
+  "slug": "carotid-pulse.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:Pulse_%28Neck%29.png",
+  "author": "BruceBlaus",
+  "licence": "CC BY-SA 4.0",
+  "what_it_shows": "Two fingers on the carotid pulse in the neck"
+ },
+ {
+  "test": "JVP waveform",
+  "file": "jvp-waveform.jpg",
+  "slug": "jvp-waveform.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:JVP_waveform.png",
+  "author": "Stanford Medicine",
+  "licence": "Public domain",
+  "what_it_shows": "The jugular venous waveform: a, c and v waves, x and y descents"
+ },
+ {
+  "test": "Landmarks: auscultate",
+  "file": "auscultate-landmarks.jpg",
+  "slug": "auscultate-landmarks.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "The four listening areas on the chest"
+ },
+ {
+  "test": "Landmarks: palpate",
+  "file": "precordium-landmarks.jpg",
+  "slug": "precordium-landmarks.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "Where to feel the apex beat, heaves and thrills"
+ },
+ {
+  "test": "JVP",
+  "file": "jvp-measure.jpg",
+  "slug": "jvp-measure.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "How the JVP is measured from the sternal angle"
+ },
+ {
+  "test": "Pulse sites",
+  "file": "pulse-sites.jpg",
+  "slug": "pulse-sites.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "Where to feel each pulse"
+ },
+ {
+  "test": "Heart sounds",
+  "file": "heart-sounds-cycle.jpg",
+  "slug": "heart-sounds-cycle.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "S1, S2, S3 and S4 in one cardiac cycle"
+ },
+ {
+  "test": "Aortic stenosis",
+  "file": "murmur-aortic-stenosis.jpg",
+  "slug": "murmur-aortic-stenosis.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the murmur"
+ },
+ {
+  "test": "Aortic regurgitation",
+  "file": "murmur-aortic-regurgitation.jpg",
+  "slug": "murmur-aortic-regurgitation.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the murmur"
+ },
+ {
+  "test": "Mitral stenosis",
+  "file": "murmur-mitral-stenosis.jpg",
+  "slug": "murmur-mitral-stenosis.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the murmur"
+ },
+ {
+  "test": "Mitral regurgitation",
+  "file": "murmur-mitral-regurgitation.jpg",
+  "slug": "murmur-mitral-regurgitation.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Noor Simsam (drawn for this page)",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the murmur"
+ }
+]

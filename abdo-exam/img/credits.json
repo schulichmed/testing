@@ -1,0 +1,227 @@
+[
+ {
+  "test": "Inspection from the side and the foot",
+  "file": "inspection-side-and-foot.jpg",
+  "slug": "inspection-side-and-foot.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2270",
+  "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Abdominal assessment: inspecting the abdomen from the side of the bed"
+ },
+ {
+  "test": "Bowel sounds",
+  "file": "bowel-sounds.jpg",
+  "slug": "bowel-sounds.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1992",
+  "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Auscultation, right lower quadrant"
+ },
+ {
+  "test": "Bruits (aorta, renal, iliac, femoral)",
+  "file": "bruits.jpg",
+  "slug": "bruits.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1994",
+  "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Auscultation, upper abdomen (stethoscope near the midline)"
+ },
+ {
+  "test": "Light palpation",
+  "file": "light-palpation.jpg",
+  "slug": "light-palpation.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1976",
+  "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Light palpation, one hand flat, upper right quadrant"
+ },
+ {
+  "test": "Deep palpation",
+  "file": "deep-palpation.jpg",
+  "slug": "deep-palpation.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1984",
+  "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Deep palpation, right quadrant"
+ },
+ {
+  "test": "Leg edema",
+  "file": "leg-edema.jpg",
+  "slug": "leg-edema.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2280",
+  "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Assessing the legs and feet with the patient lying flat"
+ },
+ {
+  "test": "Asterixis",
+  "file": "asterixis.jpg",
+  "slug": "asterixis.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Asterixis: arms out, wrists bent back, hands flapping"
+ },
+ {
+  "test": "Clubbing",
+  "file": "clubbing.jpg",
+  "slug": "clubbing.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Normal and clubbed finger seen from the side, with the Schamroth window"
+ },
+ {
+  "test": "Hernia check (head raise or cough)",
+  "file": "hernia-check.jpg",
+  "slug": "hernia-check.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Head lift or cough raising abdominal pressure so a hernia shows"
+ },
+ {
+  "test": "Percussion of the four quadrants",
+  "file": "percussion.jpg",
+  "slug": "percussion.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "The four quadrants with tympany and dullness"
+ },
+ {
+  "test": "Head-raise test for tenderness",
+  "file": "head-raise.jpg",
+  "slug": "head-raise.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Head lifted, abdominal wall tensed over a tender spot"
+ },
+ {
+  "test": "Aorta width",
+  "file": "aorta-width.jpg",
+  "slug": "aorta-width.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "A hand on each side of the aorta"
+ },
+ {
+  "test": "Kidneys (bimanual)",
+  "file": "kidneys.jpg",
+  "slug": "kidneys.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Cross-section: one hand behind the flank, one in front"
+ },
+ {
+  "test": "Liver span (percussion)",
+  "file": "liver-span.jpg",
+  "slug": "liver-span.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Percussing up and down the right midclavicular line"
+ },
+ {
+  "test": "Liver edge (palpation)",
+  "file": "liver-edge.jpg",
+  "slug": "liver-edge.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Hand in the RLQ moving up toward the costal margin"
+ },
+ {
+  "test": "Murphy's sign",
+  "file": "murphys-sign.jpg",
+  "slug": "murphys-sign.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Hand below the right costal margin over the gallbladder"
+ },
+ {
+  "test": "Castell's sign (percussion)",
+  "file": "castell-sign.jpg",
+  "slug": "castell-sign.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "The lowest left intercostal space over the spleen"
+ },
+ {
+  "test": "Spleen tip (palpation)",
+  "file": "spleen-tip.jpg",
+  "slug": "spleen-tip.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Diagonal path from RLQ to LUQ, other hand lifting the rib cage"
+ },
+ {
+  "test": "Shifting dullness",
+  "file": "shifting-dullness.jpg",
+  "slug": "shifting-dullness.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Fluid settling to the lower side when the patient rolls"
+ },
+ {
+  "test": "Fluid wave",
+  "file": "fluid-wave.jpg",
+  "slug": "fluid-wave.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Tap one flank, feel the impulse on the other side"
+ },
+ {
+  "test": "Rebound tenderness",
+  "file": "rebound-tenderness.jpg",
+  "slug": "rebound-tenderness.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Press slowly, release quickly"
+ },
+ {
+  "test": "McBurney's point",
+  "file": "mcburneys-point.jpg",
+  "slug": "mcburneys-point.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "One-third of the way from the right ASIS to the umbilicus"
+ },
+ {
+  "test": "Rovsing's sign",
+  "file": "rovsings-sign.jpg",
+  "slug": "rovsings-sign.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Pressing the left lower quadrant, pain in the right"
+ },
+ {
+  "test": "Psoas test",
+  "file": "psoas-test.jpg",
+  "slug": "psoas-test.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Right leg lifted against the examiner's hand"
+ },
+ {
+  "test": "Obturator test",
+  "file": "obturator-test.jpg",
+  "slug": "obturator-test.jpg",
+  "source_page_url": "./",
+  "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
+  "licence": "Own work, free to reuse",
+  "what_it_shows": "Bent hip rotated inward"
+ }
+]

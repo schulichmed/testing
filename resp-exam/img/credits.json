@@ -1,0 +1,119 @@
+[
+ {
+  "test": "Clubbing (Schamroth sign)",
+  "file": "clubbing-schamroth-sign.jpg",
+  "slug": "clubbing-schamroth-sign.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1314",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Hand assessment for clubbing"
+ },
+ {
+  "test": "Capillary refill",
+  "file": "capillary-refill.jpg",
+  "slug": "capillary-refill.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1310",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Capillary refill"
+ },
+ {
+  "test": "Chest shape and skin (SEADS)",
+  "file": "chest-shape-and-skin-seads.jpg",
+  "slug": "chest-shape-and-skin-seads.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1334",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Full view of the chest"
+ },
+ {
+  "test": "Respiratory movement and accessory muscles",
+  "file": "respiratory-movement-and-accessory-muscles.jpg",
+  "slug": "respiratory-movement-and-accessory-muscles.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2296",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Inspecting the chest"
+ },
+ {
+  "test": "Auscultating a lung field",
+  "file": "auscultating-a-lung-field.jpg",
+  "slug": "auscultating-a-lung-field.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1452",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Auscultating the posterior chest"
+ },
+ {
+  "test": "Egophony",
+  "file": "egophony.jpg",
+  "slug": "egophony.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1448",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Stethoscope on the posterior chest"
+ },
+ {
+  "test": "Whispered pectoriloquy",
+  "file": "whispered-pectoriloquy.jpg",
+  "slug": "whispered-pectoriloquy.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1450",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Stethoscope on the posterior chest"
+ },
+ {
+  "test": "Anterior auscultation",
+  "file": "anterior-auscultation.jpg",
+  "slug": "anterior-auscultation.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1392",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Auscultating the upper left lobe at the 4th intercostal space"
+ },
+ {
+  "test": "Right middle lobe",
+  "file": "right-middle-lobe.jpg",
+  "slug": "right-middle-lobe.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1394",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Auscultating the mid right lobe at the 4th intercostal space"
+ },
+ {
+  "test": "Pitting edema (lower limbs)",
+  "file": "pitting-edema-lower-limbs.jpg",
+  "slug": "pitting-edema-lower-limbs.jpg",
+  "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2280",
+  "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+  "licence": "CC BY-NC 4.0",
+  "what_it_shows": "Examining the legs and feet (Head-To-Toe set)"
+ },
+ {
+  "test": "Percussing a lung field",
+  "file": "posterior-ladder.jpg",
+  "slug": "posterior-ladder.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Drawn for this page (Noor Simsam)",
+  "licence": "CC0 (own drawing)",
+  "what_it_shows": "Drawn for this page: the six levels compared side to side on the back"
+ },
+ {
+  "test": "Chest expansion",
+  "file": "chest-expansion.jpg",
+  "slug": "chest-expansion.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Drawn for this page (Noor Simsam)",
+  "licence": "CC0 (own drawing)",
+  "what_it_shows": "Drawn for this page: thumb position and movement at the 10th ribs"
+ },
+ {
+  "test": "Tracheal position",
+  "file": "tracheal-position.jpg",
+  "slug": "tracheal-position.jpg",
+  "source_page_url": "https://github.com/schulichmed/preclerkship",
+  "author": "Drawn for this page (Noor Simsam)",
+  "licence": "CC0 (own drawing)",
+  "what_it_shows": "Drawn for this page: the gap either side of the trachea"
+ }
+]
