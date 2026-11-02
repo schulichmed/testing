@@ -85,6 +85,9 @@ class Exam:
         Education Media Library), each in a <video> made only when tapped.
     extra_cards : dict
         Region key -> test cards the note gives as prose, not table rows (MSK's Ottawa rules).
+    walk : dict
+        Region key or general card title -> list of {id, title, channel}: YouTube walkthroughs
+        shown on that spine card, played only when tapped.
     """
 
     key: str
@@ -117,6 +120,7 @@ class Exam:
     other_video: dict = field(default_factory=dict)
     clips: dict = field(default_factory=dict)
     extra_cards: dict = field(default_factory=dict)
+    walk: dict = field(default_factory=dict)
     videos: dict = field(default_factory=dict, init=False)
 
 
@@ -144,6 +148,14 @@ def clips(exam: Exam, key: str) -> str:
         out.append(f'<button class="vid" data-mp4="{html.escape(v["mp4"])}" data-page="{html.escape(v["page"])}">'
                    f'<span>▶ {html.escape(v["title"])}{secs}</span></button>')
     return "".join(out)
+
+
+def walks(exam: Exam, key: str) -> str:
+    """Render the tap-to-play YouTube walkthroughs filed under a region or card."""
+    return "".join(
+        f'<button class="vid" data-yt="{v["id"]}" data-start="0" data-page="https://www.youtube.com/watch?v={v["id"]}">'
+        f'<span>▶ {html.escape(v["title"])} ({html.escape(v["channel"])})</span></button>'
+        for v in exam.walk.get(key, []))
 
 
 def video(exam: Exam, slug: str, thumb: bool = False) -> str:
@@ -401,7 +413,7 @@ def wide_card(exam: Exam, title: str, body: str, slugs: list[str] | None = None,
     """Render a full-width card of prose (a spine routine, gait, pearls), with its
     videos and a picture (side) beside the text when given; clip_key names its video files."""
     words = (title + " " + re.sub(r"<[^>]+>", " ", body)).lower()
-    side += clips(exam, clip_key) if clip_key else ""
+    side += (clips(exam, clip_key) + walks(exam, clip_key)) if clip_key else ""
     return (f'<article class="test wide" tabindex="0" data-words="{html.escape(words)}">'
             f'<h4>{html.escape(title)}</h4><div class="hide h1 split"><div class="xprose">{body}</div>'
             f'{f"""<div class="aside">{side}{"".join(video(exam, v, thumb=i == 0 and not side) for i, v in enumerate(slugs or []))}</div>""" if slugs or side else ""}</div>'

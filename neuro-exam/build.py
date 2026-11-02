@@ -141,6 +141,32 @@ EXAM = exam_page.Exam(
                             "landmark_caption": "The approach to a neurological problem · tap to enlarge"}},
 )
 
+# Hamzah Algodi's own demonstration videos (his permission, 2026-11); shown on the spine cards
+EXAM.walk = {
+ "cranial": [
+  {
+   "id": "RCoFsjWy5gQ",
+   "title": "Cranial nerves demonstration",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "reflexes": [
+  {
+   "id": "XuBAEu-JWsE",
+   "title": "Reflexes demonstration",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "The general approach": [
+  {
+   "id": "HePBVeDMAio",
+   "title": "Full neuro exam demonstration",
+   "channel": "Hamzah Algodi"
+  }
+ ]
+}
+EXAM.video_credit += ' Demonstration videos by Hamzah Algodi ("*Unofficial* Schulich Clinical Skills"), used with his permission.'
+
 
 if __name__ == "__main__":
     exam_page.build(EXAM)

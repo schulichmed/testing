@@ -185,6 +185,67 @@ EXAM = exam_page.Exam(
     extra_cards={"ankle": [OTTAWA]},
 )
 
+# Hamzah Algodi's own demonstration videos (his permission, 2026-11); shown on the spine cards
+EXAM.walk = {
+ "shoulder": [
+  {
+   "id": "1C0lCTyXhBs",
+   "title": "Shoulder",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "elbow": [
+  {
+   "id": "vwn1Yzwz9I0",
+   "title": "Elbow",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "wrist": [
+  {
+   "id": "wm2bP1J4U_g",
+   "title": "Wrist",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "hip": [
+  {
+   "id": "rkIvc4056zk",
+   "title": "Hip",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "knee": [
+  {
+   "id": "Cqf56oiCyJQ",
+   "title": "Knee",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "ankle": [
+  {
+   "id": "R-rKtuYcr1M",
+   "title": "Ankle",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "cspine": [
+  {
+   "id": "vKui90nHHu8",
+   "title": "Cervical spine",
+   "channel": "Hamzah Algodi"
+  }
+ ],
+ "lspine": [
+  {
+   "id": "u3j78jgIfps",
+   "title": "Lumbar spine",
+   "channel": "Hamzah Algodi"
+  }
+ ]
+}
+EXAM.video_credit += ' Demonstration videos by Hamzah Algodi ("*Unofficial* Schulich Clinical Skills"), used with his permission.'
+
 
 if __name__ == "__main__":
     exam_page.build(EXAM)

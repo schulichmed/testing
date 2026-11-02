@@ -92,6 +92,18 @@ EXAM = exam_page.Exam(
     spine_heading="What to do", spine_title="Before the manoeuvres", pearls_heading="Pearls", count_noun="manoeuvres",
 )
 
+# Hamzah Algodi's own demonstration videos (his permission, 2026-11); shown on the spine cards
+EXAM.walk = {
+ "The general approach": [
+  {
+   "id": "bc5zwWnkp5Q",
+   "title": "Respiratory demonstration",
+   "channel": "Hamzah Algodi"
+  }
+ ]
+}
+EXAM.video_credit += ' Demonstration videos by Hamzah Algodi ("*Unofficial* Schulich Clinical Skills"), used with his permission.'
+
 
 if __name__ == "__main__":
     exam_page.build(EXAM)
