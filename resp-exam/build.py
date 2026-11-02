@@ -48,7 +48,7 @@ TESTS = {
     "Tracheal position": ("Neck: what is pushing or pulling", "tracheal-position.jpg"),
     "Cervical and supraclavicular lymph nodes": ("Neck: what is pushing or pulling", "cervical-lymph-nodes.jpg"),
     "Chest shape and skin (SEADS)": ("Shape and movement", "chest-shape.jpg"),
-    "Respiratory movement and accessory muscles": ("Shape and movement", "respiratory-movement.jpg"),
+    "Respiratory movement and accessory muscles": ("Shape and movement", None),
     "Spine and renal angle tenderness": ("Tenderness", "cva-angle.jpg"),
     "Chest expansion": ("Movement and vibration", None),
     "Tactile fremitus": ("Movement and vibration", None),
@@ -77,7 +77,16 @@ EXAM = exam_page.Exam(
               "field from apex to base. The right middle lobe can only be reached from the front.",
     video_credit='Videos and most photos from the <a href="https://rsc.lib.uwo.ca/s/healthedu/item-set">Health Education Media Library</a> '
                  "(Western Libraries; Schulich School of Medicine and Dentistry), CC BY-NC 4.0, played from the library's own server. "
-                 "Each opens only when you tap it.",
+                 "Each opens only when you tap it. "
+                 "Other demonstrations are YouTube videos from Geeky Medics, Stanford Medicine 25, Top Hat Tutorials and WVSOM, loaded only when tapped. Barrel chest photo: Cabot, Physical Diagnosis (1912), public domain.",
+    other_video={
+        "Asterixis": {"id": "YphjuZBJVkI", "start": 0, "title": "Examination for asterixis", "channel": "Top Hat Tutorials"},
+        "Respiratory movement and accessory muscles": {"id": "f5ydW0hnMcg", "start": 0, "title": "Stigmata of COPD: chest shape, accessory muscles", "channel": "Stanford Medicine 25"},
+        "Chest expansion": {"id": "q6w3CClfhdk", "start": 198, "title": "Chest expansion (respiratory exam)", "channel": "Geeky Medics"},
+        "Tactile fremitus": {"id": "RaRqot7iXIU", "start": 0, "title": "Tactile fremitus", "channel": "WVSOM Academic"},
+        "Percussing a lung field": {"id": "E3FW11Mbb0I", "start": 0, "title": "Percussion of the lungs", "channel": "Geeky Medics"},
+        "Anterior percussion": {"id": "q6w3CClfhdk", "start": 209, "title": "Lung percussion (respiratory exam)", "channel": "Geeky Medics"},
+    },
     clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
     general_title="General approach", general_week="Every respiratory exam",
     spine_heading="What to do", spine_title="Before the manoeuvres", pearls_heading="Pearls", count_noun="manoeuvres",

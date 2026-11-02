@@ -93,19 +93,10 @@
     "test": "Chest shape and skin (SEADS)",
     "file": "chest-shape.jpg",
     "slug": "chest-shape.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1334",
-    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Seated patient, front of the chest, for shape, symmetry and skin"
-  },
-  {
-    "test": "Respiratory movement and accessory muscles",
-    "file": "respiratory-movement.jpg",
-    "slug": "respiratory-movement.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1336",
-    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Seated patient, chest and neck in view, to watch breathing movement"
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Physical_diagnosis_(1912)_(14770064641).jpg",
+    "author": "Richard C. Cabot, Physical Diagnosis (1912), via Internet Archive Book Images",
+    "licence": "Public domain",
+    "what_it_shows": "Barrel chest from chronic bronchitis and emphysema: a deep, rounded chest seen from the side"
   },
   {
     "test": "Spine and renal angle tenderness",

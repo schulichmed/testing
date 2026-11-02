@@ -13,6 +13,7 @@ clinical-skills/exam_page.py, shared by every exam page.
 """
 
 import importlib.util
+import json
 import os
 import re
 import tempfile
@@ -60,9 +61,9 @@ TESTS = {
     'Subxiphoid (heart)': ('Is the heart moving, and is there fluid around it?', 'subxiphoid.jpg'),
     'Right upper quadrant': ('Liver, kidney and the space between them', 'ruq.jpg'),
     'Gallbladder': ('Liver, kidney and the space between them', 'gallbladder.jpg'),
-    'Left upper quadrant': ('Liver, kidney and the space between them', None),
-    'Pelvis, transverse': ('Bladder and what lies behind it', None),
-    'Pelvis, sagittal': ('Bladder and what lies behind it', None),
+    'Left upper quadrant': ('Liver, kidney and the space between them', 'luq.jpg'),
+    'Pelvis, transverse': ('Bladder and what lies behind it', 'pelvis_transverse.jpg'),
+    'Pelvis, sagittal': ('Bladder and what lies behind it', 'pelvis_sagittal.jpg'),
 }
 
 EXAM = exam_page.Exam(
@@ -72,9 +73,13 @@ EXAM = exam_page.Exam(
     find='Find a view (e.g. gallbladder, Morison, subxiphoid)',
     root='Choose the probe → Position the patient → Place the probe, marker the right way → Sweep and tilt → Name each structure',
     root_note='The probe marker points to the patient\'s head (or to their right in a cross-section). Fluid is black, solid organs are grey, bone and the diaphragm are bright white.',
-    video_credit='Ultrasound screenshots are reused under their open licences, credited below. No videos: practise the probe movements on a classmate in the session.',
+    video_credit='Ultrasound screenshots are reused under their open licences, credited below. Each view also has a probe-position video from <a href="https://www.youtube.com/@DrSamsImagingLibrary">Dr. Sam\'s Imaging Library</a>, played from YouTube only when you tap it. Practise the probe movements on a classmate in the session.',
     general_title="General approach", general_week='Every ultrasound',
     spine_heading='Before you scan', spine_title='The view', pearls_heading='Pearls',
+    other_video=json.loads((HERE / "videos_other.json").read_text(encoding="utf-8")),
+    video_page="https://www.youtube.com/watch?v={slug}",
+    region_video={'heart': ['izxn8kXvUGk'], 'upper': ['mRLb-tRtCp8'], 'pelvis': ['geKUmvCHrf8'],
+                  'vessels': ['p4qTMQZW4sk', 'vmmrjy1bhEc', 'vIbcAv9udso']},
     count_noun='views', steps_label='Steps', pos_label='A good view',
 )
 

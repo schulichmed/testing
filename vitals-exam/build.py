@@ -64,8 +64,10 @@ EXAM = exam_page.Exam(
     video_credit='Intro and set-up clips from the <a href="https://rsc.lib.uwo.ca/s/healthedu/item-set">Health Education Media Library</a> '
                  "(Western Libraries), CC BY-NC 4.0, played from the library's own server. The vital signs walkthrough is by "
                  '<a href="https://www.youtube.com/@geekymedics">Geeky Medics</a>. Each opens only when you tap it.',
+    other_video={"Plethora": {"id": "yPx7aMEgAR0", "start": 0, "title": "Plethora face: causes", "channel": "Medicine Handy Points"}},
     clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
-    video={}, video_page="https://www.youtube.com/watch?v=llosVAoeojQ",
+    video={}, video_page="https://www.youtube.com/watch?v=llosVAoeojQ "
+                 "The plethora clip is a YouTube video (Medicine Handy Points), loaded only when tapped.",
     region_video={"pulse": ["vital-signs"], "bp": ["vital-signs"]},
     general_title="General approach", general_week="Every exam",
     spine_heading="How to do it", spine_title="The routine", pearls_heading="Pearls", count_noun="signs and manoeuvres",

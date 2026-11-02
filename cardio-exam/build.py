@@ -102,12 +102,21 @@ EXAM = exam_page.Exam(
     video_credit='Demonstration video from <a href="https://geekymedics.com/cardiovascular-examination-2/">Geeky Medics</a> '
                  "(YouTube), loaded only when you tap it. Heart-sound audio from Wikimedia Commons, "
                  "Kudriavtsev, Polyshchuk and Roy (CC BY 2.0): aortic stenosis and a split S2. "
-                 "Audio plays in Chrome, Firefox and Edge; Safari does not play .ogg files.",
+                 "Audio plays in Chrome, Firefox and Edge; Safari does not play .ogg files. "
+                 "Other demonstrations are YouTube videos from AMBOSS, Open RN, JAMA Network and Emory University, loaded only when tapped.",
     video={}, video_page="", region_video={},
     other_video={
         "JVP (jugular venous pressure)": {"id": "Ez7KsKRi8e8", "start": 0, "title": "Measuring the JVP", "channel": "Geeky Medics"},
         "Describing a murmur": {"id": "Q5-0mSydRR4", "start": 0, "title": "Heart murmur sounds", "channel": "Geeky Medics"},
         "Peripheral edema": {"id": "1kfg1mYRJ-g", "start": 0, "title": "Peripheral vascular exam", "channel": "Geeky Medics"},
+        "Hepatojugular reflux": {"id": "JxyECMTEmmc", "start": 0, "title": "Testing the hepatojugular reflux", "channel": "AMBOSS"},
+        "Carotid bruit": {"id": "2DKucnJo2P4", "start": 0, "title": "Auscultation of carotid arteries", "channel": "Open RN"},
+        "Carotid auscultation": {"id": "2DKucnJo2P4", "start": 0, "title": "Auscultation of carotid arteries", "channel": "Open RN"},
+        "Heaves and lifts": {"id": "PaiYGbqgqRg", "start": 0, "title": "Palpation of the precordium", "channel": "Open RN"},
+        "Thrills": {"id": "PaiYGbqgqRg", "start": 0, "title": "Palpation of the precordium", "channel": "Open RN"},
+        "Rub": {"id": "b_FvP2Vw0OY", "start": 0, "title": "Three-component pericardial friction rub", "channel": "JAMA Network"},
+        "Popliteal pulse": {"id": "ITAHG6V2-b8", "start": 0, "title": "Popliteal artery palpation", "channel": "Emory University MSK"},
+        "Posterior tibial pulse": {"id": "zly846Ncsd8", "start": 0, "title": "Palpating the dorsalis pedis and posterior tibial pulses", "channel": "Open RN"},
     },
     clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
     general_title="General approach", general_week="Every cardiovascular exam",
