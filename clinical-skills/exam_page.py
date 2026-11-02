@@ -450,7 +450,8 @@ def render(exam: Exam, regions: list[dict], credits: list[dict]) -> str:
     items = "".join(
         f'<li>{html.escape(landmark_names.get(c["test"], c["test"]))}: {html.escape(c["author"])}, {html.escape(c["licence"])}, '
         f'<a href="{html.escape(c["source_page_url"])}">source</a></li>' for c in credits)
-    cred = f'<h3>Image credits</h3><p>Images reused under their open licences (Creative Commons or public domain). Some were cropped to hide faces.</p><ul>{items}</ul>' if credits else ""
+    cred = (f'<details class="acc"><summary>Image credits ({len(credits)})</summary><p>Images used for non-commercial teaching under their own licences '
+            f'(Creative Commons, public domain, or the course material). Some were cropped to hide faces.</p><ul>{items}</ul></details>') if credits else ""
     cs = clinical_skills
     sec, _key, name, taught, _page, _what = next(s for s in cs.SKILLS if s[1] == exam.key)
     sec_name = next(s[1] for s in cs.SECTIONS if s[0] == sec)
@@ -534,7 +535,12 @@ body.quiz .test[data-s="1"] .h1,body.quiz .test[data-s="2"] .h1,body.quiz .test[
 body.quiz .test:not([data-s="2"]) .pill{display:inline-block;margin-top:8px;font-size:12px;font-weight:600;color:var(--c);border:1px solid var(--c);border-radius:999px;padding:2px 10px}
 body.quiz.hideimg .test img{display:none}
 .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 7px;margin-left:2px;vertical-align:1px}
-.credits{margin-top:40px;font-size:12.5px;color:var(--muted)}.credits .credits ul{padding-left:18px}
+.credits{margin-top:40px;font-size:12.5px;color:var(--muted)}.credits .credits ul{padding-left:18px}.acc{border:1px solid var(--line);border-radius:10px;margin-top:10px;background:var(--card)}
+.acc>summary{cursor:pointer;padding:10px 14px;font-weight:600;font-size:14px;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.acc>summary::-webkit-details-marker{display:none}
+.acc>summary::after{content:"+";font-size:18px;color:var(--muted)}
+.acc[open]>summary::after{content:"-"}
+.acc>p,.acc>ul{margin:0 14px 12px}.acc>ul{padding-left:18px}
 :focus-visible{outline:3px solid var(--accent)}
 </style>
 {{NAV}}
@@ -560,7 +566,7 @@ body.quiz.hideimg .test img{display:none}
 <nav class="fan">{{CHIPS}}</nav>
 </div>
 {{BANDS}}
-<section class="credits"><h3>Videos</h3><p>{{VIDEO_CREDIT}}</p>{{CREDITS}}</section>
+<section class="credits"><details class="acc"><summary>Video credits</summary><p>{{VIDEO_CREDIT}}</p></details>{{CREDITS}}</section>
 </main>
 <script>
 (function(){
