@@ -1,39 +1,12 @@
 [
   {
-    "test": "Clubbing (Schamroth sign)",
-    "file": "clubbing-schamroth-sign.jpg",
-    "slug": "clubbing-schamroth-sign.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1314",
-    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Hand assessment for clubbing"
-  },
-  {
     "test": "Capillary refill",
     "file": "capillary-refill.jpg",
     "slug": "capillary-refill.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1310",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1418",
     "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
     "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Capillary refill"
-  },
-  {
-    "test": "Chest shape and skin (SEADS)",
-    "file": "chest-shape-and-skin-seads.jpg",
-    "slug": "chest-shape-and-skin-seads.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1334",
-    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Full view of the chest"
-  },
-  {
-    "test": "Respiratory movement and accessory muscles",
-    "file": "respiratory-movement-and-accessory-muscles.jpg",
-    "slug": "respiratory-movement-and-accessory-muscles.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2296",
-    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Inspecting the chest"
+    "what_it_shows": "Assessing cap refill (pressing a fingernail)"
   },
   {
     "test": "Auscultating a lung field",
@@ -84,37 +57,10 @@
     "test": "Pitting edema (lower limbs)",
     "file": "pitting-edema-lower-limbs.jpg",
     "slug": "pitting-edema-lower-limbs.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2280",
-    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Examining the legs and feet (Head-To-Toe set)"
-  },
-  {
-    "test": "Percussing a lung field",
-    "file": "posterior-ladder.jpg",
-    "slug": "posterior-ladder.jpg",
-    "source_page_url": "https://github.com/schulichmed/preclerkship",
-    "author": "Drawn for this page (Noor Simsam)",
-    "licence": "CC0 (own drawing)",
-    "what_it_shows": "Drawn for this page: the six levels compared side to side on the back"
-  },
-  {
-    "test": "Chest expansion",
-    "file": "chest-expansion.jpg",
-    "slug": "chest-expansion.jpg",
-    "source_page_url": "https://github.com/schulichmed/preclerkship",
-    "author": "Drawn for this page (Noor Simsam)",
-    "licence": "CC0 (own drawing)",
-    "what_it_shows": "Drawn for this page: thumb position and movement at the 10th ribs"
-  },
-  {
-    "test": "Tracheal position",
-    "file": "tracheal-position.jpg",
-    "slug": "tracheal-position.jpg",
-    "source_page_url": "https://github.com/schulichmed/preclerkship",
-    "author": "Drawn for this page (Noor Simsam)",
-    "licence": "CC0 (own drawing)",
-    "what_it_shows": "Drawn for this page: the gap either side of the trachea"
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Combinpedal.jpg",
+    "author": "James Heilman, MD",
+    "licence": "CC BY-SA 3.0, cropped",
+    "what_it_shows": "Pitting edema: a thumb press leaves a dent in the swollen shin"
   },
   {
     "test": "Clubbing (Schamroth sign)",
@@ -133,5 +79,59 @@
     "author": "IPFeditor",
     "licence": "CC BY-SA 3.0",
     "what_it_shows": "Clubbed fingertips (idiopathic pulmonary fibrosis)"
+  },
+  {
+    "test": "Cervical and supraclavicular lymph nodes",
+    "file": "cervical-lymph-nodes.jpg",
+    "slug": "cervical-lymph-nodes.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Cervical_lymphadenopathy_right_neck.png",
+    "author": "Coronation Dental Specialty Group (Ian Furst)",
+    "licence": "CC BY-SA 4.0",
+    "what_it_shows": "Enlarged cervical lymph nodes in the neck (arrowheads), cropped"
+  },
+  {
+    "test": "Chest shape and skin (SEADS)",
+    "file": "chest-shape.jpg",
+    "slug": "chest-shape.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1334",
+    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "Seated patient, front of the chest, for shape, symmetry and skin"
+  },
+  {
+    "test": "Respiratory movement and accessory muscles",
+    "file": "respiratory-movement.jpg",
+    "slug": "respiratory-movement.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1336",
+    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "Seated patient, chest and neck in view, to watch breathing movement"
+  },
+  {
+    "test": "Spine and renal angle tenderness",
+    "file": "cva-angle.jpg",
+    "slug": "cva-angle.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:CVangle.png",
+    "author": "Brainmachine",
+    "licence": "CC0",
+    "what_it_shows": "Back skeleton with the costovertebral (renal) angle marked"
+  },
+  {
+    "test": "Tracheal position",
+    "file": "tracheal-position.jpg",
+    "slug": "tracheal-position.jpg",
+    "source_page_url": "",
+    "author": "Drawn for this page (Claude), concept diagram",
+    "licence": "CC0",
+    "what_it_shows": "Normal, pushed-away and pulled-toward trachea, with causes"
+  },
+  {
+    "test": "Diaphragmatic excursion",
+    "file": "diaphragmatic-excursion.jpg",
+    "slug": "diaphragmatic-excursion.jpg",
+    "source_page_url": "",
+    "author": "Drawn for this page (Claude), concept diagram",
+    "licence": "CC0",
+    "what_it_shows": "Dull level marked after breathing out and after breathing in; 3 to 5 cm apart"
   }
 ]

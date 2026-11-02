@@ -1,14 +1,5 @@
 [
   {
-    "test": "Pupils and light reflex",
-    "file": "pupils-and-light-reflex.jpg",
-    "slug": "pupils-and-light-reflex.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1690",
-    "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Testing Pupillary light reflex"
-  },
-  {
     "test": "Swinging flashlight test",
     "file": "swinging-flashlight-test.jpg",
     "slug": "swinging-flashlight-test.jpg",
@@ -16,24 +7,6 @@
     "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
     "licence": "CC BY-NC 4.0 (frame from video)",
     "what_it_shows": "Penlight on one eye with the other eye in view (frame at 1:04 of Pupillary Light Response and RAPD)."
-  },
-  {
-    "test": "Eye movements",
-    "file": "eye-movements.jpg",
-    "slug": "eye-movements.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1692",
-    "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Testing extraocular movements"
-  },
-  {
-    "test": "Visual fields by confrontation",
-    "file": "visual-fields-by-confrontation.jpg",
-    "slug": "visual-fields-by-confrontation.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1682",
-    "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Testing visual fields"
   },
   {
     "test": "Visual acuity",
@@ -88,15 +61,6 @@
     "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
     "licence": "CC BY-NC 4.0",
     "what_it_shows": "Testing shoulder shrug-trapezius, cranial nerve XI"
-  },
-  {
-    "test": "Inspect the eyes and eyelids",
-    "file": "inspect-the-eyes-and-eyelids.jpg",
-    "slug": "inspect-the-eyes-and-eyelids.jpg",
-    "source_page_url": "https://commons.wikimedia.org/wiki/File:Blausen_0388_EyeAnatomy_01.png",
-    "author": "BruceBlaus (Wikimedia Commons)",
-    "licence": "CC BY 3.0",
-    "what_it_shows": "Labelled diagram of the eye: cornea, iris, pupil, sclera and the inside"
   },
   {
     "test": "Slit lamp",
@@ -198,12 +162,66 @@
     "what_it_shows": "Where the thyroid sits in the lower neck"
   },
   {
-    "test": "Thyroid palpation",
-    "file": "thyroid-palpation.jpg",
-    "slug": "thyroid-palpation.jpg",
-    "source_page_url": "https://commons.wikimedia.org/wiki/File:Blausen_0534_Goiter.png",
-    "author": "BruceBlaus (Wikimedia Commons)",
-    "licence": "CC BY 3.0",
-    "what_it_shows": "The two lobes and the isthmus of the thyroid"
+    "test": "Inspect the eyes and eyelids",
+    "file": "inspect-the-eyes-and-eyelids.jpg",
+    "slug": "inspect-the-eyes-and-eyelids.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Congenitalptosis.JPG",
+    "author": "Andrewya (Wikimedia Commons)",
+    "licence": "Public domain",
+    "what_it_shows": "Real photo of both eyes: eyelids, lashes, sclera and pupils, with the right upper lid drooping (ptosis); compare one side with the other."
+  },
+  {
+    "test": "Red reflex",
+    "file": "red-reflex.jpg",
+    "slug": "red-reflex.jpg",
+    "source_page_url": "img/red-reflex.svg",
+    "author": "Drawn for this page (Claude)",
+    "licence": "Drawn for this page (Claude), concept diagram",
+    "what_it_shows": "Light from the ophthalmoscope enters the pupil, reflects off the blood-rich retina and returns as a red-orange glow; normal, dark-spot and white-glow appearances."
+  },
+  {
+    "test": "Hair and skin",
+    "file": "hair-and-skin.jpg",
+    "slug": "hair-and-skin.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Alopecia_areata_bald_spot.jpg",
+    "author": "Kevlaraz (Wikimedia Commons)",
+    "licence": "CC0 (cropped to the scalp)",
+    "what_it_shows": "Scalp and hair from behind: a round patch of hair loss (alopecia areata) to look for when inspecting hair and scalp."
+  },
+  {
+    "test": "Neck inspection",
+    "file": "neck-inspection.jpg",
+    "slug": "neck-inspection.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Struma_001.jpg",
+    "author": "Drahreg01 (Wikimedia Commons)",
+    "licence": "CC BY-SA 3.0 (face not shown)",
+    "what_it_shows": "Front of the neck from the side: a visible swelling to the left of the midline (enlarged thyroid), the kind of asymmetry inspection looks for."
+  },
+  {
+    "test": "Pupils and light reflex",
+    "file": "pupils-and-light-reflex.jpg",
+    "slug": "pupils-and-light-reflex.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1690",
+    "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0 (cropped)",
+    "what_it_shows": "Testing Pupillary light reflex"
+  },
+  {
+    "test": "Eye movements",
+    "file": "eye-movements.jpg",
+    "slug": "eye-movements.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1692",
+    "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0 (cropped)",
+    "what_it_shows": "Testing extraocular movements"
+  },
+  {
+    "test": "Visual fields by confrontation",
+    "file": "visual-fields-by-confrontation.jpg",
+    "slug": "visual-fields-by-confrontation.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1682",
+    "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0 (cropped)",
+    "what_it_shows": "Testing visual fields"
   }
 ]

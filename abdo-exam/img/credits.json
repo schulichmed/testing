@@ -45,177 +45,6 @@
     "what_it_shows": "Deep palpation, right quadrant"
   },
   {
-    "test": "Leg edema",
-    "file": "leg-edema.jpg",
-    "slug": "leg-edema.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2280",
-    "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Assessing the legs and feet with the patient lying flat"
-  },
-  {
-    "test": "Asterixis",
-    "file": "asterixis.jpg",
-    "slug": "asterixis.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Asterixis: arms out, wrists bent back, hands flapping"
-  },
-  {
-    "test": "Hernia check (head raise or cough)",
-    "file": "hernia-check.jpg",
-    "slug": "hernia-check.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Head lift or cough raising abdominal pressure so a hernia shows"
-  },
-  {
-    "test": "Percussion of the four quadrants",
-    "file": "percussion.jpg",
-    "slug": "percussion.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "The four quadrants with tympany and dullness"
-  },
-  {
-    "test": "Head-raise test for tenderness",
-    "file": "head-raise.jpg",
-    "slug": "head-raise.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Head lifted, abdominal wall tensed over a tender spot"
-  },
-  {
-    "test": "Aorta width",
-    "file": "aorta-width.jpg",
-    "slug": "aorta-width.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "A hand on each side of the aorta"
-  },
-  {
-    "test": "Kidneys (bimanual)",
-    "file": "kidneys.jpg",
-    "slug": "kidneys.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Cross-section: one hand behind the flank, one in front"
-  },
-  {
-    "test": "Liver span (percussion)",
-    "file": "liver-span.jpg",
-    "slug": "liver-span.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Percussing up and down the right midclavicular line"
-  },
-  {
-    "test": "Liver edge (palpation)",
-    "file": "liver-edge.jpg",
-    "slug": "liver-edge.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Hand in the RLQ moving up toward the costal margin"
-  },
-  {
-    "test": "Murphy's sign",
-    "file": "murphys-sign.jpg",
-    "slug": "murphys-sign.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Hand below the right costal margin over the gallbladder"
-  },
-  {
-    "test": "Castell's sign (percussion)",
-    "file": "castell-sign.jpg",
-    "slug": "castell-sign.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "The lowest left intercostal space over the spleen"
-  },
-  {
-    "test": "Spleen tip (palpation)",
-    "file": "spleen-tip.jpg",
-    "slug": "spleen-tip.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Diagonal path from RLQ to LUQ, other hand lifting the rib cage"
-  },
-  {
-    "test": "Shifting dullness",
-    "file": "shifting-dullness.jpg",
-    "slug": "shifting-dullness.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Fluid settling to the lower side when the patient rolls"
-  },
-  {
-    "test": "Fluid wave",
-    "file": "fluid-wave.jpg",
-    "slug": "fluid-wave.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Tap one flank, feel the impulse on the other side"
-  },
-  {
-    "test": "Rebound tenderness",
-    "file": "rebound-tenderness.jpg",
-    "slug": "rebound-tenderness.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Press slowly, release quickly"
-  },
-  {
-    "test": "McBurney's point",
-    "file": "mcburneys-point.jpg",
-    "slug": "mcburneys-point.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "One-third of the way from the right ASIS to the umbilicus"
-  },
-  {
-    "test": "Rovsing's sign",
-    "file": "rovsings-sign.jpg",
-    "slug": "rovsings-sign.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Pressing the left lower quadrant, pain in the right"
-  },
-  {
-    "test": "Psoas test",
-    "file": "psoas-test.jpg",
-    "slug": "psoas-test.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Right leg lifted against the examiner's hand"
-  },
-  {
-    "test": "Obturator test",
-    "file": "obturator-test.jpg",
-    "slug": "obturator-test.jpg",
-    "source_page_url": "./",
-    "author": "Drawn for this page by Noor Simsam (schematic, no photograph)",
-    "licence": "Own work, free to reuse",
-    "what_it_shows": "Bent hip rotated inward"
-  },
-  {
     "test": "Clubbing",
     "file": "clubbing.jpg",
     "slug": "clubbing.jpg",
@@ -223,5 +52,131 @@
     "author": "IPFeditor",
     "licence": "CC BY-SA 3.0",
     "what_it_shows": "Clubbed fingertips"
+  },
+  {
+    "test": "Asterixis",
+    "file": "asterixis.jpg",
+    "slug": "asterixis.jpg",
+    "source_page_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10972428",
+    "author": "Flapping Tremor: Unraveling Asterixis, a narrative review (Medicina 2024, 60(3):362), Figure 2",
+    "licence": "CC BY 4.0 (cropped to the upper-limb panel)",
+    "what_it_shows": "Line drawing: arm extended, wrist dorsiflexed, then the irregular flapping of the hand (published illustration, not a photograph)"
+  },
+  {
+    "test": "Liver stigmata (hands, face, chest)",
+    "file": "liver-stigmata.jpg",
+    "slug": "liver-stigmata.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Palmar_erythema.jpg",
+    "author": "Left: Jmarchn (Palmar erythema.jpg); right: James Heilman, MD (Hepaticfailure.jpg, https://commons.wikimedia.org/wiki/File:Hepaticfailure.jpg)",
+    "licence": "CC BY-SA 3.0 (two images placed side by side, no changes otherwise)",
+    "what_it_shows": "Left: palmar erythema in both palms. Right: a swollen, ascitic abdomen with spider angiomata and dilated veins in a patient with liver failure"
+  },
+  {
+    "test": "Hernia check (head raise or cough)",
+    "file": "hernia-check.jpg",
+    "slug": "hernia-check.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Umbilical_hernia_01.jpg",
+    "author": "Saltanat",
+    "licence": "CC0 (public domain dedication)",
+    "what_it_shows": "A bulging adult umbilical hernia seen on the abdomen"
+  },
+  {
+    "test": "Inguinal nodes and hernias",
+    "file": "inguinal-hernia.jpg",
+    "slug": "inguinal-hernia.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Inguinalhernia.jpg",
+    "author": "Robystarm07",
+    "licence": "CC0 (cropped to the lower abdomen and groin)",
+    "what_it_shows": "A right-sided inguinal hernia: the bulge in the groin above the inguinal ligament, circled"
+  },
+  {
+    "test": "Aorta width",
+    "file": "aorta-width.jpg",
+    "slug": "aorta-width.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept diagram: cross-section of the abdomen at L2 with a fingertip each side of the aorta and the gap between them as its width"
+  },
+  {
+    "test": "Kidneys (bimanual)",
+    "file": "kidneys.jpg",
+    "slug": "kidneys.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept diagram: cross-section of the abdomen at L2 with one hand behind the flank and one in front of the right kidney"
+  },
+  {
+    "test": "Liver span (percussion)",
+    "file": "liver-span.jpg",
+    "slug": "liver-span.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept diagram: percussing down the right mid-clavicular line from the lung and up from the belly to find the liver's upper and lower borders"
+  },
+  {
+    "test": "Liver edge (palpation)",
+    "file": "liver-edge.jpg",
+    "slug": "liver-edge.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/1988",
+    "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "Deep palpation of the right upper quadrant: the hand position used to feel for the liver edge"
+  },
+  {
+    "test": "Shifting dullness",
+    "file": "shifting-dullness.jpg",
+    "slug": "shifting-dullness.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept diagram: free fluid settles in the flanks lying down and moves to the lower side after rolling, so the dull note moves"
+  },
+  {
+    "test": "Fluid wave",
+    "file": "fluid-wave.jpg",
+    "slug": "fluid-wave.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept diagram: a tap on one flank crosses the ascitic fluid to the other hand while an assistant's hand on the midline blocks the wall"
+  },
+  {
+    "test": "McBurney's point",
+    "file": "mcburneys-point.jpg",
+    "slug": "mcburneys-point.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:McBurney%27s_point.jpg",
+    "author": "Steven Fruitsmaak",
+    "licence": "CC BY-SA 3.0",
+    "what_it_shows": "Surface marking of McBurney's point: one third of the way from the right anterior superior iliac spine to the umbilicus (points 1 to 3)"
+  },
+  {
+    "test": "Rovsing's sign",
+    "file": "rovsings-sign.jpg",
+    "slug": "rovsings-sign.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept diagram: pressing the left lower quadrant causes pain in the right lower quadrant"
+  },
+  {
+    "test": "Psoas test",
+    "file": "psoas-test.jpg",
+    "slug": "psoas-test.jpg",
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Anterior_Hip_Muscles_2.PNG",
+    "author": "Beth ohara",
+    "licence": "CC BY-SA 3.0",
+    "what_it_shows": "Published muscle illustration: psoas major from the lumbar spine to the femur (the muscle an inflamed retrocecal appendix lies on); shows the muscle, not the manoeuvre"
+  },
+  {
+    "test": "Leg edema",
+    "file": "leg-edema.jpg",
+    "slug": "leg-edema.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2280",
+    "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0 (cropped to the legs and hands)",
+    "what_it_shows": "Examiner's hands on both lower legs, checking for swelling"
   }
 ]

@@ -251,7 +251,7 @@ def main() -> None:
             LOG.warning("skipped %s: no known cs_key", path.name)
             continue
         page = next(s[4] for s in cs.SKILLS if s[1] == note["key"])
-        if page and page.endswith("-exam/"):
+        if page and page.startswith("../"):
             LOG.info("skipped %s: it has its own exam page, %s", note["key"], page)
             continue
         (HERE / f"{note['key']}.html").write_text(render(note), encoding="utf-8")

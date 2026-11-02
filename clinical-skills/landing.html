@@ -129,5 +129,24 @@ pre-clerkship.
 <p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
 </footer>
 </div>
+<div class="posbar notebar" id="notebar" hidden>
+<button class="pb-step pb-top" id="nb-top" type="button" title="Back to the top" aria-label="Back to the top">Top</button>
+</div>
+<script>
+(function () {
+  var bar = document.getElementById("notebar"), queued = false;
+  document.getElementById("nb-top").addEventListener("click", function () {
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    try { window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); } catch (e) { window.scrollTo(0, 0); }
+  });
+  function paint() { bar.hidden = window.pageYOffset <= 400; }
+  window.addEventListener("scroll", function () {
+    if (queued) return;
+    queued = true;
+    window.requestAnimationFrame(function () { queued = false; paint(); });
+  }, { passive: true });
+  paint();
+})();
+</script>
 </body>
 </html>

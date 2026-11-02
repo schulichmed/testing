@@ -386,5 +386,158 @@
   "author": "Drawn for this page (medwiki)",
   "licence": "CC0",
   "what_it_shows": "Cotton wisp approaching the cornea from the side while the patient looks up and away."
+ },
+ {
+  "test": "CN V: motor",
+  "file": "cn-v-motor.jpg",
+  "slug": "cn-v-motor.jpg",
+  "source_page_url": "https://med.libretexts.org/Bookshelves/Nursing/Nursing_Skills_(OpenRN)/06%3A_Neurological_Assessment/6.05%3A_Assessing_Cranial_Nerves",
+  "author": "Meredith Pomietlo for Chippewa Valley Technical College, in Open RN Nursing Skills (Chippewa Valley Technical College / Wisconsin Technical College System)",
+  "licence": "CC BY 4.0 (cropped to two panels, eyes blurred)",
+  "what_it_shows": "Fingers on the jaw angle (masseter) and temple (temporalis) while the patient clenches the teeth; third panel, open mouth, omitted."
+ },
+ {
+  "test": "CN VII: sensory",
+  "file": "cn-vii-sensory-taste.jpg",
+  "slug": "cn-vii-sensory-taste.jpg",
+  "source_page_url": "https://med.libretexts.org/Bookshelves/Nursing/Nursing_Skills_(OpenRN)/06%3A_Neurological_Assessment/6.05%3A_Assessing_Cranial_Nerves",
+  "author": "Meredith Pomietlo for Chippewa Valley Technical College, in Open RN Nursing Skills (Chippewa Valley Technical College / Wisconsin Technical College System)",
+  "licence": "CC BY 4.0 (cropped, eyes blurred)",
+  "what_it_shows": "Taste testing: a moistened cotton applicator touched to the front of the tongue."
+ },
+ {
+  "test": "CN IX and X: gag reflex",
+  "file": "cn-ix-x-gag-reflex.jpg",
+  "slug": "cn-ix-x-gag-reflex.jpg",
+  "source_page_url": "https://med.libretexts.org/Bookshelves/Nursing/Nursing_Skills_(OpenRN)/06%3A_Neurological_Assessment/6.05%3A_Assessing_Cranial_Nerves",
+  "author": "Meredith Pomietlo for Chippewa Valley Technical College, in Open RN Nursing Skills (Chippewa Valley Technical College / Wisconsin Technical College System)",
+  "licence": "CC BY 4.0 (cropped, eyes blurred)",
+  "what_it_shows": "Observing the gag reflex: penlight and tongue depressor in the open mouth (Open RN Figure 6.5.13)."
+ },
+ {
+  "test": "Light touch",
+  "file": "light-touch.jpg",
+  "slug": "light-touch.jpg",
+  "source_page_url": "https://med.libretexts.org/Bookshelves/Nursing/Nursing_Skills_(OpenRN)/06%3A_Neurological_Assessment/6.06%3A_Assessing_Sensory_Function",
+  "author": "Meredith Pomietlo for Chippewa Valley Technical College, in Open RN Nursing Skills (Chippewa Valley Technical College / Wisconsin Technical College System)",
+  "licence": "CC BY 4.0 (cropped to the thigh and shin panels)",
+  "what_it_shows": "A cotton wisp touched to the thigh and to the shin, patient seated."
+ },
+ {
+  "test": "Stereognosis",
+  "file": "stereognosis.jpg",
+  "slug": "stereognosis.jpg",
+  "source_page_url": "https://med.libretexts.org/Bookshelves/Nursing/Nursing_Skills_(OpenRN)/06%3A_Neurological_Assessment/6.06%3A_Assessing_Sensory_Function",
+  "author": "Meredith Pomietlo for Chippewa Valley Technical College, in Open RN Nursing Skills (Chippewa Valley Technical College / Wisconsin Technical College System)",
+  "licence": "CC BY 4.0 (cropped to the hands)",
+  "what_it_shows": "A key placed in the open palm and explored by the other hand, eyes closed (Assessing Stereognosis)."
+ },
+ {
+  "test": "Ankle clonus",
+  "file": "ankle-clonus.jpg",
+  "slug": "ankle-clonus.jpg",
+  "source_page_url": "https://commons.wikimedia.org/wiki/File:ClonusfromSS_(edited).webm",
+  "author": "David Juurlink",
+  "licence": "CC BY-SA 4.0 (frame from video)",
+  "what_it_shows": "Examiner sharply dorsiflexing the foot with the palm on the sole to bring out clonus (frame from a case of serotonin syndrome)."
+ },
+ {
+  "test": "Cortex",
+  "file": "lesion-cortex.jpg",
+  "slug": "lesion-cortex.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Subcortex (white matter, internal capsule)",
+  "file": "lesion-subcortex.jpg",
+  "slug": "lesion-subcortex.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Brainstem",
+  "file": "lesion-brainstem.jpg",
+  "slug": "lesion-brainstem.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Cerebellum",
+  "file": "lesion-cerebellum.jpg",
+  "slug": "lesion-cerebellum.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Spinal cord",
+  "file": "lesion-spinal-cord.jpg",
+  "slug": "lesion-spinal-cord.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Anterior horn cell",
+  "file": "lesion-anterior-horn-cell.jpg",
+  "slug": "lesion-anterior-horn-cell.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Nerve root",
+  "file": "lesion-nerve-root.jpg",
+  "slug": "lesion-nerve-root.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Plexus",
+  "file": "lesion-plexus.jpg",
+  "slug": "lesion-plexus.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Peripheral nerve",
+  "file": "lesion-peripheral-nerve.jpg",
+  "slug": "lesion-peripheral-nerve.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Neuromuscular junction",
+  "file": "lesion-neuromuscular-junction.jpg",
+  "slug": "lesion-neuromuscular-junction.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Muscle",
+  "file": "lesion-muscle.jpg",
+  "slug": "lesion-muscle.jpg",
+  "source_page_url": "https://github.com/schulichmed/medwiki",
+  "author": "Drawn for this page (Claude), concept diagram",
+  "licence": "CC0",
+  "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
  }
 ]

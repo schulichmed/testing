@@ -5,17 +5,8 @@
     "slug": "radial-pulse.jpg",
     "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2284",
     "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Assessing pulse"
-  },
-  {
-    "test": "Counting the respiratory rate",
-    "file": "respiratory-rate.jpg",
-    "slug": "respiratory-rate.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2284",
-    "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Assessing pulse (fingers stay on the wrist while breathing is counted)"
+    "licence": "CC BY-NC 4.0, cropped",
+    "what_it_shows": "Fingers on the radial pulse at the wrist"
   },
   {
     "test": "Palpated systolic estimate",
@@ -23,8 +14,8 @@
     "slug": "palpated-systolic-estimate.jpg",
     "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2312",
     "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "Pulses (cuff on, radial pulse felt)"
+    "licence": "CC BY-NC 4.0, cropped",
+    "what_it_shows": "Cuff on the upper arm while the radial pulse is felt at the wrist"
   },
   {
     "test": "Auscultated blood pressure",
@@ -32,35 +23,17 @@
     "slug": "auscultated-bp.jpg",
     "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2250",
     "author": "Clinical Skills teaching set, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
-    "licence": "CC BY-NC 4.0",
-    "what_it_shows": "BP assessment with results visible"
+    "licence": "CC BY-NC 4.0, cropped",
+    "what_it_shows": "Blood pressure cuff applied to the upper arm"
   },
   {
     "test": "Central cyanosis",
     "file": "central-cyanosis.jpg",
     "slug": "central-cyanosis.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-    "author": "Drawn for this page by Noor Simsam",
-    "licence": "Original drawing (CC0)",
-    "what_it_shows": "blue lips (drawn diagram)"
-  },
-  {
-    "test": "Plethora",
-    "file": "plethora.jpg",
-    "slug": "plethora.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-    "author": "Drawn for this page by Noor Simsam",
-    "licence": "Original drawing (CC0)",
-    "what_it_shows": "red skin (drawn diagram)"
-  },
-  {
-    "test": "Orthostatic blood pressure",
-    "file": "orthostatic-bp.jpg",
-    "slug": "orthostatic-bp.jpg",
-    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item-set",
-    "author": "Drawn for this page by Noor Simsam",
-    "licence": "Original drawing (CC0)",
-    "what_it_shows": "lying then standing (drawn diagram)"
+    "source_page_url": "https://commons.wikimedia.org/wiki/File:Cyanoza_.jpg",
+    "author": "Ciernik M",
+    "licence": "CC BY-SA 4.0, cropped",
+    "what_it_shows": "Blue-purple lips (central cyanosis)"
   },
   {
     "test": "Peripheral cyanosis",
@@ -88,5 +61,23 @@
     "author": "Chidiebere Ibe",
     "licence": "CC BY-SA 4.0, cropped",
     "what_it_shows": "Pale tongue and pale inner lower eyelid beside normal (illustration)"
+  },
+  {
+    "test": "Counting the respiratory rate",
+    "file": "counting-respiratory-rate.jpg",
+    "slug": "counting-respiratory-rate.jpg",
+    "source_page_url": "https://rsc.lib.uwo.ca/s/healthedu/item/2296",
+    "author": "Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
+    "licence": "CC BY-NC 4.0",
+    "what_it_shows": "Watching the patient's chest rise and fall without telling them, while counting breaths"
+  },
+  {
+    "test": "Orthostatic blood pressure",
+    "file": "orthostatic-bp.jpg",
+    "slug": "orthostatic-bp.jpg",
+    "source_page_url": "",
+    "author": "Drawn for this page (Claude), concept diagram",
+    "licence": "CC0",
+    "what_it_shows": "Worked example: systolic and diastolic lying, then standing at 1 and 3 minutes, with the positive criteria"
   }
 ]

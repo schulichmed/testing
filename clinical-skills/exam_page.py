@@ -107,6 +107,9 @@ class Exam:
     spine_title: str = "Look · Feel · Move"
     pearls_heading: str = "Pearls"
     count_noun: str = "special tests"
+    # what a card's two hidden parts are called: a history page asks and listens instead
+    steps_label: str = "Steps"
+    pos_label: str = "Positive"
     region_text: dict = field(default_factory=dict)
     video: dict = field(default_factory=dict)
     video_page: str = ""
@@ -315,7 +318,7 @@ def read_note(exam: Exam) -> list[dict]:
         if section not in exam.regions or not line.startswith("| ") or line.startswith("| ---"):
             continue
         cells = [c.strip() for c in re.split(r"(?<!\\)\|", line)[1:-1]]
-        if len(cells) < 4 or cells[2] == "Steps":
+        if len(cells) < 4 or cells[2] in ("Steps", exam.steps_label) or cells[1] == "Looks for":
             continue
         steps = [re.sub(r"^\d+\.\s*", "", s) for s in cells[2].split("<br>")]
         # an advanced or extra tag on the name moves to the looks-for line, so the name stays the key
@@ -385,8 +388,8 @@ def card(exam: Exam, t: dict) -> str:
     words = " ".join([t["name"], re.sub(r"<[^>]+>", "", t["for"])]).lower()
     return (f'<article class="test" tabindex="0" data-words="{html.escape(words)}">'
             f'<h4>{html.escape(t["name"])}</h4><p class="for">{t["for"]}</p>{img}'
-            f'<div class="hide h1"><span class="lbl">Steps</span><ol>{steps}</ol></div>'
-            f'<div class="hide h2 pos"><span class="lbl">Positive</span><p>{t["pos"]}</p></div>'
+            f'<div class="hide h1"><span class="lbl">{html.escape(exam.steps_label)}</span><ol>{steps}</ol></div>'
+            f'<div class="hide h2 pos"><span class="lbl">{html.escape(exam.pos_label)}</span><p>{t["pos"]}</p></div>'
             f'{f"""<div class="hide h2 vids">{video(exam, exam.video[t["name"]])}</div>""" if t["name"] in exam.video else ""}'
             f'{f"""<div class="hide h2 vids">{other_video(exam, t["name"])}</div>""" if t["name"] in exam.other_video else ""}'
             f'{f"""<div class="hide h2 vids">{clips(exam, t["name"])}</div>""" if t["name"] in exam.clips else ""}'

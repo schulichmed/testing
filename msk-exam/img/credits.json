@@ -448,5 +448,59 @@
   "licence": "CC BY (version not stated)",
   "what_it_shows": "Two side-view frames: knee bent about 90 degrees, examiner's hands wrapped around the top of the shin; in the second frame the shin is pulled forward.",
   "slug": "anterior-drawer.jpg"
+ },
+ {
+  "test": "McMurray's test",
+  "file": "mcmurray-s-test.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC3213012",
+  "author": "Rossi R, Dettoni F, Bruzzone M, Cottino U, D'Elicio DG, Margheritini F - Clinical examination of the knee: know your tools for diagnosis of knee injuries (Sports Med Arthrosc Rehabil Ther Technol, 2011), Figure 3",
+  "licence": "CC BY 2.0",
+  "what_it_shows": "Two frames of McMurray's test: supine, hip and knee flexed, examiner holds the heel with one hand and the knee joint line with the other while rotating the foot and moving the knee from bent to straight.",
+  "slug": "mcmurray-s-test.jpg"
+ },
+ {
+  "test": "Posterior drawer",
+  "file": "posterior-drawer.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC12875799",
+  "author": "Current standards for the objective assessment and management of posterior cruciate ligament tears: a narrative review (Annals of Joint, 2026), Figure 2",
+  "licence": "CC BY-NC-ND 4.0 (used uncropped, as the licence requires)",
+  "what_it_shows": "Posterior drawer test on a right knee, patient supine, knee bent about 90 degrees: examiner's hands wrapped around the top of the shin, thumbs on the tibial tubercle region, pushing the shin backward. Tight close-up of the hands.",
+  "slug": "posterior-drawer.jpg"
+ },
+ {
+  "test": "Talar tilt",
+  "file": "talar-tilt.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC12712512",
+  "author": "Duguay T, Vieira TD, Saillant G et al. - Prone-Position Physical Examination of the Ankle for Chronic Ankle Instability: A Technical Note (Arthroscopy Techniques, 2025), Figure 5",
+  "licence": "CC BY-NC-ND 4.0 (used uncropped, as the licence requires)",
+  "what_it_shows": "Talar tilt: one hand holds the lower leg still while the other tips the heel (calcaneus) sideways under the talus to feel how far the talus tilts in the ankle mortise; arrow shows the tilt. Examiner position is prone, a variant of the usual supine position.",
+  "slug": "talar-tilt.jpg"
+ },
+ {
+  "test": "Passive external rotation",
+  "file": "passive-external-rotation.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC12712512",
+  "author": "Duguay T, Vieira TD, Saillant G et al. - Prone-Position Physical Examination of the Ankle for Chronic Ankle Instability: A Technical Note (Arthroscopy Techniques, 2025), Figure 6",
+  "licence": "CC BY-NC-ND 4.0 (used uncropped, as the licence requires)",
+  "what_it_shows": "Panel A is the Frick test: patient prone with the knee bent 90 degrees, lower hand holds the leg still and the upper hand turns the foot outward (arrow) - the passive external rotation (syndesmosis) test. Panel B is the squeeze-type syndesmosis test shown alongside it.",
+  "slug": "passive-external-rotation.jpg"
+ },
+ {
+  "test": "Lateral ankle ligament stress",
+  "file": "lateral-ankle-ligament-stress.jpg",
+  "source_page_url": "https://europepmc.org/article/PMC/PMC12712512",
+  "author": "Duguay T, Vieira TD, Saillant G et al. - Prone-Position Physical Examination of the Ankle for Chronic Ankle Instability: A Technical Note (Arthroscopy Techniques, 2025), Figure 2",
+  "licence": "CC BY-NC-ND 4.0 (used uncropped, as the licence requires)",
+  "what_it_shows": "Stress testing of the lateral ankle ligaments: one hand steadies the talus/shin while the other applies a sideways force to the heel, A: subtalar laxity and B: tibiotalar laxity (arrow = direction of stress). Prone variant; it does not separate ATFL from CFL by foot position as the note's steps do.",
+  "slug": "lateral-ankle-ligament-stress.jpg"
+ },
+ {
+  "test": "Wipe (bulge) test",
+  "file": "wipe-bulge-test.jpg",
+  "source_page_url": "Drawn for this page (Claude), concept diagram",
+  "author": "Claude (Anthropic), drawn for this page",
+  "licence": "Own work, concept diagram",
+  "what_it_shows": "Left knee, front view, two steps of the wipe test: stroke up the inner side to empty the hollow beside the kneecap, then stroke down the outer side; a wave of fluid refilling the inner hollow is positive. Shows the mechanism, not a person doing it.",
+  "slug": "wipe-bulge-test.jpg"
  }
 ]

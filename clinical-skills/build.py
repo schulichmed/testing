@@ -35,15 +35,15 @@ SECTIONS = [
 
 # (section, picture key in img/, name, courses in teaching order, page once built, what it holds)
 SKILLS = [
-    ("history", "interview", "The patient-centred interview", ["fom", "pom1"], None,
+    ("history", "interview", "The patient-centred interview", ["fom", "pom1"], "../interview-skill/",
      "The template every history follows: opening, the presenting illness, past history, medications, family and social history, closing."),
-    ("history", "humility", "Cultural humility", ["pom1"], None,
+    ("history", "humility", "Cultural humility", ["pom1"], "../humility-skill/",
      "Gender-expansive care, and interviews in a language other than English."),
-    ("history", "present", "Presenting a case", ["fom", "t2c"], None,
+    ("history", "present", "Presenting a case", ["fom", "t2c"], "../present-skill/",
      "Presenting to a preceptor, and the problem-oriented write-up."),
-    ("history", "obhx", "Obstetric and gynecologic history", ["pom2"], None,
+    ("history", "obhx", "Obstetric and gynecologic history", ["pom2"], "../obhx-skill/",
      "Built on the faculty OB/Gyne history reference and the Ontario Perinatal Record."),
-    ("history", "psychhx", "Psychiatric interview", ["pom2"], None,
+    ("history", "psychhx", "Psychiatric interview", ["pom2"], "../psychhx-skill/",
      "The psychiatric history and the mental status exam."),
     ("history", "pedshx", "Paediatric history", ["t2c"], None,
      "Birth, development, growth, nutrition and immunizations; talking with children and families."),
@@ -69,11 +69,11 @@ SKILLS = [
      "Penis, scrotum, hernia and the rectal exam."),
     ("exam", "gyne", "Pelvic and obstetrical", ["pom2", "t2c"], "../gyne-exam/",
      "Position and drape, speculum and bimanual exam, then the obstetrical abdominal exam."),
-    ("ultrasound", "pocus", "Heart and abdomen", ["pom1", "t2c"], None,
+    ("ultrasound", "pocus", "Heart and abdomen", ["pom1", "t2c"], "../pocus-skill/",
      "The view of the heart from under the ribs, and the right upper quadrant."),
-    ("osce", "station", "How a station runs", ["fom", "t2c"], None,
+    ("osce", "station", "How a station runs", ["fom", "t2c"], "../station-skill/",
      "What is marked, and the opening lines to say for each exam."),
-    ("osce", "consol", "Putting it together", ["t2c"], None,
+    ("osce", "consol", "Putting it together", ["t2c"], "../consol-skill/",
      "A full history and focused exam, then a problem list and a differential."),
 ]
 
@@ -128,11 +128,31 @@ HEAD = """<!DOCTYPE html>
 <div class="pom2-page">
 """
 
+# the portal's back-to-top pill (its notes tabs' posbar, styled by portal.css), shown once the page is scrolled
 FOOT = """
 <footer>
 <p><strong>Unofficial and student-run.</strong> For any inquiries, email <a href="mailto:schulichmedfriend@gmail.com">schulichmedfriend@gmail.com</a>.</p>
 </footer>
 </div>
+<div class="posbar notebar" id="notebar" hidden>
+<button class="pb-step pb-top" id="nb-top" type="button" title="Back to the top" aria-label="Back to the top">Top</button>
+</div>
+<script>
+(function () {
+  var bar = document.getElementById("notebar"), queued = false;
+  document.getElementById("nb-top").addEventListener("click", function () {
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    try { window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); } catch (e) { window.scrollTo(0, 0); }
+  });
+  function paint() { bar.hidden = window.pageYOffset <= 400; }
+  window.addEventListener("scroll", function () {
+    if (queued) return;
+    queued = true;
+    window.requestAnimationFrame(function () { queued = false; paint(); });
+  }, { passive: true });
+  paint();
+})();
+</script>
 </body>
 </html>
 """

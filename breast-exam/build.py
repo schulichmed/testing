@@ -42,10 +42,10 @@ TESTS = {
     "Arms at sides": ("Anything visibly different", "arms-at-sides.jpg"),
     "Arms over head": ("Dimpling or a pull-in hidden at rest", "arms-over-head.jpg"),
     "Hands pressed on hips": ("Dimpling or a pull-in hidden at rest", "hands-pressed-on-hips.jpg"),
-    "Leaning forward": ("Dimpling or a pull-in hidden at rest", None),
+    "Leaning forward": ("Dimpling or a pull-in hidden at rest", "leaning-forward.jpg"),
     "Lateral (outer) half": ("A lump in the breast tissue", "lateral-outer-half.jpg"),
     "Medial (inner) half": ("A lump in the breast tissue", "medial-inner-half.jpg"),
-    "Nipple": ("Something under the nipple", None),
+    "Nipple": ("Something under the nipple", "nipple.jpg"),
     "Mobility of a mass": ("What a lump is attached to", "mobility-of-a-mass.jpg"),
     "Axillary nodes": ("Spread to the nodes", "axillary-nodes.jpg"),
     "Male breast: inspect and palpate": ("A nodule in a man", None),
@@ -65,7 +65,7 @@ EXAM = exam_page.Exam(
     h1="Breast exam, look then feel",
     lead="The general approach first (chaperone, draping, timing), then each part of the exam in the order you do it: "
          "what to look for, each manoeuvre (numbered steps and what counts as positive), and its pearls. Built from the "
-         "Breast Exam session guide; pictures are line drawings and diagrams only.",
+         "Breast Exam session guide; pictures are line drawings and diagrams, plus the faculty guide's own photographs for the leaning-forward view and nipple palpation.",
     find="Find a manoeuvre or a finding (e.g. dimpling, nipple)",
     root="Inspect, sitting → Palpate the breast, lying → Palpate the nipple → Axillary nodes",
     root_note="Compare one side with the other. Be systematic (the same pattern every time), and protect modesty and comfort: "

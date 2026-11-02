@@ -46,11 +46,11 @@ GENERAL = [(1, "The general approach"), (2, "Before you examine: the GI history"
 
 # manoeuvre name as the note shows it -> (problem heading, picture in img/)
 TESTS = {
-    "Asterixis": ("Hands: liver and kidney failure", None),
+    "Asterixis": ("Hands: liver and kidney failure", "asterixis.jpg"),
     "Clubbing": ("Hands: gut and liver disease", "clubbing.jpg"),
-    "Liver stigmata (hands, face, chest)": ("Chronic liver disease", None),
+    "Liver stigmata (hands, face, chest)": ("Chronic liver disease", "liver-stigmata.jpg"),
     "Inspection from the side and the foot": ("Shape, skin and movement", None),
-    "Hernia check (head raise or cough)": ("Hernia or mass", None),
+    "Hernia check (head raise or cough)": ("Hernia or mass", "hernia-check.jpg"),
     "Bowel sounds": ("Is the bowel working?", "bowel-sounds.jpg"),
     "Bruits (aorta, renal, iliac, femoral)": ("Narrowed artery", "bruits.jpg"),
     "Percussion of the four quadrants": ("Gas, mass or enlarged organ", None),
@@ -58,22 +58,22 @@ TESTS = {
     "Deep palpation": ("Tenderness and masses", "deep-palpation.jpg"),
     "Guarding": ("Peritonitis", None),
     "Head-raise test for tenderness": ("Wall or deeper?", None),
-    "Aorta width": ("Aortic aneurysm", None),
-    "Kidneys (bimanual)": ("Kidneys", None),
-    "Liver span (percussion)": ("Hepatomegaly", None),
-    "Liver edge (palpation)": ("Hepatomegaly", None),
+    "Aorta width": ("Aortic aneurysm", "aorta-width.jpg"),
+    "Kidneys (bimanual)": ("Kidneys", "kidneys.jpg"),
+    "Liver span (percussion)": ("Hepatomegaly", "liver-span.jpg"),
+    "Liver edge (palpation)": ("Hepatomegaly", "liver-edge.jpg"),
     "Murphy's sign": ("Gallbladder", None),
     "Castell's sign (percussion)": ("Splenomegaly", None),
     "Spleen tip (palpation)": ("Splenomegaly", None),
-    "Shifting dullness": ("Fluid in the belly", None),
-    "Fluid wave": ("Fluid in the belly", None),
+    "Shifting dullness": ("Fluid in the belly", "shifting-dullness.jpg"),
+    "Fluid wave": ("Fluid in the belly", "fluid-wave.jpg"),
     "Rebound tenderness": ("Peritonitis", None),
-    "McBurney's point": ("Appendicitis", None),
-    "Rovsing's sign": ("Appendicitis", None),
-    "Psoas test": ("Appendicitis", None),
+    "McBurney's point": ("Appendicitis", "mcburneys-point.jpg"),
+    "Rovsing's sign": ("Appendicitis", "rovsings-sign.jpg"),
+    "Psoas test": ("Appendicitis", "psoas-test.jpg"),
     "Obturator test": ("Appendicitis", None),
-    "Leg edema": ("Fluid in the legs", None),
-    "Inguinal nodes and hernias": ("Groin", None),
+    "Leg edema": ("Fluid in the legs", "leg-edema.jpg"),
+    "Inguinal nodes and hernias": ("Groin", "inguinal-hernia.jpg"),
 }
 
 # The TOSCE sentence for the whole exam sits in the general card; each region adds its own.
@@ -93,7 +93,7 @@ EXAM = exam_page.Exam(
     video_credit='Video demonstrations from the <a href="https://rsc.lib.uwo.ca/s/healthedu/item-set">Health Education Media Library</a> '
                  "(Western Libraries; Arthur Labatt Family School of Nursing), CC BY-NC 4.0, played from the library's own server; "
                  "each opens only when you tap it. Teaching videos from Geeky Medics and other channels open from YouTube when tapped. "
-                 "Photographs are from the same library; the other figures are drawn schematics.",
+                 "Photographs of the manoeuvres are from the same library; sign photographs and illustrations are credited at the foot, and the concept diagrams are drawn for this page.",
     clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
     video_page="https://www.youtube.com/watch?v=PYAnF6GJY2I",
     region_video={"The general approach": ["geeky-abdominal-exam"]},
