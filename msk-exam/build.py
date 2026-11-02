@@ -183,6 +183,7 @@ EXAM = exam_page.Exam(
     video=VIDEO, video_page="https://mskmedicine.com/clinical_skills/{slug}/", region_video=REGION_VIDEO,
     other_video=json.loads((HERE / "videos_other.json").read_text(encoding="utf-8")),
     extra_cards={"ankle": [OTTAWA]},
+    clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
 )
 
 # Hamzah Algodi's own demonstration videos (his permission, 2026-11); shown on the spine cards
@@ -244,7 +245,7 @@ EXAM.walk = {
   }
  ]
 }
-EXAM.video_credit += ' Demonstration videos by Hamzah Algodi ("*Unofficial* Schulich Clinical Skills"), used with his permission.'
+EXAM.video_credit += ' Demonstration videos by Hamzah Algodi ("*Unofficial* Schulich Clinical Skills"), used with his permission. Range-of-motion clips (cropped to the moving limb, re-encoded small) from Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries), CC BY-NC 4.0; each button links to its library item page.'
 
 
 if __name__ == "__main__":

@@ -43,7 +43,7 @@ GENERAL = [(1, "The general approach"), (2, "Before you examine: the respiratory
 # manoeuvre name as the note shows it -> (problem heading, picture in img/)
 TESTS = {
     "Clubbing (Schamroth sign)": ("Hands: chronic lung disease", "schamroth-sign.jpg"),
-    "Asterixis": ("Hands: chronic lung disease", None),
+    "Asterixis": ("Hands: chronic lung disease", "asterixis.jpg"),
     "Capillary refill": ("Hands: chronic lung disease", "capillary-refill.jpg"),
     "Tracheal position": ("Neck: what is pushing or pulling", "tracheal-position.jpg"),
     "Cervical and supraclavicular lymph nodes": ("Neck: what is pushing or pulling", "cervical-lymph-nodes.jpg"),
