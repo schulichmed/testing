@@ -117,15 +117,6 @@
   "slug": "shoulder-apprehension-and-relocation-test.jpg"
  },
  {
-  "test": "Scarf (cross-body adduction) test",
-  "file": "Scarf (cross-body adduction) test - PMC.jpg",
-  "source_page_url": "https://europepmc.org/article/PMC/PMC7465639",
-  "author": "Federico Bozzi, Sergi Alabau-Rodriguez, Sergi Barrera-Ochoa et al. - Suprascapular Neuropathy around the Shoulder: A Current Concept Review (Journal of Clinical Medicine, 2020), Figure 3B",
-  "licence": "CC BY 4.0",
-  "what_it_shows": "Examiner passively adducts the patient's arm across the chest at shoulder height; patient's face blacked out in the original.",
-  "slug": "scarf-cross-body-adduction-test.jpg"
- },
- {
   "test": "Elbow valgus stress test",
   "file": "Elbow valgus stress test - PMC.jpg",
   "source_page_url": "https://europepmc.org/article/PMC/PMC11209444",
@@ -162,15 +153,6 @@
   "slug": "finkelstein-s-test.jpg"
  },
  {
-  "test": "Thomas test",
-  "file": "Thomas test - Wikimedia.jpg",
-  "source_page_url": "https://commons.wikimedia.org/wiki/File:Thomas_test.webp",
-  "author": "Hugh Owen Thomas",
-  "licence": "CC BY-SA 4.0",
-  "what_it_shows": "Engraving from H.O. Thomas's book: examiner flexes one hip fully on a supine patient to flatten the lumbar spine and watches whether the other thigh lifts off the table. The engraver's monogram at lower right was cropped off.",
-  "slug": "thomas-test.jpg"
- },
- {
   "test": "Trendelenburg sign",
   "file": "Trendelenburg sign - Wikimedia.jpg",
   "source_page_url": "https://commons.wikimedia.org/wiki/File:Trendelenburg.PNG",
@@ -196,15 +178,6 @@
   "licence": "CC BY 4.0",
   "what_it_shows": "Supine, tested leg in flexion, abduction and external rotation (figure-4) with the foot by the opposite knee; examiner's hand presses the knee/stabilises. Cropped to remove faces and posters.",
   "slug": "faber-patrick-test.jpg"
- },
- {
-  "test": "Ober's test",
-  "file": "Ober's test - PMC.jpg",
-  "source_page_url": "https://europepmc.org/article/PMC/PMC9023415",
-  "author": "L. A. Hutchinson, G. A. Lichtwark, R. W. Willy et al. - The Iliotibial Band: A Complex Structure with Versatile Functions (Sports Medicine (Auckland, N.z.), 2022), Fig. 10",
-  "licence": "CC BY 4.0",
-  "what_it_shows": "Silhouette diagram, side-lying: (A) classic Ober test with knee flexed 90 degrees, hip extended then allowed to adduct; (B) modified Ober with knee straight.",
-  "slug": "ober-s-test.jpg"
  },
  {
   "test": "True leg length measurement",
@@ -369,24 +342,6 @@
   "slug": "thigh-thrust.jpg"
  },
  {
-  "test": "Bear hug test",
-  "file": "bear-hug-test.jpg",
-  "source_page_url": "https://europepmc.org/article/PMC/PMC13179633",
-  "author": "Koç E, Seker C, Sensoy AA et al. - Delayed refixation of a lesser tuberosity avulsion fracture (BMC Musculoskelet Disord, 2026), Fig. 6A",
-  "licence": "CC BY 4.0 (cropped to panel A; face blurred)",
-  "what_it_shows": "Patient's palm on the opposite shoulder with the elbow forward; the examiner grips the forearm to pull the hand off. Low resolution (152 px wide) - usable but soft.",
-  "slug": "bear-hug-test.jpg"
- },
- {
-  "test": "Drop arm test",
-  "file": "drop-arm-test.jpg",
-  "source_page_url": "https://europepmc.org/article/PMC/PMC13566503",
-  "author": "Adamus JP, Dywan K, Paszt Z et al. - From Clinical Signs to Functional Recovery: A Practice-Oriented Review of Rotator Cuff Tear Management in Primary Care (J Clin Med, 2026), Figure 4E",
-  "licence": "CC BY 4.0 (cropped to panel E; face and a wall poster blurred)",
-  "what_it_shows": "Standing patient after the examiner has released both arms from abduction: the left arm stays up on the examiner's hand, the right (torn) arm has dropped toward the side.",
-  "slug": "drop-arm-test.jpg"
- },
- {
   "test": "Patellar ballottement",
   "file": "patellar-ballottement.jpg",
   "source_page_url": "https://europepmc.org/article/PMC/PMC12129843",
@@ -394,24 +349,6 @@
   "licence": "CC BY 4.0",
   "what_it_shows": "Extended knee: one hand milks the suprapatellar pouch down toward the patella (arrow) while the other hand's fingers press the patella onto the femur ('dancing patella').",
   "slug": "patellar-ballottement.jpg"
- },
- {
-  "test": "Resisted external rotation",
-  "file": "resisted-external-rotation.jpg",
-  "source_page_url": "https://europepmc.org/article/PMC/PMC13566503",
-  "author": "Adamus JP, Dywan K, Paszt Z et al. - From Clinical Signs to Functional Recovery: A Practice-Oriented Review of Rotator Cuff Tear Management in Primary Care (J Clin Med, 2026), Figure 4B (left photo)",
-  "licence": "CC BY 4.0 (cropped below the face)",
-  "what_it_shows": "Front view: patient standing, elbows bent 90 degrees at the sides; the examiner's hands hold the backs of both wrists to resist outward rotation.",
-  "slug": "resisted-external-rotation.jpg"
- },
- {
-  "test": "Relocation test (Fowler's sign)",
-  "file": "relocation-test-fowler-s-sign.jpg",
-  "source_page_url": "https://europepmc.org/article/PMC/PMC5646139",
-  "author": "Valencia Mora M, Ibán MÁR, Heredia JD et al. - Physical Exam and Evaluation of the Unstable Shoulder (Open Orthop J, 2017), Fig. 4C",
-  "licence": "CC BY 4.0 (cropped to panel C; panel letter removed; face blurred)",
-  "what_it_shows": "Supine patient, arm abducted 90 degrees and externally rotated; the examiner's hand presses the front of the shoulder backward (relocation).",
-  "slug": "relocation-test-fowler-s-sign.jpg"
  },
  {
   "test": "Bragard's sign",
@@ -502,5 +439,59 @@
   "licence": "Own work, concept diagram",
   "what_it_shows": "Left knee, front view, two steps of the wipe test: stroke up the inner side to empty the hollow beside the kneecap, then stroke down the outer side; a wave of fluid refilling the inner hollow is positive. Shows the mechanism, not a person doing it.",
   "slug": "wipe-bulge-test.jpg"
+ },
+ {
+  "test": "Thomas test",
+  "file": "thomas-test-drawn.jpg",
+  "slug": "thomas-test-drawn.jpg",
+  "source_page_url": "Drawn for this page (Claude), concept diagram",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Own work, concept diagram",
+  "what_it_shows": "Side view, patient on their back: one knee pulled to the chest, the other thigh lifting off the table (hip flexion contracture); a faint dashed leg shows the normal flat thigh."
+ },
+ {
+  "test": "Ober's test",
+  "file": "obers-test-drawn.jpg",
+  "slug": "obers-test-drawn.jpg",
+  "source_page_url": "Drawn for this page (Claude), concept diagram",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Own work, concept diagram",
+  "what_it_shows": "View from behind, patient on their side: the top leg lifted out and back stays up instead of dropping toward the table (tight IT band); a faint leg shows the normal drop."
+ },
+ {
+  "test": "Drop arm test",
+  "file": "drop-arm-test-drawn.jpg",
+  "slug": "drop-arm-test-drawn.jpg",
+  "source_page_url": "Drawn for this page (Claude), concept diagram",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Own work, concept diagram",
+  "what_it_shows": "Front view: arm lifted to 90 degrees, then released; it drops suddenly instead of lowering slowly (rotator cuff tear)."
+ },
+ {
+  "test": "Resisted external rotation",
+  "file": "resisted-external-rotation-drawn.jpg",
+  "slug": "resisted-external-rotation-drawn.jpg",
+  "source_page_url": "Drawn for this page (Claude), concept diagram",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Own work, concept diagram",
+  "what_it_shows": "Seen from above: elbows tucked at the sides bent 90 degrees, hands pushing outward against the examiner (infraspinatus, teres minor)."
+ },
+ {
+  "test": "Bear hug test",
+  "file": "bear-hug-test-drawn.jpg",
+  "slug": "bear-hug-test-drawn.jpg",
+  "source_page_url": "Drawn for this page (Claude), concept diagram",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Own work, concept diagram",
+  "what_it_shows": "Front view: palm on the opposite shoulder, elbow forward, examiner pulling the hand off the shoulder (subscapularis)."
+ },
+ {
+  "test": "Scarf test (cross-arm)",
+  "file": "scarf-test-drawn.jpg",
+  "slug": "scarf-test-drawn.jpg",
+  "source_page_url": "Drawn for this page (Claude), concept diagram",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Own work, concept diagram",
+  "what_it_shows": "Front view: arm held across the chest at shoulder height, examiner pushing the elbow further across; pain at the AC joint is positive."
  }
 ]

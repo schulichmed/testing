@@ -54,7 +54,7 @@ TESTS = {
     "Slit lamp": ("Front of the eye", "slit-lamp.jpg"),
     "Inspect the external ear": ("Outer ear", "inspect-the-external-ear.jpg"),
     "Otoscopy": ("Canal and eardrum", "otoscopy.jpg"),
-    "Whisper or finger-rub test": ("Is there hearing loss? (VIII)", None),
+    "Whisper or finger-rub test": ("Is there hearing loss? (VIII)", "whisper-or-finger-rub-test.jpg"),
     "Weber test": ("Which kind of hearing loss?", "weber-test.jpg"),
     "Rinne test": ("Which kind of hearing loss?", "rinne-test.jpg"),
     "Nostril patency": ("Airflow", "nostril-patency.jpg"),
@@ -69,7 +69,7 @@ TESTS = {
     "Lymph node palpation": ("Lumps and nodes", "lymph-node-palpation.jpg"),
     "Salivary glands": ("Lumps and nodes", "salivary-glands.jpg"),
     "Thyroid inspection": ("Thyroid", "thyroid-inspection.jpg"),
-    "Thyroid palpation": ("Thyroid", None),
+    "Thyroid palpation": ("Thyroid", "thyroid-palpation.jpg"),
 }
 
 # YouTube, Geeky Medics (ids checked with oEmbed on 2026-10-29)

@@ -178,5 +178,77 @@
     "author": "Arthur Labatt Family School of Nursing, Western University (Health Education Media Library, Western Libraries)",
     "licence": "CC BY-NC 4.0 (cropped to the legs and hands)",
     "what_it_shows": "Examiner's hands on both lower legs, checking for swelling"
+  },
+  {
+    "test": "Percussion of the four quadrants",
+    "file": "percussion-four-quadrants.jpg",
+    "slug": "percussion-four-quadrants.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: the four quadrants, the order to percuss them, and the two-finger tap"
+  },
+  {
+    "test": "Guarding",
+    "file": "guarding.jpg",
+    "slug": "guarding.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: gentle pressing on the abdomen, voluntary against involuntary guarding"
+  },
+  {
+    "test": "Head-raise test for tenderness",
+    "file": "head-raise-tenderness.jpg",
+    "slug": "head-raise-tenderness.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: the rectus muscles tensed over a tender spot: wall pain against deeper pain"
+  },
+  {
+    "test": "Murphy's sign",
+    "file": "murphys-sign.jpg",
+    "slug": "murphys-sign.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: fingers under the right costal margin at the mid-clavicular line, over the gallbladder"
+  },
+  {
+    "test": "Rebound tenderness",
+    "file": "rebound-tenderness.jpg",
+    "slug": "rebound-tenderness.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: side view: pressing in slowly, then releasing quickly"
+  },
+  {
+    "test": "Castell's sign (percussion)",
+    "file": "castells-sign.jpg",
+    "slug": "castells-sign.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: the lowest left intercostal space in the anterior axillary line, over the spleen"
+  },
+  {
+    "test": "Spleen tip (palpation)",
+    "file": "spleen-tip-palpation.jpg",
+    "slug": "spleen-tip-palpation.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: hand moving from the right lower quadrant toward the left costal margin under an enlarged spleen"
+  },
+  {
+    "test": "Obturator test",
+    "file": "obturator-test.jpg",
+    "slug": "obturator-test.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: hip and knee at 90 degrees, then internal rotation of the hip, side and top views"
   }
 ]

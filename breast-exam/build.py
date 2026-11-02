@@ -48,8 +48,8 @@ TESTS = {
     "Nipple": ("Something under the nipple", "nipple.jpg"),
     "Mobility of a mass": ("What a lump is attached to", "mobility-of-a-mass.jpg"),
     "Axillary nodes": ("Spread to the nodes", "axillary-nodes.jpg"),
-    "Male breast: inspect and palpate": ("A nodule in a man", None),
-    "Enlarged male breast": ("Fat, gland or cancer", None),
+    "Male breast: inspect and palpate": ("A nodule in a man", "male-breast-inspect-palpate.jpg"),
+    "Enlarged male breast": ("Fat, gland or cancer", "enlarged-male-breast.jpg"),
 }
 
 EXAM = exam_page.Exam(

@@ -142,5 +142,14 @@
     "author": "AAMI2205 (Wikimedia Commons)",
     "licence": "CC BY-SA 3.0",
     "what_it_shows": "Instrument photo: a Pinard horn (fetal stethoscope). Clinics usually use a handheld Doppler instead."
+  },
+  {
+    "test": "Position and drape (obstetrical)",
+    "file": "position-and-drape-obstetrical.jpg",
+    "slug": "position-and-drape-obstetrical.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: semi-recumbent position with a left tilt, abdomen bare, drape over the pelvis and legs"
   }
 ]

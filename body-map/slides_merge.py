@@ -5,7 +5,7 @@ Purpose: Merge what this year's MSK lecture slides say (one extraction per group
          cut-down version of the full tables (flexor pollicis brevis just "flexes CMC joint"), to keep the load down.
 Author: nsimsam, with Claude Code
 Date: 2026-10-21
-Input: slides_A.json ... slides_D.json, each read from the OneNote lecture decks (PoM 2 B3 MSK, Asynch Weeks 7-10)
+Input: slides_A.json ... slides_D.json, each read from the lecture decks (PoM 2 B3 MSK, Asynch Weeks 7-10)
 Output: body-map/slides.json
 Usage: python slides_merge.py <folder with slides_A..D.json>
 """

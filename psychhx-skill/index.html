@@ -114,9 +114,9 @@ html{scroll-behavior:smooth}
 .prob{margin-top:12px}
 .prob h3{font-size:16px;color:color-mix(in srgb,var(--c) 80%,var(--ink));margin:0 4px 6px}
 .probs{display:flex;flex-wrap:wrap;gap:0 14px}
-.probs>.prob{flex:var(--n) 1 calc(var(--n) * 250px + (var(--n) - 1) * 10px);min-width:0}
+.probs>.prob{flex:var(--n) 1 calc(var(--n) * 250px + (var(--n) - 1) * 10px);min-width:0;max-width:calc(var(--n) * 380px + (var(--n) - 1) * 10px)}
 .say{margin:0 0 8px;padding:8px 10px;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--card));border-radius:6px}
-.tests{display:grid;align-items:start;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.tests{display:grid;align-items:start;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
 .test{background:var(--card);border:1.5px solid color-mix(in srgb,var(--c) 45%,var(--line));border-radius:10px;padding:10px 12px;position:relative;outline-offset:2px}
 .test h4{margin:0;font-size:15px}
 .test .for{margin:2px 0 6px;color:var(--muted);font-size:13px}
@@ -175,8 +175,8 @@ body.quiz.hideimg .test img{display:none}
 <a href="../clinical-skills/../present-skill/">Presenting</a>
 <a href="../clinical-skills/../obhx-skill/">OB/Gyn history</a>
 <span class="here" aria-current="page">Psychiatric</span>
-<span class="soon" title="Coming soon">Paediatric</span>
-<span class="soon" title="Coming soon">Geriatric</span>
+<a href="../clinical-skills/../pedshx-skill/">Paediatric</a>
+<a href="../clinical-skills/../gerihx-skill/">Geriatric</a>
 </nav>
 
 <header class="q-masthead" id="content" tabindex="-1">

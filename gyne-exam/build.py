@@ -49,7 +49,7 @@ TESTS = {
     "Cervix": ("Pelvic infection or ectopic pregnancy", "bimanual-exam.jpg"),
     "Uterus": ("Enlarged or fixed uterus", "bimanual-exam.jpg"),
     "Adnexa (ovaries and tubes)": ("An ovarian or tubal mass", "bimanual-exam.jpg"),
-    "Position and drape (obstetrical)": ("Before you touch", None),
+    "Position and drape (obstetrical)": ("Before you touch", "position-and-drape-obstetrical.jpg"),
     "Symphysis-fundal height (SFH)": ("Is the baby growing?", "symphysis-fundal-height.jpg"),
     "Leopold's 1: fundal grip": ("How is the baby lying?", "leopolds-1-fundal-grip.jpg"),
     "Leopold's 2: lateral grip": ("How is the baby lying?", "leopolds-2-lateral-grip.jpg"),

@@ -79,7 +79,7 @@ TESTS = {
 EXAM = exam_page.Exam(
     key="station", folder=HERE, note=plain_note(NOTE), regions=REGIONS, general=GENERAL, tests=TESTS, opening={},
     h1='How a station runs',
-    lead='Every station runs the same way: read the door, knock and introduce yourself, do the task out loud, then close and report. Below is what each station marks, the opening line for each exam, and how to finish. Built from the OneNote Clinical Skills notebook and the course syllabi; no station scenario or marking sheet is reproduced.',
+    lead='Every station runs the same way: read the door, knock and introduce yourself, do the task out loud, then close and report. Below is what each station marks, the opening line for each exam, and how to finish. Built from the course Clinical Skills material and the course syllabi; no station scenario or marking sheet is reproduced.',
     find='Find a topic (e.g. draping, hand hygiene, summary)',
     root='Read the door → Knock, introduce, consent → Do the task out loud → Close the encounter → Report to the examiner',
     root_note='The patient comes first (comfort, consent, privacy), and the examiner can only mark what they see and hear, so say what you are doing and what you find.',

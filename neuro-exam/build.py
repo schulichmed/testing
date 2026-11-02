@@ -73,14 +73,14 @@ TESTS = {
     "Ankle dorsiflexion": ("Leg power (L2–S1)", "ankle-dorsiflexion.jpg"),
     "Ankle plantar flexion": ("Leg power (L2–S1)", "ankle-plantar-flexion.jpg"),
     "Pain (pinprick)": ("Pain and temperature (spinothalamic)", "pain-pinprick.jpg"),
-    "Temperature": ("Pain and temperature (spinothalamic)", None),
+    "Temperature": ("Pain and temperature (spinothalamic)", "temperature.jpg"),
     "Light touch": ("Light touch", "light-touch.jpg"),
     "Vibration": ("Vibration and position (dorsal columns)", "vibration.jpg"),
     "Proprioception (joint position)": ("Vibration and position (dorsal columns)", "proprioception-joint-position.jpg"),
     "Stereognosis": ("Cortical sensation", "stereognosis.jpg"),
-    "Graphesthesia": ("Cortical sensation", None),
+    "Graphesthesia": ("Cortical sensation", "graphesthesia.jpg"),
     "Extinction (both sides at once)": ("Cortical sensation", "extinction-both-sides-at-once.jpg"),
-    "Two-point discrimination": ("Cortical sensation", None),
+    "Two-point discrimination": ("Cortical sensation", "two-point-discrimination.jpg"),
     # section 9: levels of the nervous system: drawn concept schematics (lesion-<level>.jpg)
     "Cortex": ("Brain", "lesion-cortex.jpg"),
     "Subcortex (white matter, internal capsule)": ("Brain", "lesion-subcortex.jpg"),
@@ -107,6 +107,17 @@ TESTS = {
     "Romberg test": ("Balance", "romberg-test.jpg"),
 }
 
+# YouTube, Utah NeuroLogic Exam, Eccles Health Sciences Library Digital Publishing (University of Utah);
+# "Sensory Exam: Normal" (id checked with oEmbed on 2026-11-01), started at each test's chapter
+UTAH = "Eccles Health Sciences Library (Univ. of Utah)"
+UTAH_ID = "uf8eSNFHeew"
+UTAH_TITLE = "Sensory Exam: Normal (NeuroLogic Exam)"
+OTHER_VIDEO = {
+    "Temperature": {"id": UTAH_ID, "start": 212, "title": UTAH_TITLE, "channel": UTAH},
+    "Two-point discrimination": {"id": UTAH_ID, "start": 509, "title": UTAH_TITLE, "channel": UTAH},
+    "Graphesthesia": {"id": UTAH_ID, "start": 569, "title": UTAH_TITLE, "channel": UTAH},
+}
+
 EXAM = exam_page.Exam(
     key="neuro", folder=HERE, note=NOTE, regions=REGIONS, general=GENERAL, tests=TESTS, opening={},
     h1="Neurological exam, top down",
@@ -120,7 +131,9 @@ EXAM = exam_page.Exam(
               "the lesion, and is it an upper or a lower motor neuron problem?",
     video_credit='Videos from the <a href="https://rsc.lib.uwo.ca/s/healthedu/item-set">Health Education Media Library</a> '
                  "(Western Libraries; Clinical Neurological Sciences, Schulich School of Medicine and Dentistry), "
-                 "CC BY-NC 4.0, played from the library's own server. Each opens only when you tap it.",
+                 "CC BY-NC 4.0, played from the library's own server; the sensory-exam videos are from the University of Utah's NeuroLogic Exam "
+                 "(Eccles Health Sciences Library) on YouTube. Each opens only when you tap it.",
+    other_video=OTHER_VIDEO,
     clips=json.loads((HERE / "clips.json").read_text(encoding="utf-8")),
     general_title="General approach", general_week="Every neuro exam",
     spine_heading="What to look for", spine_title="Before the manoeuvres", pearls_heading="Pearls", count_noun="manoeuvres",

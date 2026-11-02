@@ -75,18 +75,36 @@
     "test": "Leaning forward",
     "file": "leaning-forward.jpg",
     "slug": "leaning-forward.jpg",
-    "source_page_url": "OneNote: Clinical Skills / Year 1 / CS Term 1 / Breast Exam / Breast Exam Guide (p. 347)",
+    "source_page_url": "Course material: Breast Exam Guide (p. 347)",
     "author": "Bates' Guide to Physical Examination and History Taking, chapter 9 (course resource in the Breast Exam Guide page)",
-    "licence": "Copyright held by the publisher; used from the faculty's OneNote for non-commercial teaching (cropped)",
+    "licence": "Copyright held by the publisher; used from the faculty's course material for non-commercial teaching (cropped)",
     "what_it_shows": "Leaning forward: the breasts hang free, so asymmetry or retraction of the nipple and areola not seen at rest shows"
   },
   {
     "test": "Nipple",
     "file": "nipple.jpg",
     "slug": "nipple.jpg",
-    "source_page_url": "OneNote: Clinical Skills / Year 1 / CS Term 1 / Breast Exam / Breast Exam Guide (p. 350)",
+    "source_page_url": "Course material: Breast Exam Guide (p. 350)",
     "author": "Bates' Guide to Physical Examination and History Taking, chapter 9 (course resource in the Breast Exam Guide page)",
-    "licence": "Copyright held by the publisher; used from the faculty's OneNote for non-commercial teaching (cropped)",
+    "licence": "Copyright held by the publisher; used from the faculty's course material for non-commercial teaching (cropped)",
     "what_it_shows": "Examiner's hand palpating the nipple, noting its elasticity"
+  },
+  {
+    "test": "Male breast: inspect and palpate",
+    "file": "male-breast-inspect-palpate.jpg",
+    "slug": "male-breast-inspect-palpate.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: the male chest and the area to palpate around each nipple"
+  },
+  {
+    "test": "Enlarged male breast",
+    "file": "enlarged-male-breast.jpg",
+    "slug": "enlarged-male-breast.jpg",
+    "source_page_url": "https://github.com/schulichmed/preclerkship",
+    "author": "Drawn for this page (Claude)",
+    "licence": "CC0 (own drawing)",
+    "what_it_shows": "Drawn for this page (Claude), concept/technique diagram: side-view sections: gynecomastia, fat only, and a hard eccentric mass"
   }
 ]

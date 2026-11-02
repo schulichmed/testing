@@ -45,9 +45,9 @@ SKILLS = [
      "Built on the faculty OB/Gyne history reference and the Ontario Perinatal Record."),
     ("history", "psychhx", "Psychiatric interview", ["pom2"], "../psychhx-skill/",
      "The psychiatric history and the mental status exam."),
-    ("history", "pedshx", "Paediatric history", ["t2c"], None,
+    ("history", "pedshx", "Paediatric history", ["t2c"], "../pedshx-skill/",
      "Birth, development, growth, nutrition and immunizations; talking with children and families."),
-    ("history", "gerihx", "Geriatric assessment", ["t2c"], None,
+    ("history", "gerihx", "Geriatric assessment", ["t2c"], "../gerihx-skill/",
      "Collateral history, function (daily activities) and gait in an older adult."),
     ("exam", "vitals", "Vital signs", ["fom"], "../vitals-exam/",
      "Blood pressure, pulse, breathing rate, and the first look at the patient."),
@@ -94,6 +94,9 @@ def set_pages(keys: set[str]) -> None:
 
 
 set_pages({s[1] for s in SKILLS if (HERE / f"{s[1]}.html").exists()})
+
+# a topic with no notes yet stays out of the bar and the hub until its page is built
+SKILLS[:] = [s for s in SKILLS if s[4]]
 
 THEME = (HERE / "portal_theme.html").read_text(encoding="utf-8")
 THEME_BTN = (HERE / "portal_theme_btn.html").read_text(encoding="utf-8")

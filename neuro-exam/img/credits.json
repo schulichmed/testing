@@ -316,15 +316,6 @@
   "what_it_shows": "Legs from the knee down walking heel to toe along a straight tape line on the floor, the front heel touching the back toes."
  },
  {
-  "test": "Romberg test",
-  "file": "romberg-test.jpg",
-  "slug": "romberg-test.jpg",
-  "source_page_url": "https://europepmc.org/article/PMC/PMC12308617",
-  "author": "Caricato F, Noto AM, Sanzone E, Donati P, Parchi PD, Cureus 2025, Fig. 2",
-  "licence": "CC BY 4.0 (resized)",
-  "what_it_shows": "A drawing of a person standing with feet together, front (A) and side (B) views, with dotted outlines and arrows showing side-to-side and front-to-back sway; it shows no closed eyes or examiner."
- },
- {
   "test": "Landmarks: lesion",
   "file": "lesion-landmarks.jpg",
   "slug": "lesion-landmarks.jpg",
@@ -377,15 +368,6 @@
   "author": "Clinical Neurological Sciences, Schulich School of Medicine and Dentistry (Health Education Media Library, Western Libraries)",
   "licence": "CC BY-NC 4.0 (frame from video)",
   "what_it_shows": "Penlight on one eye with the other eye in view (frame at 1:04 of Pupillary Light Response and RAPD)."
- },
- {
-  "test": "CN V and VII: corneal reflex",
-  "file": "cn-v-and-vii-corneal-reflex.jpg",
-  "slug": "cn-v-and-vii-corneal-reflex.jpg",
-  "source_page_url": "https://github.com/schulichmed/medwiki",
-  "author": "Drawn for this page (medwiki)",
-  "licence": "CC0",
-  "what_it_shows": "Cotton wisp approaching the cornea from the side while the patient looks up and away."
  },
  {
   "test": "CN V: motor",
@@ -539,5 +521,50 @@
   "author": "Drawn for this page (Claude), concept diagram",
   "licence": "CC0",
   "what_it_shows": "Schematic of the nervous system (brain, brainstem, cerebellum, cord, root, plexus, nerve, junction, muscle) with this level highlighted, and its typical signs."
+ },
+ {
+  "test": "Temperature",
+  "file": "temperature.jpg",
+  "slug": "temperature.jpg",
+  "source_page_url": "",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Original drawing (not sourced)",
+  "what_it_shows": "Cool tuning fork touched to the forearm, patient eyes closed, compare sides."
+ },
+ {
+  "test": "Graphesthesia",
+  "file": "graphesthesia.jpg",
+  "slug": "graphesthesia.jpg",
+  "source_page_url": "",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Original drawing (not sourced)",
+  "what_it_shows": "A number traced in the palm with a blunt point."
+ },
+ {
+  "test": "Two-point discrimination",
+  "file": "two-point-discrimination.jpg",
+  "slug": "two-point-discrimination.jpg",
+  "source_page_url": "",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Original drawing (not sourced)",
+  "what_it_shows": "Caliper or paper-clip points on a fingertip pad, one or two points."
+ },
+ {
+  "test": "CN V and VII: corneal reflex",
+  "file": "cn-v-and-vii-corneal-reflex.jpg",
+  "slug": "cn-v-and-vii-corneal-reflex.jpg",
+  "source_page_url": "",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Original drawing (not sourced)",
+  "what_it_shows": "Cotton wisp touching the cornea from the side while the patient looks up and away; both eyelids blink (V afferent, VII efferent)."
+ },
+ {
+  "test": "Romberg test",
+  "file": "romberg-test.jpg",
+  "slug": "romberg-test.jpg",
+  "source_page_url": "",
+  "author": "Drawn for this page (Claude), concept/technique diagram",
+  "licence": "Original drawing (not sourced)",
+  "what_it_shows": "Clothed patient standing feet together with eyes closed, swaying, examiner close by to catch."
  }
 ]
