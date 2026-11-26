@@ -144,12 +144,13 @@ function open(id, go){
   if (sel && sel.el) sel.el.classList.remove("sel");
   sel = n; n.el && n.el.classList.add("sel");
   const charts = (n.charts || []).map(c => '<button class="chartbtn" data-url="' + c.url + '" data-name="' + esc(c.name) + '">Open the ' + esc(c.name) + ' chart<span>' + (c.col ? "this diagnosis lit" : "whole chart") + ' ›</span></button>').join("");
+  const extras = (n.extras || []).map(x => '<button class="chartbtn" data-url="' + x.url + '" data-name="' + esc(x.name) + '">' + esc(x.name) + '<span>' + esc(x.what) + ' ›</span></button>').join("");
   const out = (n.links || []).filter(l => byId[l.to]).map(l => '<button class="linkbtn" data-id="' + l.to + '">→ ' + plain(byId[l.to].title) + (l.label ? ' <span>' + esc(l.label) + '</span>' : '') + '</button>');
   const inc = N.filter(m => (m.links || []).some(l => l.to === id)).map(m => '<button class="linkbtn" data-id="' + m.id + '">← ' + plain(m.title) + '</button>');
   panel.className = "";
   panel.innerHTML = '<button class="close" aria-label="Close">×</button><h2>' + plain(n.title) + (n.star ? ' <span style="color:var(--star)">⭐</span>' : '') + '</h2>' +
     '<div class="meta">' + ZN[n.zone] + '</div>' +
-    (charts ? '<h3>In the portal</h3>' + charts : '') +
+    (charts || extras ? '<h3>In the portal</h3>' + charts + extras : '') +
     '<h3>On the map</h3><div class="body">' + (n.body || "") + '</div>' +
     (out.length || inc.length ? '<h3>Connected boxes</h3>' + out.join("") + inc.join("") : '') +
     '<p><button class="tool" id="kn" aria-pressed="' + !!known[id] + '">' + (known[id] ? "✓ Known" : "Mark as known") + '</button></p>';
