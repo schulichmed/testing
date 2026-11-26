@@ -8,56 +8,72 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Patrick+Hand&family=Inter:wght@400;600;700&display=swap">
 <style>
-/* Layout: the hand-drawn map's own sections on one sheet; each topic is a highlighter heading, each line under it opens our chart with that column lit */
+/* Layout: the drawing's topics at the drawing's positions; each topic branches to its headings; the drawing's arrows run between them; any heading opens our chart */
 :root{
-  --paper:#ffffff; --ink:#1d1d1f; --soft:#5a5e66; --bar:#f4f3ef; --line:#dcdad3; --rule:#c9c9c9;
+  --paper:#ffffff; --ink:#1d1d1f; --soft:#5a5e66; --bar:#f4f3ef; --line:#dcdad3; --rule:#cfcfcf;
   --mint:#bfe8d6; --sky:#c6e3f7; --rose:#f6d3dc; --peach:#fcd9b4; --blush:#f9cfd1; --lilac:#e3d5f5;
   --leaf:#cdeec9; --orchid:#f3d1ec; --butter:#fff0a6; --moss:#d6edc4; --ice:#d3e2f8; --smoke:#e6e6e6; --aqua:#c3eee3;
-  --hit:#ffe14d; --accent:#7a3fb0;
+  --hit:#ffe14d; --accent:#7a3fb0; --arrow:#3b3f47;
   --hand:"Patrick Hand","Comic Sans MS","Segoe Print",cursive;
   --marker:"Gaegu","Patrick Hand","Comic Sans MS",cursive;
   --ui:Inter,"Segoe UI",system-ui,sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ui)}
-header{position:sticky;top:0;z-index:5;background:var(--bar);border-bottom:1px solid var(--line);
-  padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));
-  display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
-h1{font-family:var(--marker);font-weight:700;font-size:1.8rem;margin:0;line-height:1;text-transform:uppercase}
-h1 small{font-family:var(--hand);font-weight:400;text-transform:none;color:var(--soft);font-size:1.05rem;margin-left:8px}
-.search{flex:1 1 220px;min-width:0}
-.search input{width:100%;font:inherit;font-size:.92rem;padding:8px 11px;border:1.5px solid var(--ink);border-radius:8px;background:var(--paper);color:var(--ink)}
+html,body{height:100%;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--bar);border-bottom:1px solid var(--line);z-index:5;
+  padding:calc(9px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 9px max(16px,env(safe-area-inset-left));
+  display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+h1{font-family:var(--marker);font-weight:700;font-size:1.75rem;margin:0;line-height:1;text-transform:uppercase;white-space:nowrap}
+h1 small{font-family:var(--hand);font-weight:400;text-transform:none;color:var(--soft);font-size:1.02rem;margin-left:8px}
+.search{flex:1 1 200px;min-width:0}
+.search input{width:100%;font:inherit;font-size:.9rem;padding:7px 10px;border:1.5px solid var(--ink);border-radius:8px;background:var(--paper);color:var(--ink)}
 .search input:focus-visible{outline:3px solid var(--hit)}
-header a{font-size:.85rem;color:var(--accent);white-space:nowrap}
-main{max-width:1680px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
-.intro{font-family:var(--hand);font-size:1.2rem;color:var(--soft);margin:2px 0 16px;max-width:70ch}
-.zone{margin-bottom:28px}
-.zh{display:flex;align-items:center;gap:14px;margin:0 0 14px}
-.zh h2{font-family:var(--marker);font-weight:700;font-size:1.7rem;text-transform:uppercase;margin:0;white-space:nowrap;color:var(--soft)}
-.zh::after{content:"";flex:1;height:14px;border-radius:7px;background:var(--rule)}
-.zone.local .zh::after,.zone.eye .zh::after{height:6px;background:var(--ink)}
-.cards{display:grid;gap:22px 26px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));align-items:start}
-.bottom{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:0 34px;border-top:6px solid var(--ink);padding-top:22px}
-.bottom > .zone:first-child{border-right:6px solid var(--ink);padding-right:30px}
-.card{min-width:0}
-.topic{display:inline-block;max-width:100%;text-align:left;font-family:var(--marker);font-weight:700;font-size:1.55rem;line-height:1;text-transform:uppercase;
-  padding:7px 15px 6px;border:0;background:var(--hl);color:var(--ink);cursor:pointer;
-  border-radius:22px 18px 24px 16px / 18px 22px 16px 24px}
-.topic:hover{filter:brightness(.96)}
-.topic:focus-visible,.chip:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.topic small{display:block;font-family:var(--ui);font-weight:600;font-size:.62rem;letter-spacing:.06em;color:var(--soft);margin-top:3px}
-.grp{margin:9px 0 0 6px}
-.gl{font-family:var(--hand);font-size:1.05rem;color:var(--soft);margin:0 0 4px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-family:var(--hand);font-size:1.08rem;line-height:1.1;text-align:left;padding:5px 10px;border-radius:999px;cursor:pointer;
-  background:var(--paper);color:var(--ink);border:1.5px solid color-mix(in srgb,var(--hl) 35%,#555);}
+.tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tool{font:inherit;font-size:.8rem;font-weight:600;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer;text-decoration:none}
+.tool:focus-visible{outline:3px solid var(--hit);outline-offset:2px}
+#view{flex:1;position:relative;overflow:hidden;touch-action:none;cursor:grab;background:var(--paper)}
+#view.drag{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#lines{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+#lines .tree{fill:none;stroke:var(--ink);stroke-width:2;opacity:.55;stroke-linecap:round}
+#lines .x{fill:none;stroke:var(--arrow);stroke-width:2.6;opacity:.6;stroke-linecap:round}
+#lines .x.vs{stroke-dasharray:2 8;opacity:.75}
+#lines .x.hub{stroke:#9aa0a8;stroke-width:4;opacity:.5}
+#lines .x.on{stroke:var(--accent);opacity:1;stroke-width:4.5}
+#lines .lab{font:19px var(--hand);fill:var(--soft);paint-order:stroke;stroke:var(--paper);stroke-width:6px;stroke-linejoin:round}
+#lines .lab.on{fill:var(--accent)}
+#lines .lab.vs{font:700 20px var(--marker)}
+.band{position:absolute;pointer-events:none}
+.band.grey{height:22px;background:var(--rule);border-radius:11px}
+.band.black{height:7px;background:var(--ink);border-radius:4px}
+.band.vert{width:7px;background:var(--ink);border-radius:4px}
+.zl{position:absolute;font:700 40px var(--marker);text-transform:uppercase;color:#9aa0a8;white-space:nowrap;pointer-events:none}
+.cl{position:absolute;display:flex;flex-direction:column;align-items:center;width:max-content}
+.cnp,.hubnode{width:max-content}
+.topic{font-family:var(--marker);font-weight:700;font-size:27px;line-height:1;text-transform:uppercase;text-align:center;max-width:300px;
+  padding:8px 16px 6px;border:0;background:var(--hl);color:var(--ink);cursor:pointer;border-radius:22px 18px 24px 16px / 18px 22px 16px 24px;transition:font-size .15s}
+.topic small{display:block;font-family:var(--hand);font-weight:400;font-size:15px;text-transform:none;color:var(--soft);margin-top:2px}
+.topic:hover{filter:brightness(.95)}
+.groups{display:flex;gap:18px;align-items:flex-start;margin-top:22px}
+.grp{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-left:16px}
+.gl{font-family:var(--hand);font-size:17px;color:var(--soft);background:#f2f2f0;border-radius:10px;padding:2px 9px;margin-left:-16px}
+.chip{font-family:var(--hand);font-size:18px;line-height:1.1;text-align:left;padding:4px 10px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  background:var(--paper);color:var(--ink);border:1.5px solid color-mix(in srgb,var(--hl) 35%,#555)}
 .chip:hover{background:var(--hl)}
 .chip.seen::after{content:" ✓";color:#2f7d5b}
-.card.dim{opacity:.18}
-.chip.dim{opacity:.25}
-.chip.hit{background:var(--hit);border-color:#b08a00}
-.extra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px;font-family:var(--hand);font-size:1.15rem;color:var(--soft)}
+.topic:focus-visible,.chip:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.hubnode{position:absolute;transform:translate(-50%,-50%);text-align:center;font-family:var(--marker);font-weight:700;font-size:44px;line-height:.95;text-transform:uppercase;
+  background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:10px 20px 8px;max-width:520px}
+.hubnode small{display:block;font-family:var(--hand);font-weight:400;font-size:18px;text-transform:none;color:var(--soft);margin-top:4px}
+.chip.hit,.topic.hit{box-shadow:0 0 0 5px var(--hit)}
+.cl.lit .topic,.chip.lit{box-shadow:0 0 0 4px var(--accent)}
+#world.far .groups{visibility:hidden}
+#world.far .topic{font-size:58px;max-width:560px}
+#world.far .topic small{display:none}
+#world.far #lines .tree{display:none}
+#world.far #lines .lab{font-size:34px}
 #modal{position:fixed;inset:0;background:rgba(20,20,24,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:12px}
 #modal[hidden]{display:none}
 #modal .box{background:var(--paper);border-radius:14px;width:min(1240px,100%);height:min(92vh,100%);display:flex;flex-direction:column;overflow:hidden}
@@ -65,68 +81,396 @@ main{max-width:1680px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-ri
 #modal .mh b{font-family:var(--marker);font-size:1.5rem;text-transform:uppercase;flex:1;line-height:1}
 #modal .mh b span{display:block;font-family:var(--hand);font-weight:400;font-size:1.05rem;text-transform:none;color:var(--soft)}
 #modal .mh a{font-size:.85rem;color:var(--accent)}
-#modal button{font:inherit;font-size:.85rem;font-weight:600;border:1.5px solid var(--ink);background:var(--paper);border-radius:8px;padding:5px 10px;cursor:pointer}
 #modal iframe{flex:1;border:0;width:100%}
-@media (max-width:900px){
-  .bottom{grid-template-columns:1fr;border-top:0;padding-top:0}
-  .bottom > .zone:first-child{border-right:0;padding-right:0}
-}
+.hint{position:absolute;left:max(12px,env(safe-area-inset-left));bottom:calc(12px + env(safe-area-inset-bottom));font-family:var(--hand);font-size:1.05rem;color:var(--soft);
+  background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:10px;padding:6px 10px;pointer-events:none;max-width:calc(100% - 24px)}
+
+:root{--fm:#1d1d1f;--fg:#2f6fd0;--fs:#8a3fd1;--fp:#2f9d57;--fy:#c0392b}
+.cnp{position:absolute;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px 18px 18px}
+.cnp h3{font:700 44px var(--marker);text-transform:uppercase;margin:0 0 2px;line-height:1}
+.cnp .key{display:flex;flex-wrap:wrap;gap:6px 16px;font:17px var(--hand);color:var(--soft);margin:0 0 10px}
+.cnp .key i{display:inline-block;width:26px;height:4px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.cnp .cols{display:flex;gap:40px;align-items:flex-start}
+.cncol{position:relative}
+.cncol svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.cncol svg path{fill:none;stroke-width:3;stroke-linecap:round}
+.cn{position:absolute;transform:translateY(-50%);font-family:var(--hand);font-size:18px;line-height:1.05;white-space:nowrap}
+.cn small{display:block;font-size:14px;color:var(--soft);white-space:normal}
+.cn{max-width:270px;white-space:normal}
+.cn.nerve{max-width:310px}
+.cn.nerve{font:700 23px var(--marker);text-transform:uppercase;background:var(--peach);border:0;border-radius:16px 12px 18px 12px;padding:6px 12px 4px;cursor:pointer;color:var(--ink);text-align:left}
+.cn.nerve small{font:15px var(--hand);text-transform:none}
+.cn.nerve:hover{filter:brightness(.95)}
+.cn.nerve:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.cn.gang{background:#eef7f1;border:1.5px solid var(--fp);border-radius:999px;padding:2px 9px}
+.cn.mid{background:#f3f3f1;border-radius:8px;padding:2px 7px}
+#world.far .cn:not(.nerve), #world.far .cncol svg, #world.far .cnp .key{visibility:hidden}
+#world.far .cn.nerve{font-size:40px}
+#world.far .cn.nerve small{display:none}
+#world.far .cnp h3{font-size:70px}
+.cn.nerve.lit,.cn.nerve.hit{box-shadow:0 0 0 4px var(--accent)}
 </style>
 </head>
 <body>
 <header>
   <h1>Neuro concept map<small>PoM 2 Block 4 on one page</small></h1>
   <div class="search"><input id="q" type="search" placeholder="Find a heading: migraine, Horner, GBS…" autocomplete="off" aria-label="Find a heading"></div>
-  <a href="drawing.html">See the hand-drawn original</a>
+  <div class="tools">
+    <button class="tool" id="zout" aria-label="Zoom out">−</button>
+    <button class="tool" id="zin" aria-label="Zoom in">+</button>
+    <button class="tool" id="fit">Whole map</button>
+    <a class="tool" href="drawing.html">Hand-drawn original</a>
+  </div>
 </header>
-<main>
-  <p class="intro">The same sections and headings as the hand-drawn map. Tap a heading to open its chart; tap a line under it to open the chart with that diagnosis lit.</p>
-  <div id="map"></div>
-</main>
-<div id="modal" hidden><div class="box"><div class="mh"><b id="mt"></b><a id="ml" target="_blank" rel="noopener">Open in a new tab</a><button id="mx">Close</button></div><iframe id="mf" title="Overview chart"></iframe></div></div>
+<div id="view"><div id="world"><svg id="lines"></svg></div>
+  <div class="hint">Drag to move · scroll or pinch to zoom · tap a topic for its chart, a line under it for that diagnosis · tap or hover to follow its arrows</div>
+</div>
+<div id="modal" hidden><div class="box"><div class="mh"><b id="mt"></b><a id="ml" target="_blank" rel="noopener">Open in a new tab</a><button class="tool" id="mx">Close</button></div><iframe id="mf" title="Overview chart"></iframe></div></div>
 <script>
-const MAP = {"zones":[{"id":"approach","name":"Headaches · seizures · altered level of consciousness","topics":[{"title":"Clinical approach to headaches","chart":"neuro-w14-06_2","hl":"mint","groups":[{"label":"Secondary: a red flag","items":[{"col":"sah","name":"Subarachnoid hemorrhage"},{"col":"men","name":"Bacterial meningitis"},{"col":"gca","name":"Giant cell arteritis"},{"col":"tum","name":"Brain tumour"},{"col":"iih","name":"Idiopathic intracranial hypertension"}]},{"label":"Primary: no red flag","items":[{"col":"mig","name":"Migraine"},{"col":"tth","name":"Tension-type"},{"col":"clu","name":"Cluster"}]}]},{"title":"Clinical approach to seizures","chart":"neuro-w14-08_2","hl":"sky","groups":[{"label":"Was it a seizure?","items":[{"col":"ne","name":"Non-epileptic event"}]},{"label":"Seizure","items":[{"col":"prov","name":"Provoked seizure"},{"col":"single","name":"Single unprovoked seizure"},{"col":"epi","name":"Epilepsy"},{"col":"se","name":"Status epilepticus"}]}]},{"title":"Seizures in children","chart":"neuro-w15-05_3","hl":"sky","groups":[{"label":null,"items":[{"col":"sfs","name":"Simple febrile seizure"},{"col":"cfs","name":"Complex febrile seizure"},{"col":"cse","name":"Convulsive status epilepticus"}]}]},{"title":"Altered level of consciousness","chart":"neuro-w14-07_2","hl":"rose","groups":[{"label":"Disorders of consciousness","items":[{"col":"bd","name":"Brain death"},{"col":"coma","name":"Coma"},{"col":"vs","name":"Vegetative state"},{"col":"mcsm","name":"Minimally conscious MINUS"},{"col":"mcsp","name":"Minimally conscious PLUS"}]},{"label":"Looks like coma, is not","items":[{"col":"lis","name":"Locked-in syndrome"}]}]}]},{"id":"disorder","name":"Neurological disorders","topics":[{"title":"Raised ICP · neurosurgical emergencies","chart":"neuro-w14-10_2","hl":"peach","groups":[{"label":null,"items":[{"col":"edh","name":"Epidural hematoma"},{"col":"sdh","name":"Acute subdural hematoma"},{"col":"sah","name":"Subarachnoid hemorrhage"},{"col":"tum","name":"Tumour with edema"},{"col":"hyd","name":"Hydrocephalus"}]}]},{"title":"Brain tumours","chart":"neuro-w15-02_2","hl":"blush","groups":[{"label":null,"items":[{"col":"met","name":"Brain metastasis"},{"col":"hgg","name":"High-grade glioma"},{"col":"lgg","name":"Low-grade glioma"},{"col":"pcl","name":"Primary CNS lymphoma"}]}]},{"title":"Head injury · hemorrhage","chart":"neuro-w14-01_2","hl":"lilac","groups":[{"label":null,"items":[{"col":"edh","name":"Epidural hematoma"},{"col":"sdh","name":"Acute subdural hematoma"},{"col":"cont","name":"Cerebral contusion"},{"col":"ich","name":"Intracerebral hemorrhage"},{"col":"dai","name":"Diffuse axonal injury · traumatic SAH"},{"col":"conc","name":"Concussion"}]}]},{"title":"Strokes","chart":"neuro-w14-03_2","hl":"leaf","groups":[{"label":null,"items":[{"col":"isch","name":"Ischemic stroke"},{"col":"tia","name":"Transient ischemic attack (TIA)"},{"col":"ich","name":"Intracerebral hemorrhage"},{"col":"sah","name":"Subarachnoid hemorrhage"}]}]},{"title":"Meningitis · encephalitis","chart":"neuro-w14-11_2","hl":"orchid","groups":[{"label":null,"items":[{"col":"bac","name":"Bacterial meningitis"},{"col":"asep","name":"Aseptic (viral) meningitis"},{"col":"hsv","name":"Herpes simplex encephalitis"}]}]},{"title":"Multiple sclerosis","chart":"neuro-w14-02_2","hl":"moss","groups":[{"label":null,"items":[{"col":"mye","name":"Myelitis"},{"col":"on","name":"Optic neuritis"},{"col":"bs","name":"Brainstem or cerebellar syndrome"}]}]},{"title":"Nutritional · systemic","chart":"neuro-w15-11_2","hl":"ice","groups":[{"label":null,"items":[{"col":"onc","name":"Five ways cancer reaches the nerves"},{"col":"phr","name":"Bilateral phrenic nerve palsies"},{"col":"wer","name":"Thiamine (B1) deficiency: Wernicke encephalopathy"},{"col":"nut","name":"Other nutrition"},{"col":"ce","name":"Multiple cardioembolic strokes"}]}]},{"title":"Neuroradiology","chart":"neuro-w13-13_2","hl":"smoke","groups":[{"label":null,"items":[{"col":"xr","name":"Radiography"},{"col":"fl","name":"Fluoroscopy"},{"col":"ct","name":"Computed tomography (CT)"},{"col":"us","name":"Ultrasound"},{"col":"mri","name":"MRI"}]}]}]},{"id":"local","name":"UMN vs LMN localization","topics":[{"title":"Localization: start here","chart":"neuro-w13-10_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"cortex","name":"Cortex"},{"col":"subcortex","name":"Subcortex"},{"col":"stem","name":"Brainstem"},{"col":"legs","name":"Bilateral leg weakness"},{"col":"dys","name":"Dysarthria"},{"col":"cereb","name":"Cerebellar system"}]}]},{"title":"Clinical approach to weakness","chart":"neuro-w13-09_2","hl":"aqua","groups":[{"label":"Upper motor neuron","items":[{"col":"brain","name":"Brain"},{"col":"stem","name":"Brainstem"},{"col":"cord","name":"Spinal cord"}]},{"label":"Lower motor neuron","items":[{"col":"ahc","name":"Anterior horn cell"},{"col":"root","name":"Root(s)"},{"col":"plex","name":"Plexus"},{"col":"nerve","name":"Nerve"},{"col":"nmj","name":"Neuromuscular junction"},{"col":"muscle","name":"Muscle"}]}]},{"title":"Cortical syndromes","chart":"neuro-w13-08_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"broca","name":"Broca's"},{"col":"tcm","name":"Transcortical motor"},{"col":"cond","name":"Conduction"},{"col":"wern","name":"Wernicke's"},{"col":"glob","name":"Global"},{"col":"tcs","name":"Transcortical sensory"}]}]},{"title":"Spinal cord syndromes","chart":"neuro-w13-06_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"ant","name":"Anterior cord"},{"col":"post","name":"Posterior cord"},{"col":"cent","name":"Central cord"},{"col":"bs","name":"Brown-Séquard"},{"col":"ce","name":"Cauda equina"},{"col":"rad","name":"Radiculopathy"}]}]},{"title":"Spinal tracts","chart":"neuro-w13-02_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"dcml","name":"Dorsal column (DCML)"},{"col":"stt","name":"Spinothalamic"},{"col":"sct","name":"Spinocerebellar"},{"col":"lcst","name":"Lateral corticospinal"},{"col":"cbt","name":"Corticobulbar"}]}]},{"title":"Sensory symptoms","chart":"neuro-w14-04_2","hl":"ice","groups":[{"label":null,"items":[{"col":"thal","name":"Brain: thalamus"},{"col":"cord","name":"Spinal cord"},{"col":"root","name":"Root (radiculopathy)"},{"col":"mono","name":"Mononeuropathy"},{"col":"poly","name":"Length-dependent polyneuropathy"},{"col":"gbs","name":"Guillain-Barré syndrome"}]}]},{"title":"Neuropathic pain","chart":"neuro-w14-05_2","hl":"ice","groups":[{"label":null,"items":[{"col":"tca","name":"Tricyclics (TCAs)"},{"col":"snri","name":"SNRIs"},{"col":"gab","name":"Gabapentinoids"},{"col":"carb","name":"Sodium-channel anticonvulsant"},{"col":"oth","name":"Topicals · cannabinoids"}]}]},{"title":"Floppy infant","chart":"neuro-w15-05_2","hl":"smoke","groups":[{"label":null,"items":[{"col":"cen","name":"Central hypotonia"},{"col":"per","name":"Peripheral hypotonia"}]}]}]},{"id":"eye","name":"Eyes · ears · cerebellum · basal ganglia","topics":[{"title":"Pupils · ptosis · diplopia","chart":"neuro-w13-07_2","hl":"peach","groups":[{"label":"Double vision","items":[{"col":"cn3","name":"Third nerve palsy"},{"col":"cn4","name":"Fourth nerve palsy"},{"col":"cn6","name":"Sixth nerve palsy"},{"col":"nys","name":"Gaze-evoked nystagmus"}]},{"label":"Pupils","items":[{"col":"para","name":"Parasympathetic paresis"},{"col":"symp","name":"Horner syndrome"},{"col":"rapd","name":"Relative afferent pupillary defect"}]}]},{"title":"Monocular vision loss","chart":"neuro-w15-06_2","hl":"peach","groups":[{"label":"Sudden","items":[{"col":"crao","name":"Central retinal artery occlusion"},{"col":"gca","name":"Giant cell arteritis"},{"col":"on","name":"Optic neuritis"},{"col":"rd","name":"Retinal detachment"},{"col":"vh","name":"Vitreous hemorrhage"}]},{"label":"Gradual","items":[{"col":"gl","name":"Primary open-angle glaucoma"},{"col":"cat","name":"Cataract"},{"col":"amd","name":"Age-related macular degeneration"}]}]},{"title":"Red eye","chart":"neuro-w15-07_2","hl":"peach","groups":[{"label":"Not sight-threatening","items":[{"col":"lid","name":"Stye · chalazion · entropion"},{"col":"vir","name":"Viral conjunctivitis"},{"col":"bac","name":"Bacterial conjunctivitis"},{"col":"gon","name":"Gonococcal conjunctivitis"},{"col":"all","name":"Allergic conjunctivitis"},{"col":"sch","name":"Subconjunctival hemorrhage"},{"col":"abr","name":"Corneal abrasion"}]},{"label":"Sight-threatening","items":[{"col":"ker","name":"Bacterial keratitis"},{"col":"uv","name":"Anterior uveitis (iritis)"},{"col":"aac","name":"Acute angle closure glaucoma"}]}]},{"title":"Ocular trauma","chart":"neuro-w15-07_3","hl":"peach","groups":[{"label":null,"items":[{"col":"fb","name":"Metallic foreign body"},{"col":"lid","name":"Lid laceration"},{"col":"hy","name":"Hyphema"},{"col":"ti","name":"Traumatic iritis"},{"col":"cl","name":"Corneal laceration"}]}]},{"title":"Children's eyes","chart":"neuro-w15-08_2","hl":"peach","groups":[{"label":null,"items":[{"col":"dim","name":"Dim or different reflex"},{"col":"bright","name":"Brighter reflex"},{"col":"white","name":"Leukocoria"},{"col":"con","name":"Concomitant strabismus"},{"col":"inc","name":"Incomitant strabismus"},{"col":"amb","name":"Amblyopia"}]}]},{"title":"Hearing loss","chart":"neuro-w15-09_2","hl":"sky","groups":[{"label":"Conductive","items":[{"col":"eac","name":"Ear canal"},{"col":"om","name":"Otitis media"},{"col":"fix","name":"Drum or ossicles"}]},{"label":"Sensorineural","items":[{"col":"ssnhl","name":"SUDDEN sensorineural"},{"col":"grad","name":"Gradual, symmetric"},{"col":"vs","name":"ONE-sided, progressive"}]}]},{"title":"Vertigo","chart":"neuro-w15-10_2","hl":"sky","groups":[{"label":null,"items":[{"col":"diz","name":"Not vestibular"},{"col":"bppv","name":"BPPV"},{"col":"scd","name":"Superior canal dehiscence"},{"col":"men","name":"Ménière's disease"},{"col":"neu","name":"Vestibular neuronitis / labyrinthitis"},{"col":"ami","name":"Aminoglycoside toxicity"}]}]},{"title":"Cerebellum · basal ganglia","chart":"neuro-w13-04_2","hl":"butter","groups":[{"label":"Cerebellum","items":[{"col":"vest","name":"Vestibulocerebellum"},{"col":"spin","name":"Spinocerebellum"},{"col":"cereb","name":"Cerebrocerebellum"}]},{"label":"Basal ganglia","items":[{"col":"pd","name":"Parkinson disease"},{"col":"chor","name":"Chorea"}]}]},{"title":"Movement disorders","chart":"neuro-w15-03_2","hl":"leaf","groups":[{"label":null,"items":[{"col":"et","name":"Essential tremor"},{"col":"pd","name":"Parkinson's disease"},{"col":"oth","name":"Parkinsonism from ANOTHER cause"}]}]},{"title":"Ataxic child","chart":"neuro-w15-05_4","hl":"butter","groups":[{"label":null,"items":[{"col":"tox","name":"Intoxication"},{"col":"pi","name":"Acute postinfectious cerebellar ataxia"},{"col":"tum","name":"Brain tumour"},{"col":"str","name":"Stroke · hemorrhage · infarction"},{"col":"men","name":"Meningitis · encephalitis"}]}]},{"title":"Non-Mendelian genetics","chart":"neuro-w15-04_2","hl":"smoke","groups":[{"label":null,"items":[{"col":"mt","name":"Mitochondrial DNA disease"},{"col":"nu","name":"Nuclear-gene mitochondrial disease"},{"col":"hd","name":"Huntington disease"},{"col":"dm","name":"Myotonic dystrophy"}]}]}]}],"extra":[{"title":"End of life · MAiD","chart":"neuro-w16-01_2"},{"title":"Autopsy · cause of death","chart":"neuro-w16-02_2"}]};
+/* Cranial nerve pathways, from the concept map's cranial nerve section.
+   Edge types: m motor · g general sensory · s special sensory (taste, smell, vision, hearing) · p parasympathetic · y sympathetic.
+   A node: {t: label, k: type of the branch reaching it, c: children, gang: a ganglion, note: small grey line, key: id for cross-links, chart/col: our chart} */
+const CN = {
+ colA: [
+  {t: "Sympathetics", k: "y", key: "cn-sns", chart: "neuro-w13-07_2", col: "symp", note: "hypothalamus → pons, medulla → cord C8-T2", c: [
+    {t: "Superior cervical ganglion", k: "y", gang: 1, note: "rides the internal carotid", c: [
+      {t: "Dilator pupillae", k: "y", note: "dilates the pupil"},
+      {t: "Superior tarsal muscle", k: "y", note: "minor eyelid lifter"},
+      {t: "Sweat glands · vessels", k: "y", note: "sweating · vasoconstriction"}]}]},
+  {t: "CN I · Olfactory", k: "s", key: "cn-1", note: "cribriform plate", c: [{t: "Smell", k: "s", note: "olfactory epithelium · anosmia in Kallmann"}]},
+  {t: "CN II · Optic", k: "s", key: "cn-2", chart: "neuro-w13-07_2", col: "rapd", note: "optic canal · wrapped in dura", c: [
+    {t: "Vision", k: "s", note: "retina → chiasm → tract → LGN → cortex"},
+    {t: "Pupillary light reflex", k: "s", note: "AFFERENT limb · RAPD"}]},
+  {t: "CN III · Oculomotor", k: "m", key: "cn-3", chart: "neuro-w13-07_2", col: "cn3", note: "midbrain · superior orbital fissure", c: [
+    {t: "Levator palpebrae superioris", k: "m", note: "MAIN eyelid lifter"},
+    {t: "SR · IR · MR · IO", k: "m", note: "palsy: down and out"},
+    {t: "Ciliary ganglion", k: "p", gang: 1, note: "Edinger-Westphal nucleus", c: [
+      {t: "Sphincter pupillae", k: "p", note: "constricts · reflex EFFERENT (both eyes)"},
+      {t: "Ciliary muscle", k: "p", note: "lens accommodation"}]}]},
+  {t: "CN IV · Trochlear", k: "m", key: "cn-4", chart: "neuro-w13-07_2", col: "cn4", note: "dorsal midbrain · long course, trauma", c: [{t: "Superior oblique", k: "m", note: "palsy: head TILT"}]},
+  {t: "CN VI · Abducens", k: "m", key: "cn-6", chart: "neuro-w13-07_2", col: "cn6", note: "pons · superior orbital fissure", c: [{t: "Lateral rectus", k: "m", note: "palsy: head TURN · check ↑ICP"}]},
+  {t: "CN V · Trigeminal", k: "g", key: "cn-5", note: "pons · sensory nucleus spans the brainstem", c: [
+    {t: "V1 Ophthalmic", k: "g", note: "superior orbital fissure", c: [
+      {t: "Long ciliary n.", k: "g", note: "cornea · corneal reflex AFFERENT"},
+      {t: "Supraorbital · supratrochlear", k: "g", note: "forehead"},
+      {t: "Lacrimal n. → lacrimal gland", k: "p", note: "carries VII's parasympathetics"}]},
+    {t: "V2 Maxillary", k: "g", note: "foramen rotundum", c: [
+      {t: "Infraorbital n.", k: "g", note: "cheek · upper lip"},
+      {t: "Zygomatic n.", k: "p", note: "hands VII's fibres to the lacrimal n."}]},
+    {t: "V3 Mandibular", k: "g", note: "foramen ovale", c: [
+      {t: "Muscles of mastication", k: "m", note: "masseter · temporalis"},
+      {t: "Inferior alveolar → mental n.", k: "g", note: "jaw · lower lip"},
+      {t: "Lingual n.", k: "g", note: "general sensation, anterior 2/3 tongue"},
+      {t: "Auriculotemporal n. → parotid", k: "p", note: "carries IX's parasympathetics"}]},
+    {t: "Trigeminal neuralgia", k: "g", note: "also varicella zoster reactivation"}]},
+ ],
+ colB: [
+  {t: "CN VII · Facial", k: "m", key: "cn-7", note: "pons · internal acoustic meatus → stylomastoid foramen", c: [
+    {t: "Muscles of facial expression", k: "m", note: "temporal · zygomatic · buccal · mandibular · cervical", c: [
+      {t: "Orbicularis oculi", k: "m", note: "closes the eye · corneal reflex EFFERENT"},
+      {t: "Frontalis", k: "m", note: "BILATERAL UMN: a UMN lesion spares the forehead"}]},
+    {t: "Nerve to stapedius", k: "m", note: "damps loud sound · Bell's: hyperacusis"},
+    {t: "Chorda tympani", k: "s", note: "near the middle ear", c: [
+      {t: "Taste, anterior 2/3 tongue", k: "s", note: "travels with the lingual n."},
+      {t: "Submandibular ganglion", k: "p", gang: 1, c: [{t: "Submandibular · sublingual glands", k: "p"}]}]},
+    {t: "Greater petrosal n.", k: "p", c: [{t: "Pterygopalatine ganglion", k: "p", gang: 1, c: [{t: "Lacrimal gland", k: "p", note: "via V2 then V1"}]}]}]},
+  {t: "CN VIII · Vestibulocochlear", k: "s", key: "cn-8", note: "pons · internal acoustic meatus", c: [
+    {t: "Cochlea", k: "s", note: "hearing · lesion: tinnitus, hearing loss"},
+    {t: "Utricle · saccule", k: "s", note: "balance · lesion: vestibular ataxia"},
+    {t: "Semicircular canals", k: "s", note: "VOR · lesion: nystagmus, vertigo"}]},
+  {t: "CN IX · Glossopharyngeal", k: "g", key: "cn-9", note: "medulla · jugular foramen", c: [
+    {t: "Lesser petrosal n.", k: "p", c: [{t: "Otic ganglion", k: "p", gang: 1, c: [{t: "Parotid gland", k: "p", note: "via the auriculotemporal n. (V3)"}]}]},
+    {t: "Posterior 1/3 tongue", k: "s", note: "taste + general sensation"},
+    {t: "Oropharynx · palate", k: "g", note: "gag reflex AFFERENT · swallowing"},
+    {t: "Stylopharyngeus", k: "m"}]},
+  {t: "CN X · Vagus", k: "m", key: "cn-10", chart: "neuro-w13-10_2", col: "dys", note: "medulla · jugular foramen", c: [
+    {t: "Palate · pharynx", k: "m", note: "gag reflex EFFERENT · palate deviates"},
+    {t: "Larynx", k: "m", note: "phonation via the recurrent laryngeal · hoarse"},
+    {t: "Laryngopharynx · larynx", k: "g", note: "sensation"},
+    {t: "Thoracic · abdominal viscera", k: "p", note: "visceral ganglia"}]},
+  {t: "CN XI · Accessory", k: "m", key: "cn-11", note: "in by the foramen magnum, out by the jugular foramen", c: [{t: "Trapezius · SCM", k: "m"}]},
+  {t: "CN XII · Hypoglossal", k: "m", key: "cn-12", note: "medulla · hypoglossal canal", c: [{t: "Tongue", k: "m", note: "deviates TOWARD the lesion · LMN: atrophy, fasciculations"}]},
+ ],
+ links: [
+  ["cn-3", "neuro-w13-07_2#cn3", "palsy"], ["cn-sns", "neuro-w13-07_2#symp", "cut: Horner"], ["cn-2", "neuro-w13-07_2#rapd", "RAPD"],
+  ["cn-8", "neuro-w15-09_2", "hearing"], ["cn-8", "neuro-w15-10_2", "balance"], ["cn-10", "neuro-w13-10_2#dys", "dysarthria"],
+  ["neuro-w14-10_2", "cn-3", "uncal herniation"], ["neuro-w13-10_2#stem", "cn-7", "pons: V-VIII"], ["neuro-w13-10_2#stem", "cn-10", "medulla: IX-XII"],
+ ]
+};
+
+const MAP = {"zones":[{"id":"approach","name":"Headaches · seizures · altered level of consciousness","topics":[{"title":"Clinical approach to headaches","chart":"neuro-w14-06_2","hl":"mint","groups":[{"label":"Secondary: a red flag","items":[{"col":"sah","name":"Subarachnoid hemorrhage"},{"col":"men","name":"Bacterial meningitis"},{"col":"gca","name":"Giant cell arteritis"},{"col":"tum","name":"Brain tumour"},{"col":"iih","name":"Idiopathic intracranial hypertension"}]},{"label":"Primary: no red flag","items":[{"col":"mig","name":"Migraine"},{"col":"tth","name":"Tension-type"},{"col":"clu","name":"Cluster"}]}],"pos":[1413.0,502.0]},{"title":"Clinical approach to seizures","chart":"neuro-w14-08_2","hl":"sky","groups":[{"label":"Was it a seizure?","items":[{"col":"ne","name":"Non-epileptic event"}]},{"label":"Seizure","items":[{"col":"prov","name":"Provoked seizure"},{"col":"single","name":"Single unprovoked seizure"},{"col":"epi","name":"Epilepsy"},{"col":"se","name":"Status epilepticus"}]}],"pos":[4910.0,361.0]},{"title":"Seizures in children","chart":"neuro-w15-05_3","hl":"sky","groups":[{"label":null,"items":[{"col":"sfs","name":"Simple febrile seizure"},{"col":"cfs","name":"Complex febrile seizure"},{"col":"cse","name":"Convulsive status epilepticus"}]}],"pos":[7001.0,95.0]},{"title":"Altered level of consciousness","chart":"neuro-w14-07_2","hl":"rose","groups":[{"label":"Disorders of consciousness","items":[{"col":"bd","name":"Brain death"},{"col":"coma","name":"Coma"},{"col":"vs","name":"Vegetative state"},{"col":"mcsm","name":"Minimally conscious MINUS"},{"col":"mcsp","name":"Minimally conscious PLUS"}]},{"label":"Looks like coma, is not","items":[{"col":"lis","name":"Locked-in syndrome"}]}],"pos":[9308.0,397.0]}]},{"id":"disorder","name":"Neurological disorders","topics":[{"title":"Raised ICP · neurosurgical emergencies","chart":"neuro-w14-10_2","hl":"peach","groups":[{"label":null,"items":[{"col":"edh","name":"Epidural hematoma"},{"col":"sdh","name":"Acute subdural hematoma"},{"col":"sah","name":"Subarachnoid hemorrhage"},{"col":"tum","name":"Tumour with edema"},{"col":"hyd","name":"Hydrocephalus"}]}],"pos":[622.0,2024.0]},{"title":"Brain tumours","chart":"neuro-w15-02_2","hl":"blush","groups":[{"label":null,"items":[{"col":"met","name":"Brain metastasis"},{"col":"hgg","name":"High-grade glioma"},{"col":"lgg","name":"Low-grade glioma"},{"col":"pcl","name":"Primary CNS lymphoma"}]}],"pos":[1241.0,964.0]},{"title":"Head injury · hemorrhage","chart":"neuro-w14-01_2","hl":"lilac","groups":[{"label":null,"items":[{"col":"edh","name":"Epidural hematoma"},{"col":"sdh","name":"Acute subdural hematoma"},{"col":"cont","name":"Cerebral contusion"},{"col":"ich","name":"Intracerebral hemorrhage"},{"col":"dai","name":"Diffuse axonal injury · traumatic SAH"},{"col":"conc","name":"Concussion"}]}],"pos":[2374.0,2055.0]},{"title":"Strokes","chart":"neuro-w14-03_2","hl":"leaf","groups":[{"label":null,"items":[{"col":"isch","name":"Ischemic stroke"},{"col":"tia","name":"Transient ischemic attack (TIA)"},{"col":"ich","name":"Intracerebral hemorrhage"},{"col":"sah","name":"Subarachnoid hemorrhage"}]}],"pos":[4197.0,958.0]},{"title":"Meningitis · encephalitis","chart":"neuro-w14-11_2","hl":"orchid","groups":[{"label":null,"items":[{"col":"bac","name":"Bacterial meningitis"},{"col":"asep","name":"Aseptic (viral) meningitis"},{"col":"hsv","name":"Herpes simplex encephalitis"}]}],"pos":[7805.0,960.0]},{"title":"Multiple sclerosis","chart":"neuro-w14-02_2","hl":"moss","groups":[{"label":null,"items":[{"col":"mye","name":"Myelitis"},{"col":"on","name":"Optic neuritis"},{"col":"bs","name":"Brainstem or cerebellar syndrome"}]}],"pos":[9302.0,1012.0]},{"title":"Nutritional · systemic","chart":"neuro-w15-11_2","hl":"ice","groups":[{"label":null,"items":[{"col":"onc","name":"Five ways cancer reaches the nerves"},{"col":"phr","name":"Bilateral phrenic nerve palsies"},{"col":"wer","name":"Thiamine (B1) deficiency: Wernicke encephalopathy"},{"col":"nut","name":"Other nutrition"},{"col":"ce","name":"Multiple cardioembolic strokes"}]}],"pos":[10032.0,990.0]},{"title":"Neuroradiology","chart":"neuro-w13-13_2","hl":"smoke","groups":[{"label":null,"items":[{"col":"xr","name":"Radiography"},{"col":"fl","name":"Fluoroscopy"},{"col":"ct","name":"Computed tomography (CT)"},{"col":"us","name":"Ultrasound"},{"col":"mri","name":"MRI"}]}],"pos":[10715.0,90.0]}]},{"id":"local","name":"UMN vs LMN localization","topics":[{"title":"Localization: start here","chart":"neuro-w13-10_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"cortex","name":"Cortex"},{"col":"subcortex","name":"Subcortex"},{"col":"stem","name":"Brainstem"},{"col":"legs","name":"Bilateral leg weakness"},{"col":"dys","name":"Dysarthria"},{"col":"cereb","name":"Cerebellar system"}]}],"pos":[3855.0,4164.0]},{"title":"Clinical approach to weakness","chart":"neuro-w13-09_2","hl":"aqua","groups":[{"label":"Upper motor neuron","items":[{"col":"brain","name":"Brain"},{"col":"stem","name":"Brainstem"},{"col":"cord","name":"Spinal cord"}]},{"label":"Lower motor neuron","items":[{"col":"ahc","name":"Anterior horn cell"},{"col":"root","name":"Root(s)"},{"col":"plex","name":"Plexus"},{"col":"nerve","name":"Nerve"},{"col":"nmj","name":"Neuromuscular junction"},{"col":"muscle","name":"Muscle"}]}],"pos":[3375.0,4177.0]},{"title":"Cortical syndromes","chart":"neuro-w13-08_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"broca","name":"Broca's"},{"col":"tcm","name":"Transcortical motor"},{"col":"cond","name":"Conduction"},{"col":"wern","name":"Wernicke's"},{"col":"glob","name":"Global"},{"col":"tcs","name":"Transcortical sensory"}]}],"pos":[3345.0,3250.0]},{"title":"Spinal cord syndromes","chart":"neuro-w13-06_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"ant","name":"Anterior cord"},{"col":"post","name":"Posterior cord"},{"col":"cent","name":"Central cord"},{"col":"bs","name":"Brown-Séquard"},{"col":"ce","name":"Cauda equina"},{"col":"rad","name":"Radiculopathy"}]}],"pos":[2552.0,3669.0]},{"title":"Spinal tracts","chart":"neuro-w13-02_2","hl":"aqua","groups":[{"label":null,"items":[{"col":"dcml","name":"Dorsal column (DCML)"},{"col":"stt","name":"Spinothalamic"},{"col":"sct","name":"Spinocerebellar"},{"col":"lcst","name":"Lateral corticospinal"},{"col":"cbt","name":"Corticobulbar"}]}],"pos":[1994.0,3656.0]},{"title":"Sensory symptoms","chart":"neuro-w14-04_2","hl":"ice","groups":[{"label":null,"items":[{"col":"thal","name":"Brain: thalamus"},{"col":"cord","name":"Spinal cord"},{"col":"root","name":"Root (radiculopathy)"},{"col":"mono","name":"Mononeuropathy"},{"col":"poly","name":"Length-dependent polyneuropathy"},{"col":"gbs","name":"Guillain-Barré syndrome"}]}],"pos":[3071.0,4848.0]},{"title":"Neuropathic pain","chart":"neuro-w14-05_2","hl":"ice","groups":[{"label":null,"items":[{"col":"tca","name":"Tricyclics (TCAs)"},{"col":"snri","name":"SNRIs"},{"col":"gab","name":"Gabapentinoids"},{"col":"carb","name":"Sodium-channel anticonvulsant"},{"col":"oth","name":"Topicals · cannabinoids"}]}],"pos":[4902.0,5582.0]},{"title":"Floppy infant","chart":"neuro-w15-05_2","hl":"smoke","groups":[{"label":null,"items":[{"col":"cen","name":"Central hypotonia"},{"col":"per","name":"Peripheral hypotonia"}]}],"pos":[455.0,5049.0]}]},{"id":"eye","name":"Eyes · ears · cerebellum · basal ganglia","topics":[{"title":"Pupils · ptosis · diplopia","chart":"neuro-w13-07_2","hl":"peach","groups":[{"label":"Double vision","items":[{"col":"cn3","name":"Third nerve palsy"},{"col":"cn4","name":"Fourth nerve palsy"},{"col":"cn6","name":"Sixth nerve palsy"},{"col":"nys","name":"Gaze-evoked nystagmus"}]},{"label":"Pupils","items":[{"col":"para","name":"Parasympathetic paresis"},{"col":"symp","name":"Horner syndrome"},{"col":"rapd","name":"Relative afferent pupillary defect"}]}],"pos":[7951.0,1966.0]},{"title":"Monocular vision loss","chart":"neuro-w15-06_2","hl":"peach","groups":[{"label":"Sudden","items":[{"col":"crao","name":"Central retinal artery occlusion"},{"col":"gca","name":"Giant cell arteritis"},{"col":"on","name":"Optic neuritis"},{"col":"rd","name":"Retinal detachment"},{"col":"vh","name":"Vitreous hemorrhage"}]},{"label":"Gradual","items":[{"col":"gl","name":"Primary open-angle glaucoma"},{"col":"cat","name":"Cataract"},{"col":"amd","name":"Age-related macular degeneration"}]}],"pos":[9841.0,1967.0]},{"title":"Red eye","chart":"neuro-w15-07_2","hl":"peach","groups":[{"label":"Not sight-threatening","items":[{"col":"lid","name":"Stye · chalazion · entropion"},{"col":"vir","name":"Viral conjunctivitis"},{"col":"bac","name":"Bacterial conjunctivitis"},{"col":"gon","name":"Gonococcal conjunctivitis"},{"col":"all","name":"Allergic conjunctivitis"},{"col":"sch","name":"Subconjunctival hemorrhage"},{"col":"abr","name":"Corneal abrasion"}]},{"label":"Sight-threatening","items":[{"col":"ker","name":"Bacterial keratitis"},{"col":"uv","name":"Anterior uveitis (iritis)"},{"col":"aac","name":"Acute angle closure glaucoma"}]}],"pos":[10763.0,1974.0]},{"title":"Ocular trauma","chart":"neuro-w15-07_3","hl":"peach","groups":[{"label":null,"items":[{"col":"fb","name":"Metallic foreign body"},{"col":"lid","name":"Lid laceration"},{"col":"hy","name":"Hyphema"},{"col":"ti","name":"Traumatic iritis"},{"col":"cl","name":"Corneal laceration"}]}],"pos":[10491.0,2114.0]},{"title":"Children's eyes","chart":"neuro-w15-08_2","hl":"peach","groups":[{"label":null,"items":[{"col":"dim","name":"Dim or different reflex"},{"col":"bright","name":"Brighter reflex"},{"col":"white","name":"Leukocoria"},{"col":"con","name":"Concomitant strabismus"},{"col":"inc","name":"Incomitant strabismus"},{"col":"amb","name":"Amblyopia"}]}],"pos":[8394.0,2922.0]},{"title":"Hearing loss","chart":"neuro-w15-09_2","hl":"sky","groups":[{"label":"Conductive","items":[{"col":"eac","name":"Ear canal"},{"col":"om","name":"Otitis media"},{"col":"fix","name":"Drum or ossicles"}]},{"label":"Sensorineural","items":[{"col":"ssnhl","name":"SUDDEN sensorineural"},{"col":"grad","name":"Gradual, symmetric"},{"col":"vs","name":"ONE-sided, progressive"}]}],"pos":[7654.0,3219.0]},{"title":"Vertigo","chart":"neuro-w15-10_2","hl":"sky","groups":[{"label":null,"items":[{"col":"diz","name":"Not vestibular"},{"col":"bppv","name":"BPPV"},{"col":"scd","name":"Superior canal dehiscence"},{"col":"men","name":"Ménière's disease"},{"col":"neu","name":"Vestibular neuronitis / labyrinthitis"},{"col":"ami","name":"Aminoglycoside toxicity"}]}],"pos":[9133.0,3190.0]},{"title":"Cerebellum · basal ganglia","chart":"neuro-w13-04_2","hl":"butter","groups":[{"label":"Cerebellum","items":[{"col":"vest","name":"Vestibulocerebellum"},{"col":"spin","name":"Spinocerebellum"},{"col":"cereb","name":"Cerebrocerebellum"}]},{"label":"Basal ganglia","items":[{"col":"pd","name":"Parkinson disease"},{"col":"chor","name":"Chorea"}]}],"pos":[10421.0,3579.0]},{"title":"Movement disorders","chart":"neuro-w15-03_2","hl":"leaf","groups":[{"label":null,"items":[{"col":"et","name":"Essential tremor"},{"col":"pd","name":"Parkinson's disease"},{"col":"oth","name":"Parkinsonism from ANOTHER cause"}]}],"pos":[10146.0,4395.0]},{"title":"Ataxic child","chart":"neuro-w15-05_4","hl":"butter","groups":[{"label":null,"items":[{"col":"tox","name":"Intoxication"},{"col":"pi","name":"Acute postinfectious cerebellar ataxia"},{"col":"tum","name":"Brain tumour"},{"col":"str","name":"Stroke · hemorrhage · infarction"},{"col":"men","name":"Meningitis · encephalitis"}]}],"pos":[8269.0,4791.0]},{"title":"Non-Mendelian genetics","chart":"neuro-w15-04_2","hl":"smoke","groups":[{"label":null,"items":[{"col":"mt","name":"Mitochondrial DNA disease"},{"col":"nu","name":"Nuclear-gene mitochondrial disease"},{"col":"hd","name":"Huntington disease"},{"col":"dm","name":"Myotonic dystrophy"}]}],"pos":[10724.0,5184.0]}]}],"extra":[{"title":"End of life · MAiD","chart":"neuro-w16-01_2"},{"title":"Autopsy · cause of death","chart":"neuro-w16-02_2"}],"hubs":[{"id":"hub-disorders","title":"Neurological disorders","sub":"describe the onset: hyperacute = vascular · acute = infection · subacute = tumour · chronic = degenerative","pos":[10635.0,965.0]},{"id":"hub-focal","title":"CNS focal lesion","sub":"tissue damage → localize it","pos":[2952.0,2629.0]}],"edges":[{"a":"hub-disorders","b":"neuro-w14-10_2","label":"","kind":"arrow"},{"a":"hub-disorders","b":"neuro-w15-02_2","label":"","kind":"arrow"},{"a":"hub-disorders","b":"neuro-w14-01_2","label":"","kind":"arrow"},{"a":"hub-disorders","b":"neuro-w14-03_2","label":"","kind":"arrow"},{"a":"hub-disorders","b":"neuro-w14-11_2","label":"","kind":"arrow"},{"a":"hub-disorders","b":"neuro-w14-02_2","label":"","kind":"arrow"},{"a":"hub-disorders","b":"neuro-w15-11_2","label":"","kind":"arrow"},{"a":"hub-disorders","b":"neuro-w13-13_2","label":"investigate","kind":"arrow"},{"a":"neuro-w14-10_2","b":"hub-focal","label":"compression","kind":"arrow"},{"a":"neuro-w14-01_2","b":"hub-focal","label":"trauma","kind":"arrow"},{"a":"neuro-w14-03_2","b":"hub-focal","label":"ischemia","kind":"arrow"},{"a":"neuro-w14-11_2","b":"hub-focal","label":"infection, autoimmune, toxic","kind":"arrow"},{"a":"hub-focal","b":"neuro-w13-10_2","label":"localize","kind":"arrow"},{"a":"neuro-w14-01_2#edh","b":"neuro-w14-10_2","label":"mass → ↑ICP","kind":"arrow"},{"a":"neuro-w15-02_2","b":"neuro-w14-10_2#tum","label":"edema → ↑ICP","kind":"arrow"},{"a":"neuro-w14-10_2","b":"neuro-w14-06_2#tum","label":"↑ICP headache","kind":"arrow"},{"a":"neuro-w14-10_2","b":"neuro-w14-07_2#coma","label":"central herniation","kind":"arrow"},{"a":"neuro-w14-10_2","b":"neuro-w13-07_2#cn3","label":"uncal: blown pupil","kind":"arrow"},{"a":"neuro-w14-03_2#sah","b":"neuro-w14-06_2#sah","label":"thunderclap","kind":"arrow"},{"a":"neuro-w14-03_2","b":"neuro-w14-08_2#epi","label":"old stroke → epilepsy","kind":"arrow"},{"a":"neuro-w14-11_2","b":"neuro-w14-08_2#prov","label":"provokes seizures","kind":"arrow"},{"a":"neuro-w14-11_2#bac","b":"neuro-w14-06_2#men","label":"fever, stiff neck","kind":"arrow"},{"a":"neuro-w14-11_2","b":"neuro-w15-05_3","label":"vs","kind":"vs"},{"a":"neuro-w14-08_2","b":"neuro-w15-05_3","label":"in children","kind":"arrow"},{"a":"neuro-w14-08_2#ne","b":"neuro-w14-07_2","label":"transient vs ongoing","kind":"vs"},{"a":"neuro-w14-06_2#gca","b":"neuro-w15-06_2#gca","label":"vision loss","kind":"arrow"},{"a":"neuro-w14-02_2#on","b":"neuro-w15-06_2#on","label":"young woman","kind":"arrow"},{"a":"neuro-w14-02_2","b":"neuro-w14-04_2#gbs","label":"CNS vs PNS","kind":"vs"},{"a":"neuro-w15-11_2#nut","b":"neuro-w13-06_2#post","label":"B12: dorsal columns","kind":"arrow"},{"a":"neuro-w15-11_2#wer","b":"neuro-w13-04_2","label":"thiamine: ataxia","kind":"arrow"},{"a":"neuro-w13-10_2","b":"neuro-w13-09_2","label":"weakness","kind":"arrow"},{"a":"neuro-w13-10_2#cortex","b":"neuro-w13-08_2","label":"cortical signs","kind":"arrow"},{"a":"neuro-w14-03_2","b":"neuro-w13-08_2","label":"MCA: aphasia, neglect","kind":"arrow"},{"a":"neuro-w13-02_2","b":"neuro-w13-06_2","label":"tracts → syndromes","kind":"arrow"},{"a":"neuro-w13-09_2#cord","b":"neuro-w13-06_2","label":"sensory level","kind":"arrow"},{"a":"neuro-w13-09_2#nmj","b":"neuro-w13-07_2","label":"myasthenia: ptosis","kind":"arrow"},{"a":"neuro-w13-09_2#nerve","b":"neuro-w14-04_2","label":"sensory loss too","kind":"arrow"},{"a":"neuro-w14-04_2#poly","b":"neuro-w14-05_2","label":"burning feet","kind":"arrow"},{"a":"neuro-w13-09_2","b":"neuro-w15-05_2","label":"under 3: hypotonia","kind":"arrow"},{"a":"neuro-w15-09_2","b":"neuro-w15-10_2","label":"CN VIII","kind":"arrow"},{"a":"neuro-w13-04_2#pd","b":"neuro-w15-03_2#pd","label":"TRAP","kind":"arrow"},{"a":"neuro-w15-04_2#hd","b":"neuro-w13-04_2#chor","label":"chorea","kind":"arrow"},{"a":"neuro-w13-04_2#cereb","b":"neuro-w15-05_4","label":"in children","kind":"arrow"},{"a":"neuro-w15-08_2#inc","b":"neuro-w13-07_2","label":"CN palsy squint","kind":"arrow"},{"a":"neuro-w13-10_2#stem","b":"neuro-w13-07_2","label":"CN III-VI nuclei","kind":"arrow"},{"a":"neuro-w15-07_2","b":"neuro-w15-07_3","label":"trauma","kind":"arrow"},{"a":"neuro-w15-06_2","b":"neuro-w15-07_2","label":"painful + red","kind":"vs"},{"a":"neuro-w13-10_2#dys","b":"neuro-w13-04_2","label":"ataxic speech","kind":"arrow"}],"cnPos":[6900,2900]};
 const BASE = "https://schulichmed.github.io/preclerkship/pom2/charts/";
+const SCALE = 0.5, PAD = 220;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const view = document.getElementById("view"), world = document.getElementById("world"), svg = document.getElementById("lines");
 let seen = {};
 try { seen = JSON.parse(localStorage.getItem("ncm-seen") || "{}"); } catch(e) {}
-const card = t => '<div class="card" style="--hl:var(--' + t.hl + ')"><button class="topic" data-chart="' + t.chart + '" data-name="' + esc(t.title) + '">' + esc(t.title) + '<small>OPEN THE CHART ›</small></button>' +
-  t.groups.map(g => '<div class="grp">' + (g.label ? '<div class="gl">' + esc(g.label) + '</div>' : '') + '<div class="chips">' +
-    g.items.map(i => { const k = t.chart + "#" + i.col; return '<button class="chip' + (seen[k] ? ' seen' : '') + '" data-chart="' + t.chart + '" data-col="' + i.col + '" data-name="' + esc(t.title) + '" data-sub="' + esc(i.name) + '">' + esc(i.name) + '</button>'; }).join("") +
-  '</div></div>').join("") + '</div>';
-const zone = z => '<section class="zone ' + z.id + '"><div class="zh"><h2>' + esc(z.name) + '</h2></div><div class="cards">' + z.topics.map(card).join("") + '</div></section>';
-const [a, d, l, e] = MAP.zones;
-document.getElementById("map").innerHTML = zone(a) + zone(d) + '<div class="bottom">' + zone(l) + zone(e) + '</div>' +
-  '<div class="extra">Also in Block 4:' + MAP.extra.map(x => '<button class="chip" style="--hl:var(--smoke)" data-chart="' + x.chart + '" data-name="' + esc(x.title) + '">' + esc(x.title) + '</button>').join("") + '</div>';
+const EL = {};        // key -> element (topic chart id, chart#col, hub id)
+const CL = [];        // clusters
+const ZONE_OF = {};
 
+/* ---- build ---- */
+MAP.zones.forEach(z => z.topics.forEach(t => {
+  const c = document.createElement("div"); c.className = "cl"; c.style.setProperty("--hl", "var(--" + t.hl + ")");
+  c.innerHTML = '<button class="topic" data-chart="' + t.chart + '" data-name="' + esc(t.title) + '">' + esc(t.title) + '<small>open the chart</small></button>' +
+    '<div class="groups">' + t.groups.map(g => '<div class="grp">' + (g.label ? '<div class="gl">' + esc(g.label) + '</div>' : '') +
+      g.items.map(i => { const k = t.chart + "#" + i.col; return '<button class="chip' + (seen[k] ? ' seen' : '') + '" data-key="' + k + '" data-chart="' + t.chart + '" data-col="' + i.col + '" data-name="' + esc(t.title) + '" data-sub="' + esc(i.name) + '">' + esc(i.name) + '</button>'; }).join("") +
+    '</div>').join("") + '</div>';
+  world.appendChild(c);
+  EL[t.chart] = c.querySelector(".topic"); ZONE_OF[t.chart] = z.id;
+  c.querySelectorAll(".chip").forEach(b => EL[b.dataset.key] = b);
+  CL.push({el: c, t, zone: z.id});
+}));
+MAP.hubs.forEach(h => {
+  const d = document.createElement("div"); d.className = "hubnode"; d.dataset.key = h.id;
+  d.innerHTML = esc(h.title) + '<small>' + esc(h.sub) + '</small>';
+  world.appendChild(d); EL[h.id] = d; h.el = d;
+});
+
+
+/* ---- cranial nerve pathways ---- */
+const KC = {m:"var(--fm)", g:"var(--fg)", s:"var(--fs)", p:"var(--fp)", y:"var(--fy)"};
+const cnp = document.createElement("div"); cnp.className = "cnp";
+cnp.innerHTML = '<h3>Cranial nerves</h3><div class="key"><span><i style="background:var(--fm)"></i>motor</span><span><i style="background:var(--fg)"></i>general sensory</span><span><i style="background:var(--fs)"></i>special sensory</span><span><i style="background:var(--fp)"></i>parasympathetic</span><span><i style="background:var(--fy)"></i>sympathetic</span><span>· tap a nerve</span></div><div class="cols"></div>';
+world.appendChild(cnp);
+const COLW = [340, 300, 290, 330], ROW = 56;
+function cnColumn(list){
+  const col = document.createElement("div"); col.className = "cncol"; cnp.querySelector(".cols").appendChild(col);
+  let y = ROW/2, maxD = 0; const nodes = [];
+  function place(n, d){ maxD = Math.max(maxD, d); n.d = d;
+    if (n.c && n.c.length){ n.c.forEach(ch => place(ch, d + 1)); n.y = (n.c[0].y + n.c[n.c.length - 1].y)/2; }
+    else { n.y = y; y += ROW; }
+    nodes.push(n); }
+  list.forEach(n => { place(n, 0); y += 16; });
+  const xOf = d => COLW.slice(0, d).reduce((a, b) => a + b, 0);
+  nodes.forEach(n => {
+    const el = document.createElement(n.d === 0 ? "button" : "div");
+    el.className = "cn" + (n.d === 0 ? " nerve" : n.gang ? " gang" : (n.c ? " mid" : ""));
+    el.innerHTML = esc(n.t) + (n.note ? '<small>' + esc(n.note) + '</small>' : '');
+    el.style.left = xOf(n.d) + "px"; el.style.top = n.y + "px";
+    if (n.d === 0){ el.dataset.key = n.key; EL[n.key] = el;
+      if (n.chart){ el.dataset.chart = n.chart; el.dataset.col = n.col; el.dataset.name = n.t; el.dataset.sub = "on our chart"; }
+      else { el.dataset.cnmap = "1"; el.dataset.name = n.t; } }
+    col.appendChild(el); n.el = el;
+  });
+  col.style.width = (xOf(maxD) + COLW[maxD]) + "px"; col.style.height = y + "px";
+  col.cnNodes = nodes; return col;
+}
+const cnCols = [cnColumn(CN.colA), cnColumn(CN.colB)];
+function cnEdges(){
+  cnCols.forEach(col => {
+    let out = "";
+    col.cnNodes.forEach(n => (n.c || []).forEach(ch => {
+      const x1 = n.el.offsetLeft + n.el.offsetWidth + 4, y1 = n.y, x2 = ch.el.offsetLeft - 4, y2 = ch.y, mx = (x1 + x2)/2;
+      out += '<path d="M' + x1 + ',' + y1 + ' C' + mx + ',' + y1 + ' ' + mx + ',' + y2 + ' ' + x2 + ',' + y2 + '" style="stroke:' + KC[ch.k] + '"/>';
+    }));
+    let svgc = col.querySelector("svg"); if (!svgc){ svgc = document.createElementNS("http://www.w3.org/2000/svg", "svg"); col.prepend(svgc); }
+    svgc.setAttribute("width", col.offsetWidth); svgc.setAttribute("height", col.offsetHeight); svgc.innerHTML = out;
+  });
+}
+CN.links.forEach(l => MAP.edges.push({a:l[0], b:l[1], label:l[2], kind:"arrow"}));
+MAP.edges = MAP.edges.filter(e => e.a !== "hub-disorders");
+
+/* ---- layout: drawing positions, then push overlapping clusters apart ---- */
+function rel(el){ let x = 0, y = 0; while (el && el !== world){ x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; } return {x, y}; }
+function box(el){ const p = rel(el); return {x:p.x, y:p.y, w:el.offsetWidth, h:el.offsetHeight}; }
+function layout(){
+  cnEdges();
+  world.classList.add("far"); CL.forEach(c => { c.fw = c.el.offsetWidth; c.fh = c.el.offsetHeight; }); world.classList.remove("far");
+  CL.forEach(c => { c.w = Math.max(c.el.offsetWidth, c.fw); c.h = Math.max(c.el.offsetHeight, c.fh); c.x = PAD + c.t.pos[0]*SCALE - c.w/2; c.y = PAD + c.t.pos[1]*SCALE - 30; });
+  const cnc = {el:cnp, w:cnp.offsetWidth, h:cnp.offsetHeight, x:PAD + MAP.cnPos[0]*SCALE - cnp.offsetWidth/2, y:PAD + MAP.cnPos[1]*SCALE - 200, cn:true};
+  const hubs = MAP.hubs.map(h => ({el:h.el, w:h.el.offsetWidth, h:h.el.offsetHeight, x:PAD + h.pos[0]*SCALE - h.el.offsetWidth/2, y:PAD + h.pos[1]*SCALE - h.el.offsetHeight/2, hub:true}));
+  const all = CL.concat(hubs, [cnc]), G = 34;
+  // the big cranial nerve panel stays put; everything else is pushed off it and off each other
+  // greedy: place each box at its drawing position, or the nearest free spot around it
+  const placed = [];
+  const free = (b, x, y) => placed.every(p => x + b.w + G <= p.x || p.x + p.w + G <= x || y + b.h + G <= p.y || p.y + p.h + G <= y);
+  const order = [cnc].concat(hubs, CL.slice().sort((a, b) => (a.y - b.y) || (a.x - b.x)));
+  order.forEach(b => {
+    const x0 = b.x, y0 = b.y;
+    if (!free(b, x0, y0)){
+      let done = false;
+      for (let r = 30; r < 4000 && !done; r += 30){
+        for (let k = 0; k < 24 && !done; k++){
+          const a = k / 24 * Math.PI * 2, x = x0 + Math.cos(a) * r * 1.3, y = y0 + Math.sin(a) * r;
+          if (free(b, x, y)){ b.x = x; b.y = y; done = true; }
+        }
+      }
+    }
+    placed.push(b);
+  });
+  let minX = 1e9, minY = 1e9, maxX = 0, maxY = 0;
+  all.forEach(a => { minX = Math.min(minX, a.x); minY = Math.min(minY, a.y); maxX = Math.max(maxX, a.x + a.w); maxY = Math.max(maxY, a.y + a.h); });
+  const dx = PAD - minX, dy = PAD + 60 - minY;
+  CL.forEach(c => { c.x += dx; c.y += dy; c.el.style.left = c.x + "px"; c.el.style.top = c.y + "px"; });
+  cnc.x += dx; cnc.y += dy; cnp.style.left = cnc.x + "px"; cnp.style.top = cnc.y + "px";
+  hubs.forEach(h => { h.x += dx; h.y += dy; h.el.style.left = (h.x + h.w/2) + "px"; h.el.style.top = (h.y + h.h/2) + "px"; });
+  world.W = maxX - minX + 2*PAD; world.H = maxY - minY + 2*PAD + 60;
+  world.style.width = world.W + "px"; world.style.height = world.H + "px";
+  svg.setAttribute("width", world.W); svg.setAttribute("height", world.H);
+  bands();
+  draw();
+}
+function bands(){
+  world.querySelectorAll(".band,.zl").forEach(b => b.remove());
+  const by = z => CL.filter(c => c.zone === z);
+  const add = (cls, css, text) => { const d = document.createElement("div"); d.className = cls; Object.assign(d.style, css); if (text) d.textContent = text; world.insertBefore(d, svg); };
+  const dis = by("disorder").map(c => c.y + 18).sort((a, b) => a - b);
+  const gy = dis[Math.floor(dis.length/2)];
+  add("band grey", {left:PAD/2 + "px", top:gy + "px", width:(world.W - PAD) + "px"});
+  const low = by("local").concat(by("eye"));
+  const top = Math.min(...low.map(c => c.y)) - 70;
+  add("band black", {left:PAD/2 + "px", top:top + "px", width:(world.W - PAD) + "px"});
+  const lx = Math.max(...by("local").map(c => c.x + c.w)), ex = Math.min(...by("eye").map(c => c.x));
+  if (ex > lx) add("band vert", {left:((lx + ex)/2) + "px", top:top + "px", height:(world.H - top - PAD/2) + "px"});
+  add("zl", {left:PAD/2 + "px", top:(Math.min(...by("approach").map(c => c.y)) - 90) + "px"}, "Headaches · seizures · altered LOC");
+  add("zl", {left:PAD/2 + "px", top:(gy - 58) + "px"}, "");
+  add("zl", {left:PAD/2 + "px", top:(top + 16) + "px"}, "UMN vs LMN localization");
+  add("zl", {left:(ex > lx ? (lx + ex)/2 + 30 : world.W/2) + "px", top:(top + 16) + "px"}, "Eyes · ears · cerebellum · basal ganglia");
+}
+function anchor(key){
+  let el = EL[key]; if (!el) return null;
+  if (world.classList.contains("far") && el.classList.contains("chip")) el = EL[el.dataset.chart];
+  const b = el.classList.contains("hubnode") ? (() => { const r = box(el); return {x:r.x - r.w/2, y:r.y - r.h/2, w:r.w, h:r.h}; })() : box(el);
+  return b;
+}
+function edgePt(b, t){
+  const cx = b.x + b.w/2, cy = b.y + b.h/2, dx = t.x - cx, dy = t.y - cy;
+  if (!dx && !dy) return {x:cx, y:cy};
+  const s = Math.min(Math.abs((b.w/2 + 6)/(dx || 1e-9)), Math.abs((b.h/2 + 6)/(dy || 1e-9)));
+  return {x:cx + dx*s, y:cy + dy*s};
+}
+function draw(){
+  let out = '<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3b3f47"/></marker>' +
+            '<marker id="arOn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7a3fb0"/></marker></defs>';
+  // tree branches inside each topic: topic -> group label (or chips) with elbows
+  if (!world.classList.contains("far")) CL.forEach(c => {
+    const tb = box(c.el.querySelector(".topic")); const tx = tb.x + tb.w/2, ty = tb.y + tb.h;
+    c.el.querySelectorAll(".grp").forEach(g => {
+      const gb = box(g), trunkX = gb.x + 6;
+      const items = [...g.children];
+      const lastY = (() => { const lb = box(items[items.length - 1]); return lb.y + lb.h/2; })();
+      out += '<path class="tree" d="M' + tx + ',' + ty + ' C' + tx + ',' + (ty + 18) + ' ' + trunkX + ',' + (gb.y - 16) + ' ' + trunkX + ',' + gb.y + ' L' + trunkX + ',' + lastY + '"/>';
+      items.forEach(it => { const ib = box(it); const my = ib.y + ib.h/2; if (ib.x > trunkX + 2) out += '<path class="tree" d="M' + trunkX + ',' + my + ' L' + ib.x + ',' + my + '"/>'; });
+    });
+  });
+  MAP.edges.forEach((e, i) => {
+    const A = anchor(e.a), B = anchor(e.b); if (!A || !B) return;
+    const ca = {x:A.x + A.w/2, y:A.y + A.h/2}, cb = {x:B.x + B.w/2, y:B.y + B.h/2};
+    const p1 = edgePt(A, cb), p2 = edgePt(B, ca);
+    const mx = (p1.x + p2.x)/2, my = (p1.y + p2.y)/2, k = .18;
+    const qx = mx - (p2.y - p1.y)*k, qy = my + (p2.x - p1.x)*k;
+    const cls = "x" + (e.kind === "vs" ? " vs" : "") + (e.a.startsWith("hub-disorders") ? " hub" : "");
+    out += '<path class="' + cls + '" data-i="' + i + '" d="M' + p1.x + ',' + p1.y + ' Q' + qx + ',' + qy + ' ' + p2.x + ',' + p2.y + '"' + (e.kind === "vs" ? '' : ' marker-end="url(#ar)"') + '/>';
+    if (e.label){ const lx = .25*p1.x + .5*qx + .25*p2.x, ly = .25*p1.y + .5*qy + .25*p2.y;
+      out += '<text class="lab' + (e.kind === "vs" ? " vs" : "") + '" data-i="' + i + '" x="' + lx + '" y="' + ly + '" text-anchor="middle">' + esc(e.kind === "vs" ? "VS" : e.label) + '</text>'; }
+  });
+  svg.innerHTML = out;
+  if (litKey) light(litKey);
+}
+
+/* ---- follow the arrows ---- */
+let litKey = null;
+function keysOf(el){
+  if (el.classList.contains("nerve")) return [el.dataset.key];
+  if (el.classList.contains("chip")) return [el.dataset.key, el.dataset.chart];
+  if (el.classList.contains("topic")) { const ch = el.dataset.chart; return [ch].concat(Object.keys(EL).filter(k => k.startsWith(ch + "#"))); }
+  return [el.dataset.key];
+}
+function light(key){
+  litKey = key;
+  document.querySelectorAll(".lit").forEach(x => x.classList.remove("lit"));
+  svg.querySelectorAll(".on").forEach(x => { x.classList.remove("on"); if (x.tagName === "path" && !x.classList.contains("vs")) x.setAttribute("marker-end", "url(#ar)"); });
+  if (!key) return;
+  const el = EL[key]; const ks = new Set(keysOf(el));
+  MAP.edges.forEach((e, i) => {
+    if (!ks.has(e.a) && !ks.has(e.b)) return;
+    svg.querySelectorAll('[data-i="' + i + '"]').forEach(x => { x.classList.add("on"); if (x.tagName === "path" && !x.classList.contains("vs")) x.setAttribute("marker-end", "url(#arOn)"); });
+    [e.a, e.b].forEach(k => { const o = EL[k]; if (!o || ks.has(k)) return; (o.classList.contains("topic") ? o.parentElement : o).classList.add("lit"); });
+  });
+}
+world.addEventListener("mouseover", ev => { const t = ev.target.closest(".chip,.topic,.hubnode,.cn.nerve"); if (t && !sticky) light(t.dataset.key || t.dataset.chart); });
+world.addEventListener("mouseout", ev => { if (!sticky && ev.target.closest(".chip,.topic,.hubnode,.cn.nerve")) light(null); });
+let sticky = false;
+
+/* ---- open a chart ---- */
 const modal = document.getElementById("modal"), mf = document.getElementById("mf");
+let lastBtn = null;
 function openChart(b){
   const url = BASE + b.dataset.chart + "/" + (b.dataset.col ? "#col=" + b.dataset.col : "");
   document.getElementById("mt").innerHTML = esc(b.dataset.name) + (b.dataset.sub ? '<span>' + esc(b.dataset.sub) + '</span>' : '');
   document.getElementById("ml").href = url;
   mf.src = BASE + b.dataset.chart + "/?embed=1" + (b.dataset.col ? "#col=" + b.dataset.col : "");
-  modal.hidden = false; document.getElementById("mx").focus();
-  if (b.dataset.col){ const k = b.dataset.chart + "#" + b.dataset.col; seen[k] = 1; b.classList.add("seen"); try { localStorage.setItem("ncm-seen", JSON.stringify(seen)); } catch(e) {} }
-  lastBtn = b;
+  modal.hidden = false; document.getElementById("mx").focus(); lastBtn = b;
+  if (b.dataset.col){ seen[b.dataset.key] = 1; b.classList.add("seen"); try { localStorage.setItem("ncm-seen", JSON.stringify(seen)); } catch(e) {} }
 }
-let lastBtn = null;
-function closeChart(){ modal.hidden = true; mf.src = "about:blank"; lastBtn && lastBtn.focus(); }
-document.getElementById("map").addEventListener("click", ev => { const b = ev.target.closest("button[data-chart]"); if (b) openChart(b); });
+function openUrl(src, href, name, sub){
+  document.getElementById("mt").innerHTML = esc(name) + '<span>' + esc(sub) + '</span>';
+  document.getElementById("ml").href = href; mf.src = src; modal.hidden = false; document.getElementById("mx").focus();
+}
+function closeChart(){ modal.hidden = true; mf.src = "about:blank"; lastBtn && lastBtn.focus({preventScroll:true}); }
+world.addEventListener("click", ev => {
+  if (moved) return;
+  const b = ev.target.closest("button[data-chart]");
+  if (b){ light(b.dataset.key || b.dataset.chart); openChart(b); return; }
+  const nv = ev.target.closest(".cn.nerve[data-cnmap]");
+  if (nv){ light(nv.dataset.key); openUrl("../anatomy-tables/?embed=1#cn-map", "../anatomy-tables/#cn-map", nv.dataset.name, "the cranial nerve map"); return; }
+  const h = ev.target.closest(".hubnode");
+  if (h){ sticky = litKey !== h.dataset.key; light(sticky ? h.dataset.key : null); return; }
+  sticky = false; light(null);
+});
+world.addEventListener("focusin", ev => { const t = ev.target.closest(".chip,.topic"); if (t) light(t.dataset.key || t.dataset.chart); });
 document.getElementById("mx").onclick = closeChart;
 modal.addEventListener("click", ev => { if (ev.target === modal) closeChart(); });
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !modal.hidden) closeChart(); });
 
+/* ---- pan and zoom ---- */
+let S = .3, TX = 0, TY = 0, moved = false, wasFar = null;
+function apply(){
+  world.style.transform = "translate(" + TX + "px," + TY + "px) scale(" + S + ")";
+  const far = S < .36; world.classList.toggle("far", far);
+  if (far !== wasFar){ wasFar = far; if (world.W) draw(); }
+}
+function zoomAt(f, px, py){ const ns = Math.min(2.2, Math.max(.08, S*f)); TX = px - (px - TX)*ns/S; TY = py - (py - TY)*ns/S; S = ns; apply(); }
+function fit(){ const r = view.getBoundingClientRect(); S = Math.min(r.width/world.W, r.height/world.H)*.98; TX = (r.width - world.W*S)/2; TY = (r.height - world.H*S)/2; apply(); }
+view.addEventListener("wheel", e => { e.preventDefault(); const r = view.getBoundingClientRect(); zoomAt(Math.exp(-e.deltaY*(e.ctrlKey ? .01 : .0015)), e.clientX - r.left, e.clientY - r.top); }, {passive:false});
+const ptrs = new Map(); let last = null, pinch = null;
+view.addEventListener("pointerdown", e => { ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY}); moved = false; if (ptrs.size === 1) last = {x:e.clientX, y:e.clientY};
+  if (ptrs.size === 2){ const [a, b] = [...ptrs.values()]; pinch = {d:Math.hypot(a.x - b.x, a.y - b.y)}; } });
+view.addEventListener("pointermove", e => {
+  if (!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (ptrs.size === 2 && pinch){ const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), r = view.getBoundingClientRect();
+    zoomAt(d/pinch.d, (a.x + b.x)/2 - r.left, (a.y + b.y)/2 - r.top); pinch.d = d; moved = true; return; }
+  if (last){ const dx = e.clientX - last.x, dy = e.clientY - last.y;
+    if (Math.abs(dx) + Math.abs(dy) > 4){ moved = true; view.classList.add("drag"); if (!view.hasPointerCapture(e.pointerId)) view.setPointerCapture(e.pointerId); }
+    if (moved){ TX += dx; TY += dy; apply(); last = {x:e.clientX, y:e.clientY}; } }
+});
+const up = e => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null; if (!ptrs.size){ last = null; view.classList.remove("drag"); setTimeout(() => moved = false, 0); } };
+view.addEventListener("pointerup", up); view.addEventListener("pointercancel", up);
+document.getElementById("zin").onclick = () => { const r = view.getBoundingClientRect(); zoomAt(1.3, r.width/2, r.height/2); };
+document.getElementById("zout").onclick = () => { const r = view.getBoundingClientRect(); zoomAt(1/1.3, r.width/2, r.height/2); };
+document.getElementById("fit").onclick = fit;
+function flyTo(el){
+  const b = box(el.classList.contains("chip") ? el.closest(".cl") : el.parentElement), r = view.getBoundingClientRect();
+  S = Math.max(.75, Math.min(1, r.height/(b.h + 160))); TX = r.width/2 - (b.x + b.w/2)*S; TY = r.height/2 - (b.y + b.h/2)*S; apply();
+}
+
+/* ---- search ---- */
 const q = document.getElementById("q");
 q.addEventListener("input", () => {
   const t = q.value.trim().toLowerCase();
-  document.querySelectorAll(".card").forEach(c => {
-    if (!t){ c.classList.remove("dim"); c.querySelectorAll(".chip").forEach(x => x.classList.remove("dim", "hit")); return; }
-    const topicHit = c.querySelector(".topic").textContent.toLowerCase().includes(t);
-    let any = topicHit;
-    c.querySelectorAll(".chip").forEach(x => { const h = x.textContent.toLowerCase().includes(t); x.classList.toggle("hit", h); x.classList.toggle("dim", !h && !topicHit); any = any || h; });
-    c.classList.toggle("dim", !any);
-  });
+  document.querySelectorAll(".hit").forEach(x => x.classList.remove("hit"));
+  if (t.length < 2) return;
+  const hits = [...document.querySelectorAll(".chip,.topic,.cn.nerve")].filter(x => x.textContent.toLowerCase().includes(t));
+  hits.forEach(x => x.classList.add("hit"));
 });
+q.addEventListener("keydown", e => {
+  if (e.key === "Escape"){ q.value = ""; q.dispatchEvent(new Event("input")); }
+  if (e.key === "Enter"){ const h = document.querySelector(".chip.hit,.topic.hit,.cn.nerve.hit"); if (h){ flyTo(h); light(h.dataset.key || h.dataset.chart); } }
+});
+
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { layout(); fit(); });
+addEventListener("resize", () => fit());
 </script>
 </body>
 </html>
