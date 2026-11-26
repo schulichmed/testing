@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Neuro Concept Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Patrick+Hand&family=Inter:wght@400;600;700&display=swap">
+<style>
+/* Layout: the hand-drawn map itself fills the screen; every heading on it is a hotspot; a side panel reads the box and opens its portal chart */
+:root{
+  --paper:#ffffff; --ink:#1d1d1f; --soft:#5a5e66; --bar:#f4f3ef; --line:#dcdad3;
+  --hit:#ffe14d; --sel:#1d1d1f; --star:#e2a500; --accent:#7a3fb0; --known:#2f7d5b;
+  --hand:"Patrick Hand","Comic Sans MS","Segoe Print",cursive;
+  --marker:"Gaegu","Patrick Hand","Comic Sans MS",cursive;
+  --ui:Inter,"Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--bar);border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));
+  padding-top:calc(10px + env(safe-area-inset-top));display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+h1{font-family:var(--marker);font-weight:700;font-size:1.75rem;margin:0;line-height:1;text-transform:uppercase;white-space:nowrap}
+h1 small{font-family:var(--hand);font-weight:400;text-transform:none;color:var(--soft);font-size:1rem;margin-left:6px}
+.search{flex:1 1 220px;min-width:0;position:relative}
+.search input{width:100%;box-sizing:border-box;font:inherit;font-size:.9rem;padding:7px 10px;border:1.5px solid var(--ink);border-radius:8px;background:var(--paper);color:var(--ink)}
+.search input:focus-visible{outline:3px solid var(--hit)}
+.results{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;max-height:55vh;overflow:auto;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.results button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--ink);font:inherit;font-size:.85rem;padding:7px 10px;cursor:pointer}
+.results button:hover,.results button:focus-visible{background:var(--bar);outline:none}
+.tools{display:flex;flex-wrap:wrap;gap:6px}
+.tool{font:inherit;font-size:.8rem;font-weight:600;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer}
+.tool[aria-pressed="true"]{background:var(--hit)}
+.tool:focus-visible{outline:3px solid var(--hit);outline-offset:2px}
+main{flex:1;min-height:0;display:flex;position:relative}
+#osd{flex:1;min-width:0;background:var(--paper)}
+.hs{box-sizing:border-box;border-radius:14px;cursor:pointer;border:2px solid transparent;transition:background .15s,border-color .15s}
+.hs:hover{border-color:var(--ink);background:rgba(255,225,77,.18)}
+body.show .hs{border-color:rgba(122,63,176,.55)}
+body.show .hs.linked{border-color:rgba(122,63,176,.9);border-style:solid}
+.hs.hit{background:rgba(255,225,77,.5);border-color:#c79a00}
+.hs.sel{border:4px solid var(--sel);background:rgba(255,225,77,.25)}
+.hs.dim{pointer-events:none;opacity:0}
+body.starmode .hs.star{background:rgba(255,190,0,.38);border-color:#c79a00}
+#panel{width:min(430px,100%);flex:0 0 auto;background:var(--bar);border-left:1px solid var(--line);overflow:auto;box-sizing:border-box;
+  padding:16px max(18px,env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) 18px}
+#panel h2{font-family:var(--marker);font-weight:700;font-size:1.95rem;line-height:1;margin:0 0 4px;text-transform:uppercase;text-wrap:balance}
+#panel .meta{font-size:.72rem;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin:6px 0 12px}
+#panel .body{font-family:var(--hand);font-size:1.15rem;line-height:1.35}
+#panel .body ul{padding-left:18px;margin:4px 0}
+#panel .body li{margin:2px 0}
+#panel .body b{font-weight:400;text-decoration:underline;text-underline-offset:2px}
+#panel h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin:16px 0 6px}
+.chartbtn{display:flex;justify-content:space-between;gap:8px;align-items:center;width:100%;box-sizing:border-box;text-align:left;font:inherit;font-size:.9rem;font-weight:600;
+  border:2px solid var(--accent);background:#f3ecfa;color:var(--ink);border-radius:10px;padding:8px 10px;margin-bottom:6px;cursor:pointer}
+.chartbtn span{font-weight:400;color:var(--soft);font-size:.78rem}
+.linkbtn{display:block;width:100%;box-sizing:border-box;text-align:left;font:inherit;font-size:.85rem;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:8px;padding:6px 9px;margin-bottom:6px;cursor:pointer}
+.linkbtn span{color:var(--soft);font-size:.78rem}
+.chartbtn:focus-visible,.linkbtn:focus-visible{outline:3px solid var(--hit)}
+.close{float:right;font:inherit;font-size:1.3rem;border:0;background:none;color:var(--soft);cursor:pointer}
+.empty{font-family:var(--hand);font-size:1.15rem;line-height:1.4}
+.empty b{font-weight:400;text-decoration:underline}
+.legend{font-size:1rem;color:var(--soft);margin-top:12px}
+.clist{margin-top:6px}
+.clist .wk{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin:14px 0 6px}
+#modal{position:fixed;inset:0;background:rgba(20,20,24,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+#modal[hidden]{display:none}
+#modal .box{background:var(--paper);border-radius:14px;width:min(1200px,100%);height:min(88vh,100%);display:flex;flex-direction:column;overflow:hidden}
+#modal .mh{display:flex;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+#modal .mh b{font-family:var(--marker);font-size:1.5rem;text-transform:uppercase;flex:1}
+#modal .mh a{font-size:.85rem;color:var(--accent)}
+#modal iframe{flex:1;border:0;width:100%}
+@media (max-width:760px){
+  main{flex-direction:column}
+  #panel{width:100%;max-height:46vh;border-left:0;border-top:1px solid var(--line)}
+  #panel.closed{display:none}
+}
+@media (prefers-reduced-motion:reduce){.hs{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Neuro concept map<small>PoM 2 Block 4, the whole block on one page</small></h1>
+  <div class="search"><input id="q" type="search" placeholder="Search the map: a sign, drug, test or condition" autocomplete="off" aria-label="Search the map"><div class="results" id="res" hidden></div></div>
+  <div class="tools">
+    <button class="tool" id="charts">Charts</button>
+    <button class="tool" id="show" aria-pressed="false" title="Outline every clickable heading">Show boxes</button>
+    <button class="tool" id="star" aria-pressed="false" title="Highlight exam hints">⭐ hints</button>
+    <button class="tool" id="fit">Whole map</button>
+  </div>
+</header>
+<main>
+  <div id="osd" aria-label="The Block 4 concept map; pinch or scroll to zoom, drag to move"></div>
+  <aside id="panel" aria-live="polite"></aside>
+</main>
+<div id="modal" hidden><div class="box"><div class="mh"><b id="mt"></b><a id="ml" target="_blank" rel="noopener">Open in a new tab</a><button class="tool" id="mx">Close</button></div><iframe id="mf" title="Overview chart"></iframe></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+<script>
+const panel = document.getElementById("panel");
+const firstHash = location.hash.slice(1);
+let N = [], byId = {}, sel = null, viewer, imgW = 1;
+let known = {};
+try { known = JSON.parse(localStorage.getItem("ncm-known") || "{}"); } catch(e) {}
+const saveKnown = () => { try { localStorage.setItem("ncm-known", JSON.stringify(known)); } catch(e) {} };
+const plain = s => s.replace(/<[^>]+>/g, " ").replace(/📍/g, "").replace(/\s+/g, " ").trim();
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ZN = {approach:"Headaches · seizures · altered LOC", disorder:"Neurological disorders", local:"UMN vs LMN localization", eye:"Eyes · cranial nerves · cerebellum · basal ganglia"};
+
+fetch("nodes.json").then(r => r.json()).then(d => { N = d.nodes; N.forEach(n => byId[n.id] = n); start(); })
+  .catch(() => { panel.innerHTML = '<div class="empty">The map\'s data did not load. Reload the page to try again.</div>'; });
+
+function start(){
+  viewer = OpenSeadragon({
+    id: "osd", tileSources: "map.dzi", prefixUrl: "", showNavigationControl: false,
+    gestureSettingsMouse: {clickToZoom: false, dblClickToZoom: true}, gestureSettingsTouch: {clickToZoom: false},
+    maxZoomPixelRatio: 2.2, visibilityRatio: .6, animationTime: .7, springStiffness: 8, showNavigator: true,
+    navigatorPosition: "BOTTOM_LEFT", navigatorSizeRatio: .16
+  });
+  viewer.addHandler("open", () => {
+    imgW = viewer.world.getItemAt(0).getContentSize().x;
+    N.forEach(n => {
+      const el = document.createElement("div");
+      el.className = "hs" + (n.star ? " star" : "") + (n.charts && n.charts.length ? " linked" : "");
+      el.title = plain(n.title); el.tabIndex = 0; el.setAttribute("role", "button"); el.setAttribute("aria-label", plain(n.title));
+      const [x, y, w, h] = n.rect, pad = 10;
+      viewer.addOverlay({element: el, location: viewer.viewport.imageToViewportRectangle(x - pad, y - pad, w + 2*pad, h + 2*pad)});
+      new OpenSeadragon.MouseTracker({element: el, clickHandler: e => { if (e.quick) open(n.id); }});
+      el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(n.id, true); } });
+      n.el = el;
+    });
+    if (byId[firstHash]) open(firstHash, true);
+  });
+  intro();
+}
+function fly(n){
+  const [x, y, w, h] = n.rect;
+  const r = viewer.viewport.imageToViewportRectangle(x - 500, y - 250, w + 1000, h + 900);
+  viewer.viewport.fitBounds(r);
+}
+function open(id, go){
+  const n = byId[id]; if (!n) return;
+  if (sel && sel.el) sel.el.classList.remove("sel");
+  sel = n; n.el && n.el.classList.add("sel");
+  const charts = (n.charts || []).map(c => '<button class="chartbtn" data-url="' + c.url + '" data-name="' + esc(c.name) + '">Open the ' + esc(c.name) + ' chart<span>' + (c.col ? "this diagnosis lit" : "whole chart") + ' ›</span></button>').join("");
+  const out = (n.links || []).filter(l => byId[l.to]).map(l => '<button class="linkbtn" data-id="' + l.to + '">→ ' + plain(byId[l.to].title) + (l.label ? ' <span>' + esc(l.label) + '</span>' : '') + '</button>');
+  const inc = N.filter(m => (m.links || []).some(l => l.to === id)).map(m => '<button class="linkbtn" data-id="' + m.id + '">← ' + plain(m.title) + '</button>');
+  panel.className = "";
+  panel.innerHTML = '<button class="close" aria-label="Close">×</button><h2>' + plain(n.title) + (n.star ? ' <span style="color:var(--star)">⭐</span>' : '') + '</h2>' +
+    '<div class="meta">' + ZN[n.zone] + '</div>' +
+    (charts ? '<h3>In the portal</h3>' + charts : '') +
+    '<h3>On the map</h3><div class="body">' + (n.body || "") + '</div>' +
+    (out.length || inc.length ? '<h3>Connected boxes</h3>' + out.join("") + inc.join("") : '') +
+    '<p><button class="tool" id="kn" aria-pressed="' + !!known[id] + '">' + (known[id] ? "✓ Known" : "Mark as known") + '</button></p>';
+  wire();
+  panel.querySelector("#kn").onclick = () => { known[id] = !known[id]; if (!known[id]) delete known[id]; saveKnown(); open(id); };
+  if (go) fly(n);
+  history.replaceState(null, "", "#" + id);
+}
+function wire(){
+  panel.scrollTop = 0;
+  panel.querySelector(".close") && (panel.querySelector(".close").onclick = intro);
+  panel.querySelectorAll(".linkbtn[data-id]").forEach(b => b.onclick = () => open(b.dataset.id, true));
+  panel.querySelectorAll(".chartbtn").forEach(b => b.onclick = () => chart(b.dataset.url, b.dataset.name));
+}
+function intro(){
+  if (sel && sel.el) sel.el.classList.remove("sel"); sel = null;
+  history.replaceState(null, "", location.pathname + location.search);
+  const linked = N.filter(n => n.charts && n.charts.length).length;
+  panel.className = matchMedia("(max-width:760px)").matches ? "closed" : "";
+  panel.innerHTML = '<div class="empty">The whole Block 4 concept map. <b>Tap any heading</b> to read that box and open the portal chart that teaches it (' + linked + ' of ' + N.length + ' boxes link to one of ' + chartList().length + ' charts). ' +
+    'Pinch or scroll to zoom, drag to move.<div class="legend">Charts lists every chart and shows where it sits on the map · Show boxes outlines what you can tap · ⭐ hints lights the exam hints.</div></div>';
+}
+function chartList(){
+  const m = {};
+  N.forEach(n => (n.charts || []).forEach(c => { (m[c.chart] = m[c.chart] || {id:c.chart, name:c.name, nodes:[]}).nodes.push(n); }));
+  return Object.values(m).sort((a, b) => a.id.localeCompare(b.id));
+}
+function showCharts(){
+  if (sel && sel.el) sel.el.classList.remove("sel"); sel = null;
+  let wk = "", html = '<button class="close" aria-label="Close">×</button><h2>Every chart on the map</h2><div class="meta">Tap a chart to light its boxes on the map</div><div class="clist">';
+  chartList().forEach(c => {
+    const w = c.id.match(/w(\d+)/)[1];
+    if (w !== wk){ wk = w; html += '<div class="wk">Week ' + w + '</div>'; }
+    html += '<button class="linkbtn" data-chart="' + c.id + '">' + esc(c.name) + ' <span>· ' + c.nodes.length + ' box' + (c.nodes.length > 1 ? "es" : "") + '</span></button>';
+  });
+  panel.className = ""; panel.innerHTML = html + '</div>';
+  wire();
+  panel.querySelectorAll("[data-chart]").forEach(b => b.onclick = () => lightChart(b.dataset.chart));
+}
+function lightChart(cid){
+  const c = chartList().find(x => x.id === cid); if (!c) return;
+  const ids = new Set(c.nodes.map(n => n.id));
+  N.forEach(n => n.el && n.el.classList.toggle("hit", ids.has(n.id)));
+  let x0 = 1e9, y0 = 1e9, x1 = 0, y1 = 0;
+  c.nodes.forEach(n => { const [x, y, w, h] = n.rect; x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x + w); y1 = Math.max(y1, y + h + 300); });
+  viewer.viewport.fitBounds(viewer.viewport.imageToViewportRectangle(x0 - 300, y0 - 300, x1 - x0 + 600, y1 - y0 + 600));
+  const base = "https://schulichmed.github.io/preclerkship/pom2/charts/" + cid + "/";
+  panel.innerHTML = '<button class="close" aria-label="Close">×</button><h2>' + esc(c.name) + '</h2><div class="meta">' + c.nodes.length + ' boxes lit on the map</div>' +
+    '<button class="chartbtn" data-url="' + base + '" data-name="' + esc(c.name) + '">Open the chart<span>›</span></button><h3>Boxes on the map</h3>' +
+    c.nodes.map(n => '<button class="linkbtn" data-id="' + n.id + '">' + plain(n.title) + '</button>').join("") +
+    '<p><button class="tool" id="back">All charts</button></p>';
+  wire(); panel.querySelector("#back").onclick = () => { N.forEach(n => n.el && n.el.classList.remove("hit")); showCharts(); };
+}
+function chart(url, name){
+  const m = document.getElementById("modal");
+  document.getElementById("mt").textContent = name;
+  document.getElementById("ml").href = url;
+  const u = url.includes("#") ? url.replace("#", "?embed=1#") : url + "?embed=1";
+  document.getElementById("mf").src = u;
+  m.hidden = false; document.getElementById("mx").focus();
+}
+document.getElementById("mx").onclick = () => { document.getElementById("modal").hidden = true; document.getElementById("mf").src = "about:blank"; };
+document.getElementById("modal").addEventListener("click", e => { if (e.target.id === "modal") document.getElementById("mx").click(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !document.getElementById("modal").hidden) document.getElementById("mx").click(); });
+document.getElementById("charts").onclick = showCharts;
+document.getElementById("fit").onclick = () => viewer.viewport.goHome();
+document.getElementById("show").onclick = e => { const on = document.body.classList.toggle("show"); e.currentTarget.setAttribute("aria-pressed", on); };
+document.getElementById("star").onclick = e => { const on = document.body.classList.toggle("starmode"); e.currentTarget.setAttribute("aria-pressed", on); };
+
+/* search */
+const q = document.getElementById("q"), res = document.getElementById("res");
+q.addEventListener("input", () => {
+  const t = q.value.trim().toLowerCase();
+  N.forEach(n => n.text = n.text || plain(n.title + " " + (n.body || "")).toLowerCase());
+  if (t.length < 2){ res.hidden = true; N.forEach(n => n.el && n.el.classList.remove("hit")); return; }
+  const terms = t.split(/\s+/), list = N.filter(n => terms.every(w => n.text.includes(w)));
+  const ids = new Set(list.map(n => n.id));
+  N.forEach(n => n.el && n.el.classList.toggle("hit", ids.has(n.id)));
+  list.sort((a, b) => plain(b.title).toLowerCase().includes(t) - plain(a.title).toLowerCase().includes(t));
+  res.innerHTML = list.length ? list.slice(0, 30).map(n => '<button data-id="' + n.id + '">' + plain(n.title) + '</button>').join("") : '<button disabled>No box mentions “' + esc(q.value) + '”</button>';
+  res.hidden = false;
+});
+res.addEventListener("click", e => { const b = e.target.closest("button[data-id]"); if (b){ res.hidden = true; open(b.dataset.id, true); } });
+q.addEventListener("keydown", e => { if (e.key === "Escape"){ q.value = ""; q.dispatchEvent(new Event("input")); }
+  if (e.key === "Enter"){ const b = res.querySelector("button[data-id]"); if (b){ res.hidden = true; open(b.dataset.id, true); } } });
+window.addEventListener("hashchange", () => { const id = location.hash.slice(1); if (byId[id]) open(id, true); });
+</script>
+</body>
+</html>
