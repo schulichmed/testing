@@ -35,6 +35,8 @@ h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)
 .fn{display:block;color:var(--red);font-weight:600;font-size:14px;margin-bottom:4px}
 .cross{font-size:14px;margin:0 0 12px}
 .cross b{color:var(--red)}
+.les{font-size:14px;margin:-4px 0 12px;padding:6px 10px;border-left:3px solid var(--amb);background:var(--ambbg);border-radius:0 6px 6px 0}
+.les b{color:var(--amb)}
 .hint{font-size:13px;color:var(--mut);margin:0 0 10px}
 ol.steps{list-style:none;padding:0;margin:0 0 12px}
 ol.steps li{display:flex;gap:9px;padding:7px 9px;border-radius:8px;font-size:14px;margin-bottom:4px;opacity:.5;transition:opacity .4s,background .4s}
@@ -63,21 +65,21 @@ button{font:inherit;font-size:13px;padding:6px 12px;border-radius:7px;border:1px
 <script>
 const SENS=["#e24b4a","#1f5fd0","#3f9a1c"],MOT=["#e24b4a","#1f8fd0"];
 const S={
- sct:{grp:"Ascending",h:"Dorsal (posterior) spinocerebellar tract",key:"SC = Same-side Coordination",fn:"Subconscious proprioception",cross:"<b>Never crosses</b>: stays on the same side and enters the cerebellum through the inferior cerebellar peduncle",col:SENS,lab:["1st order","2nd order"],steps:[
+ sct:{les:"Cord lesion: <b>IPSILATERAL</b> loss of coordination, because it never crosses (the anterior tract crosses twice, so it ends up on the same side too)",grp:"Ascending",h:"Dorsal (posterior) spinocerebellar tract",key:"SC = Same-side Coordination",fn:"Subconscious proprioception",cross:"<b>Never crosses</b>: stays on the same side and enters the cerebellum through the inferior cerebellar peduncle",col:SENS,lab:["1st order","2nd order"],steps:[
   "Muscle spindle → dorsal root ganglion → synapses in the dorsal horn (Clarke's nucleus)",
   "Up the SAME side of the cord (lateral funiculus) → inferior cerebellar peduncle → cerebellum. No thalamus, no cortex: you never feel it"]},
- stt:{grp:"Ascending",h:"Lateral spinothalamic tract",key:"S = Suffering (pain)",fn:"Pain and temperature",cross:"<b>Crosses at once</b>, at the level it enters, in the anterior white commissure",col:SENS,lab:["1st order","2nd order","3rd order"],steps:[
+ stt:{les:"Cord lesion: <b>CONTRALATERAL</b> loss of pain and temperature, starting 1 to 2 levels below, because it has already crossed",grp:"Ascending",h:"Lateral spinothalamic tract",key:"S = Suffering (pain)",fn:"Pain and temperature",cross:"<b>Crosses at once</b>, at the level it enters, in the anterior white commissure",col:SENS,lab:["1st order","2nd order","3rd order"],steps:[
   "Pain or temperature receptor → dorsal root ganglion → synapses straight away in the dorsal (posterior) horn",
   "CROSSES in the anterior white commissure → up the opposite anterolateral cord and brainstem → VPL of the thalamus",
   "VPL → internal capsule → primary somatosensory cortex (postcentral gyrus)"]},
- dcml:{grp:"Ascending",h:"Dorsal (posterior) column / medial lemniscus",key:"D = Detailed sensation",fn:"Fine touch, vibration, pressure, conscious proprioception",cross:"<b>Crosses in the medulla</b> (internal arcuate fibres), then rises as the medial lemniscus",col:SENS,lab:["1st order","2nd order","3rd order"],steps:[
+ dcml:{les:"Cord lesion: <b>IPSILATERAL</b> loss of fine touch, vibration and proprioception, because it only crosses higher up, in the medulla",grp:"Ascending",h:"Dorsal (posterior) column / medial lemniscus",key:"D = Detailed sensation",fn:"Fine touch, vibration, pressure, conscious proprioception",cross:"<b>Crosses in the medulla</b> (internal arcuate fibres), then rises as the medial lemniscus",col:SENS,lab:["1st order","2nd order","3rd order"],steps:[
   "Receptor → dorsal root ganglion → up the SAME side in the dorsal column (gracilis from the legs, cuneatus from the arms) → nucleus gracilis / cuneatus in the medulla",
   "CROSSES in the medulla (internal arcuate fibres) → medial lemniscus → VPL of the thalamus",
   "VPL → posterior limb of the internal capsule → primary somatosensory cortex (postcentral gyrus)"]},
- cbt:{grp:"Descending",h:"Corticobulbar tract",key:"B = Both sides",fn:"Movement of the face and head muscles",cross:"<b>Bilateral</b>: each cortex reaches the cranial nerve motor nuclei on both sides",col:MOT,lab:["UMN","LMN"],steps:[
+ cbt:{les:"Not in the cord. A one-sided lesion above the brainstem: most of the face is spared because both sides supply it, but the <b>CONTRALATERAL</b> lower face is weak",grp:"Descending",h:"Corticobulbar tract",key:"B = Both sides",fn:"Movement of the face and head muscles",cross:"<b>Bilateral</b>: each cortex reaches the cranial nerve motor nuclei on both sides",col:MOT,lab:["UMN","LMN"],steps:[
   "Face area of the precentral gyrus → internal capsule → brainstem → cranial nerve motor nuclei on BOTH sides (trigeminal, facial, hypoglossal, nucleus ambiguus)",
   "Cranial nerve motor nucleus → cranial nerve (V, VII, IX, X, XII) → muscles of the face and head"]},
- lcst:{grp:"Descending",h:"Lateral corticospinal tract",key:"C = Commands muscles",fn:"Skilled voluntary movement of the limbs",cross:"<b>Crosses at the pyramids</b> (decussation at the medulla / spinal cord junction)",col:MOT,lab:["UMN","LMN"],steps:[
+ lcst:{les:"Cord lesion: <b>IPSILATERAL</b> weakness below the lesion, because it already crossed above the cord, at the pyramids",grp:"Descending",h:"Lateral corticospinal tract",key:"C = Commands muscles",fn:"Skilled voluntary movement of the limbs",cross:"<b>Crosses at the pyramids</b> (decussation at the medulla / spinal cord junction)",col:MOT,lab:["UMN","LMN"],steps:[
   "Primary motor cortex → internal capsule → cerebral peduncle → pyramids → CROSSES at the pyramidal decussation → down the opposite lateral funiculus",
   "Somatic motor neuron in the ventral (anterior) horn → ventral root → skeletal muscle of the limb"]}};
 const XS={grac:["dcml","Gracile fasciculus: legs, below T6"],cun:["dcml","Cuneate fasciculus: arms, above T6"],lstt:["stt",""],psct:["sct",""],lcst:["lcst",""]};
@@ -86,7 +88,7 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const SPEED=0.30; /* figure pixels of path per millisecond: one steady speed for every tract */
 
 function figHTML(id){const f=FIGS[TR[id].fig];return `<img src="${TR[id].base}" width="${f.w}" height="${f.h}" alt="Lecture figure of the ${S[id].h} pathway"><canvas width="${f.w}" height="${f.h}"></canvas><canvas width="${f.w}" height="${f.h}"></canvas>`}
-function sideHTML(id,extra){const s=S[id];const up=s.grp==="Ascending";return `<span class="dir ${up?"up":"down"}">${up?"↑ ASCENDING · sensory, body to brain":"↓ DESCENDING · motor, brain to muscle"}</span><h3>${s.h}</h3>${extra?`<p class="hint">${extra}</p>`:""}<span class="key">${s.key}</span><span class="fn">${s.fn}</span><p class="cross">${s.cross}</p>
+function sideHTML(id,extra){const s=S[id];const up=s.grp==="Ascending";return `<span class="dir ${up?"up":"down"}">${up?"↑ ASCENDING · sensory, body to brain":"↓ DESCENDING · motor, brain to muscle"}</span><h3>${s.h}</h3>${extra?`<p class="hint">${extra}</p>`:""}<span class="key">${s.key}</span><span class="fn">${s.fn}</span><p class="cross">${s.cross}</p><p class="les">${s.les}</p>
  <ol class="steps">${s.steps.map((t,i)=>`<li><i style="background:${s.col[i]}"></i><span><b>${s.lab[i]}:</b> ${t}</span></li>`).join("")}</ol><button>Replay</button>`}
 function player(id,figEl,sideEl){
  const c=figEl.querySelectorAll("canvas");
