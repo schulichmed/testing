@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Hematology Concept Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Patrick+Hand&family=Inter:wght@400;600;700&display=swap">
+<style>
+/* Layout: the hand-drawn map itself fills the screen; every heading on it is a hotspot; a side panel reads the box and opens its portal chart */
+:root{
+  --paper:#ffffff; --ink:#1d1d1f; --soft:#5a5e66; --bar:#f4f3ef; --line:#dcdad3;
+  --hit:#ffe14d; --sel:#1d1d1f; --star:#e2a500; --accent:#7a3fb0; --known:#2f7d5b;
+  --hand:"Patrick Hand","Comic Sans MS","Segoe Print",cursive;
+  --marker:"Gaegu","Patrick Hand","Comic Sans MS",cursive;
+  --ui:Inter,"Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--bar);border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));
+  padding-top:calc(10px + env(safe-area-inset-top));display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+h1{font-family:var(--marker);font-weight:700;font-size:1.75rem;margin:0;line-height:1;text-transform:uppercase;white-space:nowrap}
+h1 small{font-family:var(--hand);font-weight:400;text-transform:none;color:var(--soft);font-size:1rem;margin-left:6px}
+.search{flex:1 1 220px;min-width:0;position:relative}
+.search input{width:100%;box-sizing:border-box;font:inherit;font-size:.9rem;padding:7px 10px;border:1.5px solid var(--ink);border-radius:8px;background:var(--paper);color:var(--ink)}
+.search input:focus-visible{outline:3px solid var(--hit)}
+.results{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;max-height:55vh;overflow:auto;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.results button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--ink);font:inherit;font-size:.85rem;padding:7px 10px;cursor:pointer}
+.results button:hover,.results button:focus-visible{background:var(--bar);outline:none}
+.tools{display:flex;flex-wrap:wrap;gap:6px}
+.tool{font:inherit;font-size:.8rem;font-weight:600;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer}
+.tool[aria-pressed="true"]{background:var(--hit)}
+.tool:focus-visible{outline:3px solid var(--hit);outline-offset:2px}
+main{flex:1;min-height:0;display:flex;position:relative}
+#osd{flex:1;min-width:0;background:var(--paper)}
+.hs{box-sizing:border-box;border-radius:14px;cursor:pointer;border:2px solid transparent;transition:background .15s,border-color .15s}
+.hs:hover{border-color:var(--ink);background:rgba(255,225,77,.18)}
+body.show .hs{border-color:rgba(122,63,176,.55)}
+body.show .hs.linked{border-color:rgba(122,63,176,.9);border-style:solid}
+.hs.hit{background:rgba(255,225,77,.5);border-color:#c79a00}
+.hs.sel{border:4px solid var(--sel);background:rgba(255,225,77,.25)}
+.hs.dim{pointer-events:none;opacity:0}
+body.starmode .hs.star{background:rgba(255,190,0,.38);border-color:#c79a00}
+#panel{width:min(430px,100%);flex:0 0 auto;background:var(--bar);border-left:1px solid var(--line);overflow:auto;box-sizing:border-box;
+  padding:16px max(18px,env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) 18px}
+#panel h2{font-family:var(--marker);font-weight:700;font-size:1.95rem;line-height:1;margin:0 0 4px;text-transform:uppercase;text-wrap:balance}
+#panel .meta{font-size:.72rem;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin:6px 0 12px}
+#panel .body{font-family:var(--hand);font-size:1.15rem;line-height:1.35}
+#panel .body ul{padding-left:18px;margin:4px 0}
+#panel .body li{margin:2px 0}
+#panel .body b{font-weight:400;text-decoration:underline;text-underline-offset:2px}
+#panel h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin:16px 0 6px}
+.chartbtn{display:flex;justify-content:space-between;gap:8px;align-items:center;width:100%;box-sizing:border-box;text-align:left;font:inherit;font-size:.9rem;font-weight:600;
+  border:2px solid var(--accent);background:#f3ecfa;color:var(--ink);border-radius:10px;padding:8px 10px;margin-bottom:6px;cursor:pointer}
+.notebtn{border-color:var(--known);background:#e9f4ee}
+.chartbtn span{font-weight:400;color:var(--soft);font-size:.78rem}
+.linkbtn{display:block;width:100%;box-sizing:border-box;text-align:left;font:inherit;font-size:.85rem;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:8px;padding:6px 9px;margin-bottom:6px;cursor:pointer}
+.linkbtn span{color:var(--soft);font-size:.78rem}
+.chartbtn:focus-visible,.linkbtn:focus-visible{outline:3px solid var(--hit)}
+.close{float:right;font:inherit;font-size:1.3rem;border:0;background:none;color:var(--soft);cursor:pointer}
+.empty{font-family:var(--hand);font-size:1.15rem;line-height:1.4}
+.empty b{font-weight:400;text-decoration:underline}
+.legend{font-size:1rem;color:var(--soft);margin-top:12px}
+.clist{margin-top:6px}
+.clist .wk{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin:14px 0 6px}
+#modal{position:fixed;inset:0;background:rgba(20,20,24,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+#modal[hidden]{display:none}
+#modal .box{background:var(--paper);border-radius:14px;width:min(1200px,100%);height:min(88vh,100%);display:flex;flex-direction:column;overflow:hidden}
+#modal .mh{display:flex;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+#modal .mh b{font-family:var(--marker);font-size:1.5rem;text-transform:uppercase;flex:1}
+#modal .mh a{font-size:.85rem;color:var(--accent)}
+#modal iframe{flex:1;border:0;width:100%}
+.maplabel{font-family:var(--marker);font-weight:700;font-size:clamp(1rem,2.4vw,1.7rem);text-transform:uppercase;color:var(--ink);white-space:nowrap;
+  display:flex;align-items:center;gap:10px;pointer-events:none}
+.maplabel span{font-family:var(--hand);font-weight:400;text-transform:none;color:var(--soft);font-size:.8em}
+.maplabel::after{content:"";flex:1;border-top:2px dashed var(--line)}
+.results .wkt{color:var(--soft);font-size:.75rem;margin-left:6px}
+@media (max-width:760px){
+  main{flex-direction:column}
+  #panel{width:100%;max-height:46vh;border-left:0;border-top:1px solid var(--line)}
+  #panel.closed{display:none}
+}
+@media (prefers-reduced-motion:reduce){.hs{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Hematology concept map<small>FoM Block 3, weeks 9 to 12 on one page</small></h1>
+  <div class="search"><input id="q" type="search" placeholder="Search all three maps: a cell, drug, test or disease" autocomplete="off" aria-label="Search all three maps"><div class="results" id="res" hidden></div></div>
+  <div class="tools weeks" role="group" aria-label="Jump to a week's map">
+    <button class="tool wk" data-map="w9" aria-pressed="false">Week 9</button>
+    <button class="tool wk" data-map="w10" aria-pressed="false">Week 10</button>
+    <button class="tool wk" data-map="w11" aria-pressed="false">Week 11-12</button>
+  </div>
+  <div class="tools">
+    <button class="tool" id="charts">Charts</button>
+    <button class="tool" id="show" aria-pressed="false" title="Outline every clickable heading">Show boxes</button>
+    <button class="tool" id="star" aria-pressed="false" title="Light the green flags that mark where each map starts">⚑ Start here</button>
+    <button class="tool" id="fit">All three</button>
+  </div>
+</header>
+<main>
+  <div id="osd" aria-label="The three hematology concept maps, Week 9 above Week 10 above Weeks 11 and 12; pinch or scroll to zoom, drag to move"></div>
+  <aside id="panel" aria-live="polite"></aside>
+</main>
+<div id="modal" hidden><div class="box"><div class="mh"><b id="mt"></b><a id="ml" target="_blank" rel="noopener">Open in a new tab</a><button class="tool" id="mx">Close</button></div><iframe id="mf" title="Overview chart"></iframe></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+<script>
+const panel = document.getElementById("panel");
+const firstHash = location.hash.slice(1);
+let N = [], byId = {}, sel = null, viewer;
+let known = {};
+try { known = JSON.parse(localStorage.getItem("hcm-known") || "{}"); } catch(e) {}
+const saveKnown = () => { try { localStorage.setItem("hcm-known", JSON.stringify(known)); } catch(e) {} };
+const plain = s => s.replace(/<[^>]+>/g, " ").replace(/📍/g, "").replace(/\s+/g, " ").trim();
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* the three maps, stacked top to bottom in one viewer at one pixel scale (widest map = 1 viewport unit) */
+const MAPS = [
+  {key:"w9", label:"Week 9", sub:"Hematology I · Anemia", W:3179, H:3776},
+  {key:"w10", label:"Week 10", sub:"Hematology II · Hemostasis, bleeding, thrombosis, anticoagulants", W:3075, H:3863},
+  {key:"w11", label:"Weeks 11 and 12", sub:"Hematology III · Leukemia, lymphoma, myeloma, chemotherapy", W:4394, H:3107}];
+const UNIT = Math.max(...MAPS.map(m => m.W)), GAP = .09;
+let yy = GAP;
+MAPS.forEach(m => { m.w = m.W / UNIT; m.x = (1 - m.w) / 2; m.y = yy; m.h = m.H / UNIT; yy += m.h + GAP; });
+const ALL = new OpenSeadragon.Rect(0, 0, 1, yy);
+const mapOf = {}; MAPS.forEach(m => mapOf[m.key] = m);
+const rectVP = (key, x, y, w, h) => { const m = mapOf[key], k = m.w / m.W; return new OpenSeadragon.Rect(m.x + x * k, m.y + y * k, w * k, h * k); };
+
+fetch("nodes.json").then(r => r.json()).then(d => { N = d.nodes; N.forEach(n => byId[n.id] = n); if (!N.some(n => n.star)) document.getElementById("star").hidden = true; start(); })
+  .catch(() => { panel.innerHTML = '<div class="empty">The map\'s data did not load. Reload the page to try again.</div>'; });
+
+function start(){
+  viewer = OpenSeadragon({
+    id: "osd", tileSources: MAPS.map(m => ({tileSource: m.key + ".dzi", x: m.x, y: m.y, width: m.w})), prefixUrl: "", showNavigationControl: false,
+    gestureSettingsMouse: {clickToZoom: false, dblClickToZoom: true}, gestureSettingsTouch: {clickToZoom: false},
+    maxZoomPixelRatio: 2.2, visibilityRatio: .6, animationTime: .7, springStiffness: 8, showNavigator: true,
+    navigatorPosition: "BOTTOM_LEFT", navigatorSizeRatio: .16
+  });
+  viewer.addHandler("open", () => {
+    MAPS.forEach(m => {
+      const el = document.createElement("div"); el.className = "maplabel";
+      el.innerHTML = esc(m.label) + ' <span>' + esc(m.sub) + '</span>';
+      viewer.addOverlay({element: el, location: new OpenSeadragon.Rect(0, m.y - GAP * .8, 1, GAP * .6)});
+    });
+    N.forEach(n => {
+      const el = document.createElement("div");
+      el.className = "hs" + (n.star ? " star" : "") + (n.charts && n.charts.length ? " linked" : "");
+      el.title = plain(n.title); el.tabIndex = 0; el.setAttribute("role", "button"); el.setAttribute("aria-label", plain(n.title));
+      const [x, y, w, h] = n.rect, pad = 10;
+      viewer.addOverlay({element: el, location: rectVP(n.map, x - pad, y - pad, w + 2*pad, h + 2*pad)});
+      new OpenSeadragon.MouseTracker({element: el, clickHandler: e => { if (e.quick) open(n.id); }});
+      el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(n.id, true); } });
+      n.el = el;
+    });
+    if (byId[firstHash]) open(firstHash, true);
+    else if (mapOf[firstHash]) goMap(firstHash);
+    else viewer.viewport.fitBounds(ALL, true);
+    viewer.addHandler("animation-finish", markWeek); markWeek();
+  });
+  intro();
+}
+function fly(n){
+  const [x, y, w, h] = n.rect;
+  viewer.viewport.fitBounds(rectVP(n.map, x - 420, y - 200, w + 840, h + 720));
+}
+function goMap(key){
+  const m = mapOf[key]; if (!m) return;
+  viewer.viewport.fitBounds(new OpenSeadragon.Rect(m.x, m.y - GAP * .85, m.w, m.h + GAP * .9));
+}
+function markWeek(){  // the switcher lights the week whose map fills most of the view
+  const b = viewer.viewport.getBounds(); let best = null, ba = 0;
+  MAPS.forEach(m => { const a = Math.max(0, Math.min(b.x + b.width, m.x + m.w) - Math.max(b.x, m.x)) * Math.max(0, Math.min(b.y + b.height, m.y + m.h) - Math.max(b.y, m.y)); if (a > ba) { ba = a; best = m.key; } });
+  document.querySelectorAll(".wk").forEach(x => x.setAttribute("aria-pressed", x.dataset.map === best));
+}
+function open(id, go){
+  const n = byId[id]; if (!n) return;
+  if (sel && sel.el) sel.el.classList.remove("sel");
+  sel = n; n.el && n.el.classList.add("sel");
+  const charts = (n.charts || []).map(c => '<button class="chartbtn" data-url="' + c.url + '" data-name="' + esc(c.name) + '">Open the ' + esc(c.name) + ' chart<span>' + (c.col ? "this diagnosis lit" : "whole chart") + ' ›</span></button>').join("");
+  const extras = (n.extras || []).map(x => '<button class="chartbtn" data-url="' + x.url + '" data-name="' + esc(x.name) + '" data-raw="1">' + esc(x.name) + '<span>' + esc(x.what) + ' ›</span></button>').join("");
+  const notes = (n.notes || []).map(x => '<button class="chartbtn notebtn" data-url="' + x.url + '" data-name="' + esc(x.name) + '" data-raw="1">' + esc(x.name) + '<span>Week ' + x.id.match(/w(\d+)/)[1] + ' note ›</span></button>').join("");
+  const out = (n.links || []).filter(l => byId[l.to]).map(l => '<button class="linkbtn" data-id="' + l.to + '">→ ' + plain(byId[l.to].title) + (l.label ? ' <span>' + esc(l.label) + '</span>' : '') + '</button>');
+  const inc = N.filter(m => (m.links || []).some(l => l.to === id)).map(m => '<button class="linkbtn" data-id="' + m.id + '">← ' + plain(m.title) + '</button>');
+  panel.className = "";
+  panel.innerHTML = '<button class="close" aria-label="Close">×</button><h2>' + plain(n.title).replace(/[α-ω]/g, '<span style="text-transform:none">$&</span>') + (n.star ? ' <span style="color:#2f9e44" title="A start point: the map\'s green flag">⚑</span>' : '') + '</h2>' +
+    '<div class="meta">' + mapOf[n.map].label + ' · ' + esc(mapOf[n.map].sub) + '</div>' +
+    (charts || extras ? '<h3>In the portal</h3>' + charts + extras : '') +
+    (notes ? '<h3>Lecture notes</h3>' + notes : '') +
+    '<h3>On the map</h3><div class="body">' + (n.body || "") + '</div>' +
+    (out.length || inc.length ? '<h3>Connected boxes</h3>' + out.join("") + inc.join("") : '') +
+    '<p><button class="tool" id="kn" aria-pressed="' + !!known[id] + '">' + (known[id] ? "✓ Known" : "Mark as known") + '</button></p>';
+  wire();
+  panel.querySelector("#kn").onclick = () => { known[id] = !known[id]; if (!known[id]) delete known[id]; saveKnown(); open(id); };
+  if (go) fly(n);
+  history.replaceState(null, "", "#" + id);
+}
+function wire(){
+  panel.scrollTop = 0;
+  panel.querySelector(".close") && (panel.querySelector(".close").onclick = intro);
+  panel.querySelectorAll(".linkbtn[data-id]").forEach(b => b.onclick = () => open(b.dataset.id, true));
+  panel.querySelectorAll(".chartbtn").forEach(b => b.onclick = () => chart(b.dataset.url, b.dataset.name, b.dataset.raw));
+}
+function intro(){
+  if (sel && sel.el) sel.el.classList.remove("sel"); sel = null;
+  history.replaceState(null, "", location.pathname + location.search);
+  const linked = N.filter(n => n.charts && n.charts.length).length;
+  panel.className = matchMedia("(max-width:760px)").matches ? "closed" : "";
+  panel.innerHTML = '<div class="empty">The three FoM hematology concept maps (Week 9 anemia, Week 10 hemostasis and thrombosis, Weeks 11 and 12 leukemia, lymphoma and myeloma), one under the other. <b>Tap any heading</b> to read that box, open the portal chart that teaches it (' + linked + ' of ' + N.length + ' boxes link to one of ' + chartList().length + ' charts) and its lecture notes (' + N.filter(n => n.notes && n.notes.length).length + ' boxes). ' +
+    'Pinch or scroll to zoom, drag to move; the week buttons jump between the maps, and search covers all three.<div class="legend">Charts lists every chart and shows where it sits on the map · Show boxes outlines what you can tap' + (N.some(n => n.star) ? ' · ⚑ Start here lights the green flags each map starts from.' : '.') + ' Lecture notes open the portal\'s note for that lecture.</div></div>';
+}
+function chartList(){
+  const m = {};
+  N.forEach(n => (n.charts || []).forEach(c => { (m[c.chart] = m[c.chart] || {id:c.chart, name:c.name, nodes:[]}).nodes.push(n); }));
+  return Object.values(m).sort((a, b) => a.id.localeCompare(b.id, undefined, {numeric: true}));
+}
+function showCharts(){
+  if (sel && sel.el) sel.el.classList.remove("sel"); sel = null;
+  let wk = "", html = '<button class="close" aria-label="Close">×</button><h2>Every chart on the map</h2><div class="meta">Tap a chart to light its boxes on the map</div><div class="clist">';
+  chartList().forEach(c => {
+    const w = c.id.match(/w(\d+)/)[1];
+    if (w !== wk){ wk = w; html += '<div class="wk">Week ' + w + '</div>'; }
+    html += '<button class="linkbtn" data-chart="' + c.id + '">' + esc(c.name) + ' <span>· ' + c.nodes.length + ' box' + (c.nodes.length > 1 ? "es" : "") + '</span></button>';
+  });
+  panel.className = ""; panel.innerHTML = html + '</div>';
+  wire();
+  panel.querySelectorAll("[data-chart]").forEach(b => b.onclick = () => lightChart(b.dataset.chart));
+}
+function lightChart(cid){
+  const c = chartList().find(x => x.id === cid); if (!c) return;
+  const ids = new Set(c.nodes.map(n => n.id));
+  N.forEach(n => n.el && n.el.classList.toggle("hit", ids.has(n.id)));
+  let x0 = 1e9, y0 = 1e9, x1 = 0, y1 = 0;
+  c.nodes.forEach(n => { const [x, y, w, h] = n.rect, r = rectVP(n.map, x - 250, y - 250, w + 500, h + 550); x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y); x1 = Math.max(x1, r.x + r.width); y1 = Math.max(y1, r.y + r.height); });
+  viewer.viewport.fitBounds(new OpenSeadragon.Rect(x0, y0, x1 - x0, y1 - y0));
+  const base = "https://schulichmed.github.io/preclerkship/fom/charts/" + cid + "/";
+  panel.innerHTML = '<button class="close" aria-label="Close">×</button><h2>' + esc(c.name) + '</h2><div class="meta">' + c.nodes.length + ' boxes lit on the map</div>' +
+    '<button class="chartbtn" data-url="' + base + '" data-name="' + esc(c.name) + '">Open the chart<span>›</span></button><h3>Boxes on the map</h3>' +
+    c.nodes.map(n => '<button class="linkbtn" data-id="' + n.id + '">' + plain(n.title) + '</button>').join("") +
+    '<p><button class="tool" id="back">All charts</button></p>';
+  wire(); panel.querySelector("#back").onclick = () => { N.forEach(n => n.el && n.el.classList.remove("hit")); showCharts(); };
+}
+function chart(url, name, raw){
+  const m = document.getElementById("modal");
+  document.getElementById("mt").textContent = name;
+  document.getElementById("ml").href = url;
+  const u = raw ? url : url.includes("#") ? url.replace("#", "?embed=1#") : url + "?embed=1";
+  document.getElementById("mf").src = u;
+  m.hidden = false; document.getElementById("mx").focus();
+}
+document.getElementById("mx").onclick = () => { document.getElementById("modal").hidden = true; document.getElementById("mf").src = "about:blank"; };
+document.getElementById("modal").addEventListener("click", e => { if (e.target.id === "modal") document.getElementById("mx").click(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !document.getElementById("modal").hidden) document.getElementById("mx").click(); });
+document.getElementById("charts").onclick = showCharts;
+document.querySelectorAll(".wk").forEach(b => b.onclick = () => goMap(b.dataset.map));
+document.getElementById("fit").onclick = () => viewer.viewport.fitBounds(ALL);
+document.getElementById("show").onclick = e => { const on = document.body.classList.toggle("show"); e.currentTarget.setAttribute("aria-pressed", on); };
+document.getElementById("star").onclick = e => { const on = document.body.classList.toggle("starmode"); e.currentTarget.setAttribute("aria-pressed", on); };
+
+/* search */
+const q = document.getElementById("q"), res = document.getElementById("res");
+q.addEventListener("input", () => {
+  const t = q.value.trim().toLowerCase();
+  N.forEach(n => n.text = n.text || plain(n.title + " " + (n.body || "")).toLowerCase());
+  if (t.length < 2){ res.hidden = true; N.forEach(n => n.el && n.el.classList.remove("hit")); return; }
+  const terms = t.split(/\s+/), list = N.filter(n => terms.every(w => n.text.includes(w)));
+  const ids = new Set(list.map(n => n.id));
+  N.forEach(n => n.el && n.el.classList.toggle("hit", ids.has(n.id)));
+  list.sort((a, b) => plain(b.title).toLowerCase().includes(t) - plain(a.title).toLowerCase().includes(t));
+  res.innerHTML = list.length ? list.slice(0, 40).map(n => '<button data-id="' + n.id + '">' + plain(n.title) + '<span class="wkt">' + mapOf[n.map].label + '</span></button>').join("") : '<button disabled>No box mentions “' + esc(q.value) + '”</button>';
+  res.hidden = false;
+});
+res.addEventListener("click", e => { const b = e.target.closest("button[data-id]"); if (b){ res.hidden = true; open(b.dataset.id, true); } });
+q.addEventListener("keydown", e => { if (e.key === "Escape"){ q.value = ""; q.dispatchEvent(new Event("input")); }
+  if (e.key === "Enter"){ const b = res.querySelector("button[data-id]"); if (b){ res.hidden = true; open(b.dataset.id, true); } } });
+window.addEventListener("hashchange", () => { const id = location.hash.slice(1); if (byId[id]) open(id, true); else if (mapOf[id]) goMap(id); });
+</script>
+</body>
+</html>
